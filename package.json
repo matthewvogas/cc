@@ -4,19 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "fix": "prettier --write ."
   },
   "dependencies": {
+    "@prisma/client": "^4.13.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "20.1.0",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
+    "bcrypt": "^5.1.0",
+    "daisyui": "^2.51.6",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
     "next": "13.4.1",
+    "next-auth": "^4.22.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -27,6 +32,9 @@
     "extends": [
       "next/core-web-vitals"
     ]
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"commonjs\"} ./prisma/seed.ts"
   },
   "prettier": {
     "singleQuote": true,
@@ -43,6 +51,8 @@
   },
   "devDependencies": {
     "prettier": "^2.8.8",
-    "prettier-plugin-tailwindcss": "^0.2.8"
+    "prettier-plugin-tailwindcss": "^0.2.8",
+    "prisma": "^4.13.0",
+    "ts-node": "^10.9.1"
   }
 }
