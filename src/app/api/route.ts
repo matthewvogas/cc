@@ -11,6 +11,6 @@ export async function GET(request: Request) {
     })
   }
 
-  console.log({ session })
+  // console.log({ session })
   return NextResponse.json({ authenticated: !!session })
 }

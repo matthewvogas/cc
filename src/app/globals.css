@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.swiper-pagination-progressbar-fill {
+  background: #facebc !important;
+}
+
+.swiper-pagination-progressbar {
+  top: unset !important;
+  bottom: 0 !important;
+  background: transparent !important;
+}
