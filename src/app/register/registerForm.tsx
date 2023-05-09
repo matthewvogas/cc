@@ -1,9 +1,13 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
 export const RegisterForm = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   const [email, setEmail] = React.useState('')
   const [name, setName] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -20,7 +24,14 @@ export const RegisterForm = () => {
         },
       })
       if (res.ok) {
-        signIn()
+        //Sing In
+        await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+          callbackUrl,
+        })
+        router.push(callbackUrl)
       } else {
         const { error } = await res.json()
         setError(error)
