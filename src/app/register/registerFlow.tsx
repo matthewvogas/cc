@@ -1,6 +1,6 @@
 'use client'
 
-import { Swiper, SwiperSlide} from 'swiper/react'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import Image from 'next/image'
 import registerImage from 'public/assets/register/registerFlow.png'
 
@@ -11,12 +11,11 @@ import 'swiper/css/pagination'
 // import required modules
 import { Pagination } from 'swiper'
 import { PT_Mono } from 'next/font/google'
-import {RegisterNextButton} from './registerNextButton'
+import { RegisterNextButton } from './registerNextButton'
 
 const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 export const RegisterFlow = () => {
-
   return (
     <section className='relative h-[600px]'>
       <div className='flex w-[1000px] flex-row items-center justify-center rounded-2xl bg-background bg-opacity-20'>

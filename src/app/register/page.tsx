@@ -9,13 +9,14 @@ export default function Register() {
   return (
     <section className='relative flex h-screen items-center justify-center'>
       <Image
+        priority
         className='absolute -z-20 h-full w-full object-cover object-center brightness-50'
         src={registerBg}
         alt='background'
         fill
       />
 
-      <div className='flex w-[500px] flex-col items-center justify-center gap-4  text-center text-white p-10 '>
+      <div className='flex w-[500px] flex-col items-center justify-center gap-4  p-10 text-center text-white '>
         <div className='flex flex-col gap-4'>
           <h1 className={` ${sen.className} text-7xl font-bold text-primary`}>
             codecoco
@@ -23,8 +24,6 @@ export default function Register() {
           <p className='text-lg text-white'>create your account</p>
         </div>
         <RegisterForm />
-
-
 
         <div className='divider' />
 

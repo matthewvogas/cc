@@ -2,12 +2,17 @@
   "name": "codecoco",
   "version": "0.1.0",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format"
+    }
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "fix": "prettier --write ."
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@prisma/client": "^4.13.0",
@@ -51,6 +56,7 @@
     "node": "18.15.0"
   },
   "devDependencies": {
+    "husky": "^8.0.3",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "prisma": "^4.13.0",
