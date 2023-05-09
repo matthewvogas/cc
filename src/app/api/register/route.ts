@@ -21,13 +21,13 @@ export async function POST(req: Request) {
         name: user.name,
       },
     })
-  } catch (e: any) {
-    return (
-      NextResponse.json({
-        error: 'XD',
+  } catch (err: any) {
+    return new NextResponse(
+      JSON.stringify({
+        error: err.message
       }),
       {
-        status: 500,
+        status: 500
       }
     )
   }

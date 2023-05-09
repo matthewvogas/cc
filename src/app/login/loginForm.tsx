@@ -1,53 +1,45 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+  // const error = searchParams.get('error') ? 'Invalid email or password' : null
   const [email, setEmail] = React.useState('')
-  const [name, setName] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    try {
-      const res = await fetch('api/register', {
-        method: 'POST',
-        body: JSON.stringify({ email, name, password }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      if (res.ok) {
-        signIn()
-      } else {
-        const { error } = await res.json()
-        setError(error)
+    try{
+      const res = await signIn('credentials', { email, password, callbackUrl, redirect: false })
+      if(!res?.error){
+        router.push(callbackUrl)
       }
-    } catch (error: any) {
+      else{
+        setError("Invalid email or password");
+      }
+
+    }catch(error:any){
       setError(error?.message)
     }
-    console.log('register!')
+    
+    console.log('login!')
   }
   return (
     <form
       onSubmit={handleSubmit}
-      className='flex flex-col items-center justify-center gap-4'>
+      className='flex flex-col items-center justify-center gap-4 '>
       <input
         type='text'
         placeholder='username or email'
         className='input input-lg w-full bg-opacity-40  pl-10 placeholder-white '
         value={email}
         onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type='text'
-        placeholder='name'
-        value={name}
-        onChange={e => setName(e.target.value)}
-        className='input input-lg w-full  bg-opacity-40 pl-10 placeholder-white'
         required
       />
       <input
@@ -59,17 +51,6 @@ export const RegisterForm = () => {
         className='input input-lg w-full  bg-opacity-40 pl-10 placeholder-white'
         required
       />
-      <div className='flex flex-row items-center justify-center gap-2 px-2 py-8'>
-        <input
-          id='terms'
-          name='terms'
-          type='checkbox'
-          className='checkbox rounded-md bg-white bg-opacity-50'
-        />
-        <label htmlFor='terms'>
-          by creating an account, you accept our terms and conditions.
-        </label>
-      </div>
       {error && (
         <div className='alert alert-error shadow-lg'>
           <div>
@@ -90,7 +71,7 @@ export const RegisterForm = () => {
         </div>
       )}
       <button className='btn-secondary btn-lg btn w-full lowercase'>
-        create your account
+        login
       </button>
     </form>
   )
