@@ -24,11 +24,11 @@ export async function POST(req: Request) {
   } catch (err: any) {
     return new NextResponse(
       JSON.stringify({
-        error: err.message
+        error: err.message,
       }),
       {
-        status: 500
-      }
+        status: 500,
+      },
     )
   }
 }

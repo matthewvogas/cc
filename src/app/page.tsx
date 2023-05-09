@@ -6,7 +6,6 @@ import { User } from './user'
 import { LoginButton, LogoutButton } from './auth'
 import { RegisterFlow } from './register/registerFlow'
 
-
 export default async function Home() {
   const session = await getServerSession(authOptions)
   return (

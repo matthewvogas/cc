@@ -18,17 +18,21 @@ export default function LoginPage() {
 
       <div className='flex w-[500px] flex-col items-center justify-center gap-4  p-10 text-center text-white '>
         <div className='flex flex-col gap-1'>
-        <p className='text-lg text-white'>log in to</p>
+          <p className='text-lg text-white'>log in to</p>
           <h1 className={` ${sen.className} text-7xl font-bold text-primary`}>
             codecoco
           </h1>
-          
         </div>
         <LoginForm />
 
         <div className='divider' />
 
-        <p> {"don't have an account?"} <Link href='/register' className='text-primary'>create account</Link>
+        <p>
+          {' '}
+          {"don't have an account?"}{' '}
+          <Link href='/register' className='text-primary'>
+            create account
+          </Link>
         </p>
       </div>
     </section>

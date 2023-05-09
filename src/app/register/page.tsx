@@ -28,7 +28,10 @@ export default function RegisterPage() {
         <div className='divider' />
 
         <p>
-          already have an account? <Link href='/login' className='text-primary'>log in</Link>
+          already have an account?{' '}
+          <Link href='/login' className='text-primary'>
+            log in
+          </Link>
         </p>
       </div>
     </section>
