@@ -17,3 +17,20 @@ model user {
   updated_at DateTime @updatedAt
   password  String
 }
+
+model post {
+  id        Int      @id @default(autoincrement())
+  ig_id     String   @unique
+  caption     String
+  media_product_type String
+  media_type String
+  permalink String
+  media_url String
+  comments_count Int
+  like_count Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+
+
