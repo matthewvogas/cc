@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ weight: '400', subsets: ['latin'] })
 
-export default function optionBar() {
+export default function ButtonGroup() {
   const buttonsStyle =
     'px-6 py-2 m-2 border-2 border-transparent rounded-full items-center rounded-full p-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'
 

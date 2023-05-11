@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { Providers } from './providers'
+import { Providers } from '@/lib/providers'
+import Sidebar from '@/components/sidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +18,12 @@ export default function RootLayout({
   return (
     <html data-theme='cupcake' lang='en'>
       <Providers>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <main className='flex flex-row'>
+            <Sidebar />
+            <section className='w-mainsection'>{children}</section>
+          </main>
+        </body>
       </Providers>
     </html>
   )

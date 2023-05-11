@@ -1,92 +1,106 @@
 import Image from 'next/image'
 import { PT_Mono } from 'next/font/google'
 import imageCover from 'public/assets/register/creatorImg.jpg'
+import Link from 'next/link'
 
 const ptMono = PT_Mono({
   weight: '400',
   subsets: ['latin'],
 })
 
-const creatorCard = [
+const creatorCards = [
   {
-    imageSrc: imageCover,
+    media_url: imageCover,
     username: 'jasminecauntt',
     followers: '14k followers',
     views: '424',
-    comments: '32',
-    likes: '210',
+    comments_count: '32',
+    like_count: '210',
     href: '#',
   },
   {
-    imageSrc: imageCover,
+    media_url: imageCover,
     username: 'jasminecauntt',
     followers: '14k followers',
     views: '424',
-    comments: '32',
-    likes: '210',
+    comments_count: '32',
+    like_count: '210',
     href: '#',
   },
   {
-    imageSrc: imageCover,
+    media_url: imageCover,
     username: 'jasminecauntt',
     followers: '14k followers',
     views: '424',
-    comments: '32',
-    likes: '210',
+    comments_count: '32',
+    like_count: '210',
     href: '#',
   },
   {
-    imageSrc: imageCover,
+    media_url: imageCover,
     username: 'jasminecauntt',
     followers: '14k followers',
     views: '424',
-    comments: '32',
-    likes: '210',
+    comments_count: '32',
+    like_count: '210',
     href: '#',
   },
   {
-    imageSrc: imageCover,
+    media_url: imageCover,
     username: 'jasminecauntt',
     followers: '14k followers',
     views: '424',
-    comments: '32',
-    likes: '210',
+    comments_count: '32',
+    like_count: '210',
     href: '#',
   },
   {
-    imageSrc: imageCover,
+    media_url: imageCover,
     username: 'jasminecauntt',
     followers: '14k followers',
     views: '424',
-    comments: '32',
-    likes: '210',
+    comments_count: '32',
+    like_count: '210',
     href: '#',
   },
   {
-    imageSrc: imageCover,
+    media_url: imageCover,
     username: 'jasminecauntt',
     followers: '14k followers',
     views: '424',
-    comments: '32',
-    likes: '210',
+    comments_count: '32',
+    like_count: '210',
     href: '#',
   },
 ]
 
-export default function creatorCart() {
+export default function CreatorCard({ posts }: any) {
+  const postData = posts || creatorCards
+  function isVideo(post: any){
+    if (post.video_url) return true
+    return false
+  }
   return (
     <div className='flex flex-wrap gap-x-12 gap-y-12'>
-      {creatorCard.map((card, index) => (
-        <a
-          href={card.href}
+      {postData.map((card: any, index: any) => (
+        <div
           key={index}
           className={`w-80 max-w-sm overflow-hidden rounded-2xl bg-cardBackground ${ptMono.className}`}>
-          <Image
-            priority
-            className={`h-64 object-cover`}
-            src={card.imageSrc}
-            alt='background'
-          />
+          {!isVideo(card) && (
+            <Image
+              priority
+              className={`h-64 object-cover`}
+              src={card.image_url || imageCover}
+              alt='background'
+              width={256}
+              height={256}
+            />
+          )}
+          {isVideo(card) && (
+            <video controls>
+              <source src={card.video_url} type='video/mp4' />
+            </video>
+          )}
           <div className='px-6 pt-6'>
             <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
               @{card.username}
@@ -104,19 +118,19 @@ export default function creatorCart() {
                   d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
                 />
               </svg>
-              {card.followers}
+              {card.followers_count}
             </span>
             <div className='flex-grow border-t border-gray-200 pb-2'></div>
           </div>
           <div className='px-6 pb-2 '>
             <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
-              Views: {card.views}
+              Views: {'999'}
             </span>
             <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
-              Comments: {card.comments}
+              Comments: {card.comments_count}
             </span>
             <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
-              Likes: {card.likes}
+              Likes: {card.like_count}
             </span>
             <div className='flex justify-end align-middle'>
               <svg
@@ -132,7 +146,7 @@ export default function creatorCart() {
               </svg>
             </div>
           </div>
-        </a>
+        </div>
       ))}
     </div>
   )

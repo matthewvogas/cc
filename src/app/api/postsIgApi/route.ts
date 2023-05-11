@@ -29,11 +29,17 @@ export async function GET() {
   const userName = match ? match[0].slice(2, -1) : 'No hay usuario'
 
   const instagramRes = await fetch(
-    `https://graph.facebook.com/${process.env.BUSINESS_ID}?fields=business_discovery.username(${userName}){followers_count,media_count,media.limit(10000){comments_count,like_count,caption,media_product_type,media_type,permalink,media_url,username},website,username,name,follows_count}&access_token=${process.env.BUSINESS_TOKEN}`,
+    `https://graph.facebook.com/${process.env.BUSINESS_ID}?fields=business_discovery.username(milkbar.co){followers_count,media_count,media.limit(10000){comments_count,like_count,caption,media_product_type,media_type,permalink,media_url,username},website,username,name,follows_count}&access_token=${process.env.BUSINESS_TOKEN}`,
   )
   const instagramData = await instagramRes.json()
+  const followers = instagramData.business_discovery.followers_count
 
   const posts = instagramData.business_discovery.media.data
+
+  const isMp4 = (url: string) => {
+    if(!url) return false
+    return url.includes('.mp4')
+  }
 
   Promise.all(
     posts.map(async (post: any) => {
@@ -52,8 +58,11 @@ export async function GET() {
             media_product_type: post.media_product_type || '',
             media_type: post.media_type || '',
             permalink: post.permalink || '',
-            media_url: post.media_url || '',
+            image_url: isMp4(post.media_url) ? '' : (post.media_url || ''),
+            video_url: isMp4(post.media_url) ? post.media_url : '',
             ig_id: post.id || '',
+            username: post.username || '',
+            followers_count: followers || 0,
           },
         })
       }

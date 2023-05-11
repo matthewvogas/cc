@@ -23,6 +23,10 @@ const link = [
     href: '/creators',
     text: 'Creators',
   },
+  {
+    href: '/campaigns',
+    text: 'Campaigns',
+  },
 ]
 
 const links = link.map((link, index) => (
@@ -39,9 +43,8 @@ const links = link.map((link, index) => (
 
 export default function Sidebar() {
   return (
-    <section>
       <aside
-        className='fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0 '
+        className='h-screen w-64  -translate-x-full transition-transform sm:translate-x-0 '
         aria-label='Sidebar'>
         <div className='h-full overflow-y-auto border-r-2 bg-sidebarBackground px-3 py-4 '>
           <Image
@@ -58,9 +61,9 @@ export default function Sidebar() {
             <li>
               <a
                 href='#'
-                className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-50 dark:hover:bg-gray-700'>
+                className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-50'>
                 <span className={`ml-3 flex-1 whitespace-nowrap`}>Reports</span>
-                <span className='ml-3 inline-flex items-center justify-center rounded-full bg-rose-100 px-2 text-sm font-medium text-gray-800  dark:text-gray-300'>
+                <span className='ml-3 inline-flex items-center justify-center rounded-full bg-rose-100 px-2 text-sm font-medium text-gray-800'>
                   Cooming soon
                 </span>
               </a>
@@ -68,7 +71,5 @@ export default function Sidebar() {
           </ul>
         </div>
       </aside>
-      <div className='p-4 sm:ml-64'></div>
-    </section>
   )
 }

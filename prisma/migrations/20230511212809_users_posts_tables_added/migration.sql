@@ -18,9 +18,12 @@ CREATE TABLE "post" (
     "media_product_type" TEXT NOT NULL,
     "media_type" TEXT NOT NULL,
     "permalink" TEXT NOT NULL,
-    "media_url" TEXT NOT NULL,
+    "video_url" TEXT NOT NULL,
+    "image_url" TEXT NOT NULL,
     "comments_count" INTEGER NOT NULL,
     "like_count" INTEGER NOT NULL,
+    "followers_count" INTEGER NOT NULL,
+    "username" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

@@ -34,9 +34,9 @@ const statsResults = statsResult.map((stat, index) => (
   </div>
 ))
 
-export default function overviewCampaign() {
+export default function OverviewCampaign() {
   return (
-    <div className={`flex w-full  ${ptMono.className}`}>
+    <div className={`flex w-full justify-center items-center  ${ptMono.className}`}>
       <div className='w-1/2'>
         <h4 className={`mb-4 text-xl ${inter.className}`}>Campaign brief</h4>
         <textarea

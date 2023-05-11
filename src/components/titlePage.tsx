@@ -6,20 +6,25 @@ const ptMono = PT_Mono({
   subsets: ['latin'],
 })
 
+type Props = {
+  title: string,
+
+}
+
 const ActionButtonStyle =
   'text-sm  border-rose-100 border-2 inline-block py-2 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100'
 const ActiveLabel = 'bg-active px-8 mx-2 py-3 rounded-full text-black text-sm '
 const InActiveLabel =
   'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-sm '
 
-export default function titlePage() {
+export default function TitlePage({title}: Props) {
   return (
-    <section className='w-full p-12'>
+    <div className='w-full px-12 pt-12'>
       <div className='mx-auto w-full justify-between px-4 md:px-8'>
         <div className='w-full'>
           <h3
             className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
-            Title of the Page
+            {title}
           </h3>
 
           <div className={`flex items-center justify-between`}>
@@ -27,34 +32,32 @@ export default function titlePage() {
               className={`rounded-full bg-background px-5 py-1 text-sm text-black ${ptMono.className}`}>
               Client Name
             </label>
-            <div className={``}>
-              <a
-                href='javascript:void(0)'
-                className={`${ActionButtonStyle} ${ptMono.className}`}>
+            <div className={`${ptMono.className}`}>
+              <button
+                className={`${ActionButtonStyle} `}>
                 filter
-              </a>
-              <a
-                href='javascript:void(0)'
-                className={`${ActionButtonStyle} ${ptMono.className}`}>
+              </button>
+              <button
+                className={`${ActionButtonStyle} `}>
                 view as client
-              </a>
+              </button>
 
-              <a
-                href='javascript:void(0)'
-                className={`${ActionButtonStyle} ${ptMono.className}`}>
+              <button
+                className={`${ActionButtonStyle}`}>
                 add new
-              </a>
+              </button>
 
-              <label className={`${ActiveLabel} ${ptMono.className}`}>
+              {/* <label className={`${ActiveLabel}`}>
                 active
               </label>
-              <label className={`${InActiveLabel} ${ptMono.className}`}>
+              <label className={`${InActiveLabel}`}>
                 Inactive
-              </label>
+              </label> */}
             </div>
           </div>
         </div>
       </div>
-    </section>
+      <div className="divider"/>
+    </div>
   )
 }

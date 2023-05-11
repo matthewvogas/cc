@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import imageCover from 'public/assets/register/register-bg.jpg'
+import Link from 'next/link'
 
 const inter = Inter({ weight: '400', subsets: ['latin'] })
 
@@ -24,7 +25,7 @@ const card = [
 ]
 
 const cards = card.map((card, index) => (
-  <div key={index} className='h-90 m-auto w-64 overflow-hidden'>
+  <Link href="/campaigns/1" key={index} className='h-90 m-auto w-64 overflow-hidden'>
     <Image
       priority
       className={`h-64 object-cover`}
@@ -36,9 +37,9 @@ const cards = card.map((card, index) => (
         {card.label}
       </p>
     </div>
-  </div>
+  </Link>
 ))
 
-export default function campaignCard() {
+export default function CampaignCard() {
   return <div className='flex flex-wrap gap-x-4 gap-y-12'>{cards}</div>
 }

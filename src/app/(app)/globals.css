@@ -11,3 +11,8 @@
   bottom: 0 !important;
   background: transparent !important;
 }
+
+
+.w-mainsection{
+  width: calc(100vw - 256px);
+}
