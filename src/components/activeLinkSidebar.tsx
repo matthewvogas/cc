@@ -1,6 +1,6 @@
 'use client'
-import { usePathname } from 'next/navigation'
 import type { FC, ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
 
 type CurrentPageProviderProps = {
   href: string

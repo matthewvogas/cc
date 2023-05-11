@@ -3,12 +3,39 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PT_Mono } from 'next/font/google'
 import logo from 'public/assets/register/codecoco.png'
-import { CurrentPageProvider } from './activeLink'
+import { CurrentPageProvider } from './activeLinkSidebar'
 
 const ptMono = PT_Mono({
   weight: '400',
   subsets: ['latin'],
 })
+
+const link = [
+  {
+    href: '/dashboard',
+    text: 'Dashboard',
+  },
+  {
+    href: '/clients',
+    text: 'Clients',
+  },
+  {
+    href: '/creators',
+    text: 'Creators',
+  },
+]
+
+const links = link.map((link, index) => (
+  <li key={index}>
+    <CurrentPageProvider href={`${link.href}`}>
+      <Link
+        href={link.href}
+        className='flex  items-center rounded-full p-2 text-gray-900 hover:bg-rose-100 '>
+        <span className={`ml-3 flex-1 whitespace-nowrap`}>{link.text}</span>
+      </Link>
+    </CurrentPageProvider>
+  </li>
+))
 
 export default function Sidebar() {
   return (
@@ -25,50 +52,8 @@ export default function Sidebar() {
             alt='background'
           />
           <ul className={`space-y-2 font-medium ${ptMono.className}`}>
-            <li>
-              <CurrentPageProvider href='/dashboard'>
-                <Link
-                  href='/dashboard'
-                  className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-100 dark:hover:bg-gray-700'>
-                  <span className={`ml-3 flex-1 whitespace-nowrap`}>
-                    Dashboard
-                  </span>
-                </Link>
-              </CurrentPageProvider>
-            </li>
-            <li>
-              <CurrentPageProvider href='/clients'>
-                <Link
-                  href='/clients'
-                  className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-100 dark:hover:bg-gray-700'>
-                  <span className={`ml-3 flex-1 whitespace-nowrap`}>
-                    Clients
-                  </span>
-                </Link>
-              </CurrentPageProvider>
-            </li>
-            <li>
-              <CurrentPageProvider href='/campaigns'>
-                <Link
-                  href='/campaigns'
-                  className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-100 dark:hover:bg-gray-700'>
-                  <span className={`ml-3 flex-1 whitespace-nowrap`}>
-                    Campaigns
-                  </span>
-                </Link>
-              </CurrentPageProvider>
-            </li>
-            <li>
-              <CurrentPageProvider href='/creators'>
-                <Link
-                  href='/creators'
-                  className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-100 dark:hover:bg-gray-700'>
-                  <span className={`ml-3 flex-1 whitespace-nowrap`}>
-                    Creators
-                  </span>
-                </Link>
-              </CurrentPageProvider>
-            </li>
+            {links}
+
             {/* Report link - Cooming soon */}
             <li>
               <a
