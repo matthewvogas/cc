@@ -8,11 +8,11 @@ export default async function CampaignPage({
 }: {
   params: { id: number }
 }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/postsFromDb`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/posts`)
   const posts = await res.json()
 
   return (
-    <div className='flex flex-col items-center justify-center bg-white'>
+    <div className='flex flex-col items-center justify-center'>
       <TitlePage title='Test Campaign' />
       <ButtonGroup title='' />
       <OverviewCampaign />

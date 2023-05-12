@@ -25,12 +25,18 @@ model post {
   media_product_type String
   media_type String
   permalink String
+  shortcode String
   video_url String
   image_url String
   comments_count Int
   like_count Int
   followers_count Int
   username String
+  engagement Int
+  impressions Int
+  reach Int
+  saved Int
+  shares Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

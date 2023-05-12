@@ -126,7 +126,7 @@ export default function CreatorCard({ posts }: any) {
           </div>
           <div className='px-6 pb-2 '>
             <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
-              Views: {'999'}
+              Views: {card.reach}
             </span>
             <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
               Comments: {card.comments_count}
