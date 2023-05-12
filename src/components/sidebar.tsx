@@ -44,7 +44,7 @@ const links = link.map((link, index) => (
 export default function Sidebar() {
   return (
       <aside
-        className='h-screen w-64  -translate-x-full transition-transform sm:translate-x-0 '
+        className='fixed h-screen w-72 -translate-x-full transition-transform sm:translate-x-0 '
         aria-label='Sidebar'>
         <div className='h-full overflow-y-auto border-r-2 bg-sidebarBackground px-3 py-4 '>
           <Image

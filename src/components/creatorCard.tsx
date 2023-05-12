@@ -81,7 +81,7 @@ export default function CreatorCard({ posts }: any) {
     return false
   }
   return (
-    <div className='flex flex-wrap gap-x-12 gap-y-12'>
+    <div className='flex flex-wrap gap-x-6 gap-y-8 ml-12'>
       {postData.map((card: any, index: any) => (
         <div
           key={index}
@@ -89,11 +89,13 @@ export default function CreatorCard({ posts }: any) {
           {!isVideo(card) && (
             <Image
               priority
-              className={`h-64 object-cover`}
+              className={`h-64 object-cover rounded-2xl`}
               src={card.image_url || imageCover}
               alt='background'
-              width={256}
-              height={256}
+              width={0}
+              height={0}
+              sizes="100vw"
+              style={{ width: '100%', height: 'auto' }} 
             />
           )}
           {isVideo(card) && (

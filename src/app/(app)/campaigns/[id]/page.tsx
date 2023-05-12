@@ -11,11 +11,11 @@ export default async function CampaignPage({ params }: { params: { id: number } 
     const posts = await res.json()
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center bg-white">
             <TitlePage title="Test Campaign" />
-            <ButtonGroup />
-            <OverviewCampaign/>
-            <ButtonGroup />
+            <ButtonGroup title=""/>
+            <OverviewCampaign />
+            <ButtonGroup title="Grid" />
             <CreatorCard posts={posts}/>
         </div>
     );

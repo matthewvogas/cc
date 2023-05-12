@@ -36,16 +36,16 @@ const statsResults = statsResult.map((stat, index) => (
 
 export default function OverviewCampaign() {
   return (
-    <div className={`flex w-full justify-center items-center  ${ptMono.className}`}>
-      <div className='w-1/2'>
-        <h4 className={`mb-4 text-xl ${inter.className}`}>Campaign brief</h4>
+    <div className={`flex w-full md:px-12 mb-4 ${ptMono.className}`}>
+      <div className='w-full'>
+        <h4 className={`mb-4 text-xm ${inter.className}`}>Campaign brief</h4>
         <textarea
           id='message'
-          className=' block h-52 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900  focus:border focus:border-gray-400 focus:outline-0'
-          placeholder='Brief of the campaign...'></textarea>
+          className={`${inter.className} text-gray-500 p-8 block h-52 w-full rounded-lg border border-gray-300 bg-gray-50 text-sm focus:border focus:border-gray-400 focus:outline-0`}
+          placeholder='Brief of the campaign...'>{'With Rosalind was enlisted to help with the promotion of the LOreal Paris Telescopic Mascara. To achieve this we selected 300 Gen Z, Millennials, Gen X and baby boomers content creators from our platform with a TikTok following of 10k + to take part in this campaign.\n \nIn exchange for gifted product content creator followed the L’Oreal Paris brief, each creating professional content made up of Instagram Re....'}</textarea>
       </div>
-      <div className='ml-8 w-1/2'>
-        <h4 className={`mb-4 ml-4 text-xl ${inter.className}`}>Results</h4>
+      <div className='ml-8 w-full'>
+        <h4 className={`mb-4 ml-4 text-xm ${inter.className}`}>Results</h4>
         {statsResults}
       </div>
     </div>

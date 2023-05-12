@@ -21,7 +21,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <main className='flex flex-row'>
             <Sidebar />
-            <section className='w-mainsection'>{children}</section>
+            <section className='w-mainsection ml-72'>{children}</section>
           </main>
         </body>
       </Providers>

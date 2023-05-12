@@ -8,7 +8,6 @@ const ptMono = PT_Mono({
 
 type Props = {
   title: string,
-
 }
 
 const ActionButtonStyle =
@@ -19,8 +18,8 @@ const InActiveLabel =
 
 export default function TitlePage({title}: Props) {
   return (
-    <div className='w-full px-12 pt-12'>
-      <div className='mx-auto w-full justify-between px-4 md:px-8'>
+    <div className='w-full pt-20'>
+      <div className='mx-auto w-full justify-between px-4 md:px-12 mb-8'>
         <div className='w-full'>
           <h3
             className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
@@ -29,7 +28,7 @@ export default function TitlePage({title}: Props) {
 
           <div className={`flex items-center justify-between`}>
             <label
-              className={`rounded-full bg-background px-5 py-1 text-sm text-black ${ptMono.className}`}>
+              className={`rounded-full bg-background px-8 py-1 text-sm text-black ${ptMono.className}`}>
               Client Name
             </label>
             <div className={`${ptMono.className}`}>

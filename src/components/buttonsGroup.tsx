@@ -1,10 +1,13 @@
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ weight: '400', subsets: ['latin'] })
+type Props = {
+  title: string,
+}
+const buttonsStyle =
+  'px-8 py-2 mr-4 border-2 border-transparent text-xm rounded-full items-center rounded-full p-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'
 
-export default function ButtonGroup() {
-  const buttonsStyle =
-    'px-6 py-2 m-2 border-2 border-transparent rounded-full items-center rounded-full p-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'
+  
 
   const buttons = [
     {
@@ -33,11 +36,16 @@ export default function ButtonGroup() {
     },
   ]
 
+export default function ButtonGroup({title}: Props) {
+
   const listButtons = buttons.map((button, index) => (
     <a type='button' key={index} href={button.path} className={buttonsStyle}>
       {button.label}
     </a>
   ))
 
-  return <div className='my-4 w-full'>{listButtons}</div>
+  return <div className='my-4 w-full md:px-12 mb-12'>
+    <h4 className='mb-4'>{title}</h4>
+    {listButtons}
+    </div>
 }
