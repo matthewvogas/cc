@@ -12,7 +12,7 @@ const ptMono = PT_Mono({
 
 const link = [
   {
-    href: '/dashboard',
+    href: '/',
     text: 'Dashboard',
   },
   {

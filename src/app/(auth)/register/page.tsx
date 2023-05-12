@@ -7,7 +7,7 @@ import { RegisterForm } from './registerForm'
 const sen = Sen({ weight: '700', subsets: ['latin'] })
 export default function RegisterPage() {
   return (
-    <section className='relative flex h-screen items-center justify-center'>
+    <section className='relative flex h-screen w-screen items-center justify-center'>
       <Image
         priority
         className='absolute -z-20 h-full w-full object-cover object-center brightness-50'
