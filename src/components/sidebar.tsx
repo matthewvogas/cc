@@ -43,33 +43,33 @@ const links = link.map((link, index) => (
 
 export default function Sidebar() {
   return (
-      <aside
-        className='fixed h-screen w-72 -translate-x-full transition-transform sm:translate-x-0 '
-        aria-label='Sidebar'>
-        <div className='h-full overflow-y-auto border-r-2 bg-sidebarBackground px-3 py-4 '>
-          <Image
-            priority
-            className={`pl-4`}
-            width={150}
-            src={logo}
-            alt='background'
-          />
-          <ul className={`space-y-2 font-medium ${ptMono.className}`}>
-            {links}
+    <aside
+      className='fixed h-screen w-72 -translate-x-full transition-transform sm:translate-x-0 '
+      aria-label='Sidebar'>
+      <div className='h-full overflow-y-auto border-r-2 bg-sidebarBackground px-3 py-4 '>
+        <Image
+          priority
+          className={`pl-4`}
+          width={150}
+          src={logo}
+          alt='background'
+        />
+        <ul className={`space-y-2 font-medium ${ptMono.className}`}>
+          {links}
 
-            {/* Report link - Cooming soon */}
-            <li>
-              <a
-                href='#'
-                className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-50'>
-                <span className={`ml-3 flex-1 whitespace-nowrap`}>Reports</span>
-                <span className='ml-3 inline-flex items-center justify-center rounded-full bg-rose-100 px-2 text-sm font-medium text-gray-800'>
-                  Cooming soon
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </aside>
+          {/* Report link - Cooming soon */}
+          <li>
+            <a
+              href='#'
+              className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-50'>
+              <span className={`ml-3 flex-1 whitespace-nowrap`}>Reports</span>
+              <span className='ml-3 inline-flex items-center justify-center rounded-full bg-rose-100 px-2 text-sm font-medium text-gray-800'>
+                Cooming soon
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
   )
 }

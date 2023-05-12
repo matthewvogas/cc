@@ -37,7 +37,7 @@ export async function GET() {
   const posts = instagramData.business_discovery.media.data
 
   const isMp4 = (url: string) => {
-    if(!url) return false
+    if (!url) return false
     return url.includes('.mp4')
   }
 
@@ -58,7 +58,7 @@ export async function GET() {
             media_product_type: post.media_product_type || '',
             media_type: post.media_type || '',
             permalink: post.permalink || '',
-            image_url: isMp4(post.media_url) ? '' : (post.media_url || ''),
+            image_url: isMp4(post.media_url) ? '' : post.media_url || '',
             video_url: isMp4(post.media_url) ? post.media_url : '',
             ig_id: post.id || '',
             username: post.username || '',

@@ -37,14 +37,14 @@ const card = [
 ]
 
 const cards = card.map((card, index) => (
-  <Link href="/campaigns/1" key={index} className='h-80 w-80 border-gray-100 '>
+  <Link href='/campaigns/1' key={index} className='h-80 w-80 border-gray-100 '>
     <Image
       priority
       className={`h-64 object-cover`}
       src={card.ImageSrc}
       alt='background'
     />
-    <div className=' bg-white py-4 px-2'>
+    <div className=' bg-white px-2 py-4'>
       <p className={`text-sm font-medium text-gray-800 ${inter.className}`}>
         {card.label}
       </p>
@@ -53,5 +53,5 @@ const cards = card.map((card, index) => (
 ))
 
 export default function CampaignCard() {
-  return <div className=' flex  flex-wrap md:px-12 gap-4'>{cards}</div>
+  return <div className=' flex  flex-wrap gap-4 md:px-12'>{cards}</div>
 }

@@ -76,12 +76,12 @@ const creatorCards = [
 
 export default function CreatorCard({ posts }: any) {
   const postData = posts || creatorCards
-  function isVideo(post: any){
+  function isVideo(post: any) {
     if (post.video_url) return true
     return false
   }
   return (
-    <div className='flex flex-wrap gap-x-6 gap-y-8 ml-12'>
+    <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
       {postData.map((card: any, index: any) => (
         <div
           key={index}
@@ -89,13 +89,13 @@ export default function CreatorCard({ posts }: any) {
           {!isVideo(card) && (
             <Image
               priority
-              className={`h-64 object-cover rounded-2xl`}
+              className={`h-64 rounded-2xl object-cover`}
               src={card.image_url || imageCover}
               alt='background'
               width={0}
               height={0}
-              sizes="100vw"
-              style={{ width: '100%', height: 'auto' }} 
+              sizes='100vw'
+              style={{ width: '100%', height: 'auto' }}
             />
           )}
           {isVideo(card) && (

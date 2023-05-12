@@ -36,16 +36,20 @@ const statsResults = statsResult.map((stat, index) => (
 
 export default function OverviewCampaign() {
   return (
-    <div className={`flex w-full md:px-12 mb-4 ${ptMono.className}`}>
+    <div className={`mb-4 flex w-full md:px-12 ${ptMono.className}`}>
       <div className='w-full'>
-        <h4 className={`mb-4 text-xm ${inter.className}`}>Campaign brief</h4>
+        <h4 className={`text-xm mb-4 ${inter.className}`}>Campaign brief</h4>
         <textarea
           id='message'
-          className={`${inter.className} text-gray-500 p-8 block h-52 w-full rounded-lg border border-gray-300 bg-gray-50 text-sm focus:border focus:border-gray-400 focus:outline-0`}
-          placeholder='Brief of the campaign...'>{'With Rosalind was enlisted to help with the promotion of the LOreal Paris Telescopic Mascara. To achieve this we selected 300 Gen Z, Millennials, Gen X and baby boomers content creators from our platform with a TikTok following of 10k + to take part in this campaign.\n \nIn exchange for gifted product content creator followed the L’Oreal Paris brief, each creating professional content made up of Instagram Re....'}</textarea>
+          className={`${inter.className} block h-52 w-full rounded-lg border border-gray-300 bg-gray-50 p-8 text-sm text-gray-500 focus:border focus:border-gray-400 focus:outline-0`}
+          placeholder='Brief of the campaign...'>
+          {
+            'With Rosalind was enlisted to help with the promotion of the LOreal Paris Telescopic Mascara. To achieve this we selected 300 Gen Z, Millennials, Gen X and baby boomers content creators from our platform with a TikTok following of 10k + to take part in this campaign.\n \nIn exchange for gifted product content creator followed the L’Oreal Paris brief, each creating professional content made up of Instagram Re....'
+          }
+        </textarea>
       </div>
       <div className='ml-8 w-full'>
-        <h4 className={`mb-4 ml-4 text-xm ${inter.className}`}>Results</h4>
+        <h4 className={`text-xm mb-4 ml-4 ${inter.className}`}>Results</h4>
         {statsResults}
       </div>
     </div>

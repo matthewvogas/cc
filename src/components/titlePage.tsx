@@ -7,7 +7,7 @@ const ptMono = PT_Mono({
 })
 
 type Props = {
-  title: string,
+  title: string
 }
 
 const ActionButtonStyle =
@@ -16,10 +16,10 @@ const ActiveLabel = 'bg-active px-8 mx-2 py-3 rounded-full text-black text-sm '
 const InActiveLabel =
   'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-sm '
 
-export default function TitlePage({title}: Props) {
+export default function TitlePage({ title }: Props) {
   return (
     <div className='w-full pt-20'>
-      <div className='mx-auto w-full justify-between px-4 md:px-12 mb-8'>
+      <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
         <div className='w-full'>
           <h3
             className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
@@ -32,19 +32,12 @@ export default function TitlePage({title}: Props) {
               Client Name
             </label>
             <div className={`${ptMono.className}`}>
-              <button
-                className={`${ActionButtonStyle} `}>
-                filter
-              </button>
-              <button
-                className={`${ActionButtonStyle} `}>
+              <button className={`${ActionButtonStyle} `}>filter</button>
+              <button className={`${ActionButtonStyle} `}>
                 view as client
               </button>
 
-              <button
-                className={`${ActionButtonStyle}`}>
-                add new
-              </button>
+              <button className={`${ActionButtonStyle}`}>add new</button>
 
               {/* <label className={`${ActiveLabel}`}>
                 active
@@ -56,7 +49,7 @@ export default function TitlePage({title}: Props) {
           </div>
         </div>
       </div>
-      <div className="divider"/>
+      <div className='divider' />
     </div>
   )
 }
