@@ -1,4 +1,3 @@
-
 // Style
 const buttonsStyle =
   'px-8 py-2 mr-4 border-2 border-transparent text-xm rounded-full items-center rounded-full p-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'

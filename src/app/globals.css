@@ -36,3 +36,18 @@
 #companies-menu:active {
   background-color: rgb(175, 139, 139);
 }
+
+/* Hide content from Input File */
+
+input[type='file'] {
+  color: transparent;
+  outline: 0;
+}
+input[type='file']:hover {
+  color: transparent;
+  outline: 0;
+}
+input[type='file']:focus {
+  color: transparent;
+  outline: 0;
+}
