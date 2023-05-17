@@ -1,12 +1,11 @@
 import { Inter } from 'next/font/google'
 import { PT_Mono } from 'next/font/google'
 
+// Fonts
 const inter = Inter({ weight: '400', subsets: ['latin'] })
-const ptMono = PT_Mono({
-  weight: '400',
-  subsets: ['latin'],
-})
+const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
+// Arrays
 const statsResult = [
   {
     label: 'Creators',
@@ -26,6 +25,7 @@ const statsResult = [
   },
 ]
 
+// Show Arrays
 const statsResults = statsResult.map((stat, index) => (
   <div key={index} className='m-4 flex '>
     <span className='rounded-full bg-normalRose px-6 py-2'>
