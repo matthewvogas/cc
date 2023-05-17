@@ -3,8 +3,10 @@ import { Inter } from 'next/font/google'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import Link from 'next/link'
 
+// Fonts
 const inter = Inter({ weight: '400', subsets: ['latin'] })
 
+// Arrays
 const card = [
   {
     ImageSrc: imageCover,
@@ -36,6 +38,7 @@ const card = [
   },
 ]
 
+// Show Arrays
 const cards = card.map((card, index) => (
   <Link href='/campaigns/1' key={index} className='h-80 w-80 border-gray-100 '>
     <Image

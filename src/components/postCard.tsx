@@ -1,13 +1,11 @@
 import Image from 'next/image'
 import { PT_Mono } from 'next/font/google'
 import imageCover from 'public/assets/register/creatorImg.jpg'
-import Link from 'next/link'
 
-const ptMono = PT_Mono({
-  weight: '400',
-  subsets: ['latin'],
-})
+// Fonts
+const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
+// Arrays
 const creatorCards = [
   {
     media_url: imageCover,
@@ -85,7 +83,7 @@ export default function CreatorCard({ posts }: any) {
       {postData.map((card: any, index: any) => (
         <div
           key={index}
-          className={`w-80 max-w-sm overflow-hidden rounded-2xl bg-cardBackground ${ptMono.className}`}>
+          className={`h-fit w-80 max-w-sm overflow-hidden rounded-2xl bg-cardBackground ${ptMono.className}`}>
           {!isVideo(card) && (
             <Image
               priority
@@ -99,7 +97,7 @@ export default function CreatorCard({ posts }: any) {
             />
           )}
           {isVideo(card) && (
-            <video controls>
+            <video className={`rounded-2xl `} controls>
               <source src={card.video_url} type='video/mp4' />
             </video>
           )}
@@ -120,7 +118,7 @@ export default function CreatorCard({ posts }: any) {
                   d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
                 />
               </svg>
-              {card.followers_count}
+              {card.followers_count} followers
             </span>
             <div className='flex-grow border-t border-gray-200 pb-2'></div>
           </div>

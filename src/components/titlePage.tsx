@@ -1,24 +1,24 @@
-import { Inter } from 'next/font/google'
 import { PT_Mono } from 'next/font/google'
+import AddNewCampaign from './addNewCampaign'
+import CampaignFilter from './campaignFilter'
 
-const ptMono = PT_Mono({
-  weight: '400',
-  subsets: ['latin'],
-})
+// Fonts
+const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
+
+// Style Variables
+const ActionButtonStyle =
+  'flex text-sm  border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 '
+const ActiveLabel = 'bg-active px-8 mx-2 py-3 rounded-full text-black text-sm'
+const InActiveLabel =
+  'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-sm'
 
 type Props = {
   title: string
 }
 
-const ActionButtonStyle =
-  'text-sm  border-rose-100 border-2 inline-block py-2 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100'
-const ActiveLabel = 'bg-active px-8 mx-2 py-3 rounded-full text-black text-sm '
-const InActiveLabel =
-  'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-sm '
-
 export default function TitlePage({ title }: Props) {
   return (
-    <div className='w-full pt-20'>
+    <div className='w-full pt-20 '>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
         <div className='w-full'>
           <h3
@@ -31,13 +31,12 @@ export default function TitlePage({ title }: Props) {
               className={`rounded-full bg-background px-8 py-1 text-sm text-black ${ptMono.className}`}>
               Client Name
             </label>
-            <div className={`${ptMono.className}`}>
-              <button className={`${ActionButtonStyle} `}>filter</button>
+            <div className={`flex ${ptMono.className}`}>
+              <CampaignFilter />
               <button className={`${ActionButtonStyle} `}>
                 view as client
               </button>
-
-              <button className={`${ActionButtonStyle}`}>add new</button>
+              <AddNewCampaign />
 
               {/* <label className={`${ActiveLabel}`}>
                 active

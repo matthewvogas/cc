@@ -5,11 +5,10 @@ import { PT_Mono } from 'next/font/google'
 import logo from 'public/assets/register/codecoco.png'
 import { CurrentPageProvider } from './activeLinkSidebar'
 
-const ptMono = PT_Mono({
-  weight: '400',
-  subsets: ['latin'],
-})
+// Fonts
+const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
+// Arrays
 const link = [
   {
     href: '/',
@@ -29,6 +28,7 @@ const link = [
   },
 ]
 
+// Show Arrays
 const links = link.map((link, index) => (
   <li key={index}>
     <CurrentPageProvider href={`${link.href}`}>

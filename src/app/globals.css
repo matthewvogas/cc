@@ -15,3 +15,24 @@
 .w-mainsection {
   width: calc(100vw - 256px);
 }
+
+/* Remove Arrow on Input type Number and remove outline in Focus */
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number']:focus {
+    outline: 0;
+  }
+}
+
+#menu-campaign-filter {
+  /* position: fixed; */
+  border: 1px rgb(175, 139, 139);
+}
+
+#companies-menu:active {
+  background-color: rgb(175, 139, 139);
+}

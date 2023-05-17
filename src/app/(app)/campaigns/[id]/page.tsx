@@ -1,5 +1,5 @@
 import ButtonGroup from '@/components/buttonsGroup'
-import CreatorCard from '@/components/creatorCard'
+import CreatorCard from '@/components/postCard'
 import OverviewCampaign from '@/components/overviewCampaign'
 import TitlePage from '@/components/titlePage'
 
