@@ -39,7 +39,7 @@ export default function OverviewCampaign() {
     <div className={`mb-4 flex w-full md:px-12 ${ptMono.className}`}>
       <div className='w-full'>
         <h4 className={`text-xm mb-4 ${inter.className}`}>Campaign brief</h4>
-        <textarea
+        <textarea readOnly
           value={
             'With Rosalind was enlisted to help with the promotion of the LOreal Paris Telescopic Mascara. To achieve this we selected 300 Gen Z, Millennials, Gen X and baby boomers content creators from our platform with a TikTok following of 10k + to take part in this campaign.\n \nIn exchange for gifted product content creator followed the L’Oreal Paris brief, each creating professional content made up of Instagram Re....'
           }
