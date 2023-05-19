@@ -51,8 +51,10 @@ export default function MyDialog() {
       {/* Full-screen container to center the panel */}
       <div className='fixed inset-0 flex items-center justify-center p-4'>
         {/* The actual dialog panel  */}
-        <Dialog.Panel className='mx-auto max-w-sm flex flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
-          <Dialog.Title className='text-lg font-bold'>{title[1].label}</Dialog.Title>
+        <Dialog.Panel className='mx-auto flex max-w-sm flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
+          <Dialog.Title className='text-lg font-bold'>
+            {title[1].label}
+          </Dialog.Title>
           <div className={`w-full justify-start ${ptMono.className}`}>
             <p className='py-4'>Client</p>
             <select

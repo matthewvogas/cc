@@ -7,11 +7,9 @@ import { useState } from 'react'
 const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 export default function AddNewCampaign() {
-
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
-
 
   // Style Variables
   const dropdownButton =

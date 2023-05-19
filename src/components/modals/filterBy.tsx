@@ -34,8 +34,6 @@ export default function FilterBy() {
           <h3 className='text-lg font-bold'>{title[1].label}</h3>
 
           <div className={`w-full justify-start ${ptMono.className}`}>
-
-
             <input
               type='text'
               id='default-input'
@@ -43,7 +41,7 @@ export default function FilterBy() {
               className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
             />
             <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-            Select creators below to view only their posts
+              Select creators below to view only their posts
             </p>
 
             <hr className='my-8 h-px border-0 bg-gray-200'></hr>
@@ -54,7 +52,6 @@ export default function FilterBy() {
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>

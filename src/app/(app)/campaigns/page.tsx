@@ -1,9 +1,5 @@
-import XD from "./XD";
-
+import XD from './XD'
 
 export default function Campaigns() {
-
-  return (
-    <XD />
-  )
+  return <XD />
 }

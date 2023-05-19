@@ -40,7 +40,7 @@ const card = [
 
 export default function CampaignCard({ campaigns }: any) {
   // Show Arrays
-  const cards = campaigns.map((card:any, index:any) => (
+  const cards = campaigns.map((card: any, index: any) => (
     <Link
       href={`/campaigns/${card.id || 1}`}
       key={index}

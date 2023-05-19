@@ -9,13 +9,13 @@ const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 // Arrays
 const social = [
   {
-    name: "Instagram",
+    name: 'Instagram',
   },
   {
-    name: "TikTok",
+    name: 'TikTok',
   },
   {
-    name: "Pinterest",
+    name: 'Pinterest',
   },
 ]
 
@@ -55,7 +55,7 @@ export default function AddNewPots() {
       </label>
       <input type='checkbox' id='my-modal-3' className='modal-toggle' />
       <div className='modal '>
-        <div className='modal-box relative flex max-w-max flex-col items-center justify-center rounded-xl bg-white px-20 py-12 overflow-hidden'>
+        <div className='modal-box relative flex max-w-max flex-col items-center justify-center overflow-hidden rounded-xl bg-white px-20 py-12'>
           <label
             htmlFor='my-modal-3'
             className='absolute right-4 top-2 cursor-pointer text-lg'>
@@ -64,11 +64,11 @@ export default function AddNewPots() {
           <h3 className='text-lg font-bold'>Add Posts</h3>
 
           <div className={`w-full justify-start ${ptMono.className}`}>
-            <div className='mt-6 flex gap-4 justify-between'>
-              <button className='rounded-full bg-rose-200 px-8 py-2 w-full '>
+            <div className='mt-6 flex justify-between gap-4'>
+              <button className='w-full rounded-full bg-rose-200 px-8 py-2 '>
                 add from link
               </button>
-              <button className='rounded-full border-2 border-rose-200 px-8 py-2 w-full '>
+              <button className='w-full rounded-full border-2 border-rose-200 px-8 py-2 '>
                 upload from file
               </button>
             </div>
@@ -77,7 +77,7 @@ export default function AddNewPots() {
             </p>
             <select
               id='countries'
-              className='inline-block w-full rounded-full border border-gray-300 p-2.5 px-4 text-sm text-gray-900 focus:outline-0 bg-green-50'>
+              className='inline-block w-full rounded-full border border-gray-300 bg-green-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
               <option value={0} disabled>
                 Choose a client
               </option>
@@ -94,9 +94,7 @@ export default function AddNewPots() {
               className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
             />
 
-            <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-              Hashtag
-            </p>
+            <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Hashtag</p>
             <input
               type='text'
               id='default-input'
@@ -105,17 +103,16 @@ export default function AddNewPots() {
             />
 
             <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-                Select platform to track on
+              Select platform to track on
             </p>
             <select
               id='countries'
-              className='inline-block w-full rounded-full border border-gray-300 p-2.5 px-4 text-sm text-gray-900 focus:outline-0 bg-green-50'>
+              className='inline-block w-full rounded-full border border-gray-300 bg-green-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
               <option value={0} disabled>
                 Choose a client
               </option>
               {socialNetworks}
             </select>
-
 
             <label className='mt-2 flex text-xs text-gray-500' htmlFor=''>
               bulk add links
@@ -135,13 +132,17 @@ export default function AddNewPots() {
             </label>
 
             <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-                Download a sample CSV template to see an example fo the format required.
+              Download a sample CSV template to see an example fo the format
+              required.
             </p>
 
-            <div className='border-2 border-gray-300 rounded-xl '>
-              <input type="file" className="file-input h-40 file-input-ghost w-full" />
+            <div className='rounded-xl border-2 border-gray-300 '>
+              <input
+                type='file'
+                className='file-input-ghost file-input h-40 w-full'
+              />
             </div>
-            
+
             <hr className='my-8 h-px border-0 bg-gray-200'></hr>
             <div className='text-right'>
               <button className='rounded-full bg-green-200 px-8 py-2 '>

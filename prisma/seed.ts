@@ -33,8 +33,8 @@ async function main() {
       media_type: post.media_type || null,
       permalink: post.permalink || null,
       shortcode: post.shortcode || null,
-      image_url: !isMp4(post.media_url) && post.media_url || null,
-      video_url: isMp4(post.media_url) && post.media_url || null,
+      image_url: (!isMp4(post.media_url) && post.media_url) || null,
+      video_url: (isMp4(post.media_url) && post.media_url) || null,
       ig_id: post.id || null,
       username: post.username || null,
       followers_count: followers || null,
@@ -88,7 +88,7 @@ async function main() {
       email: 'client@example.com',
       phone: '1234567890',
       tenant_id: 1,
-    }
+    },
   })
 
   await prisma.campaign.upsert({
