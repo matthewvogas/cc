@@ -8,16 +8,16 @@ export default async function CampaignPage({
 }: {
   params: { id: number }
 }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/posts`)
-  const posts = await res.json()
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/campaigns/${params.id}`)
+  const campaign = await res.json()
 
   return (
     <div className='flex flex-col items-center justify-center'>
-      <TitlePage title='Test Campaign' />
+      <TitlePage title={campaign.name} />
       <ButtonGroup title='' />
-      <OverviewCampaign />
+      <OverviewCampaign description={campaign.description}/>
       <ButtonGroup title='Grid' />
-      <CreatorCard posts={posts} />
+      <CreatorCard posts={campaign.posts} />
     </div>
   )
 }

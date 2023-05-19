@@ -34,14 +34,16 @@ const statsResults = statsResult.map((stat, index) => (
   </div>
 ))
 
-export default function OverviewCampaign() {
+export default function OverviewCampaign({ description }: any) {
+  const fallbackDescription = 'With Rosalind was enlisted to help with the promotion of the LOreal Paris Telescopic Mascara. To achieve this we selected 300 Gen Z, Millennials, Gen X and baby boomers content creators from our platform with a TikTok following of 10k + to take part in this campaign.\n \nIn exchange for gifted product content creator followed the L’Oreal Paris brief, each creating professional content made up of Instagram Re....'
   return (
     <div className={`mb-4 flex w-full md:px-12 ${ptMono.className}`}>
       <div className='w-full'>
         <h4 className={`text-xm mb-4 ${inter.className}`}>Campaign brief</h4>
-        <textarea readOnly
+        <textarea
+          readOnly
           value={
-            'With Rosalind was enlisted to help with the promotion of the LOreal Paris Telescopic Mascara. To achieve this we selected 300 Gen Z, Millennials, Gen X and baby boomers content creators from our platform with a TikTok following of 10k + to take part in this campaign.\n \nIn exchange for gifted product content creator followed the L’Oreal Paris brief, each creating professional content made up of Instagram Re....'
+            description || fallbackDescription
           }
           id='message'
           className={`${inter.className} block h-52 w-full rounded-lg border border-gray-300 bg-gray-50 p-8 text-sm text-gray-500 focus:border focus:border-gray-400 focus:outline-0`}
