@@ -1,16 +1,22 @@
 import prisma from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
+import { authOptions } from '../auth/[...nextauth]/route'
+
+
+
 
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions)
+    const id = session?.user?.id
     const campaigns = await prisma.campaign.findMany({
-      include: {
-        posts: {
-          orderBy: {
-            created_at: 'desc',
-          },
-        },
+      where: {
+        tenant_id: parseInt(id)
       },
+      orderBy: {
+        created_at: 'desc'
+      }
     })
 
     return NextResponse.json(campaigns)
@@ -24,17 +30,14 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { name, description, id } = await req.json()
-    const campaign = await prisma.campaign.upsert({
-      where: { id },
-      update: {
+    const { name, description} = await req.json()
+    const campaign = await prisma.campaign.create({
+      data: {
         name,
         description,
-      },
-      create: {
-        name,
-        description,
-      },
+        client_id: 1,
+        tenant_id: 1
+      }
     })
 
     return NextResponse.json({ success: true})

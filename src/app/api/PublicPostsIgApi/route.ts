@@ -54,7 +54,7 @@ export async function GET() {
           data: {
             caption: post.caption || '',
             comments_count: post.comments_count || 0,
-            like_count: post.like_count || 0,
+            likes_count: post.like_count || 0,
             media_product_type: post.media_product_type || '',
             media_type: post.media_type || '',
             permalink: post.permalink || '',

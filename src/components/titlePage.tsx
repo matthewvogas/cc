@@ -14,9 +14,10 @@ const InActiveLabel =
 
 type Props = {
   title: string
+  onSubmit: any
 }
 
-export default function TitlePage({ title }: Props) {
+export default function TitlePage({ title}: Props) {
   return (
     <div className='w-full pt-20 '>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>

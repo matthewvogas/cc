@@ -100,6 +100,8 @@ async function main() {
     create: {
       name: `Test Campaign`,
       description: `This is a test campaign`,
+      tenant_id: 1,
+      client_id: 1,
     },
   })
 
