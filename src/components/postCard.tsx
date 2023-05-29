@@ -1,9 +1,8 @@
 import Image from 'next/image'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/creatorImg.jpg'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Arrays
 const creatorCards = [

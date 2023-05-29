@@ -1,45 +1,31 @@
-'use client'
-import Link from 'next/link'
 import Image from 'next/image'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import logo from 'public/assets/register/codecoco.png'
-import { CurrentPageProvider } from './activeLinkSidebar'
+import { Navigation } from './navigation'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Arrays
-const link = [
+const links = [
   {
     href: '/',
-    text: 'Dashboard',
+    name: 'Dashboard',
   },
   {
     href: '/clients',
-    text: 'Clients',
+    name: 'Clients',
   },
   {
     href: '/creators',
-    text: 'Creators',
+    name: 'Creators',
   },
   {
     href: '/campaigns',
-    text: 'Campaigns',
+    name: 'Campaigns',
   },
 ]
 
 // Show Arrays
-const links = link.map((link, index) => (
-  <li key={index}>
-    <CurrentPageProvider href={`${link.href}`}>
-      <Link
-        href={link.href}
-        className='flex  items-center rounded-full p-2 text-gray-900 hover:bg-rose-100 '>
-        <span className={`ml-3 flex-1 whitespace-nowrap`}>{link.text}</span>
-      </Link>
-    </CurrentPageProvider>
-  </li>
-))
 
 export default function Sidebar() {
   return (
@@ -54,21 +40,9 @@ export default function Sidebar() {
           src={logo}
           alt='background'
         />
-        <ul className={`space-y-2 font-medium ${ptMono.className}`}>
-          {links}
-
-          {/* Report link - Cooming soon */}
-          <li>
-            <a
-              href='#'
-              className='flex items-center rounded-full p-2 text-gray-900 hover:bg-rose-50'>
-              <span className={`ml-3 flex-1 whitespace-nowrap`}>Reports</span>
-              <span className='ml-3 inline-flex items-center justify-center rounded-full bg-rose-100 px-2 text-sm font-medium text-gray-800'>
-                Cooming soon
-              </span>
-            </a>
-          </li>
-        </ul>
+        <nav className={`space-y-2 font-medium ${ptMono.className}`}>
+          <Navigation navLinks={links} />
+        </nav>
       </div>
     </aside>
   )

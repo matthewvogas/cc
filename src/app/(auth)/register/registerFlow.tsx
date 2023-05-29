@@ -10,10 +10,8 @@ import 'swiper/css/pagination'
 
 // import required modules
 import { Pagination } from 'swiper'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import { RegisterNextButton } from './registerNextButton'
-
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 export const RegisterFlow = () => {
   return (

@@ -12,7 +12,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
@@ -33,6 +34,7 @@
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "sharp": "^0.32.1",
     "swiper": "^9.3.0",
     "swr": "^2.1.5",
     "tailwindcss": "3.3.2",
@@ -46,6 +48,16 @@
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"commonjs\"} ./prisma/seed.ts"
   },
+  "volta": {
+    "node": "18.16.0"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "prisma": "^4.14.1",
+    "ts-node": "^10.9.1"
+  },
   "prettier": {
     "singleQuote": true,
     "bracketSameLine": true,
@@ -55,15 +67,5 @@
     "arrowParens": "avoid",
     "tabWidth": 2,
     "semi": false
-  },
-  "volta": {
-    "node": "18.15.0"
-  },
-  "devDependencies": {
-    "husky": "^8.0.3",
-    "prettier": "^2.8.8",
-    "prettier-plugin-tailwindcss": "^0.2.8",
-    "prisma": "^4.14.0",
-    "ts-node": "^10.9.1"
   }
 }

@@ -1,10 +1,9 @@
 'use client'
 import { Dialog } from '@headlessui/react'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import { useState } from 'react'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 export default function AddNewCampaign() {
   const [isOpen, setIsOpen] = useState(false)
@@ -13,9 +12,9 @@ export default function AddNewCampaign() {
 
   // Style Variables
   const dropdownButton =
-    'text-sm border-2 inline-block py-2 px-8 m-2 text-back font-medium bg-whiteBrown rounded-full hover:border-orange-100'
+    'text-lg  border-2 inline-block py-2 px-8 m-2 text-back font-medium bg-whiteBrown rounded-full hover:border-orange-100'
   const ActionButtonStyle =
-    'flex text-sm  border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 cursor-pointer'
+    'flex text-lg align-center items-center border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 cursor-pointer'
 
   // Arrays
   const button = [

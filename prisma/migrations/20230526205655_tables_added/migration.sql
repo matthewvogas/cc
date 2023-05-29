@@ -33,10 +33,10 @@ CREATE TABLE "company_type" (
 -- CreateTable
 CREATE TABLE "client" (
     "id" SERIAL NOT NULL,
-    "name" TEXT,
-    "email" TEXT,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "phone" TEXT,
-    "tenant_id" INTEGER,
+    "tenant_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -48,7 +48,7 @@ CREATE TABLE "social_network_account" (
     "id" SERIAL NOT NULL,
     "token" TEXT NOT NULL,
     "platform" TEXT NOT NULL,
-    "creator_id" INTEGER,
+    "creator_id" INTEGER NOT NULL,
 
     CONSTRAINT "social_network_account_pkey" PRIMARY KEY ("id")
 );
@@ -56,11 +56,14 @@ CREATE TABLE "social_network_account" (
 -- CreateTable
 CREATE TABLE "creator" (
     "id" SERIAL NOT NULL,
+    "tenant_id" INTEGER NOT NULL,
     "name" TEXT,
     "username" TEXT NOT NULL,
     "followers_count" INTEGER,
     "follows_count" INTEGER,
     "media_count" INTEGER,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "creator_pkey" PRIMARY KEY ("id")
 );
@@ -83,7 +86,7 @@ CREATE TABLE "campaign" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "client_id" INTEGER,
-    "tenant_id" INTEGER,
+    "tenant_id" INTEGER NOT NULL,
 
     CONSTRAINT "campaign_pkey" PRIMARY KEY ("id")
 );
@@ -92,7 +95,7 @@ CREATE TABLE "campaign" (
 CREATE TABLE "post" (
     "id" SERIAL NOT NULL,
     "ig_id" TEXT NOT NULL,
-    "campaign_id" INTEGER,
+    "campaign_id" INTEGER NOT NULL,
     "caption" TEXT,
     "media_product_type" TEXT,
     "media_type" TEXT,
@@ -128,10 +131,13 @@ ALTER TABLE "tenant" ADD CONSTRAINT "tenant_company_size_id_fkey" FOREIGN KEY ("
 ALTER TABLE "tenant" ADD CONSTRAINT "tenant_company_type_id_fkey" FOREIGN KEY ("company_type_id") REFERENCES "company_type"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "client" ADD CONSTRAINT "client_tenant_id_fkey" FOREIGN KEY ("tenant_id") REFERENCES "tenant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "client" ADD CONSTRAINT "client_tenant_id_fkey" FOREIGN KEY ("tenant_id") REFERENCES "tenant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "social_network_account" ADD CONSTRAINT "social_network_account_creator_id_fkey" FOREIGN KEY ("creator_id") REFERENCES "creator"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "social_network_account" ADD CONSTRAINT "social_network_account_creator_id_fkey" FOREIGN KEY ("creator_id") REFERENCES "creator"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "creator" ADD CONSTRAINT "creator_tenant_id_fkey" FOREIGN KEY ("tenant_id") REFERENCES "tenant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "creator_campaign" ADD CONSTRAINT "creator_campaign_campaign_id_fkey" FOREIGN KEY ("campaign_id") REFERENCES "campaign"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -143,7 +149,7 @@ ALTER TABLE "creator_campaign" ADD CONSTRAINT "creator_campaign_creator_id_fkey"
 ALTER TABLE "campaign" ADD CONSTRAINT "campaign_client_id_fkey" FOREIGN KEY ("client_id") REFERENCES "client"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "campaign" ADD CONSTRAINT "campaign_tenant_id_fkey" FOREIGN KEY ("tenant_id") REFERENCES "tenant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "campaign" ADD CONSTRAINT "campaign_tenant_id_fkey" FOREIGN KEY ("tenant_id") REFERENCES "tenant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "post" ADD CONSTRAINT "post_campaign_id_fkey" FOREIGN KEY ("campaign_id") REFERENCES "campaign"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "post" ADD CONSTRAINT "post_campaign_id_fkey" FOREIGN KEY ("campaign_id") REFERENCES "campaign"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

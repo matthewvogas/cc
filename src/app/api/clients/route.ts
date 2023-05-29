@@ -11,7 +11,7 @@ export async function GET() {
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
     const tenant_id = session?.user.id.toString() || '1'
-    const campaigns = await prisma.campaign.findMany({
+    const campaigns = await prisma.client.findMany({
       where: {
         tenant_id: parseInt(tenant_id),
       },
@@ -35,13 +35,12 @@ export async function POST(req: Request) {
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
     const tenant_id = session?.user.id.toString() || '1'
-    const { name, description, client_id } = await req.json()
+    const { name, email } = await req.json()
 
-    await prisma.campaign.create({
+    await prisma.client.create({
       data: {
         name,
-        description,
-        client_id,
+        email,
         tenant_id: parseInt(tenant_id),
       },
     })

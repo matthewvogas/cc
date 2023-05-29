@@ -36,7 +36,7 @@ export const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className='flex flex-col items-center justify-center gap-4 '>
+      className='flex flex-col items-center justify-center gap-4'>
       <input
         type='text'
         placeholder='username or email'
