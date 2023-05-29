@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,119 +8,116 @@ datasource db {
 }
 
 model tenant {
-  id        Int   @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String?
-  website  String?
-  company_name String?
+  id              Int           @id @default(autoincrement())
+  email           String        @unique
+  password        String
+  name            String?
+  website         String?
+  company_name    String?
   company_size_id Int?
-  company_size company_size? @relation(fields: [company_size_id], references: [id])
+  company_size    company_size? @relation(fields: [company_size_id], references: [id])
   company_type_id Int?
-  company_type company_type? @relation(fields: [company_type_id], references: [id])
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  clients client[]
-  campaigns campaign[]
-  
+  company_type    company_type? @relation(fields: [company_type_id], references: [id])
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+  clients         client[]
+  creators        creator[]
+  campaigns       campaign[]
 }
 
 model company_size {
-  id        Int   @id @default(autoincrement())
-  description      String
-  tenants tenant[]
+  id          Int      @id @default(autoincrement())
+  description String
+  tenants     tenant[]
 }
 
 model company_type {
-  id        Int   @id @default(autoincrement())
-  description      String
-  tenants tenant[]
+  id          Int      @id @default(autoincrement())
+  description String
+  tenants     tenant[]
 }
 
-model client{
-  id Int @id @default(autoincrement())
-  name String?
-  email String?
-  phone String?
-  tenant_id Int?
-  tenant tenant? @relation(fields: [tenant_id], references: [id])
-  campaigns campaign[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+model client {
+  id         Int        @id @default(autoincrement())
+  name       String
+  email      String
+  phone      String?
+  tenant_id  Int
+  tenant     tenant     @relation(fields: [tenant_id], references: [id])
+  campaigns  campaign[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
 }
 
-
-model social_network_account{
-  id Int  @id @default(autoincrement())
-  token String
-  platform String
-  creator_id Int?
-  creator creator? @relation(fields: [creator_id], references: [id])
-}
-
-model creator{
-  id Int  @id @default(autoincrement())
-  name String?
-  username String
-  followers_count Int?
-  follows_count Int?
-  media_count Int?
-  social_network_accounts social_network_account[]
-  campaigns creator_campaign[]
-}
-
-model creator_campaign{
-  campaign_id Int
-  campaign campaign @relation(fields: [campaign_id], references: [id])
+model social_network_account {
+  id         Int     @id @default(autoincrement())
+  token      String
+  platform   String
   creator_id Int
-  creator creator @relation(fields: [creator_id], references: [id])
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  creator    creator @relation(fields: [creator_id], references: [id])
+}
+
+model creator {
+  id                      Int                      @id @default(autoincrement())
+  tenant_id               Int
+  tenant                  tenant                   @relation(fields: [tenant_id], references: [id])
+  name                    String?
+  username                String
+  followers_count         Int?
+  follows_count           Int?
+  media_count             Int?
+  social_network_accounts social_network_account[]
+  campaigns               creator_campaign[]
+  created_at              DateTime                 @default(now())
+  updated_at              DateTime                 @updatedAt
+}
+
+model creator_campaign {
+  campaign_id Int
+  campaign    campaign @relation(fields: [campaign_id], references: [id])
+  creator_id  Int
+  creator     creator  @relation(fields: [creator_id], references: [id])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
   @@id([campaign_id, creator_id])
 }
 
-
-model campaign{
-  id Int  @id @default(autoincrement())
-  name String
+model campaign {
+  id          Int                @id @default(autoincrement())
+  name        String
   description String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  creators creator_campaign[]
-  client_id Int?
-  client client? @relation(fields: [client_id], references: [id])
-  tenant_id Int?
-  tenant tenant? @relation(fields: [tenant_id], references: [id])
-  posts post[]
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
+  creators    creator_campaign[]
+  client_id   Int?
+  client      client?            @relation(fields: [client_id], references: [id])
+  tenant_id   Int
+  tenant      tenant             @relation(fields: [tenant_id], references: [id])
+  posts       post[]
 }
 
 model post {
-  id        Int      @id @default(autoincrement())
-  ig_id     String   @unique
-  campaign campaign? @relation(fields: [campaign_id], references: [id])
-  campaign_id Int?
-  caption     String?
+  id                 Int      @id @default(autoincrement())
+  ig_id              String   @unique
+  campaign           campaign @relation(fields: [campaign_id], references: [id])
+  campaign_id        Int
+  caption            String?
   media_product_type String?
-  media_type String?
-  permalink String?
-  shortcode String?
-  video_url String?
-  image_url String?
-  comments_count Int?
-  likes_count Int?
-  followers_count Int?
-  username String?
-  engagement_count Int?
-  impressions_count Int?
-  reach_count Int?
-  saves_count Int?
-  shares_count Int?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  media_type         String?
+  permalink          String?
+  shortcode          String?
+  video_url          String?
+  image_url          String?
+  comments_count     Int?
+  likes_count        Int?
+  followers_count    Int?
+  username           String?
+  engagement_count   Int?
+  impressions_count  Int?
+  reach_count        Int?
+  saves_count        Int?
+  shares_count       Int?
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
 }
-
-
-
-
-

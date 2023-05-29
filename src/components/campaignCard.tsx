@@ -1,46 +1,35 @@
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { inter } from '@/app/fonts'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import Link from 'next/link'
 
 // Fonts
-const inter = Inter({ weight: '400', subsets: ['latin'] })
 
 // Arrays
 const card = [
   {
     ImageSrc: imageCover,
-    label: "L'Oréal Campaign",
+    name: "L'Oréal",
   },
   {
     ImageSrc: imageCover,
-    label: 'Rosalia Campaign',
+    name: 'Rosalia',
   },
   {
     ImageSrc: imageCover,
-    label: 'Example Campaign',
+    name: 'Example',
   },
   {
     ImageSrc: imageCover,
-    label: 'Example Campaign',
-  },
-  {
-    ImageSrc: imageCover,
-    label: 'Example Campaign',
-  },
-  {
-    ImageSrc: imageCover,
-    label: 'Example Campaign',
-  },
-  {
-    ImageSrc: imageCover,
-    label: 'Example Campaign',
+    name: 'Example',
   },
 ]
 
 export default function CampaignCard({ campaigns }: any) {
   // Show Arrays
-  const cards = campaigns.map((card: any, index: any) => (
+  const data = campaigns || card
+
+  const cards = data.map((card: any, index: any) => (
     <Link
       href={`/campaigns/${card.id || 1}`}
       key={index}
@@ -59,5 +48,5 @@ export default function CampaignCard({ campaigns }: any) {
     </Link>
   ))
 
-  return <div className=' flex  flex-wrap gap-4 md:px-12'>{cards}</div>
+  return <div className=' flex  flex-wrap gap-4 self-start'>{cards}</div>
 }

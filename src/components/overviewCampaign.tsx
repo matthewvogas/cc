@@ -1,9 +1,7 @@
-import { Inter } from 'next/font/google'
-import { PT_Mono } from 'next/font/google'
+import { inter } from '@/app/fonts'
+import { ptMono } from '@/app/fonts'
 
 // Fonts
-const inter = Inter({ weight: '400', subsets: ['latin'] })
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Arrays
 const statsResult = [

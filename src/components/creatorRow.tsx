@@ -1,9 +1,8 @@
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import avatar from 'public/assets/register/avatar.jpg'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Style Variables
 const addPostButton =
@@ -20,7 +19,13 @@ const infoLabel = 'bg-active px-8 mx-2 py-3 rounded-full text-black text-sm '
 // Arrays
 const titleTable = [
   {
-    label: 'creator',
+    label: 'row',
+  },
+  {
+    label: 'campaigns',
+  },
+  {
+    label: 'tags',
   },
   {
     label: 'status',
@@ -33,26 +38,30 @@ const titleTable = [
   },
 ]
 
-const creator = [
+const row = [
   {
     name: 'Matthew',
     mail: 'hi@mvttheo.com',
     img: avatar,
     followes: 14.0,
-    qtyPosts: 46,
+    qtyPosts: 86,
+    campaignsAssociated: 4,
+    tags: ['beaty, ', 'lifestyle'],
   },
   {
     name: 'Matthew',
     mail: 'hi@mvttheo.com',
     img: avatar,
     followes: 14.0,
-    qtyPosts: 46,
+    qtyPosts: 21,
+    campaignsAssociated: 2,
+    tags: ['beaty, ', 'lifestyle'],
   },
 ]
 
 const button = [
   {
-    label: 'View Creator',
+    label: 'View row',
     path: '',
   },
   {
@@ -60,7 +69,11 @@ const button = [
     path: '',
   },
   {
-    label: 'Remove creator',
+    label: 'Remove row',
+    path: '',
+  },
+  {
+    label: 'Editx row',
     path: '',
   },
 ]
@@ -77,7 +90,7 @@ const buttons = button.map((button, index) => (
   </button>
 ))
 
-const creators = creator.map((creator, index) => (
+const creators = row.map((row, index) => (
   <tr key={index} className={`text-sm ${ptMono.className} `}>
     <td className='bg-white'>
       <div className={`flex items-center space-x-3 `}>
@@ -88,25 +101,30 @@ const creators = creator.map((creator, index) => (
               className={``}
               width={100}
               height={100}
-              src={creator.img}
+              src={row.img}
               alt='background'
             />
           </div>
         </div>
         <div>
-          <div className='font-bold'>{creator.name}</div>
-          <div className='text-sm opacity-50'>{creator.mail}</div>
+          <div className='font-bold'>{row.name}</div>
+          <div className='text-sm opacity-50'>{row.mail}</div>
         </div>
       </div>
     </td>
+
+    <td className='bg-white'>{row.qtyPosts}</td>
+
+    <td className='bg-white'>{row.tags}</td>
+
     <td className='bg-white'>
       <label className={`${pendingLabel}`}>pending</label>
     </td>
-    <td className='bg-white'>{creator.followes}</td>
+    <td className='bg-white'>{row.followes}</td>
     <td className='bg-white'>
       <div className='flex items-center justify-between '>
         <div>
-          <label className={`${infoLabel}`}>{creator.qtyPosts} posts</label>
+          <label className={`${infoLabel}`}>{row.qtyPosts} posts</label>
           <button className={`${addPostButton}`}>add post</button>
         </div>
         <div className='dropdown-end dropdown cursor-pointer'>
@@ -136,7 +154,7 @@ const creators = creator.map((creator, index) => (
 
 export default function CreatorRow() {
   return (
-    <div className='h-screen w-full md:px-12'>
+    <div className='my-5 h-screen w-full md:px-12'>
       <table className='table w-full'>
         <thead className=' border-b border-gray-200'>
           <tr>{titleTables}</tr>

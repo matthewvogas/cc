@@ -1,20 +1,19 @@
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Style Variables
 const ActionButtonStyle =
-  'flex text-sm  border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 '
-const ActiveLabel = 'bg-active px-8 mx-2 py-3 rounded-full text-black text-sm'
+  'flex text-lg   border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 '
+const ActiveLabel =
+  'flex items-center bg-active px-8 mx-2 py-3 rounded-full text-black text-lg '
 const InActiveLabel =
-  'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-sm'
+  'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-lg '
 
 type Props = {
   title: string
-  onSubmit: any
 }
 
 export default function TitlePage({ title }: Props) {
@@ -23,7 +22,7 @@ export default function TitlePage({ title }: Props) {
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
         <div className='w-full'>
           <h3
-            className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
+            className={`pb-8 align-middle text-3xl font-semibold text-gray-800 `}>
             {title}
           </h3>
 
@@ -34,10 +33,23 @@ export default function TitlePage({ title }: Props) {
             </label>
             <div className={`flex ${ptMono.className}`}>
               <CampaignFilter />
-              <button className={`${ActionButtonStyle} `}>
-                view as client
-              </button>
               <AddNewCampaign />
+              <button className={`${ActiveLabel} `}>
+                add a client
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='ml-4 inline h-4 w-4'>
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M12 4.5v15m7.5-7.5h-15'
+                  />
+                </svg>
+              </button>
 
               {/* <label className={`${ActiveLabel}`}>
                 active

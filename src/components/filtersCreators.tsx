@@ -1,8 +1,7 @@
 'use client'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Arrays
 const button = [
@@ -83,7 +82,7 @@ const campaigns = campaign.map((client, index) => (
 
 export default function FilterCreators() {
   return (
-    <div className='flex w-full justify-between md:px-12'>
+    <div className='my-5 flex w-full justify-between md:px-12'>
       <div>
         <div className='dropdown'>
           <label

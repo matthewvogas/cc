@@ -23,7 +23,7 @@ export async function GET(
     return NextResponse.json(campaign)
   } catch (err: any) {
     return NextResponse.json(err.message, {
-      status: 500,
+      status: 404,
     })
   }
 }

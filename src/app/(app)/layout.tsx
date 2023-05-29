@@ -4,7 +4,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Sidebar />
-      <section className='w-mainsection ml-72'>{children}</section>
+      <section className='w-mainsection xl:ml-72'>{children}</section>
     </>
   )
 }

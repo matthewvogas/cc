@@ -2,10 +2,9 @@
 
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 export default function MyDialog() {
   // Arrays

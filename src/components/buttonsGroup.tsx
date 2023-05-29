@@ -5,27 +5,27 @@ const buttonsStyle =
 // Arrays
 const buttons = [
   {
-    label: ' overview',
+    label: 'overview',
     path: '#',
   },
   {
-    label: ' creators',
+    label: 'creators',
     path: '#',
   },
   {
-    label: ' posts',
+    label: 'posts',
     path: '#',
   },
   {
-    label: ' stats',
+    label: 'stats',
     path: '#',
   },
   {
-    label: ' share',
+    label: 'share',
     path: '#',
   },
   {
-    label: ' settings',
+    label: 'settings',
     path: '#',
   },
 ]
