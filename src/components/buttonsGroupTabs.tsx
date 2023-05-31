@@ -8,6 +8,14 @@ import Tags from '@/components/tags'
 import CreatorCard from './postCard'
 import OverviewCampaign from './overviewCampaign'
 import ButtonGroup from './buttonsGroup'
+import SettingsTab from './settingsTab'
+import TopPost from './topPost'
+import RelationalTopPost from './relationalTopPost'
+import SingleStat from './stats/singleStat'
+import SinglePlatform from './stats/singlePlatform'
+import CampaignSocialStat from './stats/CampaignSocialStat'
+import DashboardCampaign from './campaignDashboard'
+import ClientStat from './clientStat'
 
 const Tabs = () => {
   const [openTab, setOpenTab] = React.useState(1)
@@ -15,7 +23,7 @@ const Tabs = () => {
     <>
       <div className='flex w-full flex-wrap'>
         <div className='w-full'>
-          <div className='mb-8 md:px-12'>
+          <div className='mb-8 md:px-6'>
             <button
               onClick={e => {
                 e.preventDefault()
@@ -106,13 +114,45 @@ const Tabs = () => {
                   <CreatorCard />
                 </div>
                 <div className={openTab === 4 ? 'block' : 'hidden'} id='link3'>
-                  <p>4</p>
+
+                  <div className='flex gap-8'>
+
+                    <div className='w-96 px-12'>
+                      <p className='text-xl my-8 font-bold'>Stats</p>
+                      <div className='flex flex-col gap-4'>
+                        <ClientStat />
+                        <ClientStat />
+                      </div>
+                      <p className='italic my-8'>by platform</p>
+                      <SinglePlatform />
+                    </div>
+
+                    <div className=''>
+                      <div className='h-96'></div>
+                      
+                      
+                      <p className='mt-12 mb-8'>Top posts by views</p>
+
+                      <div className='flex gap-6'>
+                      <CampaignSocialStat />
+                      <CampaignSocialStat />
+                      <CampaignSocialStat />
+                      </div>
+
+                      <TopPost />
+
+                      <p className='mt-12 mb-8'>Creators who drive the most views</p>
+
+                      <RelationalTopPost />
+                    </div>
+                  </div>
+
                 </div>
                 <div className={openTab === 5 ? 'block' : 'hidden'} id='link3'>
                   <TabsToShare />
                 </div>
                 <div className={openTab === 6 ? 'block' : 'hidden'} id='link3'>
-                  <p>6</p>
+                  <SettingsTab />
                 </div>
               </div>
             </div>
