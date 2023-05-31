@@ -22,6 +22,8 @@ module.exports = {
         whiteBrown: '#EAE7DF',
         beigeBorder: '#DED6D3',
         greenPastel: '#E4F2EB',
+        beigeTransparent: '#F1F0ED',
+        blackStat: '#413F3B',
       },
     },
   },

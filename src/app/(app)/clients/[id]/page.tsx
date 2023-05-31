@@ -17,9 +17,14 @@ export default async function CampaignPage({
   const campaign = await res.json()
 
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <div className='flex flex-col justify-start '>
       <TitleSingleClient title={`Revolve Clothing`} onSubmit={undefined} />
-      <ClientStat title={'at glance'} />
+      <p className=' px-12 mb-4 italic' >stats et glance</p>
+      <div className='w-full px-12 gap-4 flex '>
+      <ClientStat  />
+      <ClientStat  />
+      <ClientStat  />
+      </div>
       <FilterCreators />
       <CreatorRow />
     </div>

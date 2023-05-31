@@ -73,7 +73,7 @@ export default function AddCreators() {
               className='absolute right-4 top-2 cursor-pointer text-lg'>
               ✕
             </label>
-            <h3 className='text-lg font-bold'>Add Posts</h3>
+            <h3 className='text-lg font-bold'>Add Creators</h3>
           </div>
 
           <div className={`w-full justify-start ${ptMono.className}`}>
