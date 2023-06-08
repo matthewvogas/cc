@@ -15,7 +15,7 @@ const buttons = [
 export default function ClientStat() {
   return (
     <>
-      <p className={statStyle}>
+      <p className={`px-6 py-4 bg-green-50 rounded-lg w-44`}>
         {buttons[0].icon} {buttons[0].value} {buttons[0].label}
       </p>
     </>

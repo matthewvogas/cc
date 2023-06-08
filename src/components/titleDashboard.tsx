@@ -1,6 +1,7 @@
 import { PT_Mono } from 'next/font/google'
 import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
+import { User } from '@prisma/client'
 
 // Fonts
 const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
@@ -9,12 +10,12 @@ const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 type Props = {
   title: string
-  onSubmit: any
+  user: User
 }
 
-export default function TitleDashboard({ title }: Props) {
+export default function TitleDashboard({ title, user }: Props) {
   return (
-    <div className='w-full pt-20 '>
+    <div className='w-full '>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-14'>
         <div className='w-full'>
           <h3
@@ -23,7 +24,7 @@ export default function TitleDashboard({ title }: Props) {
           </h3>
 
           <div className={`flex items-center justify-between`}>
-            <h2 className={`text-2xl font-bold`}>welcome, Sophia 🥥</h2>
+            <h2 className={`text-2xl font-bold`}>welcome, {user.name} 🥥</h2>
             <div className={`flex ${ptMono.className}`}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'

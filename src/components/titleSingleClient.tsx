@@ -11,7 +11,6 @@ const ActionButtonStyle =
 
 type Props = {
   title: string
-  onSubmit: any
 }
 
 export default function TitleSingleClient({ title }: Props) {

@@ -1,5 +1,6 @@
 'use client'
 
+import Spinner from '@/components/ui/spinner'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
@@ -12,14 +13,17 @@ export const LoginForm = () => {
     : null
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setLoading(true)
     await signIn('credentials', {
       email,
       password,
       callbackUrl,
     })
+    setLoading(false)
   }
 
   return (
@@ -48,8 +52,8 @@ export const LoginForm = () => {
         required
       />
       {callbackError && (
-        <div className='alert alert-error justify-center shadow-lg'>
-          <div>
+        <div className='flex alert alert-error justify-center shadow-lg'>
+          <div className='flex flex-row gap-4'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-6 w-6 flex-shrink-0 stroke-current'
@@ -67,9 +71,10 @@ export const LoginForm = () => {
         </div>
       )}
       <button
+        disabled={loading}
         type='submit'
         className='btn-secondary btn-lg btn w-full lowercase'>
-        login
+        {loading ? <Spinner width='w-4' height='h-4' border='border-2' /> : 'login'}
       </button>
     </form>
   )

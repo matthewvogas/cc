@@ -25,18 +25,17 @@ export default async function CampaignPage({
   })
 
   const clientsService = new ClientsService(currentUser!.id)
+  const client = await clientsService.findUnique(params.id)
 
   return (
     <div className='flex flex-col justify-start '>
-      <TitleSingleClient title={`Revolve Clothing`} onSubmit={undefined} />
+      <TitleSingleClient title={client.name} />
       <p className=' mb-4 px-12 italic'>stats et glance</p>
       <div className='flex w-full gap-4 px-12 '>
-        <ClientStat />
-        <ClientStat />
-        <ClientStat />
+        <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
+          {'🥥'} {client._count.campaigns} {'Campaign(s)'}
+        </p>
       </div>
-      <FilterCreators />
-      <CreatorRow />
     </div>
   )
 }

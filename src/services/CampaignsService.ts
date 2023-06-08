@@ -20,6 +20,13 @@ export class CamapignsService {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        _count: {
+          select: {
+            posts: true,
+          }
+        }
+      },
       take: limit,
       skip: offset,
     })

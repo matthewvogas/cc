@@ -1,5 +1,6 @@
 'use client'
 
+import Spinner from '@/components/ui/spinner'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
@@ -13,9 +14,11 @@ export const RegisterForm = () => {
   const [email, setEmail] = React.useState('')
   const [name, setName] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -31,6 +34,7 @@ export const RegisterForm = () => {
     } else {
       router.push('/register?error=email')
     }
+    setLoading(false)
   }
   return (
     <form
@@ -73,8 +77,8 @@ export const RegisterForm = () => {
         </label>
       </div>
       {callbackError && (
-        <div className='alert alert-error justify-center shadow-lg'>
-          <div>
+        <div className='flex flex-col alert alert-error justify-center shadow-lg'>
+          <div className='flex flex-row gap-4'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-6 w-6 flex-shrink-0 stroke-current'
@@ -92,9 +96,10 @@ export const RegisterForm = () => {
         </div>
       )}
       <button
+        disabled={loading}
         type='submit'
         className='btn-secondary btn-lg btn w-full lowercase'>
-        create your account
+        {loading ? <Spinner width='w-4' height='h-4' border='border-2' /> : 'create your account'}
       </button>
     </form>
   )

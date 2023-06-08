@@ -1,6 +1,6 @@
 'use client'
 
-import imageCover from 'public/assets/register/campaignCover.jpg'
+import imageCover from 'public/assets/register/TopPost.jpg'
 import useSWR from 'swr'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -21,7 +21,8 @@ export default function ClientsDashBoard({ clients }: any) {
   const [name, setName] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
 
-  const handleCreate = async () => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     try {
       const res = await axios.post('/api/clients', {
         name,
@@ -91,12 +92,13 @@ export default function ClientsDashBoard({ clients }: any) {
               Add New Client
             </Dialog.Title>
             <div className={`w-full justify-start ${ptMono.className}`}>
-              <form className='flex flex-col gap-4'>
+              <form onSubmit={handleCreate} className='flex flex-col gap-4'>
                 <label htmlFor='name'>client name</label>
                 <input
                   onChange={e => setName(e.target.value)}
                   type='text'
                   id='name'
+                  required
                   placeholder='client name'
                   className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
                 />
@@ -123,7 +125,7 @@ export default function ClientsDashBoard({ clients }: any) {
                 )}
 
                 <button
-                  onClick={handleCreate}
+                  type='submit'
                   className='rounded-full bg-rose-200 px-6 py-2 '>
                   create client
                 </button>

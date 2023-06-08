@@ -13,6 +13,7 @@ import AddNewPost from '@/components/modals/addPosts'
 import Link from 'next/link'
 import AddPostsModal from '@/components/modals/AddPostsModal'
 import { useRouter } from 'next/navigation'
+import Spinner from '@/components/ui/spinner'
 
 type campaignWithStats = campaign & {
   posts: post[]
@@ -38,13 +39,16 @@ export default function CampaingTabs({
   const [audience, setAudience] = useState(
     campaign.stats.engagement.likes + campaign.stats.engagement.comments,
   )
+  const [loading, setLoading] = useState(false)
   const [content, setContent] = useState(campaign.stats.postCount)
   const [newPosts, setNewPosts] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
 
   const handlePosts = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     try {
+      
       const res = await fetch('/api/instagram/posts', {
         method: 'POST',
         headers: {
@@ -67,6 +71,7 @@ export default function CampaingTabs({
     } catch (error: any) {
       setFetchError(error.message)
     }
+    setLoading(false)
   }
 
   function isVideo(post: any) {
@@ -90,6 +95,7 @@ export default function CampaingTabs({
               overview
             </button>
             <button
+              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(2)
@@ -100,6 +106,7 @@ export default function CampaingTabs({
               creators
             </button>
             <button
+              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(3)
@@ -110,6 +117,7 @@ export default function CampaingTabs({
               posts
             </button>
             <button
+              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(4)
@@ -120,6 +128,7 @@ export default function CampaingTabs({
               stats
             </button>
             <button
+              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(5)
@@ -128,6 +137,7 @@ export default function CampaingTabs({
               share
             </button>
             <button
+              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(6)
@@ -322,8 +332,8 @@ export default function CampaingTabs({
                       required
                     />
                     {fetchError && (
-                      <div className='alert alert-error justify-center shadow-lg'>
-                        <div>
+                      <div className='flex alert alert-error justify-center shadow-lg'>
+                        <div className='flex flex-row gap-4'>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             className='h-6 w-6 flex-shrink-0 stroke-current'
@@ -342,9 +352,10 @@ export default function CampaingTabs({
                     )}
 
                     <button
+                      disabled={loading}
                       className='flex self-end rounded-full bg-green-200 px-8 py-2'
                       type='submit'>
-                      add
+                      {loading ? <Spinner width='w-4' height='h-4' border='border-2' /> : 'add'}
                     </button>
                   </form>
                 </Tab.Panel>

@@ -30,7 +30,8 @@ export default function CampaignsDashBoard({
   const [clientId, setClientId] = useState<string | null>(null)
   const [fetchError, setFetchError] = useState<string | null>(null)
 
-  const handleCreate = async () => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     try {
       const res = await axios.post('/api/campaigns', {
         name,
@@ -167,9 +168,10 @@ export default function CampaignsDashBoard({
             <Dialog.Title className='text-lg font-bold'>
               Add New Manual Campaign
             </Dialog.Title>
-            <div className={`w-full justify-start ${ptMono.className}`}>
+            <form onSubmit={handleCreate} className={`w-full justify-start ${ptMono.className}`}>
               <p className='py-4'>Client</p>
               <select
+                required
                 onChange={e => setClientId(e.target.value)}
                 className='block w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
                 <option value={0} disabled>
@@ -186,6 +188,7 @@ export default function CampaignsDashBoard({
               <p className='py-4'>Campaign Title</p>
               <input
                 onChange={e => setName(e.target.value)}
+                required
                 type='text'
                 id='name'
                 placeholder='Campaign Name'
@@ -194,6 +197,7 @@ export default function CampaignsDashBoard({
 
               <p className='py-4'>Campaign Description</p>
               <textarea
+                required
                 className=' textarea-bordered textarea w-full rounded-lg'
                 onChange={e => setDescription(e.target.value)}
                 placeholder='A brief description about your campaign'
@@ -222,11 +226,11 @@ export default function CampaignsDashBoard({
               )}
 
               <button
-                onClick={handleCreate}
+                type='submit'
                 className='rounded-full bg-rose-200 px-6 py-2 '>
                 create project
               </button>
-            </div>
+            </form>
           </Dialog.Panel>
         </div>
       </Dialog>

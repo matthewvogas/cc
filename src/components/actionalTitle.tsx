@@ -18,12 +18,12 @@ type Props = {
 
 export default function ActionalTitle({ title }: Props) {
   return (
-    <div className='w-full pt-20 '>
+    <div className='w-full '>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-14'>
         <div className='flex w-full content-center justify-between align-middle'>
           <h3 className={`self-center text-xl text-gray-800 `}>{title}</h3>
           <div className={`flex items-center justify-between`}>
-            <div className={`flex ${ptMono.className}`}>
+            {/* <div className={`flex ${ptMono.className}`}>
               <button className={`${ActiveLabel} `}>
                 Action Buttons
                 <svg
@@ -46,8 +46,8 @@ export default function ActionalTitle({ title }: Props) {
               </label>
               <label className={`${InActiveLabel}`}>
                 Inactive
-              </label> */}
-            </div>
+              </label> */
+            /* </div> */}
           </div>
         </div>
       </div>

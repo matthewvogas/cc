@@ -30,6 +30,12 @@ export class ClientsService {
       where: {
         id: parseInt(id.toString()),
       },
+      include: {
+        campaigns: true,
+        _count: {
+          select: { campaigns: true },
+        }
+      }
     })
   }
 }
