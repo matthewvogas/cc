@@ -14,6 +14,7 @@ import Link from 'next/link'
 import AddPostsModal from '@/components/modals/AddPostsModal'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
+import SettingsTab from '@/components/settingsTab'
 
 type campaignWithStats = campaign & {
   posts: post[]
@@ -116,7 +117,6 @@ export default function CampaingTabs({
               posts
             </button>
             <button
-              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(4)
@@ -136,7 +136,6 @@ export default function CampaingTabs({
               share
             </button>
             <button
-              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(6)
@@ -277,10 +276,13 @@ export default function CampaingTabs({
                 <div className={openTab === 2 ? 'block' : 'hidden'}></div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}></div>
                 <div className={openTab === 4 ? 'block' : 'hidden'}>
-                  <p>4</p>
+                  
                 </div>
                 <div className={openTab === 5 ? 'block' : 'hidden'}></div>
-                <div className={openTab === 6 ? 'block' : 'hidden'}></div>
+                <div className={openTab === 6 ? 'block' : 'hidden'}>
+                <SettingsTab campaign={campaign} />
+
+                </div>
               </div>
             </div>
           </div>

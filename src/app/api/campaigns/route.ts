@@ -65,3 +65,33 @@ export async function POST(req: Request) {
     )
   }
 }
+
+
+export async function PUT(req: Request){
+  try {
+    const session = await getServerSession(authOptions)
+    const userEmail = session?.user?.email
+    const currentUser = await prisma.user.findUnique({
+      where: { email: userEmail! },
+    })
+    const { id, name, description} = await req.json()
+
+    await prisma.campaign.update({
+      where: { id: parseInt(id) },
+      data: {
+        name,
+        description,
+      },
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (err: any) {
+    console.log(err)
+    return NextResponse.json(
+      { error: err.message },
+      {
+        status: 500,
+      },
+    )
+  }
+}
