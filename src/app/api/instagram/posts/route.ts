@@ -11,13 +11,13 @@ const isMp4 = (url: string) => {
 
 const getUsername = async (url: string) => {
   const res = await axios.get(url)
-  const html = res.data
-  const $ = cheerio.load(html)
+  const html = await res.data
+  const $ = await cheerio.load(html)
 
-  const description = $('meta[name="twitter:title"]').attr('content')
+  const description = await $('meta[name="twitter:title"]').attr('content')
 
-  console.log(description)
-  const userName = description!.split('@')[1].split(')')[0]
+  console.log(await description)
+  const userName = await description!.split('@')[1].split(')')[0]
 
   return userName
 }
