@@ -275,13 +275,10 @@ export default function CampaingTabs({
                 </section>
                 <div className={openTab === 2 ? 'block' : 'hidden'}></div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}></div>
-                <div className={openTab === 4 ? 'block' : 'hidden'}>
-                  
-                </div>
+                <div className={openTab === 4 ? 'block' : 'hidden'}></div>
                 <div className={openTab === 5 ? 'block' : 'hidden'}></div>
                 <div className={openTab === 6 ? 'block' : 'hidden'}>
-                <SettingsTab campaign={campaign} />
-
+                  <SettingsTab campaign={campaign} />
                 </div>
               </div>
             </div>

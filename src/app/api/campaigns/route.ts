@@ -66,15 +66,14 @@ export async function POST(req: Request) {
   }
 }
 
-
-export async function PUT(req: Request){
+export async function PUT(req: Request) {
   try {
     const session = await getServerSession(authOptions)
     const userEmail = session?.user?.email
     const currentUser = await prisma.user.findUnique({
       where: { email: userEmail! },
     })
-    const { id, name, description} = await req.json()
+    const { id, name, description } = await req.json()
 
     await prisma.campaign.update({
       where: { id: parseInt(id) },
