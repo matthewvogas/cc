@@ -168,7 +168,9 @@ export default function CampaignsDashBoard({
             <Dialog.Title className='text-lg font-bold'>
               Add New Manual Campaign
             </Dialog.Title>
-            <form onSubmit={handleCreate} className={`w-full justify-start ${ptMono.className}`}>
+            <form
+              onSubmit={handleCreate}
+              className={`w-full justify-start ${ptMono.className}`}>
               <p className='py-4'>Client</p>
               <select
                 required

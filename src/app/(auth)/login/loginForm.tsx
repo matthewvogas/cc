@@ -52,7 +52,7 @@ export const LoginForm = () => {
         required
       />
       {callbackError && (
-        <div className='flex alert alert-error justify-center shadow-lg'>
+        <div className='alert alert-error flex justify-center shadow-lg'>
           <div className='flex flex-row gap-4'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -74,7 +74,11 @@ export const LoginForm = () => {
         disabled={loading}
         type='submit'
         className='btn-secondary btn-lg btn w-full lowercase'>
-        {loading ? <Spinner width='w-4' height='h-4' border='border-2' /> : 'login'}
+        {loading ? (
+          <Spinner width='w-4' height='h-4' border='border-2' />
+        ) : (
+          'login'
+        )}
       </button>
     </form>
   )

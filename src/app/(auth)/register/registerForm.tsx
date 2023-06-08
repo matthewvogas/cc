@@ -77,7 +77,7 @@ export const RegisterForm = () => {
         </label>
       </div>
       {callbackError && (
-        <div className='flex flex-col alert alert-error justify-center shadow-lg'>
+        <div className='alert alert-error flex flex-col justify-center shadow-lg'>
           <div className='flex flex-row gap-4'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -99,7 +99,11 @@ export const RegisterForm = () => {
         disabled={loading}
         type='submit'
         className='btn-secondary btn-lg btn w-full lowercase'>
-        {loading ? <Spinner width='w-4' height='h-4' border='border-2' /> : 'create your account'}
+        {loading ? (
+          <Spinner width='w-4' height='h-4' border='border-2' />
+        ) : (
+          'create your account'
+        )}
       </button>
     </form>
   )

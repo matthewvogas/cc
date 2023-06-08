@@ -18,7 +18,7 @@ export default async function Home() {
   const currentUser = await prisma.user.findUnique({
     where: {
       email: session?.user?.email!,
-    }
+    },
   })
 
   const campaignsService = new CamapignsService(currentUser!.id)
@@ -29,7 +29,7 @@ export default async function Home() {
 
   return (
     <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
-      <TitleDashboard title={''} user={currentUser!}/>
+      <TitleDashboard title={''} user={currentUser!} />
       <ActionalTitle title={'your campaigns'} />
       <DashboardCampaign campaignsWithPosts={campaigns} />
       <ActionalTitle title={'your clients'} />

@@ -24,8 +24,8 @@ export class CamapignsService {
         _count: {
           select: {
             posts: true,
-          }
-        }
+          },
+        },
       },
       take: limit,
       skip: offset,

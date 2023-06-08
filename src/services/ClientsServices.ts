@@ -34,8 +34,8 @@ export class ClientsService {
         campaigns: true,
         _count: {
           select: { campaigns: true },
-        }
-      }
+        },
+      },
     })
   }
 }

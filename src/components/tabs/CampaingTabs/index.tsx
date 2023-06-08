@@ -48,7 +48,6 @@ export default function CampaingTabs({
     e.preventDefault()
     setLoading(true)
     try {
-      
       const res = await fetch('/api/instagram/posts', {
         method: 'POST',
         headers: {
@@ -332,7 +331,7 @@ export default function CampaingTabs({
                       required
                     />
                     {fetchError && (
-                      <div className='flex alert alert-error justify-center shadow-lg'>
+                      <div className='alert alert-error flex justify-center shadow-lg'>
                         <div className='flex flex-row gap-4'>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -355,7 +354,11 @@ export default function CampaingTabs({
                       disabled={loading}
                       className='flex self-end rounded-full bg-green-200 px-8 py-2'
                       type='submit'>
-                      {loading ? <Spinner width='w-4' height='h-4' border='border-2' /> : 'add'}
+                      {loading ? (
+                        <Spinner width='w-4' height='h-4' border='border-2' />
+                      ) : (
+                        'add'
+                      )}
                     </button>
                   </form>
                 </Tab.Panel>

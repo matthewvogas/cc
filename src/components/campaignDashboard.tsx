@@ -52,9 +52,11 @@ export default function DashboardCampaign({ campaignsWithPosts }: Props) {
           },
           index: any,
         ) => (
-          <Link href={`/campaigns/${card.id}`} key={index}
+          <Link
+            href={`/campaigns/${card.id}`}
+            key={index}
             className={`bg-beigeTransparent ${ptMono.className}`}>
-            <Image src={imageCover} alt={card.name} height={320}/>
+            <Image src={imageCover} alt={card.name} height={320} />
             <div className='mb-4 flex justify-between gap-4 px-6 pt-6'>
               <h5>{card.name}</h5>
               <svg

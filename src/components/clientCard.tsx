@@ -28,7 +28,7 @@ const card = [
 
 export default function ClientCard({ clients }: { clients: Client[] }) {
   // Show Arrays
-  const data = clients|| card
+  const data = clients || card
 
   const cards = data.map((card: Client, index: any) => (
     <Link
