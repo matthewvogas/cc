@@ -225,7 +225,6 @@ const Tabs = ({ posts }: any) => {
                   className={openTab === 5 ? 'block' : 'hidden'}
                   id='link3'></div>
                 <div className={openTab === 6 ? 'block' : 'hidden'} id='link3'>
-                  <SettingsTab />
                 </div>
               </div>
             </div>
