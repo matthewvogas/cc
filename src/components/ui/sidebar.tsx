@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import logo from 'public/assets/register/codecoco.png'
-import { Navigation } from './navigation'
+import { Navigation } from './activeNavigation'
 
 // Fonts
 
@@ -16,12 +16,12 @@ const links = [
     name: 'Clients',
   },
   {
-    href: '/creators',
-    name: 'Creators',
-  },
-  {
     href: '/campaigns',
     name: 'Campaigns',
+  },
+  {
+    href: '/creators',
+    name: 'Creators',
   },
 ]
 
@@ -29,9 +29,7 @@ const links = [
 
 export default function Sidebar() {
   return (
-    <aside
-      className='fixed h-screen w-72 -translate-x-full transition-transform sm:translate-x-0 '
-      aria-label='Sidebar'>
+    <aside className='sticky inset-0 z-[51] h-screen w-72' aria-label='Sidebar'>
       <div className='h-full overflow-y-auto border-r-2 bg-sidebarBackground px-3 py-4 '>
         <Image
           priority

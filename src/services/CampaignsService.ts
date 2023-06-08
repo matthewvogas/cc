@@ -1,23 +1,24 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import prisma from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
 import { getSession } from 'next-auth/react'
 
 //Service that the constructor get a session id
 
 export class CamapignsService {
-  private readonly sessionId: number
+  private readonly sessionId: string | undefined
 
-  constructor(sessionID: number) {
+  constructor(sessionID: string) {
     this.sessionId = sessionID
   }
 
   async findMany(limit?: number, offset?: number) {
     return prisma.campaign.findMany({
       where: {
-        tenant_id: parseInt(this.sessionId as unknown as string),
+        userId: this.sessionId!,
       },
       orderBy: {
-        created_at: 'desc',
+        createdAt: 'desc',
       },
       take: limit,
       skip: offset,
@@ -25,13 +26,61 @@ export class CamapignsService {
   }
 
   async findUnique(id: number) {
-    return prisma.campaign.findUniqueOrThrow({
-      where: {
-        id: parseInt(id as unknown as string),
+    const [campaign, stats] = await Promise.all([
+      prisma.campaign.findUniqueOrThrow({
+        where: {
+          id: parseInt(id.toString()),
+        },
+        include: {
+          posts: true,
+          client: true,
+        },
+      }),
+      this.getStats(id),
+    ])
+
+    return {
+      ...campaign,
+      ...stats,
+    }
+  }
+
+  async getStats(id: number) {
+    const [postCount, creatorsCount, engagement] = await Promise.all([
+      prisma.post.count({
+        where: {
+          campaignId: parseInt(id.toString()),
+        },
+      }),
+      prisma.post.groupBy({
+        by: ['username'],
+        where: {
+          campaignId: parseInt(id.toString()),
+        },
+        _count: {
+          username: true,
+        },
+      }),
+      prisma.post.aggregate({
+        where: {
+          campaignId: parseInt(id.toString()),
+        },
+        _sum: {
+          likesCount: true,
+          commentsCount: true,
+        },
+      }),
+    ])
+
+    return {
+      stats: {
+        postCount,
+        creatorsCount: creatorsCount.length,
+        engagement: {
+          likes: engagement._sum?.likesCount || 0,
+          comments: engagement._sum?.commentsCount || 0,
+        },
       },
-      include: {
-        posts: true,
-      },
-    })
+    }
   }
 }

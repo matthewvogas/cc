@@ -45,18 +45,13 @@ const socialNetworks = social.map((social, index) => (
   </option>
 ))
 
-export default function AddNewPots() {
+export default function AddNewPost() {
   return (
     <div>
-      <label htmlFor='my-modal-3' className=''>
-        MODAL
-      </label>
-      <input type='checkbox' id='my-modal-3' className='modal-toggle' />
-      <div className='modal '>
-        <div className='modal-box relative flex max-w-max flex-col items-center justify-center overflow-hidden rounded-xl bg-white px-20 py-12'>
-          <label
-            htmlFor='my-modal-3'
-            className='absolute right-4 top-2 cursor-pointer text-lg'>
+      <label className=''>MODAL</label>
+      <div>
+        <div className='relative flex max-w-max flex-col items-center justify-center overflow-hidden rounded-xl bg-white px-20 py-12'>
+          <label className='absolute right-4 top-2 cursor-pointer text-lg'>
             ✕
           </label>
           <h3 className='text-lg font-bold'>Add Posts</h3>

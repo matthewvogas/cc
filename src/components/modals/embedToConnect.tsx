@@ -51,9 +51,7 @@ export default function EmbedToConnect() {
               </div>
 
               <div className='w-full rounded-xl border-2 border-gray-400 p-6'>
-                <textarea className='min-h-full min-w-full resize-none text-gray-600 outline-none'>
-                  https://
-                </textarea>
+                <textarea className='min-h-full min-w-full resize-none text-gray-600 outline-none' />
               </div>
             </div>
 

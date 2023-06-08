@@ -33,7 +33,8 @@ export default function SettingsTab() {
           name=''
           id=''
           placeholder='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          className={`${ptMono.className} h-44  w-full rounded-r-3xl rounded-s-3xl border border-gray-300 bg-gray-50 p-3.5 px-6 text-lg  text-gray-900 focus:outline-0`}></textarea>
+          className={`${ptMono.className} h-44  w-full rounded-r-3xl rounded-s-3xl border border-gray-300 bg-gray-50 p-3.5 px-6 text-lg  text-gray-900 focus:outline-0`}
+        />
 
         <p className={`text-xm pb-2 pt-6 `}>add a cover image</p>
         <div className='flex justify-between'>

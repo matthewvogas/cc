@@ -10,13 +10,18 @@ export async function GET() {
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-    const tenant_id = session?.user.id.toString() || '1'
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        email: session?.user!.email!,
+      },
+    })
+
     const campaigns = await prisma.client.findMany({
       where: {
-        tenant_id: parseInt(tenant_id),
+        userId: currentUser?.id,
       },
       orderBy: {
-        created_at: 'desc',
+        createdAt: 'desc',
       },
     })
 
@@ -34,14 +39,17 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-    const tenant_id = session?.user.id.toString() || '1'
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        email: session?.user!.email!,
+      },
+    })
     const { name, email } = await req.json()
 
     await prisma.client.create({
       data: {
         name,
-        email,
-        tenant_id: parseInt(tenant_id),
+        userId: currentUser?.id!,
       },
     })
 

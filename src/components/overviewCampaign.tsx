@@ -44,7 +44,8 @@ export default function OverviewCampaign({ description }: any) {
           value={description || fallbackDescription}
           id='message'
           className={`${inter.className} block h-52 w-full rounded-lg border border-gray-300 bg-gray-50 p-8 text-sm text-gray-500 focus:border focus:border-gray-400 focus:outline-0`}
-          placeholder='Brief of the campaign...'></textarea>
+          placeholder='Brief of the campaign...'
+        />
       </div>
       <div className='ml-8 w-full'>
         <h4 className={`text-xm mb-4 ml-4 ${inter.className}`}>Results</h4>
