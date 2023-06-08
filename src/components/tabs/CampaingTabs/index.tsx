@@ -15,6 +15,14 @@ import AddPostsModal from '@/components/modals/AddPostsModal'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
 import SettingsTab from '@/components/settingsTab'
+import ClientStat from '@/components/clientStat'
+import SinglePlatform from '@/components/stats/singlePlatform'
+import CampaignSocialStat from '@/components/stats/CampaignSocialStat'
+import RelationalTopPost from '@/components/relationalTopPost'
+import TopPost from '@/components/topPost'
+import TabsToShare from '@/components/tabsToShare'
+import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
+import CreatorRow from '@/components/creatorRow'
 
 type campaignWithStats = campaign & {
   posts: post[]
@@ -95,7 +103,6 @@ export default function CampaingTabs({
               overview
             </button>
             <button
-              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(2)
@@ -106,7 +113,6 @@ export default function CampaingTabs({
               creators
             </button>
             <button
-              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(3)
@@ -127,7 +133,6 @@ export default function CampaingTabs({
               stats
             </button>
             <button
-              disabled
               onClick={e => {
                 e.preventDefault()
                 setOpenTab(5)
@@ -273,10 +278,50 @@ export default function CampaingTabs({
                     </div>
                   </div>
                 </section>
-                <div className={openTab === 2 ? 'block' : 'hidden'}></div>
-                <div className={openTab === 3 ? 'block' : 'hidden'}></div>
-                <div className={openTab === 4 ? 'block' : 'hidden'}></div>
-                <div className={openTab === 5 ? 'block' : 'hidden'}></div>
+                <div className={openTab === 2 ? 'block' : 'hidden'}>
+                  <FeatureNotImplemented />
+                  <CreatorRow />
+                </div>
+                <div className={openTab === 3 ? 'block' : 'hidden'}>
+                  <FeatureNotImplemented />
+                </div>
+                <div className={openTab === 4 ? 'block' : 'hidden'}>
+                  <div className='flex gap-8'>
+                    <div className='w-96 px-12'>
+                      <FeatureNotImplemented />
+                      <p className='my-8 text-xl font-bold'>Stats</p>
+                      <div className='flex flex-col gap-4'>
+                        <ClientStat />
+                        <ClientStat />
+                      </div>
+                      <p className='my-8 italic'>by platform</p>
+                      <SinglePlatform />
+                    </div>
+                    <div className=''>
+                      <div className='h-96'></div>
+
+                      <p className='mb-8 mt-12'>Top posts by views</p>
+
+                      <div className='flex gap-6'>
+                        <CampaignSocialStat />
+                        <CampaignSocialStat />
+                        <CampaignSocialStat />
+                      </div>
+
+                      <TopPost />
+
+                      <p className='mb-8 mt-12'>
+                        Creators who drive the most views
+                      </p>
+
+                      <RelationalTopPost />
+                    </div>
+                    f
+                  </div>
+                </div>
+                <div className={openTab === 5 ? 'block' : 'hidden'}>
+                  <TabsToShare />
+                </div>
                 <div className={openTab === 6 ? 'block' : 'hidden'}>
                   <SettingsTab campaign={campaign} />
                 </div>
@@ -310,14 +355,14 @@ export default function CampaingTabs({
                   add manually
                 </Tab>
 
-                {/* <Tab
-          className={({ selected }) =>
-            `rounded-3xl border-2 border-primary px-8  py-2 hover:shadow ${
-              selected ? 'bg-primary' : ''
-            }`
-          }>
-          upload from file
-        </Tab> */}
+                <Tab
+                  className={({ selected }) =>
+                    `rounded-3xl border-2 border-primary px-8  py-2 hover:shadow ${
+                      selected ? 'bg-primary' : ''
+                    }`
+                  }>
+                  upload from file
+                </Tab>
               </Tab.List>
               <Tab.Panels className='mt-2'>
                 <Tab.Panel className='px-12 py-8'>
@@ -362,22 +407,27 @@ export default function CampaingTabs({
                   </form>
                 </Tab.Panel>
 
-                {/* <Tab.Panel className='flex flex-col gap-4 px-16 py-8'>
-          <h2>
-            Download a{' '}
-            <Link href={'/'}>
-              sample CSV template to see an example of the format
-              required
-            </Link>
-          </h2>
-          <form className='flex flex-col gap-3'>
-            <input
-              type='file'
-              className='file-input-bordered file-input w-full'
-            />
-            <button className='flex self-end' type='submit'>add</button>
-          </form>
-        </Tab.Panel> */}
+                <Tab.Panel className='flex flex-col gap-4 px-16 py-8'>
+                  <FeatureNotImplemented />
+                  <h2>
+                    Download a{' '}
+                    <Link href={'/'}>
+                      sample CSV template to see an example of the format
+                      required
+                    </Link>
+                  </h2>
+                  <form className='flex flex-col gap-3'>
+                    <input
+                      type='file'
+                      className='file-input-bordered file-input w-full'
+                    />
+                    <button
+                      className='flex self-end rounded-full bg-green-200 px-8 py-2'
+                      type='submit'>
+                      add
+                    </button>
+                  </form>
+                </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>
           </Dialog.Panel>

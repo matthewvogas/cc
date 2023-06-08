@@ -1,6 +1,7 @@
 import { ptMono } from '@/app/fonts'
 import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
+import FeatureNotImplemented from './ui/featureNotImplemented'
 
 // Fonts
 
@@ -21,6 +22,7 @@ export default function TitlePage({ title }: Props) {
     <div className='w-full pt-20 '>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
         <div className='w-full'>
+          <FeatureNotImplemented />
           <h3
             className={`pb-8 align-middle text-3xl font-semibold text-gray-800 `}>
             {title}

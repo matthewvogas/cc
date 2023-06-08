@@ -9,11 +9,10 @@ import ShareStat from '@/components/modals/shareStats'
 export default async function creators() {
   return (
     <div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-white'>
-      {/* <TitlePage title='Creators' />
+      <TitlePage title='Creators' />
       <ShareStat />
       <ButtonGroup title='' />
-      <CreatorRow /> */}
-      🚧 Under Construction! 🚧
+      <CreatorRow />
     </div>
   )
 }

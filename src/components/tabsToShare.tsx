@@ -3,6 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import prev from 'public/assets/register/GridExample.jpg'
 import { PT_Mono } from 'next/font/google'
+import FeatureNotImplemented from './ui/featureNotImplemented'
 
 // Fonts
 const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
@@ -17,9 +18,13 @@ const Tabs = ({}) => {
     <>
       <div className='flex w-full flex-wrap  '>
         <div className='w-full'>
+          <div className='md:pl-20'>
+            <FeatureNotImplemented />
+          </div>
           <h5 className='bg-beigeFirst pb-4 pt-8 text-3xl font-bold md:px-20'>
             Sharing options
           </h5>
+
           <ul
             className='mb-0 flex list-none flex-row  bg-beigeFirst pt-4 md:px-20 '
             role='tablist'>
@@ -80,7 +85,7 @@ const Tabs = ({}) => {
           </ul>
 
           <div
-            className={`flex h-full w-full flex-col rounded bg-white md:px-20 ${ptMono.className}`}>
+            className={`flex w-full flex-col rounded bg-white md:px-20 ${ptMono.className}`}>
             <div className='mt-8'>
               <div className='tab-content tab-space'>
                 {/* tab 1 */}

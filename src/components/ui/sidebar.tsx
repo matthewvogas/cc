@@ -30,7 +30,7 @@ const links = [
 export default function Sidebar() {
   return (
     <aside className='sticky inset-0 z-[51] h-screen w-72' aria-label='Sidebar'>
-      <div className='h-full overflow-y-auto border-r-2 bg-sidebarBackground px-3 py-4 '>
+      <div className='h-screen w-72 overflow-y-auto border-r-2 bg-sidebarBackground px-3 py-4 '>
         <Image
           priority
           className={`pl-4`}

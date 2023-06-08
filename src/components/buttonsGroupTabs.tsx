@@ -224,8 +224,9 @@ const Tabs = ({ posts }: any) => {
                 <div
                   className={openTab === 5 ? 'block' : 'hidden'}
                   id='link3'></div>
-                <div className={openTab === 6 ? 'block' : 'hidden'} id='link3'>
-                </div>
+                <div
+                  className={openTab === 6 ? 'block' : 'hidden'}
+                  id='link3'></div>
               </div>
             </div>
           </div>

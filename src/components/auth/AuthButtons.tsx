@@ -19,7 +19,7 @@ export function SingInButton() {
         <Link href={`/dashboard`}>
           <Image
             className='rounded-full'
-            src={session.user?.image ?? '/mememan.webp'}
+            src={session.user?.image ?? '/xd.png'}
             alt={session.user?.name ?? 'Your Name'}
             width={32}
             height={32}
