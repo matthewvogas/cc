@@ -7,7 +7,7 @@ import TitleDashboard from '@/components/titleDashboard'
 export default async function Home() {
   return (
     <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
-      <TitleDashboard title={''} onSubmit={undefined} />
+      {/* <TitleDashboard title={''} onSubmit={undefined} />
       <ActionalTitle title={'your campaigns'} />
       <DashboardCampaign />
       <ActionalTitle title={'your clients'} />
@@ -15,7 +15,7 @@ export default async function Home() {
         <CampaignCard />
       </div>
       <ActionalTitle title={'stats at a glance'} />
-      <ClientStat />
+      <ClientStat /> */}
     </div>
   )
 }

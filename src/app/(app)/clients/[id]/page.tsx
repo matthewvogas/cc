@@ -5,25 +5,35 @@ import TitleSingleClient from '@/components/titleSingleClient'
 import ClientStat from '@/components/clientStat'
 import FilterCreators from '@/components/filtersCreators'
 import CreatorRow from '@/components/creatorRow'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { ClientsService } from '@/services/ClientsServices'
+import prisma from '@/lib/prisma'
+
+export const dynamic = 'force-dynamic'
 
 export default async function CampaignPage({
   params,
 }: {
   params: { id: number }
 }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/campaigns/${params.id}`,
-  )
-  const campaign = await res.json()
+  const session = await getServerSession(authOptions)
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      email: session?.user?.email!,
+    },
+  })
+
+  const clientsService = new ClientsService(currentUser!.id)
 
   return (
     <div className='flex flex-col justify-start '>
       <TitleSingleClient title={`Revolve Clothing`} onSubmit={undefined} />
-      <p className=' px-12 mb-4 italic' >stats et glance</p>
-      <div className='w-full px-12 gap-4 flex '>
-      <ClientStat  />
-      <ClientStat  />
-      <ClientStat  />
+      <p className=' mb-4 px-12 italic'>stats et glance</p>
+      <div className='flex w-full gap-4 px-12 '>
+        <ClientStat />
+        <ClientStat />
+        <ClientStat />
       </div>
       <FilterCreators />
       <CreatorRow />

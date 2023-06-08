@@ -27,7 +27,7 @@ const stat = [
 
 // Show Arrays
 const stats = stat.map((stat, index) => (
-  <div>
+  <div key={index}>
     <h4 className='text-3xl'>{stat.qty}</h4>
     <span>{stat.label}</span>
   </div>
@@ -74,13 +74,11 @@ export default function ShareStat() {
                 </div>
 
                 <div className='w-full rounded-xl border-2 border-gray-400 p-6'>
-                  <textarea className='min-h-full min-w-full resize-none text-gray-600 outline-none'>
-                    https://
-                  </textarea>
+                  <textarea className='min-h-full min-w-full resize-none text-gray-600 outline-none' />
                 </div>
               </div>
 
-              <hr className='my-8 h-px border-0 bg-gray-200'></hr>
+              <hr className='my-8 h-px border-0 bg-gray-200' />
               <div className='text-right'>
                 <button className='rounded-full bg-green-200 px-8 py-2 '>
                   copy

@@ -26,53 +26,58 @@ async function main() {
   const dummyPost = privatePosts.map((post: any) => {
     return {
       caption: post.caption || null,
-      comments_count: post.comments_count || null,
-      campaign_id: 1,
-      likes_count: post.like_count || null,
-      media_product_type: post.media_product_type || null,
-      media_type: post.media_type || null,
+      commentsCount: post.comments_count || null,
+      campaignId: 1,
+      likesCount: post.like_count || null,
+      mediaProductType: post.media_product_type || null,
+      mediaType: post.media_type || null,
       permalink: post.permalink || null,
       shortcode: post.shortcode || null,
-      image_url: (!isMp4(post.media_url) && post.media_url) || null,
-      video_url: (isMp4(post.media_url) && post.media_url) || null,
-      ig_id: post.id || null,
+      imageUrl: (!isMp4(post.media_url) && post.media_url) || null,
+      videoUrl: (isMp4(post.media_url) && post.media_url) || null,
+      igId: post.id || null,
       username: post.username || null,
-      followers_count: followers || null,
-      engagement_count:
+      followersCount: followers || null,
+      engagementCount:
         post.insights.data.find((insight: any) => insight.name === 'engagement')
           ?.values[0]?.value || null,
-      impressions_count:
+      impressionsCount:
         post.insights.data.find(
           (insight: any) => insight.name === 'impressions',
         )?.values[0]?.value || null,
-      reach_count:
+      reachCount:
         post.insights.data.find((insight: any) => insight.name === 'reach')
           ?.values[0]?.value || null,
-      saves_count:
+      savesCount:
         post.insights.data.find((insight: any) => insight.name === 'saved')
           ?.values[0]?.value || null,
-      shares_count:
+      sharesCount:
         post.insights.data.find((insight: any) => insight.name === 'shares')
           ?.values[0]?.value || null,
     }
   })
 
   const password = await hash(`test`, 12)
+  const email = 'test@test.com'
 
-  await prisma.tenant.upsert({
-    where: { email: `test@test.com` },
+  await prisma.user.upsert({
+    where: { email },
     update: {
-      email: `test@test.com`,
+      email,
       name: `Test User`,
       password,
     },
     create: {
-      email: `test@test.com`,
+      email,
       name: `Test User`,
       password,
       website: `https://www.test.com`,
-      company_name: `Test Company`,
+      companyName: `Test Company`,
     },
+  })
+
+  const currentUser = await prisma.user.findUnique({
+    where: { email },
   })
 
   await prisma.client.upsert({
@@ -81,13 +86,13 @@ async function main() {
       name: `Test Client`,
       email: 'client@example.com',
       phone: '1234567890',
-      tenant_id: 1,
+      userId: currentUser?.id!,
     },
     create: {
       name: `Test Client`,
       email: 'client@example.com',
       phone: '1234567890',
-      tenant_id: 1,
+      userId: currentUser?.id!,
     },
   })
 
@@ -100,8 +105,8 @@ async function main() {
     create: {
       name: `Test Campaign`,
       description: `This is a test campaign`,
-      tenant_id: 1,
-      client_id: 1,
+      userId: currentUser?.id!,
+      clientId: 1,
     },
   })
 

@@ -1,34 +1,39 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
-import type { NextApiRequest, NextApiResponse } from 'next'
+import NextAuth from 'next-auth/next'
+import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GithubProvider from 'next-auth/providers/github'
+import InstagramProvider from 'next-auth/providers/instagram'
+import FacebookProvider from 'next-auth/providers/facebook'
 import prisma from '@/lib/prisma'
 import { compare } from 'bcrypt'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',
   },
   providers: [
     CredentialsProvider({
-      name: 'Sign In',
+      name: 'Credentials',
       credentials: {
         email: {
-          label: 'Email',
+          label: 'email',
           type: 'text',
           placeholder: 'hello@example.com',
         },
         password: {
-          label: 'Password',
+          label: 'password',
           type: 'password',
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) return null
 
-        const user = await prisma.tenant.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         })
 
@@ -36,45 +41,61 @@ export const authOptions: NextAuthOptions = {
 
         const isPasswordValid = await compare(
           credentials.password,
-          user.password,
+          user.password!,
         )
 
         if (!isPasswordValid) return null
 
         return {
-          id: user.id + '',
-          email: user.email,
-          name: user.name,
-          randomKey: 'Hey there!',
+          ...user,
+          id: user.id.toString(),
         }
       },
     }),
-  ],
-  callbacks: {
-    session: ({ session, token }) => {
-      // console.log('Session Callback', { session, token })
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id as number,
-          randomKey: token.randomKey,
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    }),
+
+    // InstagramProvider({
+    //   clientId: process.env.INSTAGRAM_CLIENT_ID!,
+    //   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET!
+    // }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: 'instagram_basic,instagram_manage_insights,pages_show_list',
         },
-      }
-    },
-    jwt: ({ token, user }) => {
-      // console.log('JWT Callback', { token, user })
-      if (user) {
-        const u = user as any
-        return {
-          ...token,
-          id: u.id as number,
-          randomKey: u.randomKey,
-        }
-      }
-      return token
-    },
-  },
+      },
+    }),
+  ],
+  // callbacks: {
+  //   session: ({ session, token }) => {
+  //     // console.log('Session Callback', { session, token })
+  //     return {
+  //       ...session,
+  //       user: {
+  //         ...session.user,
+  //         id: token.id as number,
+  //         randomKey: token.randomKey,
+  //       },
+  //     }
+  //   },
+  //   jwt: ({ token, user }) => {
+  //     // console.log('JWT Callback', { token, user })
+  //     if (user) {
+  //       const u = user as any
+  //       return {
+  //         ...token,
+  //         id: u.id as number,
+  //         randomKey: u.randomKey,
+  //       }
+  //     }
+  //     return token
+  //   },
+  // },
 }
 
 const handler = NextAuth(authOptions)

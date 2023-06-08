@@ -10,13 +10,16 @@ export async function GET() {
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-    const tenant_id = session?.user.id.toString() || '1'
+    const userEmail = session?.user?.email
+    const currentUser = await prisma.user.findUnique({
+      where: { email: userEmail! },
+    })
     const campaigns = await prisma.campaign.findMany({
       where: {
-        tenant_id: parseInt(tenant_id),
+        userId: currentUser?.id,
       },
       orderBy: {
-        created_at: 'desc',
+        createdAt: 'desc',
       },
     })
 
@@ -34,21 +37,26 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-    const tenant_id = session?.user.id.toString() || '1'
-    const { name, description, client_id } = await req.json()
+    const userEmail = session?.user?.email
+    const currentUser = await prisma.user.findUnique({
+      where: { email: userEmail! },
+    })
+    const { name, description, clientId } = await req.json()
+
+    console.log({ name, description, clientId })
 
     await prisma.campaign.create({
       data: {
         name,
         description,
-        client_id,
-        tenant_id: parseInt(tenant_id),
+        clientId,
+        userId: currentUser?.id!,
       },
     })
 
     return NextResponse.json({ success: true })
   } catch (err: any) {
-    // console.log(err)
+    console.log(err)
     return NextResponse.json(
       { error: err.message },
       {

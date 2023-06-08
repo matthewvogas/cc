@@ -5,57 +5,50 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
 export const LoginForm = () => {
-  const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
-  // const error = searchParams.get('error') ? 'Invalid email or password' : null
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const callbackError = searchParams.get('error')
+    ? 'Invalid email or password.'
+    : null
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [error, setError] = React.useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    try {
-      const res = await signIn('credentials', {
-        email,
-        password,
-        callbackUrl,
-        redirect: false,
-      })
-      if (!res?.error) {
-        router.push(callbackUrl)
-      } else {
-        setError('Invalid email or password')
-      }
-    } catch (error: any) {
-      setError(error?.message)
-    }
-
-    console.log('login!')
+    await signIn('credentials', {
+      email,
+      password,
+      callbackUrl,
+    })
   }
+
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleLogin}
       className='flex flex-col items-center justify-center gap-4'>
+      <label htmlFor='email' />
       <input
+        name='email'
         type='text'
+        onChange={e => setEmail(e.target.value)}
+        value={email}
         placeholder='username or email'
         className='input input-lg w-full bg-opacity-40  pl-10 placeholder-white '
-        value={email}
-        onChange={e => setEmail(e.target.value)}
         required
       />
+      <label htmlFor='password' />
       <input
+        onChange={e => setPassword(e.target.value)}
+        value={password}
+        name='password'
         type='password'
         placeholder='password'
         autoComplete='password'
-        value={password}
-        onChange={e => setPassword(e.target.value)}
         className='input input-lg w-full  bg-opacity-40 pl-10 placeholder-white'
         required
       />
-      {error && (
-        <div className='alert alert-error shadow-lg'>
+      {callbackError && (
+        <div className='alert alert-error justify-center shadow-lg'>
           <div>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -69,11 +62,13 @@ export const LoginForm = () => {
                 d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
               />
             </svg>
-            <span>{error}</span>
+            <span>{callbackError}</span>
           </div>
         </div>
       )}
-      <button className='btn-secondary btn-lg btn w-full lowercase'>
+      <button
+        type='submit'
+        className='btn-secondary btn-lg btn w-full lowercase'>
         login
       </button>
     </form>

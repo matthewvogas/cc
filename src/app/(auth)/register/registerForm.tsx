@@ -7,39 +7,30 @@ import React from 'react'
 export const RegisterForm = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+  const callbackError = searchParams.get('error')
+    ? 'Email has already been taken.'
+    : null
   const [email, setEmail] = React.useState('')
   const [name, setName] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [error, setError] = React.useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    try {
-      const res = await fetch('api/register', {
-        method: 'POST',
-        body: JSON.stringify({ email, name, password }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name, password }),
+    })
+
+    if (res.ok) {
+      await signIn('credentials', {
+        email,
+        password,
+        callbackUrl: '/',
       })
-      if (res.ok) {
-        //Sing In
-        await signIn('credentials', {
-          email,
-          password,
-          redirect: false,
-          callbackUrl,
-        })
-        router.push(callbackUrl)
-      } else {
-        const { error } = await res.json()
-        setError(error)
-      }
-    } catch (error: any) {
-      setError(error?.message)
+    } else {
+      router.push('/register?error=email')
     }
-    console.log('register!')
   }
   return (
     <form
@@ -81,8 +72,8 @@ export const RegisterForm = () => {
           by creating an account, you accept our terms and conditions.
         </label>
       </div>
-      {error && (
-        <div className='alert alert-error shadow-lg'>
+      {callbackError && (
+        <div className='alert alert-error justify-center shadow-lg'>
           <div>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -96,11 +87,13 @@ export const RegisterForm = () => {
                 d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
               />
             </svg>
-            <span>{error}</span>
+            <span>{callbackError}</span>
           </div>
         </div>
       )}
-      <button className='btn-secondary btn-lg btn w-full lowercase'>
+      <button
+        type='submit'
+        className='btn-secondary btn-lg btn w-full lowercase'>
         create your account
       </button>
     </form>

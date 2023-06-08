@@ -7,117 +7,196 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model tenant {
-  id              Int           @id @default(autoincrement())
-  email           String        @unique
-  password        String
-  name            String?
-  website         String?
-  company_name    String?
-  company_size_id Int?
-  company_size    company_size? @relation(fields: [company_size_id], references: [id])
-  company_type_id Int?
-  company_type    company_type? @relation(fields: [company_type_id], references: [id])
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
-  clients         client[]
-  creators        creator[]
-  campaigns       campaign[]
+// NextAuth Schema
+
+model Account {
+  id                    String  @id @default(cuid())
+  userId                String  @map("user_id")
+  type                  String
+  provider              String
+  providerAccountId     String  @map("provider_account_id")
+  refresh_token         String? @db.Text
+  access_token          String? @db.Text
+  expires_at         Int?
+  refresh_token_expires_in Int? 
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
-model company_size {
-  id          Int      @id @default(autoincrement())
+model Session {
+  id           String      @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String      @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String?      @unique
+  password      String?
+  emailVerified DateTime?    @map("email_verified")
+  image         String?
+  website       String?
+  companyName   String?      @map("company_name")
+  companySizeId Int?         @map("company_size_id")
+  companySize   CompanySize? @relation(fields: [companySizeId], references: [id])
+  companyTypeId Int?         @map("company_type_id")
+  companyType   CompanyType? @relation(fields: [companyTypeId], references: [id])
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  clients       Client[]
+  creators      Creator[]
+  campaigns     campaign[]
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// model tenant {
+//   id              Int           @id @default(autoincrement())
+//   email           String        @unique
+//   password        String
+//   name            String?
+//   website         String?
+//   company_name    String?
+//   company_size_id Int?
+//   company_size    company_size? @relation(fields: [company_size_id], references: [id])
+//   company_type_id Int?
+//   company_type    company_type? @relation(fields: [company_type_id], references: [id])
+//   created_at      DateTime      @default(now())
+//   updated_at      DateTime      @updatedAt
+//   clients         client[]
+//   creators        creator[]
+//   campaigns       campaign[]
+// }
+
+model CompanySize {
+  id          Int    @id @default(autoincrement())
   description String
-  tenants     tenant[]
+  users       User[]
+
+  @@map("company_sizes")
 }
 
-model company_type {
-  id          Int      @id @default(autoincrement())
+model CompanyType {
+  id          Int    @id @default(autoincrement())
   description String
-  tenants     tenant[]
+  users       User[]
+
+  @@map("company_types")
 }
 
-model client {
-  id         Int        @id @default(autoincrement())
-  name       String
-  email      String
-  phone      String?
-  tenant_id  Int
-  tenant     tenant     @relation(fields: [tenant_id], references: [id])
-  campaigns  campaign[]
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
+model Client {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String?
+  phone     String?
+  userId    String        @map("user_id")
+  user      User       @relation(fields: [userId], references: [id])
+  campaigns campaign[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("clients")
 }
 
-model social_network_account {
-  id         Int     @id @default(autoincrement())
-  token      String
-  platform   String
-  creator_id Int
-  creator    creator @relation(fields: [creator_id], references: [id])
+model SocialNetworkAccount {
+  id        Int     @id @default(autoincrement())
+  token     String
+  platform  String
+  creatorId Int     @map("creator_id")
+  creator   Creator @relation(fields: [creatorId], references: [id])
+
+  @@map("social_network_accounts")
 }
 
-model creator {
-  id                      Int                      @id @default(autoincrement())
-  tenant_id               Int
-  tenant                  tenant                   @relation(fields: [tenant_id], references: [id])
-  name                    String?
-  username                String
-  followers_count         Int?
-  follows_count           Int?
-  media_count             Int?
-  social_network_accounts social_network_account[]
-  campaigns               creator_campaign[]
-  created_at              DateTime                 @default(now())
-  updated_at              DateTime                 @updatedAt
+model Creator {
+  id                    Int                    @id @default(autoincrement())
+  userId                String                    @map("user_id")
+  user                  User                   @relation(fields: [userId], references: [id])
+  name                  String?
+  username              String
+  followersCount        Int?                   @map("followers_count")
+  followsCount          Int?                   @map("follows_count")
+  mediaCount            Int?                   @map("media_count")
+  socialNetworkAccounts SocialNetworkAccount[]
+  campaigns             CreatorCampaign[]
+  createdAt             DateTime               @default(now()) @map("created_at")
+  updatedAt             DateTime               @updatedAt @map("updated_at")
+
+  @@map("creators")
 }
 
-model creator_campaign {
-  campaign_id Int
-  campaign    campaign @relation(fields: [campaign_id], references: [id])
-  creator_id  Int
-  creator     creator  @relation(fields: [creator_id], references: [id])
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+model CreatorCampaign {
+  campaignId Int      @map("campaign_id")
+  campaign   campaign @relation(fields: [campaignId], references: [id])
+  creatorId  Int
+  creator    Creator  @relation(fields: [creatorId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  @@id([campaign_id, creator_id])
+  @@id([campaignId, creatorId])
+  @@map("creators_campaigns")
 }
 
 model campaign {
-  id          Int                @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   name        String
   description String
-  created_at  DateTime           @default(now())
-  updated_at  DateTime           @updatedAt
-  creators    creator_campaign[]
-  client_id   Int?
-  client      client?            @relation(fields: [client_id], references: [id])
-  tenant_id   Int
-  tenant      tenant             @relation(fields: [tenant_id], references: [id])
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  creators    CreatorCampaign[]
+  clientId    Int?              @map("client_id")
+  client      Client?           @relation(fields: [clientId], references: [id])
+  userId      String            @map("user_id")
+  user        User              @relation(fields: [userId], references: [id])
   posts       post[]
+
+  @@map("campaigns")
 }
 
 model post {
-  id                 Int      @id @default(autoincrement())
-  ig_id              String   @unique
-  campaign           campaign @relation(fields: [campaign_id], references: [id])
-  campaign_id        Int
-  caption            String?
-  media_product_type String?
-  media_type         String?
-  permalink          String?
-  shortcode          String?
-  video_url          String?
-  image_url          String?
-  comments_count     Int?
-  likes_count        Int?
-  followers_count    Int?
-  username           String?
-  engagement_count   Int?
-  impressions_count  Int?
-  reach_count        Int?
-  saves_count        Int?
-  shares_count       Int?
-  created_at         DateTime @default(now())
-  updated_at         DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  igId             String   @unique @map("ig_id")
+  campaign         campaign @relation(fields: [campaignId], references: [id])
+  campaignId       Int      @map("campaign_id")
+  caption          String?
+  mediaProductType String?  @map("media_product_type")
+  mediaType        String?  @map("media_type")
+  permalink        String?
+  shortcode        String?
+  videoUrl         String?  @map("video_url")
+  imageUrl         String?  @map("image_url")
+  commentsCount    Int?     @map("comments_count")
+  likesCount       Int?     @map("likes_count")
+  followersCount   Int?     @map("followers_count")
+  username         String?
+  engagementCount  Int?     @map("engagement_count")
+  impressionsCount Int?     @map("impressions_count")
+  reachCount       Int?     @map("reach_count")
+  savesCount       Int?     @map("saves_count")
+  sharesCount      Int?     @map("shares_count")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 }
