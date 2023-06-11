@@ -86,7 +86,7 @@ export default function CampaingTabs({
 
   const handleFileSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const file = e.target.campaignExcel.files[0]
+    const file = (e.target as HTMLFormElement).campaignExcel.files[0]
     const data = await excelToJson(file)
 
     const res = await fetch('/api/instagram/excel', {
