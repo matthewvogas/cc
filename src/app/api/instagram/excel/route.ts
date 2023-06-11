@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const session = await getServerSession()
   if (!session) return NextResponse.json({ message: 'No session' })
 
-  const xd = [1,2]
+  const xd = [1, 2]
 
   xd[0] = 3
   xd[1] = 4
@@ -71,18 +71,18 @@ export async function POST(req: Request) {
           }
         })
 
-        postsToDb.push(...postsToSave)
+      postsToDb.push(...postsToSave)
     }
 
-     await prisma.$transaction(
-        postsToDb.map(post =>
-          prisma.post.upsert({
-            where: { igId: post.igId },
-            update: { ...post },
-            create: { ...post },
-          })
-        )
-      )
+    await prisma.$transaction(
+      postsToDb.map(post =>
+        prisma.post.upsert({
+          where: { igId: post.igId },
+          update: { ...post },
+          create: { ...post },
+        }),
+      ),
+    )
 
     return NextResponse.json({ message: 'ok' })
   } catch (err) {

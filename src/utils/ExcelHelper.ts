@@ -21,10 +21,9 @@ export function excelToJson(excelFile: File): Promise<any> {
   })
 }
 
-
 type FormattedData = {
-    username: string
-    permalinks: string[]
+  username: string
+  permalinks: string[]
 }
 
 export function formatExcelData(data: any[]) {
