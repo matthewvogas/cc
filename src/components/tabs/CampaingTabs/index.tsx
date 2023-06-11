@@ -1,6 +1,7 @@
 'use client'
 
 import { inter, ptMono } from '@/app/fonts'
+import * as XLSX from "xlsx";
 import ButtonGroup from '@/components/buttonsGroup'
 import OverviewCampaign from '@/components/overviewCampaign'
 import { Tab } from '@headlessui/react'
@@ -23,6 +24,7 @@ import TopPost from '@/components/topPost'
 import TabsToShare from '@/components/tabsToShare'
 import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
 import CreatorRow from '@/components/creatorRow'
+import { excelToJson } from '@/utils/ExcelHelper';
 
 type campaignWithStats = campaign & {
   posts: post[]
@@ -81,6 +83,31 @@ export default function CampaingTabs({
     }
     setLoading(false)
   }
+
+  const handleFileSubmit = async (e:React.FormEvent) => {
+    e.preventDefault()
+    const file = e.target.campaignExcel.files[0]
+    const data = await excelToJson(file)
+
+    const res = await fetch('/api/instagram/excel', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        data,
+        campaignId: campaign.id,
+      }),
+    })
+
+    if(res.status === 200) {
+      router.refresh()
+    }
+    else{
+      console.log('error')
+    }
+  };
+
 
   function isVideo(post: any) {
     if (post.videoUrl) return true
@@ -408,7 +435,6 @@ export default function CampaingTabs({
                 </Tab.Panel>
 
                 <Tab.Panel className='flex flex-col gap-4 px-16 py-8'>
-                  <FeatureNotImplemented />
                   <h2>
                     Download a{' '}
                     <Link href={'/'}>
@@ -416,9 +442,13 @@ export default function CampaingTabs({
                       required
                     </Link>
                   </h2>
-                  <form className='flex flex-col gap-3'>
+                  <form className='flex flex-col gap-3' onSubmit={handleFileSubmit}>
+                    <input name="test" id='test' type='text'/>
                     <input
+                      name='campaignExcel'
+                      id='campaignExcel'
                       type='file'
+                      accept=".xlsx, .xls"
                       className='file-input-bordered file-input w-full'
                     />
                     <button

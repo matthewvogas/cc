@@ -1,6 +1,4 @@
 import prisma from '@/lib/prisma'
-import axios from 'axios'
-import * as cheerio from 'cheerio'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import puppeteer from 'puppeteer'
@@ -16,25 +14,19 @@ export async function POST(req: Request) {
   let browser
   try {
     const { newPosts, campaignId } = await req.json()
-    browser = await puppeteer.launch({
-      headless: true,
+    browser = await puppeteer.connect({
+      browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT,
     })
     const newPostsArray = newPosts.split(',')
-
+    const page = await browser.newPage()
+    page.setDefaultNavigationTimeout(2 * 60 * 1000)
     for (const url of newPostsArray) {
-      const page = await browser.newPage()
-      await page.setRequestInterception(true)
-      page.on('request', request => {
-        if (request.resourceType() === 'script') request.abort()
-        else request.continue()
-      })
       await page.goto(url)
       await page.waitForSelector('meta[name="twitter:title"]')
       const description = await page.$eval('meta[name="twitter:title"]', el =>
         el.getAttribute('content'),
       )
       console.log(await description)
-      await page.close()
       const userName = await description!.split('@')[1].split(')')[0]
       console.log(userName)
       const instagramRes = await fetch(
@@ -87,6 +79,7 @@ export async function POST(req: Request) {
 
     //Get beautybyrobina
   } catch (e: any) {
+    console.log(e.message)
     return NextResponse.json(e.message)
   } finally {
     if (browser) {
