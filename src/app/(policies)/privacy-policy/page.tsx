@@ -1,4 +1,4 @@
-export default async function PrivacyPolicy() {
+export default function PrivacyPolicy() {
   return (
     <div className='flex flex-col items-center justify-center gap-4'>
       <div className='m-20 flex flex-col gap-3'>
