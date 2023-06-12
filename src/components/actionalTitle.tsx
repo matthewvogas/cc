@@ -21,7 +21,7 @@ export default function ActionalTitle({ title }: Props) {
     <div className='w-full '>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-14'>
         <div className='flex w-full content-center justify-between align-middle'>
-          <h3 className={`self-center text-xl text-gray-800 `}>{title}</h3>
+          <h3 className={`self-center text-xl text-gray-800 font-bold`}>{title}</h3>
           <div className={`flex items-center justify-between`}>
             {/* <div className={`flex ${ptMono.className}`}>
               <button className={`${ActiveLabel} `}>
