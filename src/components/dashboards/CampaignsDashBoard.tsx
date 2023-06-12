@@ -9,20 +9,20 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import axios from 'axios'
 import { Client, campaign } from '@prisma/client'
+import useCampaigns from '@/hooks/useCampaigns'
+import useClients from '@/hooks/useClients'
 
 export default function CampaignsDashBoard({
-  campaigns,
-  clients,
+  campaignsFallback,
+  clientsFallback,
 }: {
-  campaigns: campaign[]
-  clients: Client[]
+  campaignsFallback: campaign[]
+  clientsFallback: Client[]
 }) {
-  const fetcher = (...args: Parameters<typeof fetch>) =>
-    fetch(...args).then(res => res.json())
-
-  const { data, error, mutate, isLoading } = useSWR('/api/campaigns', fetcher, {
-    fallbackData: campaigns,
-  })
+  const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
+    useCampaigns(campaignsFallback)
+  const { clients, areClientsLoading, clientsError, refreshClients } =
+    useClients(clientsFallback)
 
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
@@ -39,7 +39,7 @@ export default function CampaignsDashBoard({
         clientId,
       })
 
-      if (res.status === 200) mutate()
+      if (res.status === 200) refreshCampaigns()
       console.log(res.status)
       setIsOpen(false)
     } catch (error: any) {
@@ -132,7 +132,7 @@ export default function CampaignsDashBoard({
           <div className='divider' />
         </div>
         <div className=' flex  flex-wrap gap-4 md:px-12'>
-          {data.map((card: any, index: any) => (
+          {campaigns.map((card: any, index: any) => (
             <Link
               href={`/campaigns/${card.id || 1}`}
               key={index}
@@ -180,7 +180,7 @@ export default function CampaignsDashBoard({
                   Choose a client
                 </option>
                 <option value={549}>No Client</option>
-                {clients.map((client, index) => (
+                {clients.map((client: Client, index: any) => (
                   <option value={client.id} key={index}>
                     {client.name}
                   </option>
@@ -222,7 +222,7 @@ export default function CampaignsDashBoard({
                         d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
                       />
                     </svg>
-                    <span>{error}</span>
+                    <span>{fetchError}</span>
                   </div>
                 </div>
               )}

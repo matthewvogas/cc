@@ -25,5 +25,5 @@ export default async function clients() {
 
   const clients = await clientsService.findMany()
 
-  return <ClientsDashBoard clients={clients} />
+  return <ClientsDashBoard clientsFallback={clients} />
 }

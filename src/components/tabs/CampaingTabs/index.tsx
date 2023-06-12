@@ -391,6 +391,7 @@ export default function CampaingTabs({
               </Tab.List>
               <Tab.Panels className='mt-2'>
                 <Tab.Panel className='px-12 py-8'>
+                  <FeatureNotImplemented />
                   <form onSubmit={handlePosts} className='flex flex-col gap-3'>
                     <label>{`Instagram Link(s)`}</label>
                     <textarea
@@ -420,7 +421,7 @@ export default function CampaingTabs({
                     )}
 
                     <button
-                      disabled={loading}
+                      disabled={true}
                       className='flex self-end rounded-full bg-green-200 px-8 py-2'
                       type='submit'>
                       {loading ? (

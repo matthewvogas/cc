@@ -1,8 +1,11 @@
+'use client'
+
 import Image from 'next/image'
 import { inter } from '@/app/fonts'
 import imageCover from 'public/assets/register/TopPost.jpg'
 import Link from 'next/link'
 import { Client } from '@prisma/client'
+import useClients from '@/hooks/useClients'
 
 // Fonts
 
@@ -26,8 +29,10 @@ const card = [
   },
 ]
 
-export default function ClientCard({ clients }: { clients: Client[] }) {
+export default function ClientCard({ clientsFallback }: { clientsFallback: Client[] }) {
   // Show Arrays
+  const { clients, refreshClients, areClientsLoading, clientsError } = useClients(clientsFallback)
+
   const data = clients || card
 
   const cards = data.map((card: Client, index: any) => (

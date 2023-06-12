@@ -6,8 +6,7 @@ import { getSession } from 'next-auth/react'
 //Service that the constructor get a session id
 
 export class CamapignsService {
-  private readonly sessionId: string | undefined
-
+  private readonly sessionId: string
   constructor(sessionID: string) {
     this.sessionId = sessionID
   }
@@ -23,6 +22,7 @@ export class CamapignsService {
       include: {
         _count: {
           select: {
+            creators: true,
             posts: true,
           },
         },
@@ -39,8 +39,15 @@ export class CamapignsService {
           id: parseInt(id.toString()),
         },
         include: {
+          _count: {
+            select: {
+              creators: true,
+              posts: true,
+            },
+          },
           posts: true,
           client: true,
+          creators: true,
         },
       }),
       this.getStats(id),

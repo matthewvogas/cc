@@ -8,21 +8,13 @@ export async function POST(req: Request) {
   const session = await getServerSession()
   if (!session) return NextResponse.json({ message: 'No session' })
 
-  const xd = [1, 2]
-
-  xd[0] = 3
-  xd[1] = 4
-  xd[2] = 5
-
-  console.log(xd)
-
   try {
     const { data, campaignId } = await req.json()
     const formatedData = formatExcelData(data)
 
     const postsToDb = []
-
     for (const posts of formatedData) {
+      console.log(`getting ${posts.username} data`)
       const instagramRes = await fetch(
         `https://graph.facebook.com/${process.env.BUSINESS_ID}?fields=business_discovery.username(${posts.username}){followers_count,media_count,media.limit(500){comments_count,like_count,permalink,media_url},follows_count}&access_token=${process.env.BUSINESS_TOKEN}`,
       ).then(res => res.json())

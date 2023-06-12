@@ -8,14 +8,11 @@ import { ptMono } from '@/app/fonts'
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import axios from 'axios'
+import useClients from '@/hooks/useClients'
 
-export default function ClientsDashBoard({ clients }: any) {
-  const fetcher = (...args: Parameters<typeof fetch>) =>
-    fetch(...args).then(res => res.json())
-
-  const { data, error, mutate, isLoading } = useSWR('/api/clients', fetcher, {
-    fallbackData: clients,
-  })
+export default function ClientsDashBoard({ clientsFallback }: any) {
+  const { clients, areClientsLoading, clientsError, refreshClients } =
+    useClients(clientsFallback)
 
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
@@ -28,7 +25,7 @@ export default function ClientsDashBoard({ clients }: any) {
         name,
       })
 
-      if (res.status === 200) mutate()
+      if (res.status === 200) refreshClients()
       console.log(res.status)
       setIsOpen(false)
     } catch (error: any) {
@@ -55,7 +52,7 @@ export default function ClientsDashBoard({ clients }: any) {
           <div className='divider' />
         </div>
         <div className=' flex  flex-wrap gap-4 md:px-12'>
-          {data.map((card: any, index: any) => (
+          {clients.map((card: any, index: any) => (
             <Link
               href={`/clients/${card.id || 1}`}
               key={index}
@@ -119,7 +116,7 @@ export default function ClientsDashBoard({ clients }: any) {
                           d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
                         />
                       </svg>
-                      <span>{error}</span>
+                      <span>{fetchError}</span>
                     </div>
                   </div>
                 )}

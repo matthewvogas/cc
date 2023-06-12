@@ -1,8 +1,11 @@
+'use client'
+
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import { campaign } from '@prisma/client'
 import Link from 'next/link'
+import useCampaigns from '@/hooks/useCampaigns'
 
 // Fonts
 
@@ -31,15 +34,16 @@ const creatorCards = [
 ]
 
 type Props = {
-  campaignsWithPosts: (campaign & {
+  campaignsFallback: (campaign & {
     _count: {
       posts: number
     }
   })[]
 }
 
-export default function DashboardCampaign({ campaignsWithPosts }: Props) {
-  const postData = campaignsWithPosts || creatorCards
+export default function DashboardCampaign({ campaignsFallback }: Props) {
+  const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } = useCampaigns(campaignsFallback)
+  const postData = campaigns || creatorCards
 
   return (
     <div className='flex content-start gap-x-6 gap-y-8 overflow-scroll px-14'>

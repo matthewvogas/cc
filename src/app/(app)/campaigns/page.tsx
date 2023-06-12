@@ -22,5 +22,10 @@ export default async function CampaignPage() {
   const campaigns = await campaignsService.findMany()
   const clients = await clientsService.findMany()
 
-  return <CampaignsDashBoard campaigns={campaigns} clients={clients} />
+  return (
+    <CampaignsDashBoard
+      campaignsFallback={campaigns}
+      clientsFallback={clients}
+    />
+  )
 }

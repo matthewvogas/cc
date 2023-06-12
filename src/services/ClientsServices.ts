@@ -20,6 +20,14 @@ export class ClientsService {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        _count: {
+          select: {
+            campaigns: true,
+          },
+        },
+        campaigns: true,
+      },
       take: limit,
       skip: offset,
     })

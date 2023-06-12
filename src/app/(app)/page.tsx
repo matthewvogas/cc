@@ -31,10 +31,10 @@ export default async function Home() {
     <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
       <TitleDashboard title={''} user={currentUser!} />
       <ActionalTitle title={'your campaigns'} />
-      <DashboardCampaign campaignsWithPosts={campaigns} />
+      <DashboardCampaign campaignsFallback={campaigns} />
       <ActionalTitle title={'your clients'} />
       <div className='px-14'>
-        <ClientCard clients={clients} />
+        <ClientCard clientsFallback={clients} />
       </div>
     </div>
   )

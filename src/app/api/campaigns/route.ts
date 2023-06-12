@@ -2,27 +2,20 @@ import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
+import { CamapignsService } from '@/services/CampaignsService'
 
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
 
-    // if (!session)
-    //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-
-    const userEmail = session?.user?.email
     const currentUser = await prisma.user.findUnique({
-      where: { email: userEmail! },
-    })
-    const campaigns = await prisma.campaign.findMany({
       where: {
-        userId: currentUser?.id,
-      },
-      orderBy: {
-        createdAt: 'desc',
+        email: session?.user?.email!,
       },
     })
-
+    
+    const campaignsService = new CamapignsService(currentUser!.id)
+    const campaigns = await campaignsService.findMany()
     return NextResponse.json(campaigns)
   } catch (err) {
     console.log(err)
