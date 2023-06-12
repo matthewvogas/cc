@@ -13,7 +13,7 @@ export async function GET() {
         email: session?.user?.email!,
       },
     })
-    
+
     const campaignsService = new CamapignsService(currentUser!.id)
     const campaigns = await campaignsService.findMany()
     return NextResponse.json(campaigns)

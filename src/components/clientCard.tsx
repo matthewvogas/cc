@@ -29,9 +29,14 @@ const card = [
   },
 ]
 
-export default function ClientCard({ clientsFallback }: { clientsFallback: Client[] }) {
+export default function ClientCard({
+  clientsFallback,
+}: {
+  clientsFallback: Client[]
+}) {
   // Show Arrays
-  const { clients, refreshClients, areClientsLoading, clientsError } = useClients(clientsFallback)
+  const { clients, refreshClients, areClientsLoading, clientsError } =
+    useClients(clientsFallback)
 
   const data = clients || card
 

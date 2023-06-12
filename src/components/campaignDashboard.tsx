@@ -42,7 +42,8 @@ type Props = {
 }
 
 export default function DashboardCampaign({ campaignsFallback }: Props) {
-  const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } = useCampaigns(campaignsFallback)
+  const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
+    useCampaigns(campaignsFallback)
   const postData = campaigns || creatorCards
 
   return (

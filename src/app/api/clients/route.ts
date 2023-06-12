@@ -16,7 +16,6 @@ export async function GET() {
         email: session?.user!.email!,
       },
     })
-    
 
     const clientsService = new ClientsService(currentUser!.id)
     const clients = await clientsService.findMany()
