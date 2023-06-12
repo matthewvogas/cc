@@ -43,7 +43,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
                 Clients
               </h3>
               <button
-                className='flex rounded-full bg-green-200 px-8 py-2'
+                className='flex rounded-full text-lg bg-green-200 px-8 py-2'
                 onClick={() => setIsOpen(true)}>
                 add a client
               </button>
