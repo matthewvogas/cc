@@ -42,7 +42,7 @@ export default function DashboardCampaign({ campaignsWithPosts }: Props) {
   const postData = campaignsWithPosts || creatorCards
 
   return (
-    <div className='flex content-start gap-x-6 gap-y-8 overflow-scroll px-14'>
+    <div className='content-start gap-x-6 gap-y-8 overflow-auto px-14 whitespace-nowrap mb-8 '>
       {postData.map(
         (
           card: campaign & {
@@ -55,7 +55,7 @@ export default function DashboardCampaign({ campaignsWithPosts }: Props) {
           <Link
             href={`/campaigns/${card.id}`}
             key={index}
-            className={`bg-beigeTransparent ${ptMono.className}`}>
+            className={`bg-beigeTransparent inline-block mr-8 ${ptMono.className}`}>
             <Image src={imageCover} alt={card.name} height={320} />
             <div className='mb-4 flex justify-between gap-4 px-6 pt-6'>
               <h5>{card.name}</h5>

@@ -16,7 +16,7 @@ type Props = {
 export default function TitleDashboard({ title, user }: Props) {
   return (
     <div className='w-full '>
-      <div className='mx-auto mb-8 w-full justify-between px-4 md:px-14'>
+      <div className='mx-auto mb-8 h-36 w-full justify-between px-4 md:px-14'>
         <div className='w-full'>
           <h3
             className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>

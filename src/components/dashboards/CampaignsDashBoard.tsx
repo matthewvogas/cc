@@ -98,7 +98,7 @@ export default function CampaignsDashBoard({
                 <div className='dropdown-end dropdown cursor-pointer'>
                   <label
                     tabIndex={0}
-                    className={`text-back mx-2  flex cursor-pointer rounded-full border-2 border-rose-100 bg-transparent px-8 py-2.5 text-sm  font-medium hover:bg-rose-100`}>
+                    className={`text-back mx-2  flex cursor-pointer rounded-full border-2 border-rose-100 bg-transparent px-8 py-2.5 text-lg items-center justify-center  font-medium hover:bg-rose-100`}>
                     add new
                     <svg
                       fill='none'
