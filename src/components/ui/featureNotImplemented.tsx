@@ -1,6 +1,6 @@
 export default function FeatureNotImplemented() {
   return (
-    <div className='alert alert-error w-96 mb-8'>
+    <div className='alert alert-error mb-8 w-96'>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         className='h-6 w-6 shrink-0 stroke-current'
