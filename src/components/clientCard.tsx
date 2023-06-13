@@ -41,18 +41,15 @@ export default function ClientCard({
   const data = clients || card
 
   const cards = data.map((card: Client, index: any) => (
-    <Link
-      href={`/clients/${card.id || 1}`}
-      key={index}
-      className='h-80 w-80 border-gray-100 '>
+    <Link href={`/clients/${card.id || 1}`} key={index} className='h-80 w-80 '>
       <Image
         priority
         className={`h-64 object-cover`}
         src={imageCover}
         alt={card.name}
       />
-      <div className=' bg-white px-2 py-4'>
-        <p className={`text-sm font-medium text-gray-800 ${inter.className}`}>
+      <div className=' h-auto border border-gray-200 bg-white  px-2 py-4 pl-4'>
+        <p className={`text-lg font-medium text-gray-800 ${inter.className}`}>
           {card.name}
         </p>
       </div>

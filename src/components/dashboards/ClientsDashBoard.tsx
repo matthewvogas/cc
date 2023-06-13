@@ -39,7 +39,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
         <div className='w-full pt-20 '>
           <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
             <div className='flex w-full  flex-row justify-between'>
-              <h3 className={`text-3xl font-semibold text-gray-800  `}>
+              <h3 className={`text-2xl font-semibold text-gray-800  `}>
                 Clients
               </h3>
               <button
@@ -63,8 +63,8 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
                 src={card.image || imageCover}
                 alt={card.name}
               />
-              <div className=' bg-white px-2 py-4'>
-                <p className={`text-sm font-medium text-gray-800`}>
+              <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
+                <p className={`text-lg font-medium text-gray-800`}>
                   {card.name}
                 </p>
               </div>

@@ -1,5 +1,7 @@
 import Image from 'next/image'
-import registerBg from 'public/assets/register/register-bg.jpg'
+import { ptMono } from '@/app/fonts'
+import registerBg from 'public/assets/register/login.jpg'
+import logo from 'public/assets/register/LogoSVG.svg'
 import { Sen } from 'next/font/google'
 import Link from 'next/link'
 import { LoginForm } from './loginForm'
@@ -10,30 +12,30 @@ export default function LoginPage() {
     <section className='relative flex h-screen w-screen items-center justify-center'>
       <Image
         priority
-        className='absolute -z-20 h-full w-full object-cover object-center brightness-50'
+        className='absolute -z-20 h-full w-full object-cover object-center '
         src={registerBg}
         alt='background'
         fill
       />
 
-      <div className='flex w-[500px] flex-col items-center justify-center gap-4  p-10 text-center text-white '>
-        <div className='flex flex-col gap-1'>
-          <p className='text-lg text-white'>log in to</p>
-          <h1 className={` ${sen.className} text-7xl font-bold text-primary`}>
-            codecoco
-          </h1>
+      <div className='flex w-[550px] flex-col items-center justify-center gap-4  p-10 text-center text-white '>
+        <div
+          className={`flex flex-col items-center justify-center gap-1 ${ptMono.className}`}>
+          <Image priority className=' h-auto w-[400px]' src={logo} alt='' />
+          <p className='mb-12 text-lg text-white'>be a better influence</p>
         </div>
         <LoginForm />
 
-        <div className='divider' />
+        <div className='my-7 h-px w-full rounded-r-full bg-white opacity-50'></div>
 
-        <p>
-          {' '}
-          {"don't have an account?"}{' '}
-          <Link href='/register' className='text-primary'>
-            create account
+        <div className='flex w-full justify-between px-4'>
+          <Link href='/register' className='text-lg '>
+            create a new account
           </Link>
-        </p>
+          <Link href='/register' className='text-lg'>
+            reset your password
+          </Link>
+        </div>
       </div>
     </section>
   )

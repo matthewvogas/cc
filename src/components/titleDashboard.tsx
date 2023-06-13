@@ -2,6 +2,8 @@ import { PT_Mono } from 'next/font/google'
 import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
 import { User } from '@prisma/client'
+import Image from 'next/image'
+import bgdashboard from 'public/assets/register/dashboardBackground.jpg'
 
 // Fonts
 const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
@@ -15,16 +17,12 @@ type Props = {
 
 export default function TitleDashboard({ title, user }: Props) {
   return (
-    <div className='w-full '>
-      <div className='mx-auto mb-8 h-36 w-full justify-between px-4 md:px-14'>
+    <div className='w-full'>
+      <Image className=' w-full' src={bgdashboard} alt='' />
+      <div className='mx-auto -mt-28 mb-8 h-36 w-full justify-between px-4 md:px-14'>
         <div className='w-full'>
-          <h3
-            className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
-            {title}
-          </h3>
-
           <div className={`flex items-center justify-between`}>
-            <h2 className={`text-2xl font-bold`}>welcome, {user.name} 🥥</h2>
+            <h2 className={`text-2xl`}>welcome, {user.name} 🥥</h2>
             <div className={`flex ${ptMono.className}`}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'

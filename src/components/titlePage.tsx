@@ -24,7 +24,7 @@ export default function TitlePage({ title }: Props) {
         <div className='w-full'>
           <FeatureNotImplemented />
           <h3
-            className={`pb-8 align-middle text-3xl font-semibold text-gray-800 `}>
+            className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
             {title}
           </h3>
 
