@@ -3,6 +3,7 @@
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ptMono } from '@/app/fonts'
 
 export function SingInButton() {
   const { data: session, status } = useSession()
@@ -14,34 +15,20 @@ export function SingInButton() {
   }
   if (status === 'authenticated') {
     // console.log(session, status)
-    return (
-      <li>
-        <Link href={`/dashboard`}>
-          <Image
-            className='rounded-full'
-            src={session.user?.image ?? '/xd.png'}
-            alt={session.user?.name ?? 'Your Name'}
-            width={32}
-            height={32}
-          />
-        </Link>
-      </li>
-    )
+    return <></>
   }
-  return (
-    <li>
-      <button onClick={() => signIn()}>Sign In</button>
-    </li>
-  )
+  return <button onClick={() => signIn()}>Sign In</button>
 }
 
 export function SingOutButton() {
   const { data: session, status } = useSession()
   if (status === 'authenticated') {
     return (
-      <li>
-        <button onClick={() => signOut()}>Sign out</button>
-      </li>
+      <button
+        className={`rounded-full border border-gray-400 px-8 py-2 ${ptMono.className}`}
+        onClick={() => signOut()}>
+        log out
+      </button>
     )
   }
   return <></>

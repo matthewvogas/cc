@@ -25,7 +25,7 @@ export default async function Home() {
       <ActionalTitle title={'your campaigns'} />
       <DashboardCampaign campaignsFallback={campaigns} />
       <ActionalTitle title={'your clients'} />
-      <div className='px-14'>
+      <div className='mb-12 px-14'>
         <ClientCard clientsFallback={clients} />
       </div>
     </div>

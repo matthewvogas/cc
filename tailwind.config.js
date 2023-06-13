@@ -24,6 +24,7 @@ module.exports = {
         greenPastel: '#E4F2EB',
         beigeTransparent: '#F1F0ED',
         blackStat: '#413F3B',
+        loginButtons: '#FACEBC',
       },
     },
   },

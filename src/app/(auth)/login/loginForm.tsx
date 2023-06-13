@@ -4,6 +4,7 @@ import Spinner from '@/components/ui/spinner'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
+import { ptMono } from '@/app/fonts'
 
 export const LoginForm = () => {
   const searchParams = useSearchParams()
@@ -29,7 +30,7 @@ export const LoginForm = () => {
   return (
     <form
       onSubmit={handleLogin}
-      className='flex flex-col items-center justify-center gap-4'>
+      className={`flex w-full flex-col items-center  justify-center ${ptMono.className}`}>
       <label htmlFor='email' />
       <input
         name='email'
@@ -37,7 +38,7 @@ export const LoginForm = () => {
         onChange={e => setEmail(e.target.value)}
         value={email}
         placeholder='username or email'
-        className='input input-lg w-full bg-opacity-40  pl-10 placeholder-white '
+        className='input  mb-4 h-14 w-full  bg-opacity-25 pl-10 placeholder-white'
         required
       />
       <label htmlFor='password' />
@@ -48,32 +49,30 @@ export const LoginForm = () => {
         type='password'
         placeholder='password'
         autoComplete='password'
-        className='input input-lg w-full  bg-opacity-40 pl-10 placeholder-white'
+        className='input  mb-10 h-14  w-full bg-opacity-25 pl-10 placeholder-white'
         required
       />
       {callbackError && (
         <div className='alert alert-error flex justify-center shadow-lg'>
-          <div className='flex flex-row gap-4'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-6 w-6 flex-shrink-0 stroke-current'
-              fill='none'
-              viewBox='0 0 24 24'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-              />
-            </svg>
-            <span>{callbackError}</span>
-          </div>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className='h-6 w-6 flex-shrink-0 stroke-current'
+            fill='none'
+            viewBox='0 0 24 24'>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
+            />
+          </svg>
+          <span>{callbackError}</span>
         </div>
       )}
       <button
         disabled={loading}
         type='submit'
-        className='btn-secondary btn-lg btn w-full lowercase'>
+        className=' h-14 w-full rounded-full bg-loginButtons lowercase text-black'>
         {loading ? (
           <Spinner width='w-4' height='h-4' border='border-2' />
         ) : (

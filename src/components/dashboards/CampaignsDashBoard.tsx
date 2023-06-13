@@ -54,7 +54,7 @@ export default function CampaignsDashBoard({
           <div className='mx-auto w-full justify-between px-4 md:px-12'>
             <div className='flex w-full  flex-row justify-between'>
               <h3
-                className={`pb-8 align-middle text-3xl font-semibold text-gray-800  `}>
+                className={`pb-8 align-middle text-2xl font-semibold text-gray-800`}>
                 Campaigns
               </h3>
               <div className={`flex ${ptMono.className}`}>
@@ -131,15 +131,15 @@ export default function CampaignsDashBoard({
           </div>
           <div className='divider' />
         </div>
-        <div className=' flex  flex-wrap gap-4 md:px-12'>
+        <div className='flex flex-wrap gap-6 md:px-12'>
           {campaigns.map((card: any, index: any) => (
             <Link
               href={`/campaigns/${card.id || 1}`}
               key={index}
-              className='h-80 w-80 border-gray-100 '>
+              className='border-gray-100 '>
               <Image
                 priority
-                className={`h-64 object-cover`}
+                className={`h-64 w-64`}
                 src={card.image || imageCover}
                 alt={card.name}
               />
