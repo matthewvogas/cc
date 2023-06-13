@@ -1,6 +1,5 @@
 import db from '@/lib/db'
 
-
 //Service that the constructor get a session id
 
 export class CamapignsService {
