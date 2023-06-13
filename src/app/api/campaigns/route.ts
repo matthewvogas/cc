@@ -1,20 +1,13 @@
-import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { CamapignsService } from '@/services/CampaignsService'
+import db from '@/lib/db'
 
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
-
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session?.user?.email!,
-      },
-    })
-
-    const campaignsService = new CamapignsService(currentUser!.id)
+    const campaignsService = new CamapignsService(session!.user.id)
     const campaigns = await campaignsService.findMany()
     return NextResponse.json(campaigns)
   } catch (err) {
@@ -30,20 +23,17 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-    const userEmail = session?.user?.email
-    const currentUser = await prisma.user.findUnique({
-      where: { email: userEmail! },
-    })
+   
     const { name, description, clientId } = await req.json()
 
     console.log({ name, description, clientId })
 
-    await prisma.campaign.create({
+    await db.campaign.create({
       data: {
         name,
         description,
         clientId: parseInt(clientId) || null,
-        userId: currentUser?.id!,
+        userId: session!.user.id,
       },
     })
 
@@ -61,14 +51,8 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const session = await getServerSession(authOptions)
-    const userEmail = session?.user?.email
-    const currentUser = await prisma.user.findUnique({
-      where: { email: userEmail! },
-    })
     const { id, name, description } = await req.json()
-
-    await prisma.campaign.update({
+    await db.campaign.update({
       where: { id: parseInt(id) },
       data: {
         name,

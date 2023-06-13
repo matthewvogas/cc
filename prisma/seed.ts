@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { hash } from 'bcrypt'
 
-const prisma = new PrismaClient()
+const db = new PrismaClient()
 
 async function main() {
   const instagramPublicRes = await fetch(
@@ -60,7 +60,7 @@ async function main() {
   const password = await hash(`test`, 12)
   const email = 'test@test.com'
 
-  await prisma.user.upsert({
+  await db.user.upsert({
     where: { email },
     update: {
       email,
@@ -76,11 +76,11 @@ async function main() {
     },
   })
 
-  const currentUser = await prisma.user.findUnique({
+  const currentUser = await db.user.findUnique({
     where: { email },
   })
 
-  await prisma.client.upsert({
+  await db.client.upsert({
     where: { id: 1 },
     update: {
       name: `Test Client`,
@@ -96,7 +96,7 @@ async function main() {
     },
   })
 
-  await prisma.campaign.upsert({
+  await db.campaign.upsert({
     where: { id: 1 },
     update: {
       name: `Test Campaign`,
@@ -110,16 +110,16 @@ async function main() {
     },
   })
 
-  await prisma.post.createMany({
+  await db.post.createMany({
     data: dummyPost,
   })
   // console.log({ user })
 }
 
 main()
-  .then(() => prisma.$disconnect())
+  .then(() => db.$disconnect())
   .catch(async e => {
     console.error(e)
-    await prisma.$disconnect()
+    await db.$disconnect()
     process.exit(1)
   })

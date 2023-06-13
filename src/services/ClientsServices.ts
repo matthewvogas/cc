@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import prisma from '@/lib/prisma'
+import db from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import { getSession } from 'next-auth/react'
 
@@ -13,7 +13,7 @@ export class ClientsService {
   }
 
   async findMany(limit?: number, offset?: number) {
-    return prisma.client.findMany({
+    return db.client.findMany({
       where: {
         userId: this.sessionId!,
       },
@@ -34,7 +34,7 @@ export class ClientsService {
   }
 
   async findUnique(id: number) {
-    return prisma.client.findUniqueOrThrow({
+    return db.client.findUniqueOrThrow({
       where: {
         id: parseInt(id.toString()),
       },

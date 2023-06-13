@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import db from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
@@ -11,13 +11,8 @@ export async function GET() {
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session?.user!.email!,
-      },
-    })
 
-    const clientsService = new ClientsService(currentUser!.id)
+    const clientsService = new ClientsService(session!.user.id)
     const clients = await clientsService.findMany()
     return NextResponse.json(clients)
   } catch (err) {
@@ -33,17 +28,12 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session?.user!.email!,
-      },
-    })
     const { name, email } = await req.json()
 
-    await prisma.client.create({
+    await db.client.create({
       data: {
         name,
-        userId: currentUser?.id!,
+        userId: session!.user.id,
       },
     })
 

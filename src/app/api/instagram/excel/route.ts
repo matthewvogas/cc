@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import db from '@/lib/db'
 import { formatExcelData } from '@/utils/ExcelHelper'
 import { isMp4 } from '@/utils/ValidationsHelper'
 import { getServerSession } from 'next-auth'
@@ -66,9 +66,9 @@ export async function POST(req: Request) {
       postsToDb.push(...postsToSave)
     }
 
-    await prisma.$transaction(
+    await db.$transaction(
       postsToDb.map(post =>
-        prisma.post.upsert({
+        db.post.upsert({
           where: { igId: post.igId },
           update: { ...post },
           create: { ...post },

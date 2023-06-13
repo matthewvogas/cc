@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import db from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
@@ -9,17 +9,10 @@ export async function GET() {
 
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session?.user!.email!,
-      },
-    })
-
-    const campaigns = await prisma.post.findMany({
+    const campaigns = await db.post.findMany({
       where: {
         campaign: {
-          userId: currentUser?.id,
+          userId: session!.user.id,
         },
       },
       orderBy: {

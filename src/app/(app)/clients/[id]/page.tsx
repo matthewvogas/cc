@@ -8,8 +8,6 @@ import CreatorRow from '@/components/creatorRow'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ClientsService } from '@/services/ClientsServices'
-import prisma from '@/lib/prisma'
-
 export const dynamic = 'force-dynamic'
 
 export default async function CampaignPage({
@@ -18,13 +16,7 @@ export default async function CampaignPage({
   params: { id: number }
 }) {
   const session = await getServerSession(authOptions)
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      email: session?.user?.email!,
-    },
-  })
-
-  const clientsService = new ClientsService(currentUser!.id)
+  const clientsService = new ClientsService(session!.user.id)
   const client = await clientsService.findUnique(params.id)
 
   return (

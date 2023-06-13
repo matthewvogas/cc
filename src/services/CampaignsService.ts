@@ -1,7 +1,5 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import prisma from '@/lib/prisma'
-import { getServerSession } from 'next-auth'
-import { getSession } from 'next-auth/react'
+import db from '@/lib/db'
+
 
 //Service that the constructor get a session id
 
@@ -12,7 +10,7 @@ export class CamapignsService {
   }
 
   async findMany(limit?: number, offset?: number) {
-    return prisma.campaign.findMany({
+    return db.campaign.findMany({
       where: {
         userId: this.sessionId!,
       },
@@ -34,7 +32,7 @@ export class CamapignsService {
 
   async findUnique(id: number) {
     const [campaign, stats] = await Promise.all([
-      prisma.campaign.findUniqueOrThrow({
+      db.campaign.findUniqueOrThrow({
         where: {
           id: parseInt(id.toString()),
         },
@@ -61,12 +59,12 @@ export class CamapignsService {
 
   async getStats(id: number) {
     const [postCount, creatorsCount, engagement] = await Promise.all([
-      prisma.post.count({
+      db.post.count({
         where: {
           campaignId: parseInt(id.toString()),
         },
       }),
-      prisma.post.groupBy({
+      db.post.groupBy({
         by: ['username'],
         where: {
           campaignId: parseInt(id.toString()),
@@ -75,7 +73,7 @@ export class CamapignsService {
           username: true,
         },
       }),
-      prisma.post.aggregate({
+      db.post.aggregate({
         where: {
           campaignId: parseInt(id.toString()),
         },

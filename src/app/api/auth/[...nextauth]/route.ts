@@ -4,7 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GithubProvider from 'next-auth/providers/github'
 import InstagramProvider from 'next-auth/providers/instagram'
 import FacebookProvider from 'next-auth/providers/facebook'
-import prisma from '@/lib/prisma'
+import db from '@/lib/db'
 import { compare } from 'bcrypt'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(db),
   session: {
     strategy: 'jwt',
   },
@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) return null
 
-        const user = await prisma.user.findUnique({
+        const user = await db.user.findUnique({
           where: { email: credentials.email },
         })
 
@@ -71,6 +71,39 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async session({ token, session }) {
+      if (token) {
+        session.user.id = token.id
+        session.user.name = token.name
+        session.user.email = token.email
+        session.user.image = token.picture
+      }
+
+      return session
+    },
+    async jwt({ token, user }) {
+      const dbUser = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      })
+
+      if (!dbUser) {
+        if (user) {
+          token.id = user?.id
+        }
+        return token
+      }
+
+      return {
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        picture: dbUser.image,
+      }
+    },
+  },
   // callbacks: {
   //   session: ({ session, token }) => {
   //     // console.log('Session Callback', { session, token })

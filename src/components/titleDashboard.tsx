@@ -10,7 +10,7 @@ const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 type Props = {
   title: string
-  user: User
+  user: any
 }
 
 export default function TitleDashboard({ title, user }: Props) {
