@@ -1,30 +1,26 @@
 'use client'
 
-import { inter, ptMono } from '@/app/fonts'
 import * as XLSX from 'xlsx'
-import ButtonGroup from '@/components/buttonsGroup'
-import OverviewCampaign from '@/components/overviewCampaign'
-import { Tab } from '@headlessui/react'
-import { campaign, post } from '@prisma/client'
-import { useState } from 'react'
-import Image from 'next/image'
-import imageCover from 'public/assets/register/creatorImg.jpg'
-import { Dialog } from '@headlessui/react'
-import AddNewPost from '@/components/modals/addPosts'
 import Link from 'next/link'
-import AddPostsModal from '@/components/modals/AddPostsModal'
+import { useState } from 'react'
+import { Tab } from '@headlessui/react'
+import { Dialog } from '@headlessui/react'
+import { inter, ptMono } from '@/app/fonts'
+import TopPost from '@/components/topPost'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
-import SettingsTab from '@/components/settingsTab'
-import ClientStat from '@/components/clientStat'
-import SinglePlatform from '@/components/stats/singlePlatform'
-import CampaignSocialStat from '@/components/stats/CampaignSocialStat'
-import RelationalTopPost from '@/components/relationalTopPost'
-import TopPost from '@/components/topPost'
-import TabsToShare from '@/components/tabsToShare'
-import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
+import { campaign, post } from '@prisma/client'
+import CreatorCard from '@/components/postCard'
 import CreatorRow from '@/components/creatorRow'
 import { excelToJson } from '@/utils/ExcelHelper'
+import ClientStat from '@/components/clientStat'
+import SettingsTab from '@/components/settingsTab'
+import TabsToShare from '@/components/tabsToShare'
+import OverviewCampaign from '@/components/overviewCampaign'
+import SinglePlatform from '@/components/stats/singlePlatform'
+import RelationalTopPost from '@/components/relationalTopPost'
+import CampaignSocialStat from '@/components/stats/CampaignSocialStat'
+import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
 
 type campaignWithStats = campaign & {
   posts: post[]
@@ -107,11 +103,6 @@ export default function CampaingTabs({
     }
   }
 
-  function isVideo(post: any) {
-    if (post.videoUrl) return true
-    return false
-  }
-
   return (
     <>
       <div className='flex w-full flex-wrap'>
@@ -180,114 +171,29 @@ export default function CampaingTabs({
               <div className='tab-content tab-space'>
                 <section className={openTab === 1 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
-                    <div
-                      className={`mb-4 flex w-full md:px-12 ${ptMono.className}`}>
-                      <div className='w-full'>
-                        <h4 className={`text-xm mb-4 ${inter.className}`}>
-                          Campaign brief
-                        </h4>
-                        <textarea
-                          readOnly
-                          value={campaign.description || ''}
-                          id='message'
-                          className={`${inter.className} block h-52 w-full rounded-lg border border-gray-300 bg-gray-50 p-8 text-sm text-gray-500 focus:border focus:border-gray-400 focus:outline-0`}
-                          placeholder='Brief of the campaign...'
-                        />
-                      </div>
-                      <div className='ml-8 w-full'>
-                        <h4 className={`text-xm mb-4 ml-4 ${inter.className}`}>
-                          Results
-                        </h4>
-                        <div className='m-4 flex '>
-                          <span className='rounded-full bg-normalRose px-6 py-2'>
-                            Creators: {creators}
-                          </span>
-                        </div>
-                        <div className='m-4 flex '>
-                          <span className='rounded-full bg-normalRose px-6 py-2'>
-                            Content: {content}
-                          </span>
-                        </div>
-                        <div className='m-4 flex '>
-                          <span className='rounded-full bg-normalRose px-6 py-2'>
-                            Aundience: {audience}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    <OverviewCampaign
+                      brief={campaign.description || ''}
+                      creators={creators}
+                      content={content}
+                      audience={audience}
+                      plays={1}
+                    />
+
                     <div className='pt-6'>
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
                         {campaign.posts.length > 0 &&
                           campaign.posts.map((card: post, index: any) => (
-                            <div
+                            <CreatorCard
                               key={index}
-                              className={`h-fit w-80 max-w-sm overflow-hidden rounded-2xl bg-cardBackground ${ptMono.className}`}>
-                              {!isVideo(card) && (
-                                <Image
-                                  priority
-                                  className={`h-64 rounded-2xl object-cover`}
-                                  src={card.imageUrl || imageCover}
-                                  alt='background'
-                                  width={0}
-                                  height={0}
-                                  sizes='100vw'
-                                  style={{ width: '100%', height: 'auto' }}
-                                />
-                              )}
-                              {isVideo(card) && (
-                                <video className={`rounded-2xl `} controls>
-                                  <source
-                                    src={card.videoUrl!}
-                                    type='video/mp4'
-                                  />
-                                </video>
-                              )}
-                              <div className='px-6 pt-6'>
-                                <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
-                                  @{card.username}
-                                </h4>
-                                <span className=' inline-flex h-6 w-full rounded text-center text-sm text-gray-500 '>
-                                  <svg
-                                    fill='none'
-                                    stroke='currentColor'
-                                    strokeWidth={1.5}
-                                    viewBox='0 0 30 30'
-                                    aria-hidden='true'>
-                                    <path
-                                      strokeLinecap='round'
-                                      strokeLinejoin='round'
-                                      d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
-                                    />
-                                  </svg>
-                                  {card.followersCount} followers
-                                </span>
-                                <div className='flex-grow border-t border-gray-200 pb-2'></div>
-                              </div>
-                              <div className='px-6 pb-2 '>
-                                {/* <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
-                              Views: {card.reachCount || 0}
-                            </span> */}
-                                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
-                                  Comments: {card.commentsCount || 0}
-                                </span>
-                                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
-                                  Likes: {card.likesCount || 0}
-                                </span>
-                                <div className='flex justify-end align-middle'>
-                                  <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    viewBox='0 0 20 20'
-                                    fill='gray'
-                                    className='h-6 w-6'>
-                                    <path
-                                      fillRule='evenodd'
-                                      d='M4.5 12a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm6 0a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm6 0a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z'
-                                      clipRule='evenodd'
-                                    />
-                                  </svg>
-                                </div>
-                              </div>
-                            </div>
+                              card={card}
+                              imageUrl={card.imageUrl}
+                              videoUrl={card.videoUrl}
+                              username={card.username}
+                              followersCount={card.followersCount}
+                              reachCount={card.reachCount}
+                              commentsCount={card.commentsCount}
+                              likesCount={card.likesCount}
+                            />
                           ))}
                         {campaign.posts.length === 0 && (
                           <>
@@ -295,6 +201,8 @@ export default function CampaingTabs({
                           </>
                         )}
                       </div>
+                    </div>
+                    <div className='pt-6'>
                       <button
                         className='ml-12 mt-12 rounded-full bg-green-200 px-8 py-2'
                         onClick={() => setIsOpen(true)}>
