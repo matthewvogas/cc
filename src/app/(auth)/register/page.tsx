@@ -1,8 +1,10 @@
-import Image from 'next/image'
-import registerBg from 'public/assets/register/register-bg.jpg'
-import { Sen } from 'next/font/google'
 import Link from 'next/link'
+import Image from 'next/image'
+import { ptMono } from '@/app/fonts'
+import { Sen } from 'next/font/google'
 import { RegisterForm } from './registerForm'
+import logo from 'public/assets/register/LogoSVG.svg'
+import registerBg from 'public/assets/register/login.jpg'
 
 const sen = Sen({ weight: '700', subsets: ['latin'] })
 export default function RegisterPage() {
@@ -10,22 +12,20 @@ export default function RegisterPage() {
     <section className='relative flex h-screen w-screen items-center justify-center'>
       <Image
         priority
-        className='absolute -z-20 h-full w-full object-cover object-center brightness-50'
+        className='absolute -z-20 h-full w-full object-cover object-center '
         src={registerBg}
         alt='background'
         fill
       />
 
       <div className='flex w-[500px] flex-col items-center justify-center gap-4  p-10 text-center text-white '>
-        <div className='flex flex-col gap-4'>
-          <h1 className={` ${sen.className} text-7xl font-bold text-primary`}>
-            codecoco
-          </h1>
-          <p className='text-lg text-white'>create your account</p>
+        <div className={`flex flex-col gap-4 ${ptMono.className}`}>
+          <Image priority className=' h-auto w-[400px]' src={logo} alt='' />
+          <p className='mb-12 text-lg text-white'>create your account</p>
         </div>
         <RegisterForm />
 
-        <div className='divider' />
+        <div className='my-7 h-px w-full rounded-r-full bg-white opacity-50'></div>
 
         <p>
           already have an account?{' '}
