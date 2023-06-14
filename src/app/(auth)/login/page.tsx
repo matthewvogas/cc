@@ -19,8 +19,7 @@ export default function LoginPage() {
       />
 
       <div className='flex w-[550px] flex-col items-center justify-center gap-4  p-10 text-center text-white '>
-        <div
-          className={`flex flex-col items-center justify-center gap-1 ${ptMono.className}`}>
+        <div className={`flex flex-col gap-4 ${ptMono.className}`}>
           <Image priority className=' h-auto w-[400px]' src={logo} alt='' />
           <p className='mb-12 text-lg text-white'>be a better influence</p>
         </div>

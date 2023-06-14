@@ -4,6 +4,7 @@ import Spinner from '@/components/ui/spinner'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
+import { ptMono } from '@/app/fonts'
 
 export const RegisterForm = () => {
   const router = useRouter()
@@ -39,11 +40,11 @@ export const RegisterForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className='flex flex-col items-center justify-center gap-4'>
+      className={`flex w-full flex-col justify-center ${ptMono.className}`}>
       <input
         type='text'
         placeholder='username or email'
-        className='input input-lg w-full bg-opacity-40  pl-10 placeholder-white '
+        className='input  mb-4 h-14 w-full  bg-opacity-25 pl-10 placeholder-white '
         value={email}
         onChange={e => setEmail(e.target.value)}
         required
@@ -53,7 +54,7 @@ export const RegisterForm = () => {
         placeholder='name'
         value={name}
         onChange={e => setName(e.target.value)}
-        className='input input-lg w-full  bg-opacity-40 pl-10 placeholder-white'
+        className='input  mb-4 h-14 w-full  bg-opacity-25 pl-10 placeholder-white'
         required
       />
       <input
@@ -62,17 +63,17 @@ export const RegisterForm = () => {
         autoComplete='password'
         value={password}
         onChange={e => setPassword(e.target.value)}
-        className='input input-lg w-full  bg-opacity-40 pl-10 placeholder-white'
+        className='input  mb-4 h-14 w-full  bg-opacity-25 pl-10 placeholder-white'
         required
       />
-      <div className='flex flex-row items-center justify-center gap-2 px-2 py-8'>
+      <div className='flex items-center justify-center gap-2 px-2 py-8'>
         <input
           id='terms'
           name='terms'
           type='checkbox'
           className='checkbox rounded-md bg-white bg-opacity-50'
         />
-        <label htmlFor='terms'>
+        <label className='ml-4 text-left text-sm' htmlFor='terms'>
           by creating an account, you accept our terms and conditions.
         </label>
       </div>
@@ -98,7 +99,7 @@ export const RegisterForm = () => {
       <button
         disabled={loading}
         type='submit'
-        className='btn-secondary btn-lg btn w-full lowercase'>
+        className=' h-14 w-full rounded-full bg-loginButtons lowercase text-black'>
         {loading ? (
           <Spinner width='w-4' height='h-4' border='border-2' />
         ) : (
