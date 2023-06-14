@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import axios from 'axios'
 import useClients from '@/hooks/useClients'
+import TitlePage from '../titlePage'
 
 export default function ClientsDashBoard({ clientsFallback }: any) {
   const { clients, areClientsLoading, clientsError, refreshClients } =
@@ -35,22 +36,18 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
 
   return (
     <>
+      <TitlePage
+        title={'Clients'}
+        moduleText={'clients'}
+        client={''}
+        createClient={setIsOpen}
+        createCampaign={null}
+      />
+
       <div className='flex flex-col gap-4 bg-white'>
-        <div className='w-full pt-20 '>
-          <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
-            <div className='flex w-full  flex-row justify-between'>
-              <h3 className={`text-2xl font-semibold text-gray-800  `}>
-                Clients
-              </h3>
-              <button
-                className='flex rounded-full bg-green-200 px-8 py-2 text-lg'
-                onClick={() => setIsOpen(true)}>
-                add a client
-              </button>
-            </div>
-          </div>
-          <div className='divider' />
-        </div>
+        <label className='italic md:px-12' htmlFor=''>
+          lastest
+        </label>
         <div className=' flex  flex-wrap gap-4 md:px-12'>
           {clients.map((card: any, index: any) => (
             <Link

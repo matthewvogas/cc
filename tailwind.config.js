@@ -25,6 +25,7 @@ module.exports = {
         beigeTransparent: '#F1F0ED',
         blackStat: '#413F3B',
         loginButtons: '#FACEBC',
+        roseButtons: '#F9DACE',
       },
     },
   },

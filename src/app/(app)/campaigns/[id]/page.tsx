@@ -4,6 +4,7 @@ import { CamapignsService } from '@/services/CampaignsService'
 import ButtonsGroupTabs from '@/components/buttonsGroupTabs'
 import { ptMono } from '@/app/fonts'
 import CampaingsTabs from '@/components/tabs/CampaingTabs'
+import TitlePage from '@/components/titlePage'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,24 +23,15 @@ export default async function CampaignPage({
 
     return (
       <div className='flex flex-col items-center justify-center'>
-        <div className='w-full pt-20 '>
-          <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
-            <div className='w-full'>
-              <h3
-                className={`pb-8 align-middle text-3xl font-semibold text-gray-800 `}>
-                {campaign?.name}
-              </h3>
+        <TitlePage
+          title={String(campaign?.name)}
+          moduleText={'singleCampaign'}
+          client={String(campaign?.client?.name)}
+          createClient={null}
+          createCampaign={null}
+        />
 
-              <div className={`flex items-center justify-between`}>
-                <label
-                  className={`rounded-full bg-background px-8 py-1 text-sm text-black ${ptMono.className}`}>
-                  {campaign?.client?.name}
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className='divider' />
-        </div>
+        <div className='divider' />
         <CampaingsTabs campaign={campaign} />
       </div>
     )
