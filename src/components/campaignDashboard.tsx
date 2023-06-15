@@ -47,7 +47,7 @@ export default function DashboardCampaign({ campaignsFallback }: Props) {
   const postData = campaigns || creatorCards
 
   return (
-    <div className='mb-8 content-start gap-x-6 gap-y-8 overflow-auto whitespace-nowrap px-14 '>
+    <div className='min-w-full overflow-auto whitespace-nowrap pl-14'>
       {postData.map(
         (
           card: campaign & {
