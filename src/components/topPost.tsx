@@ -2,6 +2,8 @@ import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/TopPost.jpg'
 import { post } from '@prisma/client'
+import { isMp4, isVideo } from '@/utils/ValidationsHelper'
+import Link from 'next/link'
 
 // Fonts
 
@@ -48,15 +50,32 @@ export default function TopPost({ posts }: { posts: post[] }) {
         <div
           key={index}
           className={`h-fit w-96 max-w-sm overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>
-          <div className='flex h-96 flex-col justify-between bg-rose-100 p-6'>
-            <h4 className='mb-2 self-baseline rounded-xl bg-white px-4 py-3 text-base opacity-80 '>
+          <div className='flex h-96 flex-col justify-between bg-white'>
+            <h4 className='absolute z-10 ml-4 mt-4 rounded-xl bg-white px-4 py-3 text-base opacity-80 '>
               @{card.username}
             </h4>
 
-            {/* <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p> */}
+            {!isVideo(card) && (
+              <Image
+                priority
+                className={`h-96 w-full  object-cover`}
+                src={card.imageUrl || imageCover}
+                alt='background'
+                width={0}
+                height={0}
+                sizes='100vw'
+                style={{ width: '100%', height: 'auto' }}
+                unoptimized
+              />
+            )}
+            {isVideo(card) && (
+              <video className={` h-96 w-full object-cover `} controls>
+                <source src={card.videoUrl || undefined} type='video/mp4' />
+              </video>
+            )}
+            {/* <p className='truncate z-10 absolute mt-80 '>
+                {card.caption}
+              </p> */}
           </div>
 
           <div className='flex gap-4 px-6 pt-6'>
@@ -70,9 +89,11 @@ export default function TopPost({ posts }: { posts: post[] }) {
           </div>
           <div className='px-6 pb-2 '>
             <div className='flex justify-end align-middle'>
-              <span className='mb-2 mr-2 mt-4 inline-block py-1 pr-2 text-sm font-semibold italic text-gray-700'>
+              <Link
+                href={String(card.permalink)}
+                className='mb-2 mr-2 mt-4 inline-block py-1 pr-2 text-sm font-semibold italic text-gray-700'>
                 view more
-              </span>
+              </Link>
             </div>
           </div>
         </div>
