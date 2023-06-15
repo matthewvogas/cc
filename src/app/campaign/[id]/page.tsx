@@ -10,10 +10,9 @@ export default async function shareCampaign({
 }) {
   const { id } = params
 
-
   const campaign = await db.campaign.findUnique({
     where: {
-      id : Number(id),
+      id: Number(id),
     },
     select: {
       id: true,
@@ -29,9 +28,9 @@ export default async function shareCampaign({
         select: {
           creators: true,
           posts: true,
-        }
-      }
-    }
+        },
+      },
+    },
   })
 
   return (
@@ -62,8 +61,8 @@ export default async function shareCampaign({
         <div className='pt-6'>
           <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
             {campaign!.posts.map((post: post, index: any) => (
-                          <PostCard key={index} post={post} />
-                        ))}
+              <PostCard key={index} post={post} />
+            ))}
           </div>
         </div>
       </div>
