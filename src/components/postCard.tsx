@@ -20,6 +20,7 @@ export default function PostCard({ post }: { post: post }) {
           height={0}
           sizes='100vw'
           style={{ width: '100%', height: 'auto' }}
+          unoptimized
         />
       )}
       {isVideo(post) && (
