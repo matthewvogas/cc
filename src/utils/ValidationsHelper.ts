@@ -8,6 +8,5 @@ export function isVideo(post: any) {
   return false
 }
 
-
 export const fetcher = (...args: Parameters<typeof fetch>) =>
-    fetch(...args).then(res => res.json())
+  fetch(...args).then(res => res.json())

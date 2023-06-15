@@ -236,7 +236,7 @@ export default function CampaingTabs({
                           {`👤 1 Creators`}
                         </p>
                         <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
-                          {`📝 ${campaign.posts.length} Posts`}                    
+                          {`📝 ${campaign.posts.length} Posts`}
                         </p>
                       </div>
                       {/* <p className='my-8 italic'>by platform</p>

@@ -37,8 +37,10 @@ const creatorCards = [
   },
 ]
 
-export default function TopPost({posts}: {posts: post[]}) {
-  const postData = posts.sort((a, b) => b.likesCount! - a.likesCount!).slice(0, 4) ||  creatorCards
+export default function TopPost({ posts }: { posts: post[] }) {
+  const postData =
+    posts.sort((a, b) => b.likesCount! - a.likesCount!).slice(0, 4) ||
+    creatorCards
 
   return (
     <div className='md-12 flex gap-x-6 gap-y-8 overflow-scroll'>

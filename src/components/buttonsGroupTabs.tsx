@@ -90,7 +90,13 @@ const Tabs = ({ posts }: any) => {
               <div className='tab-content tab-space'>
                 <div className={openTab === 1 ? 'block' : 'hidden'} id='link1'>
                   <div className='pt-6'>
-                    <OverviewCampaign audience={50} brief='XD' content={69} creators={80} plays={50} />
+                    <OverviewCampaign
+                      audience={50}
+                      brief='XD'
+                      content={69}
+                      creators={80}
+                      plays={50}
+                    />
                   </div>
 
                   <ButtonGroup title={'Grid'} />
