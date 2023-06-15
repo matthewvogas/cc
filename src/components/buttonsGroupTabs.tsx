@@ -18,12 +18,9 @@ import SinglePlatform from './stats/singlePlatform'
 import CampaignSocialStat from './stats/CampaignSocialStat'
 import DashboardCampaign from './campaignDashboard'
 import ClientStat from './clientStat'
+import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 
 const Tabs = ({ posts }: any) => {
-  function isVideo(post: any) {
-    if (post.videoUrl) return true
-    return false
-  }
   const [openTab, setOpenTab] = React.useState(1)
   return (
     <>
@@ -93,7 +90,7 @@ const Tabs = ({ posts }: any) => {
               <div className='tab-content tab-space'>
                 <div className={openTab === 1 ? 'block' : 'hidden'} id='link1'>
                   <div className='pt-6'>
-                    <OverviewCampaign />
+                    <OverviewCampaign audience={50} brief='XD' content={69} creators={80} plays={50} />
                   </div>
 
                   <ButtonGroup title={'Grid'} />
@@ -211,7 +208,7 @@ const Tabs = ({ posts }: any) => {
                         <CampaignSocialStat />
                       </div>
 
-                      <TopPost />
+                      {/* <TopPost  /> */}
 
                       <p className='mb-8 mt-12'>
                         Creators who drive the most views

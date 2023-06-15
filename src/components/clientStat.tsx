@@ -4,9 +4,9 @@ const statStyle = 'px-6 py-4 bg-green-50 rounded-lg w-44'
 // Arrays
 const buttons = [
   {
-    icon: '🥥',
-    value: '5',
-    label: 'campaigns',
+    icon: '👤',
+    value: '1',
+    label: 'creators',
   },
 ]
 

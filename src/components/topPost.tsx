@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/TopPost.jpg'
+import { post } from '@prisma/client'
 
 // Fonts
 
@@ -36,12 +37,12 @@ const creatorCards = [
   },
 ]
 
-export default function TopPost() {
-  const postData = creatorCards
+export default function TopPost({posts}: {posts: post[]}) {
+  const postData = posts.sort((a, b) => b.likesCount! - a.likesCount!).slice(0, 4) ||  creatorCards
 
   return (
     <div className='md-12 flex gap-x-6 gap-y-8 overflow-scroll'>
-      {postData.map((card: any, index: any) => (
+      {postData.map((card: post, index: any) => (
         <div
           key={index}
           className={`h-fit w-96 max-w-sm overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>
@@ -50,18 +51,18 @@ export default function TopPost() {
               @{card.username}
             </h4>
 
-            <p>
+            {/* <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+            </p> */}
           </div>
 
           <div className='flex gap-4 px-6 pt-6'>
             <h4 className=' mb-2 rounded-full bg-white px-4 py-3 text-base'>
-              {card.views} views
+              {card.reachCount} views
             </h4>
             <h4 className=' mb-2 rounded-full bg-white px-4 py-3 text-base'>
-              {card.likes} likes
+              {card.likesCount} likes
             </h4>
             <div className='flex-grow border-t border-gray-200 pb-2'></div>
           </div>

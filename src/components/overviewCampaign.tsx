@@ -5,7 +5,7 @@ const fallbackDescription =
   'With Rosalind was enlisted to help with the promotion of the LOreal Paris Telescopic Mascara. To achieve this we selected 300 Gen Z, Millennials, Gen X and baby boomers content creators from our platform with a TikTok following of 10k + to take part in this campaign.\n \nIn exchange for gifted product content creator followed the L’Oreal Paris brief, each creating professional content made up of Instagram Re....'
 
 export default function OverviewCampaign(props: {
-  brief: any
+  brief: string
   creators: number
   content: number
   audience: number

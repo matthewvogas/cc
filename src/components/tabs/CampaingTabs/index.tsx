@@ -182,18 +182,8 @@ export default function CampaingTabs({
                     <div className='pt-6'>
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
                         {campaign.posts.length > 0 &&
-                          campaign.posts.map((card: post, index: any) => (
-                            <CreatorCard
-                              key={index}
-                              card={card}
-                              imageUrl={card.imageUrl}
-                              videoUrl={card.videoUrl}
-                              username={card.username}
-                              followersCount={card.followersCount}
-                              reachCount={card.reachCount}
-                              commentsCount={card.commentsCount}
-                              likesCount={card.likesCount}
-                            />
+                          campaign.posts.map((post: post, index: any) => (
+                            <CreatorCard key={index} post={post} />
                           ))}
                         {campaign.posts.length === 0 && (
                           <>
@@ -216,40 +206,46 @@ export default function CampaingTabs({
                   <CreatorRow />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
-                  <FeatureNotImplemented />
+                  <div className='pt-6'>
+                    <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
+                      {campaign.posts.length > 0 &&
+                        campaign.posts.map((post: post, index: any) => (
+                          <CreatorCard key={index} post={post} />
+                        ))}
+                      {campaign.posts.length === 0 && (
+                        <>
+                          <h1>{`Seems like you dont have posts! :(`}</h1>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className='pt-6'>
+                    <button
+                      className='ml-12 mt-12 rounded-full bg-green-200 px-8 py-2'
+                      onClick={() => setIsOpen(true)}>
+                      Add posts
+                    </button>
+                  </div>
                 </div>
                 <div className={openTab === 4 ? 'block' : 'hidden'}>
                   <div className='flex gap-8'>
                     <div className='w-96 px-12'>
-                      <FeatureNotImplemented />
                       <p className='my-8 text-xl font-bold'>Stats</p>
                       <div className='flex flex-col gap-4'>
-                        <ClientStat />
-                        <ClientStat />
+                        <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
+                          {`👤 1 Creators`}
+                        </p>
+                        <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
+                          {`📝 ${campaign.posts.length} Posts`}                    
+                        </p>
                       </div>
-                      <p className='my-8 italic'>by platform</p>
-                      <SinglePlatform />
+                      {/* <p className='my-8 italic'>by platform</p>
+                      <SinglePlatform /> */}
                     </div>
                     <div className=''>
-                      <div className='h-96'></div>
-
                       <p className='mb-8 mt-12'>Top posts by views</p>
-
-                      <div className='flex gap-6'>
-                        <CampaignSocialStat />
-                        <CampaignSocialStat />
-                        <CampaignSocialStat />
-                      </div>
-
-                      <TopPost />
-
-                      <p className='mb-8 mt-12'>
-                        Creators who drive the most views
-                      </p>
-
-                      <RelationalTopPost />
+                      <TopPost posts={campaign.posts} />
                     </div>
-                    f
                   </div>
                 </div>
                 <div className={openTab === 5 ? 'block' : 'hidden'}>
