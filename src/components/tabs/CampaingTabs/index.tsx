@@ -10,7 +10,7 @@ import TopPost from '@/components/topPost'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
 import { campaign, post } from '@prisma/client'
-import CreatorCard from '@/components/postCard'
+import PostCard from '@/components/postCard'
 import CreatorRow from '@/components/creatorRow'
 import { excelToJson } from '@/utils/ExcelHelper'
 import ClientStat from '@/components/clientStat'
@@ -33,7 +33,6 @@ type campaignWithStats = campaign & {
     }
   }
 }
-
 export default function CampaingTabs({
   campaign,
 }: {
@@ -183,7 +182,7 @@ export default function CampaingTabs({
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
                         {campaign.posts.length > 0 &&
                           campaign.posts.map((post: post, index: any) => (
-                            <CreatorCard key={index} post={post} />
+                            <PostCard key={index} post={post} />
                           ))}
                         {campaign.posts.length === 0 && (
                           <>
@@ -210,7 +209,7 @@ export default function CampaingTabs({
                     <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
                       {campaign.posts.length > 0 &&
                         campaign.posts.map((post: post, index: any) => (
-                          <CreatorCard key={index} post={post} />
+                          <PostCard key={index} post={post} />
                         ))}
                       {campaign.posts.length === 0 && (
                         <>
@@ -249,7 +248,7 @@ export default function CampaingTabs({
                   </div>
                 </div>
                 <div className={openTab === 5 ? 'block' : 'hidden'}>
-                  <TabsToShare />
+                  <TabsToShare campaignId={campaign.id} />
                 </div>
                 <div className={openTab === 6 ? 'block' : 'hidden'}>
                   <SettingsTab campaign={campaign} />

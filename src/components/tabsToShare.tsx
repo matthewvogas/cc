@@ -4,6 +4,7 @@ import Image from 'next/image'
 import prev from 'public/assets/register/GridExample.jpg'
 import { PT_Mono } from 'next/font/google'
 import FeatureNotImplemented from './ui/featureNotImplemented'
+import Link from 'next/link'
 
 // Fonts
 const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
@@ -12,15 +13,26 @@ const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 const ActionButtonStyle =
   'flex w-full text-xm justify-center border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 cursor-pointer '
 
-const Tabs = ({}) => {
+export default function TabsToShare(props: { campaignId: any }) {
   const [openTab, setOpenTab] = React.useState(1)
+  const [codeToCopy, setcodeToCopy] = React.useState('')
+
+  const js = ''
+  const html =
+    '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
+    '<iframe src="http://dev.codecoco.co/campaign/' +
+    props.campaignId +
+    '"' +
+    ' height="200" width="300"></iframe>' +
+    '</body> </html>'
+  const iframe =
+    '<iframe src="http://dev.codecoco.co/campaign/' +
+    props.campaignId +
+    ' height="200" width="300"></iframe>'
   return (
     <>
       <div className='flex w-full flex-wrap  '>
         <div className='w-full'>
-          <div className='md:pl-20'>
-            <FeatureNotImplemented />
-          </div>
           <h5 className='bg-beigeFirst pb-4 pt-8 text-3xl font-bold md:px-20'>
             Sharing options
           </h5>
@@ -78,9 +90,12 @@ const Tabs = ({}) => {
             </li>
 
             <li className='-mb-px mr-2 flex flex-auto items-center text-center last:mr-0'>
-              <label className={`${ActionButtonStyle}`}>
+              <Link
+                href={'/campaign/' + props.campaignId}
+                target='_blank'
+                className={`${ActionButtonStyle}`}>
                 view live campaign
-              </label>
+              </Link>
             </li>
           </ul>
 
@@ -97,6 +112,9 @@ const Tabs = ({}) => {
                       className='mb-2 w-full rounded-xl px-5 py-3 focus:outline-none'
                       placeholder='https://campaign.codecoco.co/349500'
                       type='text'
+                      value={
+                        'http://dev.codecoco.co/campaign/' + props.campaignId
+                      }
                     />
                   </div>
 
@@ -190,13 +208,21 @@ const Tabs = ({}) => {
                   className={openTab === 2 ? 'mb-4 block' : 'hidden'}
                   id='link2'>
                   <div className='flex '>
-                    <button className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                    <button
+                      onClick={event => {
+                        setcodeToCopy(iframe)
+                      }}
+                      className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
                       iframe
                     </button>
-                    <button className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                    {/* <button onClick={(event)=> {setcodeToCopy(js)}} className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
                       javascript
-                    </button>
-                    <button className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                    </button> */}
+                    <button
+                      onClick={event => {
+                        setcodeToCopy(html)
+                      }}
+                      className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
                       HTML y CSS
                     </button>
                   </div>
@@ -209,6 +235,8 @@ const Tabs = ({}) => {
                       <textarea
                         placeholder='<<<<<'
                         className=' h-full w-full select-all resize-none rounded-xl bg-gray-100 p-6 outline-none'
+                        defaultValue={codeToCopy}
+                        readOnly
                       />
                     </div>
 
@@ -219,9 +247,6 @@ const Tabs = ({}) => {
                         src={prev}
                         alt={'prev'}
                       />
-                      <button className=' text-xm mr-4 self-end rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
-                        view live campaign
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -230,14 +255,6 @@ const Tabs = ({}) => {
           </div>
         </div>
       </div>
-    </>
-  )
-}
-
-export default function TabsToShare() {
-  return (
-    <>
-      <Tabs />
     </>
   )
 }

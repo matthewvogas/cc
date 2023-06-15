@@ -90,6 +90,7 @@ export default function TopPost({ posts }: { posts: post[] }) {
           <div className='px-6 pb-2 '>
             <div className='flex justify-end align-middle'>
               <Link
+                target='_blank'
                 href={String(card.permalink)}
                 className='mb-2 mr-2 mt-4 inline-block py-1 pr-2 text-sm font-semibold italic text-gray-700'>
                 view more
