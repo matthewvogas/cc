@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import axios from 'axios'
+
 import { Client, campaign } from '@prisma/client'
 import useCampaigns from '@/hooks/useCampaigns'
 import useClients from '@/hooks/useClients'
@@ -35,10 +35,16 @@ export default function CampaignsDashBoard({
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const res = await axios.post('/api/campaigns', {
-        name,
-        description,
-        clientId,
+      const res = await fetch('/api/campaigns', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          clientId,
+        }),
       })
 
       if (res.status === 200) refreshCampaigns()

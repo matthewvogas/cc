@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import axios from 'axios'
+
 import useClients from '@/hooks/useClients'
 import TitlePage from '../titlePage'
 
@@ -22,8 +22,14 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const res = await axios.post('/api/clients', {
-        name,
+      const res = await fetch('/api/clients', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+        }),
       })
 
       if (res.status === 200) refreshClients()

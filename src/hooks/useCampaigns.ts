@@ -1,9 +1,9 @@
 import { fetcher } from '@/utils/ValidationsHelper'
 import useSWR from 'swr'
 
-export default function useCampaigns(fallbackData: any) {
+export default function useCampaigns(fallbackData?: any) {
   const { data, error, mutate, isLoading } = useSWR('/api/campaigns', fetcher, {
-    fallbackData,
+    fallbackData: fallbackData || [],
   })
 
   return {

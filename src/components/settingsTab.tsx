@@ -1,7 +1,8 @@
 import { inter } from '@/app/fonts'
 import { ptMono } from '@/app/fonts'
+import { fetcher } from '@/utils/ValidationsHelper'
 import { campaign } from '@prisma/client'
-import axios from 'axios'
+
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -15,15 +16,22 @@ export default function SettingsTab({ campaign }: { campaign: campaign }) {
   const handleEdit = async (e: any) => {
     e.preventDefault()
     try {
-      const res = await axios.put('/api/campaigns', {
-        name,
-        description,
-        id: campaign.id,
+      const res = await fetch('/api/campaigns', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          id: campaign.id,
+        }),
       })
 
       if (res.status === 200) router.refresh()
-    } catch (error: any) {
-      setFetchError(error?.message)
+     
+      } catch (error: any) {
+        setFetchError(error?.message)
     }
   }
 
