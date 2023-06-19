@@ -29,9 +29,8 @@ export default function SettingsTab({ campaign }: { campaign: campaign }) {
       })
 
       if (res.status === 200) router.refresh()
-     
-      } catch (error: any) {
-        setFetchError(error?.message)
+    } catch (error: any) {
+      setFetchError(error?.message)
     }
   }
 
