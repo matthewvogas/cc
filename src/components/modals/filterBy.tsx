@@ -2,95 +2,63 @@ import { inter } from '@/app/fonts'
 import { ptMono } from '@/app/fonts'
 import React from 'react'
 
-// Fonts
-
-// Arrays
-const creator = [
-  {
-    username: 'username',
-    creatorName: 'Creator Name',
-  },
-  {
-    username: 'username',
-    creatorName: 'Creator Name',
-  },
-  {
-    username: 'username',
-    creatorName: 'Creator Name',
-  },
-  {
-    username: 'username',
-    creatorName: 'Creator Name',
-  },
-  {
-    username: 'username',
-    creatorName: 'Creator Name',
-  },
-  {
-    username: 'username',
-    creatorName: 'Creator Name',
-  },
-]
-
-// Show Arrays
-const creators = creator.map((creator, index) => (
-  <div
-    className='flex flex-col rounded-lg bg-beigeSelected px-8 py-2'
-    key={index}>
-    <label className=''>@{creator.username}</label>
-    <label className='text-sm'>{creator.creatorName}</label>
-  </div>
-))
-
-const title = [
-  {
-    label: 'Filter view by creator',
-  },
-  {
-    label: 'filter view by hashtag',
-  },
-]
-
-const image = ''
-
 export default function FilterBy() {
+  const creator = [
+    {
+      username: 'mvttheo',
+      creatorName: 'Creator Name',
+    },
+    {
+      username: 'stmbind',
+      creatorName: 'Creator Name',
+    },
+    {
+      username: 'sophia',
+      creatorName: 'Creator Name',
+    },
+  ]
+
+  const [searchValue, setsearchValue] = React.useState('')
+
+  const [creatorList, setCreator] = React.useState(creator)
+
+  const searchedCreators = creatorList.filter(creatorKey =>
+    creatorKey.username.toLowerCase().includes(searchValue.toLowerCase()),
+  )
+
   return (
     <div>
-      <label htmlFor='my-modal-3' className=''>
-        MODAL
-      </label>
-      <input type='checkbox' id='my-modal-3' className='modal-toggle' />
-      <div className='modal '>
-        <div className='modal-box relative flex max-w-3xl flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
-          <label
-            htmlFor='my-modal-3'
-            className='absolute right-4 top-2 cursor-pointer text-lg'>
-            ✕
-          </label>
-          <h3 className='mb-6 text-lg font-bold'>{title[1].label}</h3>
-          <div className={`w-full justify-start ${ptMono.className}`}>
-            <input
-              type='text'
-              id='default-input'
-              placeholder='Search'
-              className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-            />
-            <p className={`text-xm mb-4 pb-2 pt-6 ${inter.className}`}>
-              Select creators below to view only their posts
-            </p>
+      <div className={`w-full justify-start ${ptMono.className}`}>
+        <input
+          onChange={event => {
+            setsearchValue(event.target.value)
+          }}
+          type='text'
+          id='default-input'
+          placeholder='Search'
+          className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+        />
+        <p className={`text-xm mb-4 pb-2 pt-6 ${inter.className}`}>
+          Select creators below to view only their posts
+        </p>
 
-            <div className='flex flex-wrap justify-between gap-2'>
-              {creators}
+        <div className='flex flex-wrap justify-between gap-2'>
+          {searchedCreators.map(creatorKey => (
+            <div
+              className='flex flex-col rounded-lg bg-beigeSelected px-8 py-2'
+              key={creatorKey.username}>
+              <label className=''>@{creatorKey.username}</label>
+              <label className='text-sm'>{creatorKey.creatorName}</label>
             </div>
+          ))}
+        </div>
 
-            <hr className='my-8 h-px border-0 bg-gray-200'></hr>
+        <hr className='my-8 h-px border-0 bg-gray-200'></hr>
 
-            <div className='text-right'>
-              <button className='rounded-full bg-green-100 px-6 py-2 '>
-                filter
-              </button>
-            </div>
-          </div>
+        <div className='text-right'>
+          <button className='rounded-full bg-green-100 px-6 py-2 '>
+            filter
+          </button>
         </div>
       </div>
     </div>

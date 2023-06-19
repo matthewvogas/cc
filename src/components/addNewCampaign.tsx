@@ -11,7 +11,10 @@ const dropdownButton =
 const ActionButtonStyle =
   'flex bg-text-lg align-center items-center border-rose-100 inline-block py-2.5 px-8 mx-2 text-back font-medium h-12 bg-roseButtons rounded-full h- cursor-pointer'
 
-export default function AddNewCampaign(props: { createCampaign: any }) {
+export default function AddNewCampaign(props: {
+  createCampaign: any
+  campaignType: any
+}) {
   return (
     <>
       <div className='dropdown-end dropdown cursor-pointer '>
@@ -35,8 +38,19 @@ export default function AddNewCampaign(props: { createCampaign: any }) {
           className='dropdown-content menu rounded-box mr-4 mt-2 w-auto border-2  border-gray-100 bg-white p-2'>
           <button
             className={`${dropdownButton}`}
-            onClick={() => props.createCampaign(true)}>
+            onClick={() => {
+              props.createCampaign(true)
+              props.campaignType('new manual campaign')
+            }}>
             manual
+          </button>
+          <button
+            className={`${dropdownButton}`}
+            onClick={() => {
+              props.createCampaign(true)
+              props.campaignType('new hashtag campaign')
+            }}>
+            hashtag
           </button>
         </ul>
       </div>

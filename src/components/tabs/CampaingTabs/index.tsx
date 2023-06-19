@@ -21,6 +21,7 @@ import SinglePlatform from '@/components/stats/singlePlatform'
 import RelationalTopPost from '@/components/relationalTopPost'
 import CampaignSocialStat from '@/components/stats/CampaignSocialStat'
 import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
+import ManagePosts from '@/components/ManagePosts'
 
 type campaignWithStats = campaign & {
   posts: post[]
@@ -178,6 +179,8 @@ export default function CampaingTabs({
                       plays={1}
                     />
 
+                    <ManagePosts addPost={setIsOpen} />
+
                     <div className='pt-6'>
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
                         {campaign.posts.length > 0 &&
@@ -190,13 +193,6 @@ export default function CampaingTabs({
                           </>
                         )}
                       </div>
-                    </div>
-                    <div className='pt-6'>
-                      <button
-                        className='ml-12 mt-12 rounded-full bg-green-200 px-8 py-2'
-                        onClick={() => setIsOpen(true)}>
-                        Add posts
-                      </button>
                     </div>
                   </div>
                 </section>
@@ -217,13 +213,6 @@ export default function CampaingTabs({
                         </>
                       )}
                     </div>
-                  </div>
-                  <div className='pt-6'>
-                    <button
-                      className='ml-12 mt-12 rounded-full bg-green-200 px-8 py-2'
-                      onClick={() => setIsOpen(true)}>
-                      Add posts
-                    </button>
                   </div>
                 </div>
                 <div className={openTab === 4 ? 'block' : 'hidden'}>
