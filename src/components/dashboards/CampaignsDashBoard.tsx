@@ -25,6 +25,7 @@ export default function CampaignsDashBoard({
   const { clients, areClientsLoading, clientsError, refreshClients } =
     useClients(clientsFallback)
 
+  const [title, setTitle] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -55,7 +56,7 @@ export default function CampaignsDashBoard({
         moduleText={'campaigns'}
         client={''}
         createClient={null}
-        createCampaign={setIsOpen}
+        createCampaign={[setIsOpen, setTitle]}
       />
 
       <div className='flex flex-col gap-4 bg-white pt-12'>
@@ -94,9 +95,7 @@ export default function CampaignsDashBoard({
         <div className='fixed inset-0 flex items-center justify-center p-4'>
           {/* The actual dialog panel  */}
           <Dialog.Panel className='flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
-            <Dialog.Title className='text-lg font-bold'>
-              Add New Manual Campaign
-            </Dialog.Title>
+            <Dialog.Title className='text-lg font-bold'>{title}</Dialog.Title>
             <form
               onSubmit={handleCreate}
               className={`w-full justify-start ${ptMono.className}`}>

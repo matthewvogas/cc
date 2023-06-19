@@ -14,7 +14,11 @@ const ActiveLabel =
 const InActiveLabel =
   'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-lg '
 
-const campaigns = (title: string, createCampaign: any) => {
+const campaigns = (
+  title: string,
+  createCampaign: any,
+  createCampaignModal: any,
+) => {
   return (
     <>
       <h3 className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
@@ -22,7 +26,10 @@ const campaigns = (title: string, createCampaign: any) => {
       </h3>
       <div className={`flex ${ptMono.className}`}>
         <CampaignFilter />
-        <AddNewCampaign createCampaign={createCampaign} />
+        <AddNewCampaign
+          createCampaign={createCampaign}
+          campaignType={createCampaignModal}
+        />
       </div>
     </>
   )
@@ -121,7 +128,7 @@ export default function TitlePage(props: {
       case 'singleCampaign':
         return singleCampaign(title, client)
       case 'campaigns':
-        return campaigns(title, createCampaign)
+        return campaigns(title, createCampaign[0], createCampaign[1])
       default:
         break
     }
