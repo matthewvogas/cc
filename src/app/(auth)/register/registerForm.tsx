@@ -1,5 +1,8 @@
 'use client'
 
+import Image from 'next/image'
+import InstagramIcon from 'public/assets/register/InstagramRegister.svg'
+import TikTokIcon from 'public/assets/register/TikTokRegister.svg'
 import Spinner from '@/components/ui/spinner'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -78,7 +81,7 @@ export const RegisterForm = () => {
         </label>
       </div>
       {callbackError && (
-        <div className='alert alert-error flex flex-col justify-center shadow-lg'>
+        <div className='mb-4 flex h-14 w-full flex-col items-center justify-center rounded-full bg-red-400 shadow-lg'>
           <div className='flex flex-row gap-4'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -96,16 +99,28 @@ export const RegisterForm = () => {
           </div>
         </div>
       )}
-      <button
-        disabled={loading}
-        type='submit'
-        className=' h-14 w-full rounded-full bg-loginButtons lowercase text-black'>
-        {loading ? (
-          <Spinner width='w-4' height='h-4' border='border-2' />
-        ) : (
-          'create your account'
-        )}
-      </button>
+
+      <div className='flex flex-col items-center justify-center gap-3'>
+        <button
+          disabled={loading}
+          type='submit'
+          className=' h-14 w-full rounded-full bg-loginButtons lowercase text-black'>
+          {loading ? (
+            <Spinner width='w-4' height='h-4' border='border-2' />
+          ) : (
+            'create your account'
+          )}
+        </button>
+        <div className='flex w-full gap-5'>
+          <button className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
+            <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
+          </button>
+          {/* <button
+            className=' flex w-full h-14 justify-center items-center rounded-full border border-white hover:text-black hover:opacity-80  '>
+            <Image className={`w-8 mr-4`} src={TikTokIcon} alt={''} />
+          </button> */}
+        </div>
+      </div>
     </form>
   )
 }

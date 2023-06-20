@@ -26,6 +26,8 @@ module.exports = {
         blackStat: '#413F3B',
         loginButtons: '#FACEBC',
         roseButtons: '#F9DACE',
+        beigePlan: '#F2EDE7',
+        greenPlan: '#E6F6EF',
       },
     },
   },
