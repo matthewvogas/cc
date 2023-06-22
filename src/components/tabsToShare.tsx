@@ -115,6 +115,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                       value={
                         'http://dev.codecoco.co/campaign/' + props.campaignId
                       }
+                      readOnly
                     />
                   </div>
 
@@ -235,7 +236,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                       <textarea
                         placeholder='<<<<<'
                         className=' h-full w-full select-all resize-none rounded-xl bg-gray-100 p-6 outline-none'
-                        defaultValue={codeToCopy}
+                        value={codeToCopy}
                         readOnly
                       />
                     </div>
