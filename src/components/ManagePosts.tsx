@@ -26,6 +26,10 @@ export default function ManagePosts(props: { addPost: any }) {
     handleDisplay(true)
   }
 
+  const openCreateCard = () => {
+    props.addPost(true)
+  }
+
   const manageType = (key: any) => {
     switch (key) {
       case 'hashtag':
@@ -101,7 +105,7 @@ export default function ManagePosts(props: { addPost: any }) {
           </div>
           <div className='flex gap-6'>
             <button
-              // onClick={props.addPost(true)}
+              onClick={openCreateCard}
               className={`mx-2 flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
               add a post
               <svg

@@ -17,6 +17,7 @@ function TagsInput({ tags, setTags }: Props) {
     setTags([...tags, value])
     // Clear the input
     e.target.value = ''
+    e.preventDefault()
   }
 
   function removeTag(index: any) {
@@ -24,7 +25,7 @@ function TagsInput({ tags, setTags }: Props) {
   }
 
   return (
-    <div className='max-w-600 mt-4 flex w-min flex-wrap items-center gap-2 rounded-md border-2 border-black p-2'>
+    <div className='max-w-600 mt-4 flex w-min flex-wrap items-center gap-2 rounded-2xl border border-gray-300 bg-gray-50 p-3  text-sm text-gray-900 outline-none   '>
       {tags.map((tag, index) => (
         <div
           className='flex items-center gap-1 rounded-full bg-gray-200 px-2 py-1'
