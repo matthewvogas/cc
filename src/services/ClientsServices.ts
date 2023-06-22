@@ -15,6 +15,7 @@ export class ClientsService {
         createdAt: 'desc',
       },
       include: {
+        tags: true,
         _count: {
           select: {
             campaigns: true,
@@ -34,6 +35,7 @@ export class ClientsService {
       },
       include: {
         campaigns: true,
+        tags: true,
         _count: {
           select: { campaigns: true },
         },

@@ -10,11 +10,13 @@ import { Dialog } from '@headlessui/react'
 
 import useClients from '@/hooks/useClients'
 import TitlePage from '../titlePage'
+import TagsInput from '../TagsInput'
 
 export default function ClientsDashBoard({ clientsFallback }: any) {
   const { clients, areClientsLoading, clientsError, refreshClients } =
     useClients(clientsFallback)
 
+  const [tags, setTags] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
@@ -29,6 +31,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
         },
         body: JSON.stringify({
           name,
+          tags,
         }),
       })
 
@@ -102,6 +105,12 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
                   placeholder='client name'
                   className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
                 />
+
+                <div>
+                  <label>{`Tags (opcional)`}</label>
+                  <TagsInput tags={tags} setTags={setTags} />
+                </div>
+
                 <hr className='my-2 h-px border-0 bg-gray-200' />
 
                 {fetchError && (

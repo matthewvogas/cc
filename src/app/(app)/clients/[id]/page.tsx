@@ -19,7 +19,7 @@ export default async function CampaignPage({
 
   return (
     <div className='flex flex-col justify-start '>
-      <TitleSingleClient title={client.name} />
+      <TitleSingleClient title={client.name} tags={client.tags} />
       <p className=' mb-4 px-12 italic'>stats et glance</p>
       <div className='flex w-full gap-4 px-12 '>
         <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
