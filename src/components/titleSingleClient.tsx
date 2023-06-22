@@ -1,6 +1,7 @@
 import { PT_Mono } from 'next/font/google'
 import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
+import { Tag } from '@prisma/client'
 
 // Fonts
 const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
@@ -11,9 +12,10 @@ const ActionButtonStyle =
 
 type Props = {
   title: string
+  tags?: Tag[]
 }
 
-export default function TitleSingleClient({ title }: Props) {
+export default function TitleSingleClient({ title, tags }: Props) {
   return (
     <div className='w-full pt-20 '>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
@@ -25,7 +27,13 @@ export default function TitleSingleClient({ title }: Props) {
 
           <div className={`flex items-center justify-between`}>
             <button className={`${ActionButtonStyle} `}>
-              no tags added
+              {tags?.map(tag => (
+                <span
+                  key={tag.id}
+                  className={`mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-700`}>
+                  {tag.name}
+                </span>
+              ))}
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'

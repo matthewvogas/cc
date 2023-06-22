@@ -73,24 +73,6 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-// model tenant {
-//   id              Int           @id @default(autoincrement())
-//   email           String        @unique
-//   password        String
-//   name            String?
-//   website         String?
-//   company_name    String?
-//   company_size_id Int?
-//   company_size    company_size? @relation(fields: [company_size_id], references: [id])
-//   company_type_id Int?
-//   company_type    company_type? @relation(fields: [company_type_id], references: [id])
-//   created_at      DateTime      @default(now())
-//   updated_at      DateTime      @updatedAt
-//   clients         client[]
-//   creators        creator[]
-//   campaigns       campaign[]
-// }
-
 model CompanySize {
   id          Int    @id @default(autoincrement())
   description String
@@ -115,11 +97,25 @@ model Client {
   userId    String        @map("user_id")
   user      User       @relation(fields: [userId], references: [id])
   campaigns campaign[]
+  tags      Tag[]
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
 
   @@map("clients")
 }
+
+model Tag {
+  id        Int        @id @default(autoincrement())
+  name      String      @unique
+  clients   Client[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("tags")
+}
+
+
+
 
 model SocialNetworkAccount {
   id        Int     @id @default(autoincrement())

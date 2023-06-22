@@ -26,18 +26,62 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-    const { name, email } = await req.json()
+    const { name, email, tags } = await req.json()
 
-    await db.client.create({
-      data: {
-        name,
-        userId: session!.user.id,
+    // Check if the tags already exist in the database
+    const existingTags = await db.tag.findMany({
+      where: {
+        name: {
+          in: tags,
+        },
       },
     })
 
+    // Create any new tags that don't already exist
+    const existingTagNames = existingTags.map(tag => tag.name)
+    const newTags = tags.filter(
+      (tag: string) => !existingTagNames.includes(tag),
+    )
+    await db.tag.createMany({
+      data: newTags.map((tag: any) => ({ name: tag })),
+    })
+
+    // Create the new client and associate the tags with it
+    console.log(existingTags)
+    const client = await db.client.create({
+      data: {
+        userId: session!.user.id,
+        name,
+        email,
+        tags: {
+          connect: tags.map((tag: any) => ({ name: tag })),
+        },
+      },
+    })
+
+    // Create the new client and associate the tags with it
+    // const client = await db.client.create({
+    //   data: {
+    //     userId: session!.user.id,
+    //     name,
+    //     email,
+    //     tags: {
+    //       create: [
+    //         {
+    //           tag: {
+    //             create: {
+    //               name: 'test',
+    //             }
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   },
+    // })
+
     return NextResponse.json({ success: true })
   } catch (err: any) {
-    // console.log(err)
+    console.log(err)
     return NextResponse.json(
       { error: err.message },
       {
