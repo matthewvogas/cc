@@ -8,7 +8,7 @@ const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Style Variables
 const ActionButtonStyle =
-  'flex text-sm  border-gray-200 border-2 inline-block py-2.5 px-8  text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 '
+  'flex text-sm  border-gray-200 h-7 border-2 flex items-center py-2.5 px-6  text-back font-medium bg-transparent rounded-full '
 
 type Props = {
   title: string
@@ -21,20 +21,14 @@ export default function TitleSingleClient({ title, tags }: Props) {
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
         <div className='w-full'>
           <h3
-            className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
+            className={`items-center pb-8 text-2xl font-semibold text-gray-800 `}>
             {title}
           </h3>
-
           <div className={`flex items-center justify-between`}>
-            <button className={`${ActionButtonStyle} `}>
-              {tags?.map(tag => (
-                <span
-                  key={tag.id}
-                  className={`mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-700`}>
-                  {tag.name}
-                </span>
-              ))}
-              <svg
+            <div className='flex content-center items-center gap-3'>
+              <div className={`${ActionButtonStyle} `}>
+                tags
+                {/* <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
                 viewBox='0 0 24 24'
@@ -46,8 +40,16 @@ export default function TitleSingleClient({ title, tags }: Props) {
                   strokeLinejoin='round'
                   d='M12 4.5v15m7.5-7.5h-15'
                 />
-              </svg>
-            </button>
+              </svg> */}
+              </div>
+              {tags?.map(tag => (
+                <span
+                  key={tag.id}
+                  className={`flex h-7  items-center rounded-full bg-gray-100 px-5 text-sm font-semibold text-gray-700`}>
+                  {tag.name}
+                </span>
+              ))}
+            </div>
             <div className={`flex ${ptMono.className}`}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'

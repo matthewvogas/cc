@@ -21,7 +21,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
   const [name, setName] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
 
-  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreate = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     try {
       const res = await fetch('/api/clients', {
@@ -102,12 +102,12 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
                   type='text'
                   id='name'
                   required
-                  placeholder='client name'
+                  placeholder='Name'
                   className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
                 />
 
                 <div>
-                  <label>{`Tags (opcional)`}</label>
+                  <label>{`tags`}</label>
                   <TagsInput tags={tags} setTags={setTags} />
                 </div>
 
