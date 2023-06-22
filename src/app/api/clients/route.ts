@@ -11,8 +11,7 @@ export async function GET() {
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-    const clientsService = new ClientsService(session!.user.id)
-    const clients = await clientsService.findMany()
+    const clients = await ClientsService.findMany(session!.user.id)
     return NextResponse.json(clients)
   } catch (err) {
     console.log(err)

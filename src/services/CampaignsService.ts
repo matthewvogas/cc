@@ -2,16 +2,12 @@ import db from '@/lib/db'
 
 //Service that the constructor get a session id
 
-export class CamapignsService {
-  private readonly sessionId: string
-  constructor(sessionID: string) {
-    this.sessionId = sessionID
-  }
+export class CampaignsService {
 
-  async findMany(limit?: number, offset?: number) {
+  static async findMany(userId:string, limit?: number, offset?: number) {
     return db.campaign.findMany({
       where: {
-        userId: this.sessionId!,
+        userId
       },
       orderBy: {
         createdAt: 'desc',
@@ -29,7 +25,7 @@ export class CamapignsService {
     })
   }
 
-  async findUnique(id: number) {
+  static async findUnique(id: number) {
     const [campaign, stats] = await Promise.all([
       db.campaign.findUniqueOrThrow({
         where: {
@@ -56,7 +52,7 @@ export class CamapignsService {
     }
   }
 
-  async getStats(id: number) {
+  static async getStats(id: number) {
     const [postCount, creatorsCount, engagement] = await Promise.all([
       db.post.count({
         where: {

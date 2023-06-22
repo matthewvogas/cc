@@ -15,8 +15,7 @@ export default async function CampaignPage({
   params: { id: number }
 }) {
   const session = await getServerSession(authOptions)
-  const clientsService = new ClientsService(session!.user.id)
-  const client = await clientsService.findUnique(params.id)
+  const client = await ClientsService.findUnique(params.id)
 
   return (
     <div className='flex flex-col justify-start '>

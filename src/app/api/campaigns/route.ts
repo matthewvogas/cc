@@ -1,14 +1,13 @@
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
-import { CamapignsService } from '@/services/CampaignsService'
+import { CampaignsService } from '@/services/CampaignsService'
 import db from '@/lib/db'
 
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
-    const campaignsService = new CamapignsService(session!.user.id)
-    const campaigns = await campaignsService.findMany()
+    const campaigns = await CampaignsService.findMany(session!.user.id)
     return NextResponse.json(campaigns)
   } catch (err) {
     console.log(err)

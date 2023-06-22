@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { CamapignsService } from '@/services/CampaignsService'
+import { CampaignsService } from '@/services/CampaignsService'
 import ButtonsGroupTabs from '@/components/buttonsGroupTabs'
 import { ptMono } from '@/app/fonts'
 import CampaingsTabs from '@/components/tabs/CampaingTabs'
@@ -14,10 +14,6 @@ export default async function CampaignPage({
   params: { id: number }
 }) {
   const { id } = params
-
-  const session = await getServerSession(authOptions)
-  const CampaignsService = new CamapignsService(session!.user.id)
-
   try {
     const campaign = await CampaignsService.findUnique(id)
 
