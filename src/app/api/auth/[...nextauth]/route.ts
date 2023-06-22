@@ -66,7 +66,8 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: 'instagram_basic,instagram_manage_insights,pages_show_list,read_insights',
+          scope:
+            'instagram_basic,instagram_manage_insights,pages_show_list,read_insights',
         },
       },
     }),

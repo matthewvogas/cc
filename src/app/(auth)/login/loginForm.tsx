@@ -32,7 +32,8 @@ export const LoginForm = () => {
   }
 
   return (
-    <div className={`flex w-full gap-4 flex-col items-center  justify-center ${ptMono.className}`}>
+    <div
+      className={`flex w-full flex-col items-center justify-center  gap-4 ${ptMono.className}`}>
       <form
         onSubmit={handleLogin}
         className={`flex w-full flex-col items-center  justify-center ${ptMono.className}`}>
@@ -88,16 +89,20 @@ export const LoginForm = () => {
         </div>
       </form>
       <div className='flex w-full gap-5'>
-          <button onClick={async () => await signIn('facebook', {
-            callbackUrl,
-          })} className=' flex h-14 w-full gap-3 items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
+        <button
+          onClick={async () =>
+            await signIn('facebook', {
+              callbackUrl,
+            })
+          }
+          className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:text-black hover:opacity-80  '>
           <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
-            <p>Log in with instagram</p>
-          </button>
-          {/* <button className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
+          <p>Log in with instagram</p>
+        </button>
+        {/* <button className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
               <Image className={`mr-4 w-8`} src={TikTokIcon} alt={''} />
             </button> */}
-        </div>
+      </div>
     </div>
   )
 }

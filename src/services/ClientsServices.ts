@@ -6,8 +6,7 @@ import { getSession } from 'next-auth/react'
 //Service that the constructor get a session id
 
 export class ClientsService {
-
-  static async findMany(userId:string, limit?: number, offset?: number) {
+  static async findMany(userId: string, limit?: number, offset?: number) {
     return db.client.findMany({
       where: {
         userId,

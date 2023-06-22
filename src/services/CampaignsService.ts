@@ -3,11 +3,10 @@ import db from '@/lib/db'
 //Service that the constructor get a session id
 
 export class CampaignsService {
-
-  static async findMany(userId:string, limit?: number, offset?: number) {
+  static async findMany(userId: string, limit?: number, offset?: number) {
     return db.campaign.findMany({
       where: {
-        userId
+        userId,
       },
       orderBy: {
         createdAt: 'desc',
