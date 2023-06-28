@@ -18,7 +18,7 @@ model Account {
   refresh_token         String? @db.Text
   access_token          String? @db.Text
   expires_at         Int?
-  refresh_token_expires_in Int? 
+  refresh_token_expires_in Int?
   token_type         String?
   scope              String?
   id_token           String? @db.Text
@@ -57,7 +57,7 @@ model User {
   updatedAt     DateTime     @updatedAt @map("updated_at")
   clients       Client[]
   creators      Creator[]
-  campaigns     campaign[]
+  campaigns     Campaign[]
   accounts      Account[]
   sessions      Session[]
 
@@ -96,7 +96,7 @@ model Client {
   phone     String?
   userId    String        @map("user_id")
   user      User       @relation(fields: [userId], references: [id])
-  campaigns campaign[]
+  campaigns Campaign[]
   tags      Tag[]
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
@@ -146,7 +146,7 @@ model Creator {
 
 model CreatorCampaign {
   campaignId Int      @map("campaign_id")
-  campaign   campaign @relation(fields: [campaignId], references: [id])
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
   creatorId  Int
   creator    Creator  @relation(fields: [creatorId], references: [id])
   createdAt  DateTime @default(now()) @map("created_at")
@@ -156,7 +156,7 @@ model CreatorCampaign {
   @@map("creators_campaigns")
 }
 
-model campaign {
+model Campaign {
   id          Int               @id @default(autoincrement())
   name        String
   description String
@@ -167,15 +167,26 @@ model campaign {
   client      Client?           @relation(fields: [clientId], references: [id])
   userId      String            @map("user_id")
   user        User              @relation(fields: [userId], references: [id])
-  posts       post[]
+  posts       Post[]
+  hashtag    Hashtag?
 
   @@map("campaigns")
 }
 
-model post {
+model Hashtag {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  igId     String     @unique @map("ig_id")
+  campaignId Int?     @map("campaign_id") @unique
+  campaign Campaign?  @relation(fields: [campaignId], references: [id])
+
+  @@map("hashtags")
+}
+
+model Post {
   id               Int      @id @default(autoincrement())
   igId             String   @unique @map("ig_id")
-  campaign         campaign @relation(fields: [campaignId], references: [id])
+  campaign         Campaign @relation(fields: [campaignId], references: [id])
   campaignId       Int      @map("campaign_id")
   caption          String?
   mediaProductType String?  @map("media_product_type")
@@ -195,4 +206,6 @@ model post {
   sharesCount      Int?     @map("shares_count")
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("posts")
 }
