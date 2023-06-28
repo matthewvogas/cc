@@ -1,5 +1,4 @@
 import { ptMono } from '@/app/fonts'
-import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
 
 // Fonts

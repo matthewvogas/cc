@@ -1,5 +1,4 @@
 import { PT_Mono } from 'next/font/google'
-import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
 import { User } from '@prisma/client'
 import Image from 'next/image'
