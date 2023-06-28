@@ -32,6 +32,45 @@ export default function CampaignsDashBoard({
   const [clientId, setClientId] = useState<string | null>(null)
   const [fetchError, setFetchError] = useState<string | null>(null)
 
+  const handleType: any = (title: string) => {
+    switch (title) {
+      case 'new manual campaign':
+        return (
+          <div>
+            <p className='py-4'>Client</p>
+            <select
+              required
+              onChange={e => setClientId(e.target.value)}
+              className='block w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
+              <option value={0} disabled>
+                Choose a client
+              </option>
+              <option value={549}>No Client</option>
+              {clients.map((client: Client, index: any) => (
+                <option value={client.id} key={index}>
+                  {client.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )
+
+      case 'new hashtag campaign':
+        return (
+          <div>
+            <p className='py-4'>Hashtag</p>
+            <input
+              className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+              placeholder='hashtag to track'
+              type='text'
+            />
+          </div>
+        )
+      default:
+        return <h1>Error</h1>
+    }
+  }
+
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
@@ -105,21 +144,7 @@ export default function CampaignsDashBoard({
             <form
               onSubmit={handleCreate}
               className={`w-full justify-start ${ptMono.className}`}>
-              <p className='py-4'>Client</p>
-              <select
-                required
-                onChange={e => setClientId(e.target.value)}
-                className='block w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
-                <option value={0} disabled>
-                  Choose a client
-                </option>
-                <option value={549}>No Client</option>
-                {clients.map((client: Client, index: any) => (
-                  <option value={client.id} key={index}>
-                    {client.name}
-                  </option>
-                ))}
-              </select>
+              {handleType(title)}
 
               <p className='py-4'>Campaign Title</p>
               <input
@@ -164,7 +189,7 @@ export default function CampaignsDashBoard({
               <button
                 type='submit'
                 className='rounded-full bg-rose-200 px-6 py-2 '>
-                create project
+                create campaign
               </button>
             </form>
           </Dialog.Panel>

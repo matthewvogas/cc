@@ -1,5 +1,4 @@
 import { PT_Mono } from 'next/font/google'
-import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
 import { Tag } from '@prisma/client'
 
