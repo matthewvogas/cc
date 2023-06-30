@@ -12,7 +12,7 @@ import Instagram from 'next-auth/providers/instagram'
 
 export const LoginForm = () => {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   const callbackError = searchParams.get('error')
     ? 'Invalid email or password.'
     : null

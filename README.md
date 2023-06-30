@@ -6,10 +6,14 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
+
+For migrations on dev run:
+
+```bash
+npx prisma migrate reset
+npx prisma migrate dev
+
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -29,8 +33,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy
 
-## Environment Variables
-
 The following environment variables are used in this project:
 
 - `DATABASE_URL`: The URL of the PostgreSQL database.
@@ -48,12 +50,20 @@ The following environment variables are used in this project:
 - `INSTAGRAM_CLIENT_ID`: The client ID of the Instagram Basic Display API app.
 - `INSTAGRAM_CLIENT_SECRET`: The client secret of the Instagram Basic Display API app.
 
-First, run the development server:
+Check for any migrations pending
 
 ```bash
+npx prisma migrate deploy
+```
+
+Run this commands on the productions server
+
+```bash
+pm2 stop 0
+
 npm run build
 
-npm run start
+pm2 start 0
 ```
 
 You can set these environment variables in a `.env` file in the root directory of the project. See the [Deploy](#deploy) section for more information.
