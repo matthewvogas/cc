@@ -9,7 +9,7 @@ import { inter, ptMono } from '@/app/fonts'
 import TopPost from '@/components/topPost'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
-import { campaign, post } from '@prisma/client'
+import { Campaign, Post } from '@prisma/client'
 import PostCard from '@/components/postCard'
 import CreatorRow from '@/components/creatorRow'
 import { excelToJson } from '@/utils/ExcelHelper'
@@ -23,8 +23,8 @@ import CampaignSocialStat from '@/components/stats/CampaignSocialStat'
 import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
 import ManagePosts from '@/components/ManagePosts'
 
-type campaignWithStats = campaign & {
-  posts: post[]
+type campaignWithStats = Campaign & {
+  posts: Post[]
   stats: {
     postCount: number
     creatorsCount: number
@@ -184,7 +184,7 @@ export default function CampaingTabs({
                     <div className='pt-6'>
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
                         {campaign.posts.length > 0 &&
-                          campaign.posts.map((post: post, index: any) => (
+                          campaign.posts.map((post: Post, index: any) => (
                             <PostCard key={index} post={post} />
                           ))}
                         {campaign.posts.length === 0 && (
@@ -204,7 +204,7 @@ export default function CampaingTabs({
                   <div className='pt-6'>
                     <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
                       {campaign.posts.length > 0 &&
-                        campaign.posts.map((post: post, index: any) => (
+                        campaign.posts.map((post: Post, index: any) => (
                           <PostCard key={index} post={post} />
                         ))}
                       {campaign.posts.length === 0 && (

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/TopPost.jpg'
-import { post } from '@prisma/client'
+import { Post } from '@prisma/client'
 import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import Link from 'next/link'
 
@@ -39,14 +39,14 @@ const creatorCards = [
   },
 ]
 
-export default function TopPost({ posts }: { posts: post[] }) {
+export default function TopPost({ posts }: { posts: Post[] }) {
   const postData =
     posts.sort((a, b) => b.likesCount! - a.likesCount!).slice(0, 4) ||
     creatorCards
 
   return (
     <div className='md-12 flex gap-x-6 gap-y-8 overflow-scroll'>
-      {postData.map((card: post, index: any) => (
+      {postData.map((card: Post, index: any) => (
         <div
           key={index}
           className={`h-fit w-96 max-w-sm overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>

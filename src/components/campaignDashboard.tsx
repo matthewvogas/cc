@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/campaignCover.jpg'
-import { campaign } from '@prisma/client'
+import { Campaign } from '@prisma/client'
 import Link from 'next/link'
 import useCampaigns from '@/hooks/useCampaigns'
 
@@ -34,7 +34,7 @@ const creatorCards = [
 ]
 
 type Props = {
-  campaignsFallback: (campaign & {
+  campaignsFallback: (Campaign & {
     _count: {
       posts: number
     }
@@ -50,7 +50,7 @@ export default function DashboardCampaign({ campaignsFallback }: Props) {
     <div className='min-w-full overflow-auto whitespace-nowrap pl-14'>
       {postData.map(
         (
-          card: campaign & {
+          card: Campaign & {
             _count: {
               posts: number
             }

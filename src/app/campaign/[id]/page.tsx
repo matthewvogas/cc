@@ -1,7 +1,7 @@
 import PostCard from '@/components/postCard'
 import OverviewCampaign from '@/components/overviewCampaign'
 import db from '@/lib/db'
-import { post } from '@prisma/client'
+import { Post } from '@prisma/client'
 
 export default async function shareCampaign({
   params,
@@ -60,7 +60,7 @@ export default async function shareCampaign({
 
         <div className='pt-6'>
           <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
-            {campaign!.posts.map((post: post, index: any) => (
+            {campaign!.posts.map((post: Post, index: any) => (
               <PostCard key={index} post={post} />
             ))}
           </div>
