@@ -28,6 +28,16 @@ module.exports = {
         roseButtons: '#F9DACE',
         beigePlan: '#F2EDE7',
         greenPlan: '#E6F6EF',
+
+        // landing page
+        //header
+        headerMenu: '#E2DED4',
+        greenCTA: '#D3F0E2',
+        //home
+        textBlack: '#181818',
+        borderCards: 'rgba(0, 0, 0, 0.08)',
+        secondBackground: '#F8F5F2',
+        target: '#F9F8F6',
       },
     },
   },
