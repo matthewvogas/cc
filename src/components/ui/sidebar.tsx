@@ -9,19 +9,19 @@ import { SingOutButton, SingInButton } from '../auth/AuthButtons'
 // Arrays
 const links = [
   {
-    href: '/',
+    href: '/dashboard',
     name: 'Dashboard',
   },
   {
-    href: '/clients',
+    href: '/dashboard/clients',
     name: 'Clients',
   },
   {
-    href: '/campaigns',
+    href: '/dashboard/campaigns',
     name: 'Campaigns',
   },
   {
-    href: '/creators',
+    href: '/dashboard/creators',
     name: 'Creators',
   },
 ]

@@ -33,7 +33,7 @@ export const RegisterForm = () => {
       await signIn('credentials', {
         email,
         password,
-        callbackUrl: '/',
+        callbackUrl: '/dashboard',
       })
     } else {
       router.push('/register?error=email')

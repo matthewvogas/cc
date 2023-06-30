@@ -15,7 +15,7 @@ export function Navigation({ navLinks }: { navLinks: navLink[] }) {
     <>
       {navLinks.map(link => {
         const isActive =
-          link.href === '/'
+          link.href === '/dashboard'
             ? pathname === link.href
             : pathname.startsWith(link.href)
 
