@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     await db.$transaction(
       postsToDb.map(post =>
         db.post.upsert({
-          where: { igId: post.igId },
+          where: { id: post.id },
           update: { ...post },
           create: { ...post },
         }),

@@ -1,9 +1,10 @@
 import db from '@/lib/db'
 import { NextResponse } from 'next/server'
 
-const hashtagSearch = async (hashtag: string) => {
+export const hashtagSearch = async (hashtag: string) => {
   const existsInDb = await db.hashtag.findUnique({ where: { name: hashtag } })
   if (!existsInDb) {
+    console.log('not in db' + hashtag)
     const url: URL = new URL(
       `https://graph.facebook.com/v16.0/ig_hashtag_search`,
     )
@@ -14,6 +15,7 @@ const hashtagSearch = async (hashtag: string) => {
       'EAAR5U6jL0JcBAFG9unBeqjKdZBVCaBs2veaRw4dChUYZCweyVV47c1J96F5ZAVZCywvpaeVBaNhXpXwN1CpBH74GW1BoLhpX2kRuxht5uSmVj7u9wJ6mLtAdlprBxGNXf16elTuo7VPfM9ZCd1BJHJ3EwGcLmacgwumCa2ZCZAILZAV4O98Y6Eu9',
     )
     const res = await fetch(url).then(res => res.json())
+    console.log(res)
     const { id } = res.data[0]
     if (!id) return null
 

@@ -3,10 +3,10 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/creatorImg.jpg'
-import { post } from '@prisma/client'
+import { Post } from '@prisma/client'
 import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 
-export default function PostCard({ post }: { post: post }) {
+export default function PostCard({ post }: { post: Post }) {
   return (
     <div
       className={`h-fit w-80 max-w-sm overflow-hidden rounded-2xl bg-cardBackground ${ptMono.className}`}>

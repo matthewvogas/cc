@@ -1,12 +1,12 @@
 import { inter } from '@/app/fonts'
 import { ptMono } from '@/app/fonts'
 import { fetcher } from '@/utils/ValidationsHelper'
-import { campaign } from '@prisma/client'
+import { Campaign } from '@prisma/client'
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function SettingsTab({ campaign }: { campaign: campaign }) {
+export default function SettingsTab({ campaign }: { campaign: Campaign }) {
   const router = useRouter()
   const [name, setName] = useState(campaign.name)
   const [description, setDescription] = useState(campaign.description)
@@ -62,7 +62,7 @@ export default function SettingsTab({ campaign }: { campaign: campaign }) {
           placeholder='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
           className={`${ptMono.className} h-44  w-full rounded-r-3xl rounded-s-3xl border border-gray-300 bg-gray-50 p-3.5 px-6 text-lg  text-gray-900 focus:outline-0`}
         />
-        {/* 
+        {/*
         <p className={`text-xm pb-2 pt-6 `}>add a cover image</p>
         <div className='flex justify-between'>
           <div>
