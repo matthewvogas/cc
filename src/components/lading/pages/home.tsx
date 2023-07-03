@@ -21,9 +21,10 @@ import imageSeven from 'public/assets/SandBox/headSection/SevenCardImage.jpg'
 import imageEight from 'public/assets/SandBox/headSection/EightCardImage.jpg'
 
 // cards section 3
-import OneCard from 'public/assets/SandBox/Cards/createACampaign.svg'
-import TwoCard from 'public/assets/SandBox/Cards/addPostsToTrack.svg'
-import ThreeCard from 'public/assets/SandBox/Cards/shareCardLanding.svg'
+import OneCard from 'public/assets/SandBox/Cards/CreateCampaign.svg'
+import TwoCard from 'public/assets/SandBox/Cards/AddPostsToTrack.svg'
+import ThreeCard from 'public/assets/SandBox/Cards/Populate.svg'
+import FourCard from 'public/assets/SandBox/Cards/FilterAndExplore.svg'
 
 const DataOne = {
   username: 'stmbind',
@@ -84,33 +85,38 @@ const DataEight = {
 
 const cardData = [
   {
-    title: 'Create a Campaign',
-    text: 'Create manual or hashtag campaigns and associate them with your customers or brands.',
+    size: '550px',
     imageCard: OneCard,
   },
   {
-    title: 'Add posts to track',
-    text: 'Paste links from social media or upload in bulk via file.',
+    size: '350px',
     imageCard: TwoCard,
   },
   {
-    title: 'Automatic Population',
-    text: 'Posts will populate automatically and data will be updated dynamically. You can filter your view of the campaign by creator, platform, posting date, etc.',
+    size: '368px',
     imageCard: ThreeCard,
+  },
+  {
+    size: '500px',
+    imageCard: FourCard,
   },
 ]
 const cardTextData = [
   {
-    title: '1',
+    title: '1 Create a campaign',
     text: 'Create a campaign. Organize your campaigns by client or by tags.',
   },
   {
-    title: '2',
-    text: '‘Add’ posts to your campaign to track their results across platforms via link or by using hashtags.',
+    title: '2 Add posts to track',
+    text: 'Paste links from social media or upload in bulk via file.',
   },
   {
-    title: '3',
-    text: 'Codecoco automatically generates a dynamic, live look of all your campaign’s posts with individual and aggregate stats.',
+    title: '3 Codecoco populates your live campaign results automatically',
+    text: 'Posts will populate automatically and data will be updated dynamically. You can filter your view of the campaign by creator, platform, posting date, etc.',
+  },
+  {
+    title: '4 Filter and explore live results',
+    text: 'Codecoco helps you and your clients identify top performing content from your creators and put it to use.',
   },
 ]
 
@@ -177,13 +183,13 @@ export default function Home() {
 
       {/* Steps */}
       <section className='relative z-10 w-full bg-secondBackground pb-24'>
-        <div className='m-auto flex w-[920px] flex-col justify-center pt-24 '>
+        <div className='m-auto flex w-[1060px] flex-col justify-center pt-24 '>
           <div className='mb-16 flex flex-col items-center gap-5'>
             <h3 className={`text-4xl font-bold text-black`}>
               Track results with 4 simples steps
             </h3>
           </div>
-          <div className='flex h-full gap-5'>
+          <div className='flex h-full '>
             <div className='w-full'>
               <div className='flex flex-col gap-5'>
                 <FunctionalityCard cards={cardData} />
@@ -213,9 +219,7 @@ export default function Home() {
 
       {/* Stats */}
 
-      <section className='w-full'>
-        <Testimonial />
-      </section>
+      <section className='w-full'>{/* <Testimonial /> */}</section>
 
       {/* try */}
       <section className='w-full'>
