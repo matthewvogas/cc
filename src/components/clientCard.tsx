@@ -41,7 +41,10 @@ export default function ClientCard({
   const data = clients || card
 
   const cards = data.map((card: Client, index: any) => (
-    <Link href={`/dashboard/clients/${card.id || 1}`} key={index} className='h-80 w-80 '>
+    <Link
+      href={`/dashboard/clients/${card.id || 1}`}
+      key={index}
+      className='h-80 w-80 '>
       <Image
         priority
         className={`h-64 object-cover`}
