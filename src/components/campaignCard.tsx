@@ -31,7 +31,7 @@ export default function CampaignCard({ campaigns }: any) {
 
   const cards = data.map((card: any, index: any) => (
     <Link
-      href={`/campaigns/${card.id || 1}`}
+      href={`/dashboard/campaigns/${card.id || 1}`}
       key={index}
       className='h-80 w-80 border-gray-100 '>
       <Image

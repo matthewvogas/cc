@@ -60,7 +60,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
         <div className=' flex  flex-wrap gap-4 md:px-12'>
           {clients.map((card: any, index: any) => (
             <Link
-              href={`/clients/${card.id || 1}`}
+              href={`/dashboard/clients/${card.id || 1}`}
               key={index}
               className='h-80 w-80 border-gray-100 '>
               <Image

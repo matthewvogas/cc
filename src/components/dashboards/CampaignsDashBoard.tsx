@@ -72,7 +72,7 @@ export default function CampaignsDashBoard({
         <div className='flex flex-wrap gap-6 md:px-12'>
           {campaigns.map((card: any, index: any) => (
             <Link
-              href={`/campaigns/${card.id || 1}`}
+              href={`/dashboard/campaigns/${card.id || 1}`}
               key={index}
               className='border-gray-100 '>
               <Image

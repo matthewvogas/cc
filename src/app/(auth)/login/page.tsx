@@ -28,10 +28,10 @@ export default function LoginPage() {
         <div className='my-7 h-px w-full rounded-r-full bg-white opacity-50'></div>
 
         <div className='flex w-full justify-between px-4'>
-          <Link href='/register' className='text-lg '>
+          <Link href='/signup' className='text-lg '>
             create a new account
           </Link>
-          <Link href='/register' className='text-lg'>
+          <Link href='/signup' className='text-lg'>
             reset your password
           </Link>
         </div>

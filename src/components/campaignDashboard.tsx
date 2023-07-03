@@ -58,7 +58,7 @@ export default function DashboardCampaign({ campaignsFallback }: Props) {
           index: any,
         ) => (
           <Link
-            href={`/campaigns/${card.id}`}
+            href={`/dashboard/campaigns/${card.id}`}
             key={index}
             className={`mr-8 inline-block bg-beigeTransparent ${ptMono.className}`}>
             <Image src={imageCover} alt={card.name} height={320} />
