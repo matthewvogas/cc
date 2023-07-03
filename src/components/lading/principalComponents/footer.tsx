@@ -2,7 +2,7 @@ import Image from 'next/image'
 import logo from 'public/assets/register/codecoco.svg'
 import arrow from 'public/assets/register/arrowButtonIcon.svg'
 
-export default function Header() {
+export default function Footer() {
   return (
     <>
       <div className='flex justify-around bg-white py-14 '>
