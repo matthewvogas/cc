@@ -1,6 +1,7 @@
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import avatar from 'public/assets/register/avatar.jpg'
+import { ChipStateComponent, type ChipStateName } from './hashtagStatus'
 
 // Fonts
 
@@ -13,8 +14,9 @@ const thTable = 'bg-white text-sm normal-case '
 const signedUpLabel = 'bg-active px-8 py-3 rounded-full text-black text-sm '
 const inviteLabel =
   'bg-white border-2 border-rose-100 px-8 py-3 rounded-full text-black text-sm '
+
 const pendingLabel = 'bg-beigeFirst px-8 py-3 rounded-full text-black text-sm '
-const infoLabel = 'bg-active px-8 mx-2 py-3 rounded-full text-black text-sm '
+const infoLabel = 'bg-active px-8 py-3 rounded-full text-black text-sm '
 
 // Arrays
 const titleTable = [
@@ -35,6 +37,9 @@ const titleTable = [
   },
   {
     label: 'posts assigned',
+  },
+  {
+    label: 'post status',
   },
 ]
 
@@ -77,80 +82,6 @@ const button = [
     path: '',
   },
 ]
-
-// Show Arrays
-// const titleTables = titleTable.map((title, index) => (
-//   <th key={index} className={`${thTable} ${ptMono.className}`}>
-//     {title.label}
-//   </th>
-// ))
-// const buttons = button.map((button, index) => (
-//   <button key={index} className={`${dropdownButton}`}>
-//     {button.label}
-//   </button>
-// ))
-
-// const creators = row.map((row, index) => (
-//   <tr key={index} className={`text-sm ${ptMono.className} `}>
-//     <td className='bg-white'>
-//       <div className={`flex items-center space-x-3 `}>
-//         <div className='avatar'>
-//           <div className='mask mask-circle mr-8 h-12 w-12'>
-//             <Image
-//               priority
-//               className={``}
-//               width={100}
-//               height={100}
-//               src={row.img}
-//               alt='background'
-//             />
-//           </div>
-//         </div>
-//         <div>
-//           <div className='font-bold'>{row.name}</div>
-//           <div className='text-sm opacity-50'>{row.mail}</div>
-//         </div>
-//       </div>
-//     </td>
-
-//     <td className='bg-white'>{row.qtyPosts}</td>
-
-//     <td className='bg-white'>{row.tags}</td>
-
-//     <td className='bg-white'>
-//       <label className={`${pendingLabel}`}>pending</label>
-//     </td>
-//     <td className='bg-white'>{row.followes}</td>
-//     <td className='bg-white'>
-//       <div className='flex items-center justify-between '>
-//         <div>
-//           <label className={`${infoLabel}`}>{row.qtyPosts} posts</label>
-//           <button className={`${addPostButton}`}>add post</button>
-//         </div>
-//         <div className='dropdown-end dropdown cursor-pointer'>
-//           <svg
-//             tabIndex={0}
-//             fill='none'
-//             viewBox='0 0 24 24'
-//             strokeWidth={1.5}
-//             stroke='currentColor'
-//             className='h-6 w-6'>
-//             <path
-//               strokeLinecap='round'
-//               strokeLinejoin='round'
-//               d='M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
-//             />
-//           </svg>
-//           <ul
-//             tabIndex={0}
-//             className='dropdown-content menu rounded-box w-auto border-2 border-gray-100 bg-white p-2'>
-//             {buttons}
-//           </ul>
-//         </div>
-//       </div>
-//     </td>
-//   </tr>
-// ))
 
 export default function CreatorRow({
   titles,
@@ -209,32 +140,40 @@ export default function CreatorRow({
                     <label className={`${infoLabel}`}>
                       {row.qtyPosts} posts
                     </label>
-                    <button className={`${addPostButton}`}>add post</button>
+                    <button className='px-2 text-lg font-bold text-gray-400'>
+                      {' '}
+                      +{' '}
+                    </button>
                   </div>
-                  <div className='dropdown-end dropdown cursor-pointer'>
-                    <svg
-                      tabIndex={0}
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-6 w-6'>
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
-                      />
-                    </svg>
-                    <ul
-                      tabIndex={0}
-                      className='dropdown-content menu rounded-box w-auto border-2 border-gray-100 bg-white p-2'>
-                      {button.map((button, index) => (
-                        <button key={index} className={`${dropdownButton}`}>
-                          {button.label}
-                        </button>
-                      ))}
-                    </ul>
-                  </div>
+                </div>
+              </td>
+              <td className='flex'>
+                <ChipStateComponent state={'NOT'} />
+              </td>
+              <td>
+                <div className='dropdown-end dropdown cursor-pointer'>
+                  <svg
+                    tabIndex={0}
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-6 w-6'>
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
+                    />
+                  </svg>
+                  <ul
+                    tabIndex={0}
+                    className='dropdown-content menu rounded-box w-auto border-2 border-gray-100 bg-white p-2'>
+                    {button.map((button, index) => (
+                      <button key={index} className={`${dropdownButton}`}>
+                        {button.label}
+                      </button>
+                    ))}
+                  </ul>
                 </div>
               </td>
             </tr>
