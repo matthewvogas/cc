@@ -17,7 +17,6 @@ export default function TabsToShare(props: { campaignId: any }) {
   const [openTab, setOpenTab] = React.useState(1)
   const [codeToCopy, setcodeToCopy] = React.useState('')
 
-  const js = ''
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
     '<iframe src="http://dev.codecoco.co/campaign/' +
@@ -210,17 +209,14 @@ export default function TabsToShare(props: { campaignId: any }) {
                   id='link2'>
                   <div className='flex '>
                     <button
-                      onClick={event => {
+                      onClick={() => {
                         setcodeToCopy(iframe)
                       }}
                       className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
                       iframe
                     </button>
-                    {/* <button onClick={(event)=> {setcodeToCopy(js)}} className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
-                      javascript
-                    </button> */}
                     <button
-                      onClick={event => {
+                      onClick={() => {
                         setcodeToCopy(html)
                       }}
                       className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>

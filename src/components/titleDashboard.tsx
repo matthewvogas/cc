@@ -21,7 +21,9 @@ export default function TitleDashboard({ title, user }: Props) {
       <div className='mx-auto -mt-28 mb-8 h-36 w-full justify-between px-4 md:px-14'>
         <div className='w-full'>
           <div className={`flex items-center justify-between`}>
-            <h2 className={`text-2xl`}>welcome, {user.name} 🥥</h2>
+            <h2 className={`text-2xl`}>
+              {title} {user.name} 🥥
+            </h2>
             <div className={`flex ${ptMono.className}`}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
