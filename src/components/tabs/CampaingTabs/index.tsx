@@ -1,11 +1,9 @@
 'use client'
 
-import * as XLSX from 'xlsx'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { Dialog } from '@headlessui/react'
-import { inter, ptMono } from '@/app/fonts'
 import TopPost from '@/components/topPost'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
@@ -13,15 +11,12 @@ import { Campaign, Post } from '@prisma/client'
 import PostCard from '@/components/postCard'
 import CreatorRow from '@/components/creatorRow'
 import { excelToJson } from '@/utils/ExcelHelper'
-import ClientStat from '@/components/clientStat'
 import SettingsTab from '@/components/settingsTab'
 import TabsToShare from '@/components/tabsToShare'
 import OverviewCampaign from '@/components/overviewCampaign'
-import SinglePlatform from '@/components/stats/singlePlatform'
-import RelationalTopPost from '@/components/relationalTopPost'
-import CampaignSocialStat from '@/components/stats/CampaignSocialStat'
 import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
 import ManagePosts from '@/components/ManagePosts'
+import { ptMono } from '@/app/fonts'
 
 type campaignWithStats = Campaign & {
   posts: Post[]
@@ -50,6 +45,35 @@ export default function CampaingTabs({
   const [content, setContent] = useState(campaign.stats.postCount)
   const [newPosts, setNewPosts] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
+
+  const [tags, setTags] = useState<string[]>([])
+  const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
+  const [activePlatforms, setActivePlatforms] = useState<any[]>([])
+  const [activeButton, setActiveButton] = useState('galleryView')
+
+  const filteredPosts = campaign?.posts?.filter((post: Post) => {
+    if (!post.caption) return false
+
+    const isInstagramActive = activePlatforms.includes('Instagram')
+    const isFilterActive = activePlatforms.length > 0
+
+    if (!isFilterActive || (isFilterActive && isInstagramActive)) {
+      const postTags = post.caption.split(' ')
+      const filteredTags = tags.filter(tag => postTags.includes(tag))
+
+      if (tags.length === 0 || filteredTags.length > 0) {
+        if (activeButton === 'most') {
+          if (post.impressionsCount && post.impressionsCount > 0) {
+            return true
+          }
+        } else {
+          return true
+        }
+      }
+    }
+
+    return false
+  })
 
   const handlePosts = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -179,14 +203,27 @@ export default function CampaingTabs({
                       plays={1}
                     />
 
-                    <ManagePosts addPost={setIsOpen} />
+                    <ManagePosts
+                      addPost={setIsOpen}
+                      shared={false}
+                      title={'Grid'}
+                      tags={tags}
+                      setTags={setTags}
+                      creatorsSelecteds={creatorsSelecteds}
+                      setCreatorsSelecteds={setCreatorsSelecteds}
+                      activePlatforms={activePlatforms}
+                      setActivePlatforms={setActivePlatforms}
+                      id={campaign.id}
+                      activeButton={activeButton}
+                      setActiveButton={setActiveButton}
+                      mostView={activeButton}
+                    />
 
                     <div className='pt-6'>
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
-                        {campaign.posts.length > 0 &&
-                          campaign.posts.map((post: Post, index: any) => (
-                            <PostCard key={index} post={post} />
-                          ))}
+                        {filteredPosts?.map((post: Post, index: any) => (
+                          <PostCard key={index} post={post} />
+                        ))}
                         {campaign.posts.length === 0 && (
                           <>
                             <h1>{`Seems like you dont have posts! :(`}</h1>
@@ -203,10 +240,9 @@ export default function CampaingTabs({
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
                     <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
-                      {campaign.posts.length > 0 &&
-                        campaign.posts.map((post: Post, index: any) => (
-                          <PostCard key={index} post={post} />
-                        ))}
+                      {filteredPosts?.map((post: Post, index: any) => (
+                        <PostCard key={index} post={post} />
+                      ))}
                       {campaign.posts.length === 0 && (
                         <>
                           <h1>{`Seems like you dont have posts! :(`}</h1>

@@ -19,7 +19,7 @@ export default async function Home() {
 
   return (
     <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
-      <TitleDashboard title={''} user={session?.user!} />
+      <TitleDashboard title={'welcome,'} user={session?.user!} />
       <ActionalTitle title={'your campaigns'} />
       <DashboardCampaign campaignsFallback={campaigns} />
       <ActionalTitle title={'your clients'} />

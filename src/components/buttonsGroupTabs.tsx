@@ -196,8 +196,8 @@ const Tabs = ({ posts }: any) => {
                     <div className='w-96 px-12'>
                       <p className='my-8 text-xl font-bold'>Stats</p>
                       <div className='flex flex-col gap-4'>
-                        <ClientStat />
-                        <ClientStat />
+                        <ClientStat icon={''} value={0} text={''} />
+                        <ClientStat icon={''} value={0} text={''} />
                       </div>
                       <p className='my-8 italic'>by platform</p>
                       <SinglePlatform />

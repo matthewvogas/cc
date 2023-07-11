@@ -1,10 +1,10 @@
-import Image from 'next/image'
+import { ReactNode } from 'react'
 
 export type ChipStateName = 'INFO' | 'PENDING' | 'NOT'
 export type ChipState = {
   classNames: string
   content: string
-  icon: any
+  icon: ReactNode
 }
 
 export const chipStateMap: { [key in ChipStateName]: ChipState } = {
