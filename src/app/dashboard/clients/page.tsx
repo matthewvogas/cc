@@ -1,6 +1,5 @@
 import ButtonsGroupTabs from '@/components/buttonsGroupTabs'
 import CampaignCard from '@/components/campaignCard'
-import CreatorRow from '@/components/creatorRow'
 import Search from '@/components/search'
 import Tags from '@/components/tags'
 import TitlePage from '@/components/titlePage'

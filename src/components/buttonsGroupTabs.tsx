@@ -2,7 +2,6 @@
 import React from 'react'
 import TabsToShare from './tabsToShare'
 import CampaignCard from '@/components/campaignCard'
-import CreatorRow from '@/components/creatorRow'
 import Search from '@/components/search'
 import Tags from '@/components/tags'
 import OverviewCampaign from './overviewCampaign'
@@ -173,17 +172,6 @@ const Tabs = ({ posts }: any) => {
                       ))}
                     </div>
                   </div>
-
-                  {/* <p>
-                    <div className='flex w-full justify-start  gap-4 py-5 md:px-12'>
-                      <Search />
-                      <Tags />
-                    </div>
-                    <div className='pt-6'>
-                      <CampaignCard />
-                    </div>
-                    <CreatorRow />
-                  </p> */}
                 </div>
                 <div
                   className={openTab === 2 ? 'block' : 'hidden'}

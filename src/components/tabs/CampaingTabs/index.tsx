@@ -234,8 +234,7 @@ export default function CampaingTabs({
                   </div>
                 </section>
                 <div className={openTab === 2 ? 'block' : 'hidden'}>
-                  <FeatureNotImplemented />
-                  <CreatorRow />
+                  <CreatorRow comeFrom={'campigns'} />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>

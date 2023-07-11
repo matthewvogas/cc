@@ -18,7 +18,7 @@ export default async function creators() {
       />
       <ShareStat />
       <ButtonGroup title='' />
-      <CreatorRow />
+      <CreatorRow comeFrom={'creators'} />
     </div>
   )
 }
