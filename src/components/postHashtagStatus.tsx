@@ -1,3 +1,5 @@
+import Image from 'next/image'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 
 export type ChipStateName = 'INFO' | 'PENDING' | 'NOT'
@@ -69,11 +71,26 @@ export const chipStateMap: { [key in ChipStateName]: ChipState } = {
   },
 }
 
-export const ChipStateComponent = ({ state }: { state: ChipStateName }) => {
+export const PostHashtagStatus = ({
+  state,
+  link,
+}: {
+  state: ChipStateName
+  link: string
+}) => {
   return (
-    <div
-      className={`${chipStateMap[state].classNames} flex gap-3 rounded-full px-8 py-3 text-sm text-black`}>
-      {chipStateMap[state].icon} {chipStateMap[state].content}
-    </div>
+    <>
+      <div className='flex justify-start gap-2'>
+        <div
+          className={`${chipStateMap[state].classNames} flex gap-3 rounded-full px-8 py-3 text-sm text-black`}>
+          {chipStateMap[state].icon} {chipStateMap[state].content}
+        </div>
+        {link != '' && state == 'INFO' && (
+          <Link className='self-center italic underline' href={link}>
+            view
+          </Link>
+        )}
+      </div>
+    </>
   )
 }
