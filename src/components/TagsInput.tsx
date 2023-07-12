@@ -25,7 +25,7 @@ function TagsInput({ tags, setTags }: Props) {
   }
 
   return (
-    <div className='max-w-600 mt-4 flex w-min flex-wrap items-center gap-2 rounded-2xl border border-gray-300 bg-gray-50 p-3  text-sm text-gray-900 outline-none   '>
+    <div className='w-full mt-4 rounded-xl border border-gray-300 bg-gray-50 pl-4 py-2 text-sm text-gray-900 flex flex-wrap gap-2 bg-transparent outline-none'>
       {tags?.map((tag, index) => (
         <div
           className='flex items-center gap-1 rounded-full bg-gray-200 px-2 py-1'
@@ -43,7 +43,7 @@ function TagsInput({ tags, setTags }: Props) {
         onKeyDown={handleKeyDown}
         type='text'
         className='flex-grow bg-transparent px-2 py-1 outline-none'
-        placeholder='Type something'
+        placeholder='#tag'
       />
     </div>
   )
