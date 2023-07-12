@@ -8,14 +8,12 @@ import { Dialog, Tab } from '@headlessui/react'
 import TagsInput from './TagsInput'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 
-
 const dropdownButton =
   'text-sm border-2 inline-block py-2 px-8 m-2 text-back font-medium bg-whiteBrown rounded-full hover:bg-transparent hover:border-orange-100'
 const thTable = 'bg-white text-sm normal-case '
 const infoLabel = 'bg-active px-8 py-3 rounded-full text-black text-sm '
 
 export default function CreatorRow(props: { comeFrom: string }) {
-
   const [isOpen, setIsOpen] = useState(false)
   const [tags, setTags] = useState<string[]>([])
 
@@ -59,7 +57,9 @@ export default function CreatorRow(props: { comeFrom: string }) {
                       </div>
                       <div>
                         <div className='font-bold'>Name</div>
-                        <div className='text-sm opacity-50'>mail@hotmail.com</div>
+                        <div className='text-sm opacity-50'>
+                          mail@hotmail.com
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -98,7 +98,9 @@ export default function CreatorRow(props: { comeFrom: string }) {
                       <ul
                         tabIndex={0}
                         className='dropdown-content menu rounded-box w-max  border-2 border-gray-100 bg-white p-2'>
-                        <button onClick={() => setIsOpen(true)} className={`${dropdownButton}`}>
+                        <button
+                          onClick={() => setIsOpen(true)}
+                          className={`${dropdownButton}`}>
                           add post tracking 🥥
                         </button>
                         <button className={`${dropdownButton}`}>
@@ -129,13 +131,17 @@ export default function CreatorRow(props: { comeFrom: string }) {
           <Dialog.Panel
             className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
             <Image src={modalCover} className='rounded-t-xl' alt={''} />
-            <Dialog.Title className=' text-lg font-medium mb-8 text-center'>Automatically track when your creators post 🥥</Dialog.Title>
+            <Dialog.Title className=' text-lg font-medium mb-8 text-center'>
+              Automatically track when your creators post 🥥
+            </Dialog.Title>
 
             <Tab.Group>
-              <Tab.List className={`flex flex-row items-center justify-center gap-6 ${ptMono.className}`}>
+              <Tab.List
+                className={`flex flex-row items-center justify-center gap-6 ${ptMono.className}`}>
                 <Tab
                   className={({ selected }) =>
-                    ` rounded-3xl border-2 border-primary px-12 py-2 ${selected ? 'bg-primary' : ''
+                    ` rounded-3xl border-2 border-primary px-12 py-2 ${
+                      selected ? 'bg-primary' : ''
                     }`
                   }>
                   add manually
@@ -143,30 +149,39 @@ export default function CreatorRow(props: { comeFrom: string }) {
 
                 <Tab
                   className={({ selected }) =>
-                    `rounded-3xl border-2 border-primary px-8  py-2 ${selected ? 'bg-primary' : ''
+                    `rounded-3xl border-2 border-primary px-8  py-2 ${
+                      selected ? 'bg-primary' : ''
                     }`
                   }>
                   upload from file
                 </Tab>
               </Tab.List>
               <Tab.Panels className='mt-2'>
-
                 <Tab.Panel className=''>
-
                   <div className='divider px-8'></div>
                   <div className='flex gap-4  px-7 justify-between mb-4'>
                     <div className='w-full'>
                       <p className='text-sm font-semibold'>Assign to creator</p>
-                      <select className='w-full mt-4 rounded-xl border border-gray-300 bg-gray-50 pl-4 py-3 text-sm text-gray-900 flex-grow bg-transparent outline-none' name="" id=""></select>
+                      <select
+                        className='w-full mt-4 rounded-xl border border-gray-300 bg-gray-50 pl-4 py-3 text-sm text-gray-900 flex-grow bg-transparent outline-none'
+                        name=''
+                        id=''></select>
                     </div>
                     <div className='w-full'>
-                      <p className='text-sm font-semibold'>Hashtag(s) your creator will use</p>
+                      <p className='text-sm font-semibold'>
+                        Hashtag(s) your creator will use
+                      </p>
                       <TagsInput tags={tags} setTags={setTags} />
                     </div>
                   </div>
                   <div className='flex w-full flex-col justify-end items-end px-7 mb-6'>
-                    <span className='text-xs italic font-light mb-4'>separate multiple with a enter</span>
-                    <button className={`px-9 py-3 bg-green-200 ${ptMono.className} rounded-full`}>start tracking</button>
+                    <span className='text-xs italic font-light mb-4'>
+                      separate multiple with a enter
+                    </span>
+                    <button
+                      className={`px-9 py-3 bg-green-200 ${ptMono.className} rounded-full`}>
+                      start tracking
+                    </button>
                   </div>
                 </Tab.Panel>
 
@@ -181,7 +196,6 @@ export default function CreatorRow(props: { comeFrom: string }) {
                     />
                   </div>
                 </Tab.Panel>
-
               </Tab.Panels>
             </Tab.Group>
           </Dialog.Panel>
