@@ -39,7 +39,8 @@ export default function CampaingTabs({
   const [openTab, setOpenTab] = useState(1)
   const [creators, setCreators] = useState(campaign?.stats?.creatorsCount || 0)
   const [audience, setAudience] = useState(
-    campaign?.stats?.engagement?.likes + campaign?.stats?.engagement?.comments || 0,
+    campaign?.stats?.engagement?.likes +
+      campaign?.stats?.engagement?.comments || 0,
   )
   const [loading, setLoading] = useState(false)
   const [content, setContent] = useState(campaign.stats?.postCount)
