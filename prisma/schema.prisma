@@ -40,6 +40,7 @@ model Session {
 model User {
   id            String     @id @default(cuid())
   name          String?
+  password      String?
   email         String?    @unique
   emailVerified DateTime?  @map("email_verified")
   image         String?
@@ -47,6 +48,7 @@ model User {
   sessions      Session[]
   clients       Client[]
   campaigns     Campaign[]
+  creators      Creator[]
 
   @@map("users")
 }
@@ -63,17 +65,20 @@ model VerificationToken {
 model Creator {
   id           Int        @id @default(autoincrement())
   name         String?
-  uuid         String?
+  uuid         String     @unique
   imageUrl     String?    @map("image_url")
   username     String?
   platform     String?
   campaigns    Campaign[]
   clients      Client[]
   posts        Post[]
+  users     User[]
   accessToken  String?    @map("access_token")
   refreshToken String?    @map("refresh_token")
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+
+  @@map("creators")
 }
 
 model Client {

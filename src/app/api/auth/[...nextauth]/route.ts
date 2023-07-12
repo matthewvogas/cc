@@ -2,8 +2,8 @@ import NextAuth from 'next-auth/next'
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GithubProvider from 'next-auth/providers/github'
-import InstagramProvider from 'next-auth/providers/instagram'
 import FacebookProvider from 'next-auth/providers/facebook'
+import InstagramProvider from 'next-auth/providers/instagram'
 import db from '@/lib/db'
 import { compare } from 'bcrypt'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
@@ -56,18 +56,44 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
-
-    // InstagramProvider({
-    //   clientId: process.env.INSTAGRAM_CLIENT_ID!,
-    //   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET!
-    // }),
+    {
+      id: 'tiktok',
+      name: 'tiktok',
+      type: 'oauth',
+      clientId: process.env.TIKTOK_CLIENT_KEY,
+      authorization: {
+        url: 'https://www.tiktok.com/v2/auth/authorize',
+        params: {
+          scope: 'user.info.basic,video.list',
+          client_key: process.env.TIKTOK_CLIENT_KEY,
+          response_type: 'code',
+        },
+      },
+      token: {
+        url: 'https://open.tiktokapis.com/v2/oauth/token',
+        params: {
+          client_key: process.env.TIKTOK_CLIENT_KEY,
+          client_secret: process.env.TIKTOK_CLIENT_SECRET,
+          grant_type: 'client_credentials',
+        },
+      },
+      userinfo: 'https://open.tiktokapis.com/v2/user/info',
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.kakao_account?.profile.nickname,
+          email: profile.kakao_account?.email,
+          image: profile.kakao_account?.profile.profile_image_url,
+        }
+      },
+    },
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
       authorization: {
         params: {
           scope:
-            'instagram_basic,instagram_manage_insights,pages_show_list,read_insights',
+            'email,instagram_basic,instagram_manage_insights,read_insights,pages_show_list',
         },
       },
     }),
@@ -104,32 +130,38 @@ export const authOptions: NextAuthOptions = {
         picture: dbUser.image,
       }
     },
+    async signIn({ user, account, profile, credentials, email }) {
+      console.log('user', user)
+      console.log('account', account)
+      console.log('profile', profile)
+      credentials && console.log('credentials', credentials)
+      email && console.log('email', email)
+      if (account && profile && account.provider === 'facebook') {
+        await db.creator.upsert({
+          where: {
+            uuid: account?.providerAccountId,
+          },
+          update: {
+            name: profile?.name,
+            accessToken: account?.access_token,
+            refreshToken: account?.refresh_token,
+            platform: account?.provider,
+            imageUrl: profile?.image,
+            uuid: account?.providerAccountId,
+          },
+          create: {
+            name: profile?.name,
+            accessToken: account?.access_token,
+            refreshToken: account?.refresh_token,
+            platform: account?.provider,
+            imageUrl: profile?.image,
+            uuid: account?.providerAccountId,
+          },
+        })
+      }
+      return true
+    },
   },
-  // callbacks: {
-  //   session: ({ session, token }) => {
-  //     // console.log('Session Callback', { session, token })
-  //     return {
-  //       ...session,
-  //       user: {
-  //         ...session.user,
-  //         id: token.id as number,
-  //         randomKey: token.randomKey,
-  //       },
-  //     }
-  //   },
-  //   jwt: ({ token, user }) => {
-  //     // console.log('JWT Callback', { token, user })
-  //     if (user) {
-  //       const u = user as any
-  //       return {
-  //         ...token,
-  //         id: u.id as number,
-  //         randomKey: u.randomKey,
-  //       }
-  //     }
-  //     return token
-  //   },
-  // },
 }
 
 const handler = NextAuth(authOptions)
