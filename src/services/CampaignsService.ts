@@ -25,7 +25,7 @@ export class CampaignsService {
   }
 
   static async findUnique(id: number) {
-    const [campaign, stats] = await Promise.all([
+    const [campaign] = await Promise.all([
       db.campaign.findUniqueOrThrow({
         where: {
           id: parseInt(id.toString()),
@@ -42,51 +42,50 @@ export class CampaignsService {
           creators: true,
         },
       }),
-      this.getStats(id),
+      //this.getStats(id),
     ])
 
     return {
       ...campaign,
-      ...stats,
     }
   }
 
-  static async getStats(id: number) {
-    const [postCount, creatorsCount, engagement] = await Promise.all([
-      db.post.count({
-        where: {
-          campaignId: parseInt(id.toString()),
-        },
-      }),
-      db.post.groupBy({
-        by: ['username'],
-        where: {
-          campaignId: parseInt(id.toString()),
-        },
-        _count: {
-          username: true,
-        },
-      }),
-      db.post.aggregate({
-        where: {
-          campaignId: parseInt(id.toString()),
-        },
-        _sum: {
-          likesCount: true,
-          commentsCount: true,
-        },
-      }),
-    ])
+  // static async getStats(id: number) {
+  //   const [postCount, creatorsCount, engagement] = await Promise.all([
+  //     db.post.count({
+  //       where: {
+  //         campaignId: parseInt(id.toString()),
+  //       },
+  //     }),
+  //     db.post.groupBy({
+  //       by: ['username'],
+  //       where: {
+  //         campaignId: parseInt(id.toString()),
+  //       },
+  //       // _count: {
+  //       //   username: true,
+  //       // },
+  //     }),
+  //     db.post.aggregate({
+  //       where: {
+  //         campaignId: parseInt(id.toString()),
+  //       },
+  //       _sum: {
+  //         likesCount: true,
+  //         commentsCount: true,
+  //       },
+  //     }),
+  //   ])
 
-    return {
-      stats: {
-        postCount,
-        creatorsCount: creatorsCount.length,
-        engagement: {
-          likes: engagement._sum?.likesCount || 0,
-          comments: engagement._sum?.commentsCount || 0,
-        },
-      },
-    }
-  }
+  //   return {
+  //     stats: {
+  //       postCount,
+  //       creatorsCount: creatorsCount.length,
+  //       engagement: {
+  //         likes: engagement._sum?.likesCount || 0,
+  //         comments: engagement._sum?.commentsCount || 0,
+  //       },
+  //     },
+  //   }
+  // }
 }

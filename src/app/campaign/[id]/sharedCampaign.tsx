@@ -62,7 +62,7 @@ export function SharedCampaign({ campaign, id }: NewType) {
       <div className='w-[1480px]  pt-6 '>
         <OverviewCampaignPublic
           creators={1}
-          content={campaign!._count!.posts || 0}
+          content={campaign?._count?.posts || 0}
           audience={1}
           plays={1}
         />

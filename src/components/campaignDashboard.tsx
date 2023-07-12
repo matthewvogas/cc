@@ -81,7 +81,7 @@ export default function DashboardCampaign({ campaignsFallback }: Props) {
             <hr className='my-2 h-px border-0 bg-gray-200'></hr>
             <div className='flex  flex-col gap-4 px-6 pt-6'>
               <h4 className=' mb-2 self-baseline rounded-full bg-white px-4 py-3 text-base'>
-                {card._count.posts} {`post(s)`}
+                {card?._count?.posts || 0} {`post(s)`}
               </h4>
               <div className='flex-grow border-t border-gray-200 pb-2'></div>
             </div>

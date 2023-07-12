@@ -37,12 +37,12 @@ export default function CampaingTabs({
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [openTab, setOpenTab] = useState(1)
-  const [creators, setCreators] = useState(campaign.stats.creatorsCount)
+  const [creators, setCreators] = useState(campaign?.stats?.creatorsCount || 0)
   const [audience, setAudience] = useState(
-    campaign.stats.engagement.likes + campaign.stats.engagement.comments,
+    campaign?.stats?.engagement?.likes + campaign?.stats?.engagement?.comments || 0,
   )
   const [loading, setLoading] = useState(false)
-  const [content, setContent] = useState(campaign.stats.postCount)
+  const [content, setContent] = useState(campaign.stats?.postCount)
   const [newPosts, setNewPosts] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
 
