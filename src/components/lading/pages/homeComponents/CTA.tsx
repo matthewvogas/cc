@@ -13,7 +13,7 @@ export default function Try() {
       <div>
         <Link
           href={'/signup'}
-          className='text-xs absolute left-[50%] -mt-[230px] flex w-[360px] lg:w-[500px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center gap-2 rounded-full border-2 border-white px-10 py-4 lg:text-lg text-white'>
+          className='text-[11px] absolute left-[50%] -mt-[230px] flex w-[360px] lg:w-[500px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center gap-2 rounded-full border-2 border-white px-10 py-4 lg:text-lg text-white'>
           start creating campaigns now with Codecoco 🥥
         </Link>
       </div>
