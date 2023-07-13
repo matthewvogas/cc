@@ -63,20 +63,21 @@ model VerificationToken {
 }
 
 model Creator {
-  id           Int        @id @default(autoincrement())
-  name         String?
-  uuid         String     @unique
-  imageUrl     String?    @map("image_url")
-  username     String?
-  platform     String?
-  campaigns    Campaign[]
-  clients      Client[]
-  posts        Post[]
-  users     User[]
-  accessToken  String?    @map("access_token")
-  refreshToken String?    @map("refresh_token")
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id             Int        @id @default(autoincrement())
+  name           String?
+  uuid           String     @unique
+  imageUrl       String?    @map("image_url")
+  username       String?
+  platform       String?
+  campaigns      Campaign[]
+  clients        Client[]
+  posts          Post[]
+  users          User[]
+  followersCount Int?       @map("followers_count")
+  accessToken    String?    @map("access_token")
+  refreshToken   String?    @map("refresh_token")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 
   @@map("creators")
 }
@@ -133,6 +134,7 @@ model Post {
   caption          String?
   permalink        String?
   imageUrl         String?   @map("image_url")
+  mediaUrl        String?   @map("media_url")
   commentsCount    Int?      @map("comments_count")
   likesCount       Int?      @map("likes_count")
   engagementCount  Int?      @map("engagement_count")
@@ -140,6 +142,7 @@ model Post {
   reachCount       Int?      @map("reach_count")
   savesCount       Int?      @map("saves_count")
   sharesCount      Int?      @map("shares_count")
+  playsCount       Int?      @map("plays_count")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 

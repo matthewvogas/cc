@@ -1,11 +1,14 @@
-import { MediaDatum, Name, Welcome } from '@/types/IntragramResponse/privatePost'
+import {
+  MediaDatum,
+  Name,
+  Welcome,
+} from '@/types/IntragramResponse/privatePost'
 import { Post, PrismaClient } from '@prisma/client'
 import { hash } from 'bcrypt'
 
 const db = new PrismaClient()
 
 async function main() {
-
   const url = new URL(
     `https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}`,
   )
@@ -16,7 +19,7 @@ async function main() {
   )
   url.searchParams.append('access_token', process.env.BUSINESS_TOKEN_SOPHIA!)
 
-  const res = await fetch(url).then(res => res.json()) as Welcome
+  const res = (await fetch(url).then(res => res.json())) as Welcome
 
   const password = await hash(`test`, 12)
   const email = 'test@test.com'
@@ -69,7 +72,6 @@ async function main() {
     },
   })
 
-
   const creator = await db.creator.upsert({
     where: {
       uuid: res.id,
@@ -82,17 +84,17 @@ async function main() {
       clients: {
         connect: {
           id: client.id,
-        }
+        },
       },
       campaigns: {
         connect: {
           id: campaign.id,
-        }
+        },
       },
       users: {
         connect: {
           id: user!.id!,
-        }
+        },
       },
       accessToken: process.env.BUSINESS_TOKEN_SOPHIA!,
     },
@@ -104,24 +106,23 @@ async function main() {
       clients: {
         connect: {
           id: client.id,
-        }
+        },
       },
       campaigns: {
         connect: {
           id: campaign.id,
-        }
+        },
       },
       users: {
         connect: {
           id: user!.id!,
-        }
+        },
       },
       accessToken: process.env.BUSINESS_TOKEN_SOPHIA!,
-    }
+    },
   })
 
   const dummyPost = res.media!.data!.map((post: MediaDatum) => {
-
     let commentsCount = 0
     let likesCount = 0
     let impressionsCount = 0
@@ -159,7 +160,6 @@ async function main() {
           playsCount += value.value
         }
       })
-
     })
 
     return {
@@ -179,7 +179,6 @@ async function main() {
       creatorId: creator.id,
     } as Post
   })
-
 
   await db.post.createMany({
     data: dummyPost,
