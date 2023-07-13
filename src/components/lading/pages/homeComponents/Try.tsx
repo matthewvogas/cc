@@ -61,7 +61,7 @@ export default function Try() {
           </p>
         </div>
 
-        <div className='mb-8 flex w-full flex-col gap-3 rounded-3xl bg-[#F9F8F7] px-10 py-6'>
+        <div className='mb-12 flex w-full flex-col gap-3 rounded-3xl bg-[#F9F8F7] px-10 py-6'>
           <p className='text-xs lg:text-sm font-medium'>
             your Instagram, Facebook, or TikTok link
           </p>

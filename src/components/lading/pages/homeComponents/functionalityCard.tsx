@@ -32,7 +32,7 @@ export default function Cards(props: {
               </span>
             </div>
             <h3 className='mb-4'>{props.card.title}</h3>
-            <p className={` mb-10 pr-28 text-base`}>
+            <div className={` mb-10 pr-28 text-base`}>
               {Object.values(props.card.features).map((feature: any, index) => (
                 <div className='flex gap-3' key={index}>
                   <Image src={check} alt={''} />{' '}
@@ -41,7 +41,7 @@ export default function Cards(props: {
                   </p>
                 </div>
               ))}
-            </p>
+            </div>
           </div>
         </div>
       </div>
