@@ -30,7 +30,7 @@ export default function HomePostCard(props: {
             width={0}
             height={0}
             sizes='100vw'
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: 'auto' }}
             unoptimized
           />
           <div className='px-4 pt-4'>

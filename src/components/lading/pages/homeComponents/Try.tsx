@@ -1,8 +1,9 @@
 'use client'
 import Image from 'next/image'
-import exampleGrid from 'public/assets/register/examplePosts.png'
+import { ptMono } from '@/app/fonts'
 import { useState } from 'react'
 import HomePostCard from './postCard'
+import exampleGrid from 'public/assets/register/examplePosts.png'
 
 import imageOne from 'public/assets/SandBox/InstagramPosts/onePost.jpg'
 import imageTwo from 'public/assets/SandBox/InstagramPosts/TwoPost.jpg'
@@ -48,22 +49,25 @@ export default function Try() {
   const [blur, setBlur] = useState('blur-lg')
   return (
     <>
-      <div className='m-auto flex w-[598px] flex-col items-center justify-center py-16'>
+      <div className='m-auto flex px-4 lg:px-0 lg:w-[598px] flex-col items-center justify-center py-16 overflow-hidden lg:overflow-visible'>
         <div className='mb-4 flex flex-col items-center gap-5'>
-          <h2 className='text-2xl font-bold text-black'>Try Codecoco 🥥</h2>
-          <p className='mb-4 text-center text-base text-black'>
+          <h2 className='text-base lg:text-2xl font-bold text-black'>
+            Try Codecoco 🥥
+          </h2>
+          <p
+            className={`text-xs lg:text-base mb-4 text-center text-black ${ptMono.className}`}>
             Test drive a little part of Codecoco. Create your own mini campaign.
             Drop in up to 3 social media links.
           </p>
         </div>
 
         <div className='mb-8 flex w-full flex-col gap-3 rounded-3xl bg-[#F9F8F7] px-10 py-6'>
-          <p className='text-sm font-medium'>
+          <p className='text-xs lg:text-sm font-medium'>
             your Instagram, Facebook, or TikTok link
           </p>
           <div className='flex gap-2'>
             <input
-              className=' border-gray max-h-max w-full rounded-lg border bg-transparent py-2 pl-4 outline-none'
+              className=' text-xs lg:text-base border-gray max-h-max w-full rounded-lg border bg-transparent py-2 pl-4 outline-none'
               placeholder='https://'
               value={instagramLinks}
               readOnly
@@ -89,7 +93,7 @@ export default function Try() {
             bulk add links{' '}
           </button>
         </div>
-        <div className='mt-4 flex gap-6'>
+        <div className='mt-4 flex gap-6 '>
           <HomePostCard
             firstImage={imageOne}
             secondImage={imageTwo}
