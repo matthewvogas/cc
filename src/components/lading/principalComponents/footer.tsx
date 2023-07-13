@@ -5,7 +5,7 @@ import arrow from 'public/assets/register/arrowButtonIcon.svg'
 export default function Footer() {
   return (
     <>
-      <div className='flex justify-around bg-white py-14 '>
+      <div className='flex justify-around bg-[#181818] py-14 '>
         {/* <div className='flex gap-16 '>
           <div className='flex flex-col items-start justify-start gap-2'>
             <h5 className='mb-5 text-xs text-[#8690A3]'>Legal</h5>
