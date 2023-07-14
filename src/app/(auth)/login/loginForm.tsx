@@ -88,7 +88,7 @@ export const LoginForm = () => {
           </button>
         </div>
       </form>
-      <div className='flex w-full gap-5'>
+      {/* <div className='flex w-full gap-5'>
         <button
           onClick={async () =>
             await signIn('facebook', {
@@ -105,7 +105,7 @@ export const LoginForm = () => {
           <Image className={`mr-4 w-8`} src={TikTokIcon} alt={''} />
           <p>Log in with Tiktok</p>
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }
