@@ -49,10 +49,11 @@ CREATE TABLE "verificationtokens" (
 CREATE TABLE "creators" (
     "id" SERIAL NOT NULL,
     "name" TEXT,
-    "uuid" TEXT,
+    "uuid" TEXT NOT NULL,
     "image_url" TEXT,
     "username" TEXT,
     "platform" TEXT,
+    "followers_count" INTEGER,
     "access_token" TEXT,
     "refresh_token" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -106,6 +107,7 @@ CREATE TABLE "posts" (
     "caption" TEXT,
     "permalink" TEXT,
     "image_url" TEXT,
+    "media_url" TEXT,
     "comments_count" INTEGER,
     "likes_count" INTEGER,
     "engagement_count" INTEGER,
@@ -113,10 +115,17 @@ CREATE TABLE "posts" (
     "reach_count" INTEGER,
     "saves_count" INTEGER,
     "shares_count" INTEGER,
+    "plays_count" INTEGER,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "posts_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_CreatorToUser" (
+    "A" INTEGER NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -153,7 +162,16 @@ CREATE UNIQUE INDEX "verificationtokens_token_key" ON "verificationtokens"("toke
 CREATE UNIQUE INDEX "verificationtokens_identifier_token_key" ON "verificationtokens"("identifier", "token");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "creators_uuid_key" ON "creators"("uuid");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "tags_name_key" ON "tags"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_CreatorToUser_AB_unique" ON "_CreatorToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_CreatorToUser_B_index" ON "_CreatorToUser"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ClientToCreator_AB_unique" ON "_ClientToCreator"("A", "B");
@@ -193,6 +211,12 @@ ALTER TABLE "posts" ADD CONSTRAINT "posts_campaign_id_fkey" FOREIGN KEY ("campai
 
 -- AddForeignKey
 ALTER TABLE "posts" ADD CONSTRAINT "posts_creator_id_fkey" FOREIGN KEY ("creator_id") REFERENCES "creators"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_CreatorToUser" ADD CONSTRAINT "_CreatorToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "creators"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_CreatorToUser" ADD CONSTRAINT "_CreatorToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ClientToCreator" ADD CONSTRAINT "_ClientToCreator_A_fkey" FOREIGN KEY ("A") REFERENCES "clients"("id") ON DELETE CASCADE ON UPDATE CASCADE;
