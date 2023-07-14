@@ -163,6 +163,7 @@ async function main() {
     })
 
     return {
+      userId: user!.id!,
       campaignId: campaign.id,
       caption: post.caption,
       commentsCount,
@@ -172,6 +173,7 @@ async function main() {
       savesCount,
       sharesCount,
       playsCount,
+      shortcode: post.shortcode,
       mediaUrl: post.media_url,
       imageUrl: post.thumbnail_url ? post.thumbnail_url : post.media_url,
       permalink: post.permalink,

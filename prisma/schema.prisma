@@ -49,6 +49,7 @@ model User {
   clients       Client[]
   campaigns     Campaign[]
   creators      Creator[]
+  posts         Post[]
 
   @@map("users")
 }
@@ -127,12 +128,15 @@ model Campaign {
 
 model Post {
   id               Int       @id @default(autoincrement())
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id])
   campaign         Campaign? @relation(fields: [campaignId], references: [id])
   campaignId       Int?      @map("campaign_id")
   creator          Creator?  @relation(fields: [creatorId], references: [id])
   creatorId        Int?      @map("creator_id")
   caption          String?
   permalink        String?
+  shortcode        String?
   imageUrl         String?   @map("image_url")
   mediaUrl        String?   @map("media_url")
   commentsCount    Int?      @map("comments_count")

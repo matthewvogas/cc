@@ -2,6 +2,7 @@ import db from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
+import { CreatorsService } from '@/services/CreatorsService'
 
 export async function GET() {
   try {
@@ -10,16 +11,8 @@ export async function GET() {
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-    const campaigns = await db.creator.findMany({
-      where: {
-        userId: session!.user.id,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
-
-    return NextResponse.json(campaigns)
+    const creators = await CreatorsService.findMany(session!.user.id)
+    return NextResponse.json(creators)
   } catch (err) {
     console.log(err)
     return NextResponse.json(err, {

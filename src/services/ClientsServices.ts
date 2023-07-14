@@ -19,6 +19,7 @@ export class ClientsService {
         _count: {
           select: {
             campaigns: true,
+            creators: true,
           },
         },
         campaigns: true,
@@ -29,17 +30,24 @@ export class ClientsService {
   }
 
   static async findUnique(id: number) {
-    return db.client.findUniqueOrThrow({
+    const client = await db.client.findUnique({
       where: {
-        id: parseInt(id.toString()),
+        id,
       },
       include: {
-        campaigns: true,
-        tags: true,
         _count: {
-          select: { campaigns: true },
+          select: {
+            campaigns: true,
+            creators: true,
+            tags: true,
+          }
         },
-      },
+        campaigns: true,
+        creators: true,
+        tags: true,
+      }
     })
+
+    return client
   }
 }
