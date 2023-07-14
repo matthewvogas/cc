@@ -72,12 +72,28 @@ export const authOptions: NextAuthOptions = {
         },
       },
       token: {
-        request(context) {
-          console.log('context', context)
+        async request({ checks, client, params, provider }) {
+          const data = await client.grant({
+            code: params.code,
+            redirect_uri: provider.callbackUrl,
+            params,
+            grant_type: 'authorization_code',
+            client_key: process.env.TIKTOK_CLIENT_KEY,
+            client_secret: process.env.TIKTOK_CLIENT_SECRET,
+            code_verifier: checks.code_verifier,
+          })
+          console.log(data)
           return {
             tokens: {
-              access_token: 'xd',
-            },
+              access_token: data.access_token,
+              refresh_token: data.refresh_token,
+              token_type: data.token_type,
+              expires_in: data.expires_in,
+              expires_at: data.expires_at,
+              id_token: data.id_token,
+              scope: data.scope,
+              session_state: data.session_state,
+            }
           }
         },
         url: 'https://open.tiktokapis.com/v2/oauth/token',
