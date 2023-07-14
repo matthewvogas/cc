@@ -61,6 +61,7 @@ export const authOptions: NextAuthOptions = {
       name: 'tiktok',
       type: 'oauth',
       clientId: process.env.TIKTOK_CLIENT_ID!,
+      clientSecret: process.env.TIKTOK_CLIENT_SECRET!,
       authorization: {
         url: 'https://www.tiktok.com/v2/auth/authorize',
         params: {
