@@ -18,21 +18,21 @@ import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
 import ManagePosts from '@/components/ManagePosts'
 import { ptMono } from '@/app/fonts'
 
-type campaignWithStats = Campaign & {
-  posts: Post[]
-  stats: {
-    postCount: number
-    creatorsCount: number
-    engagement: {
-      likes: number
-      comments: number
-    }
-  }
-}
+// type campaignWithStats = Campaign & {
+//   posts: Post[]
+//   stats: {
+//     postCount: number
+//     creatorsCount: number
+//     engagement: {
+//       likes: number
+//       comments: number
+//     }
+//   }
+// }
 export default function CampaingTabs({
   campaign,
 }: {
-  campaign: campaignWithStats
+  campaign: any
 }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)

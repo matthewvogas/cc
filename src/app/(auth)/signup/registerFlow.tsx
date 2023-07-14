@@ -9,7 +9,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 
 // import required modules
-import { Pagination } from 'swiper'
+import { Pagination } from 'swiper/modules'
 import { ptMono } from '@/app/fonts'
 import { RegisterNextButton } from './registerNextButton'
 

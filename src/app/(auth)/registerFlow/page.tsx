@@ -6,7 +6,7 @@ import registerImage from 'public/assets/register/registerFlow.png'
 import { Sen } from 'next/font/google'
 import logo from 'public/assets/register/LogoSVG.svg'
 import registerBg from 'public/assets/register/login.jpg'
-import { Pagination } from 'swiper'
+import { Pagination } from 'swiper/modules'
 import { ptMono } from '@/app/fonts'
 import { RegisterNextButton } from './registerNextButton'
 

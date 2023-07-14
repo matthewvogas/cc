@@ -99,9 +99,14 @@ export const LoginForm = () => {
           <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
           <p>Log in with instagram</p>
         </button>
-        {/* <button className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
+        <button onClick={async () =>
+            await signIn('tiktok', {
+              callbackUrl,
+            })
+          } className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
               <Image className={`mr-4 w-8`} src={TikTokIcon} alt={''} />
-            </button> */}
+              <p>Log in with Tiktok</p>
+            </button>
       </div>
     </div>
   )

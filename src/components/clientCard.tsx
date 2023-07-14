@@ -49,7 +49,7 @@ export default function ClientCard({
         priority
         className={`h-64 object-cover`}
         src={imageCover}
-        alt={card.name}
+        alt={card?.name || 'card'}
       />
       <div className=' h-auto border border-gray-200 bg-white  px-2 py-4 pl-4'>
         <p className={`text-lg font-medium text-gray-800 ${inter.className}`}>

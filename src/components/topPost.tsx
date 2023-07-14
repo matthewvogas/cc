@@ -52,7 +52,8 @@ export default function TopPost({ posts }: { posts: Post[] }) {
           className={`h-fit w-96 max-w-sm overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>
           <div className='flex h-96 flex-col justify-between bg-white'>
             <h4 className='absolute z-10 ml-4 mt-4 rounded-xl bg-white px-4 py-3 text-base opacity-80 '>
-              @{card.username}
+              {/* @{card.username} */}
+              XD
             </h4>
 
             {!isVideo(card) && (
@@ -68,11 +69,11 @@ export default function TopPost({ posts }: { posts: Post[] }) {
                 unoptimized
               />
             )}
-            {isVideo(card) && (
+            {/* {isVideo(card) && (
               <video className={` h-96 w-full object-cover `} controls>
                 <source src={card.videoUrl || undefined} type='video/mp4' />
               </video>
-            )}
+            )} */}
             {/* <p className='truncate z-10 absolute mt-80 '>
                 {card.caption}
               </p> */}

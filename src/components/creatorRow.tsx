@@ -1,3 +1,5 @@
+'use client'
+
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import avatar from 'public/assets/register/avatar.jpg'
