@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "CreatorStatus" AS ENUM ('SIGNEDUP', 'INVITE', 'REJECTED');
+
 -- CreateTable
 CREATE TABLE "accounts" (
     "id" TEXT NOT NULL,
@@ -51,6 +54,7 @@ CREATE TABLE "creators" (
     "name" TEXT,
     "uuid" TEXT NOT NULL,
     "image_url" TEXT,
+    "status" "CreatorStatus",
     "username" TEXT,
     "platform" TEXT,
     "followers_count" INTEGER,
@@ -102,10 +106,12 @@ CREATE TABLE "campaigns" (
 -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
+    "user_id" TEXT NOT NULL,
     "campaign_id" INTEGER,
     "creator_id" INTEGER,
     "caption" TEXT,
     "permalink" TEXT,
+    "shortcode" TEXT,
     "image_url" TEXT,
     "media_url" TEXT,
     "comments_count" INTEGER,
@@ -205,6 +211,9 @@ ALTER TABLE "campaigns" ADD CONSTRAINT "campaigns_client_id_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "campaigns" ADD CONSTRAINT "campaigns_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "posts" ADD CONSTRAINT "posts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "posts" ADD CONSTRAINT "posts_campaign_id_fkey" FOREIGN KEY ("campaign_id") REFERENCES "campaigns"("id") ON DELETE SET NULL ON UPDATE CASCADE;

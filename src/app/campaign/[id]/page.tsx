@@ -10,7 +10,7 @@ export default async function shareCampaign({
 }) {
   const { id } = params
 
-  const campaign = await CampaignsService.findUnique(id) as CampaignRes
+  const campaign = (await CampaignsService.findUnique(id)) as CampaignRes
 
   return (
     <div>

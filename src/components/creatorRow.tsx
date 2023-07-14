@@ -76,7 +76,9 @@ export default function CreatorRow(props: {
                     <td className='bg-white'>
                       <div className='flex items-center justify-between '>
                         <div className='flex'>
-                          <label className={`${infoLabel}`}>{creator._count?.posts}</label>
+                          <label className={`${infoLabel}`}>
+                            {creator._count?.posts}
+                          </label>
                           <button className='px-2 text-lg font-bold text-gray-400'>
                             {' '}
                             +{' '}
