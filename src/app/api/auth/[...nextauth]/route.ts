@@ -93,7 +93,7 @@ export const authOptions: NextAuthOptions = {
               id_token: data.id_token,
               scope: data.scope,
               session_state: data.session_state,
-            }
+            },
           }
         },
         url: 'https://open.tiktokapis.com/v2/oauth/token',
