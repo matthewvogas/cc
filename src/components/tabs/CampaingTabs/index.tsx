@@ -29,11 +29,7 @@ import { ptMono } from '@/app/fonts'
 //     }
 //   }
 // }
-export default function CampaingTabs({
-  campaign,
-}: {
-  campaign: any
-}) {
+export default function CampaingTabs({ campaign }: { campaign: any }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [openTab, setOpenTab] = useState(1)
