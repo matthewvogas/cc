@@ -41,7 +41,6 @@ export class CreatorsService {
   }
 
   static async findUnique(id: number, userId: string) {
-
     const creator = await db.creator.findUnique({
       where: {
         id,
@@ -49,20 +48,20 @@ export class CreatorsService {
       include: {
         campaigns: {
           where: {
-            userId
-          }
+            userId,
+          },
         },
         clients: {
           where: {
-            userId
-          }
+            userId,
+          },
         },
         posts: {
           where: {
-            userId
-          }
+            userId,
+          },
         },
-      }
+      },
     })
 
     return creator

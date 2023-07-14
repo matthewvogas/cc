@@ -40,12 +40,12 @@ export class ClientsService {
             campaigns: true,
             creators: true,
             tags: true,
-          }
+          },
         },
         campaigns: true,
         creators: true,
         tags: true,
-      }
+      },
     })
 
     return client

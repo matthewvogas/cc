@@ -1,11 +1,10 @@
 import db from '@/lib/db'
 
-
 //Service that the constructor get a session id
 
 export class CampaignsService {
   static async findMany(userId: string, limit?: number, offset?: number) {
-    const campaigns =  await db.campaign.findMany({
+    const campaigns = await db.campaign.findMany({
       where: {
         userId,
       },
@@ -40,8 +39,8 @@ export class CampaignsService {
           select: {
             creators: true,
             posts: true,
-          }
-        }
+          },
+        },
       },
     })
 
@@ -58,7 +57,7 @@ export class CampaignsService {
         playsCount: true,
         savesCount: true,
         sharesCount: true,
-      }
+      },
     })
 
     return {
