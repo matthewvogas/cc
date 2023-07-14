@@ -78,7 +78,7 @@ export default function CreatorRow(props: { comeFrom: string }) {
                     </div>
                   </td>
                   <td className='flex'>
-                    <PostHashtagStatus state={'NOT'} link={''} />
+                    <PostHashtagStatus state={'INFO'} />
                   </td>
                   <td>
                     <div className='dropdown-end dropdown cursor-pointer'>
