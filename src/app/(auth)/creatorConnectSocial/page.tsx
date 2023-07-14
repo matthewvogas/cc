@@ -1,12 +1,14 @@
 'use client'
-import { Swiper, SwiperSlide } from 'swiper/react'
+
+// Importación de dependencias y componentes de React
 import Image from 'next/image'
-import registerImage from 'public/assets/register/registerFlow.png'
-import { Pagination } from 'swiper/modules'
 import { ptMono } from '@/app/fonts'
+import { Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { RegisterNextButton } from './registerNextButton'
 
-// Import Swiper styles
+// Importación de imágenes y archivos CSS
+import registerImage from 'public/assets/register/registerFlow.png'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
@@ -35,8 +37,7 @@ export default function RegisterPage() {
                     welcome Sophia!, 🥥
                   </h1>
                   <p className='mb-6 text-sm font-medium'>
-                    {`Let’s get your account set up right. What best describes your
-              work?`}
+                    {`Let’s get your account set up right. What best describes your work?`}
                   </p>
 
                   <div
