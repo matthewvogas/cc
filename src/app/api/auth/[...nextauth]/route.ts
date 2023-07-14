@@ -60,13 +60,14 @@ export const authOptions: NextAuthOptions = {
       id: 'tiktok',
       name: 'tiktok',
       type: 'oauth',
-      clientId: process.env.TIKTOK_CLIENT_KEY,
+      clientId: process.env.TIKTOK_CLIENT_ID!,
       authorization: {
         url: 'https://www.tiktok.com/v2/auth/authorize',
         params: {
           scope: 'user.info.basic,video.list',
           client_key: process.env.TIKTOK_CLIENT_KEY,
           response_type: 'code',
+          client_id: process.env.TIKTOK_CLIENT_ID,
         },
       },
       token: {
@@ -75,6 +76,7 @@ export const authOptions: NextAuthOptions = {
           client_key: process.env.TIKTOK_CLIENT_KEY,
           client_secret: process.env.TIKTOK_CLIENT_SECRET,
           grant_type: 'client_credentials',
+          client_id: process.env.TIKTOK_CLIENT_ID,
         },
       },
       userinfo: 'https://open.tiktokapis.com/v2/user/info',
