@@ -40,18 +40,18 @@ export default function AddNewCampaign(props: {
             className={`${dropdownButton}`}
             onClick={() => {
               props.createCampaign(true)
-              props.campaignType('new manual campaign')
+              props.campaignType('new campaign')
             }}>
-            manual
+            campaign
           </button>
-          <button
+          {/* <button
             className={`${dropdownButton}`}
             onClick={() => {
               props.createCampaign(true)
               props.campaignType('new hashtag campaign')
             }}>
             hashtag
-          </button>
+          </button> */}
         </ul>
       </div>
     </>

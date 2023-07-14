@@ -55,6 +55,7 @@ export interface Creator {
   id?: number
   name?: null
   uuid?: string
+  status?: string
   imageUrl?: string
   username?: string
   platform?: string

@@ -77,6 +77,7 @@ async function main() {
       uuid: res.id,
     },
     update: {
+      name: 'Sophia Ellis',
       username: res.username,
       platform: 'instagram',
       uuid: res.id!,

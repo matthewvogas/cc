@@ -65,7 +65,7 @@ export class CampaignsService {
 
     return {
       ...campaign,
-      stats: stats[0]._sum,
+      stats: stats[0]?._sum,
     }
   }
 }

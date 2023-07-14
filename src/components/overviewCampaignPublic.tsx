@@ -16,12 +16,12 @@ export default function OverviewCampaignPublic(props: {
       <div className='flex w-full gap-5'>
         <ClientStat
           icon={'👤'}
-          value={props.creators || 100}
+          value={props.creators || 0}
           text={'creators:'}
         />
-        <ClientStat icon={'👤'} value={props.content || 100} text={'posts'} />
-        <ClientStat icon={'👤'} value={props.audience || 100} text={'views'} />
-        <ClientStat icon={'👤'} value={props.plays || 100} text={'plays'} />
+        <ClientStat icon={'👤'} value={props.content || 0} text={'posts'} />
+        <ClientStat icon={'👤'} value={props.audience || 0} text={'views'} />
+        <ClientStat icon={'👤'} value={props.plays || 0} text={'plays'} />
       </div>
     </div>
   )

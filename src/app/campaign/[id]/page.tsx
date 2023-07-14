@@ -1,5 +1,7 @@
 import db from '@/lib/db'
 import { SharedCampaign } from './sharedCampaign'
+import { CampaignsService } from '@/services/CampaignsService'
+import { CampaignRes } from '@/types/campaign/campaignRes'
 
 export default async function shareCampaign({
   params,
@@ -8,28 +10,7 @@ export default async function shareCampaign({
 }) {
   const { id } = params
 
-  const campaign: any = await db.campaign.findUnique({
-    where: {
-      id: Number(id),
-    },
-    select: {
-      id: true,
-      name: true,
-      client: true,
-      createdAt: true,
-      creators: true,
-      description: true,
-      updatedAt: true,
-      user: true,
-      posts: true,
-      _count: {
-        select: {
-          creators: true,
-          posts: true,
-        },
-      },
-    },
-  })
+  const campaign = await CampaignsService.findUnique(id) as CampaignRes
 
   return (
     <div>

@@ -204,7 +204,7 @@ export default function CampaingTabs({
                       brief={campaign?.description || ''}
                       creators={campaign?._count?.creators || 0}
                       content={campaign?._count?.posts || 0}
-                      audience={campaign?.stats?.engagementCount || 0}
+                      audience={campaign?.stats?.impressionsCount || 0}
                       plays={campaign?.stats?.playsCount || 0}
                     />
 
@@ -261,7 +261,7 @@ export default function CampaingTabs({
                       <p className='my-8 text-xl font-bold'>Stats</p>
                       <div className='flex flex-col gap-4'>
                         <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
-                          {`👤 1 Creators`}
+                          {`👤 ${campaign?._count?.creators} Creators`}
                         </p>
                         <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
                           {`📝 ${campaign?.posts?.length} Posts`}

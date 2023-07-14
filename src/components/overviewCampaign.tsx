@@ -27,22 +27,22 @@ export default function OverviewCampaign(props: {
         <h4 className={`text-xm mb-4 ml-4 ${inter.className}`}>Results</h4>
         <div className='m-4 flex'>
           <span className='rounded-full bg-normalRose px-6 py-2 '>
-            Creators: {props.creators || 100}
+            Creators: {props.creators || 0}
           </span>
         </div>
         <div className='m-4 flex'>
           <span className='rounded-full bg-normalRose px-6 py-2 '>
-            Content: {props.content || 100}
+            Content: {props.content || 0}
           </span>
         </div>
         <div className='m-4 flex'>
           <span className='rounded-full bg-normalRose px-6 py-2 '>
-            Audience: {props.audience || 100}
+            Audience: {props.audience || 0}
           </span>
         </div>
         <div className='m-4 flex'>
           <span className='rounded-full bg-normalRose px-6 py-2 '>
-            Plays: {props.plays || 100}
+            Plays: {props.plays || 0}
           </span>
         </div>
       </div>

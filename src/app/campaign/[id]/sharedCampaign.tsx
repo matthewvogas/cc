@@ -47,10 +47,10 @@ export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
       <TitleDashboard title={'Revolve Clothing'} user={''} />
       <div className='w-[1480px]  pt-6 '>
         <OverviewCampaignPublic
-          creators={1}
+          creators={campaign?._count?.creators || 0}
           content={campaign?._count?.posts || 0}
-          audience={1}
-          plays={1}
+          audience={campaign?.stats?.impressionsCount || 0}
+          plays={campaign?.stats?.playsCount || 0}
         />
         <ManagePosts
           id={campaign.id!}

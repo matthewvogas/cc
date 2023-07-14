@@ -32,7 +32,7 @@ export class ClientsService {
   static async findUnique(id: number) {
     const client = await db.client.findUnique({
       where: {
-        id,
+        id: +id,
       },
       include: {
         _count: {

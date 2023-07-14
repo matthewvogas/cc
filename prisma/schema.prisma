@@ -68,6 +68,7 @@ model Creator {
   name           String?
   uuid           String     @unique
   imageUrl       String?    @map("image_url")
+  status         CreatorStatus?
   username       String?
   platform       String?
   campaigns      Campaign[]
@@ -82,6 +83,7 @@ model Creator {
 
   @@map("creators")
 }
+
 
 model Client {
   id        Int        @id @default(autoincrement())
@@ -151,4 +153,11 @@ model Post {
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
   @@map("posts")
+}
+
+
+enum CreatorStatus {
+  SIGNEDUP
+  INVITE
+  REJECTED
 }
