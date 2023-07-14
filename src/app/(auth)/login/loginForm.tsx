@@ -101,9 +101,7 @@ export const LoginForm = () => {
         </button>
         <button
           onClick={async () =>
-            await signIn('tiktok', {
-              callbackUrl,
-            })
+            await signIn('tiktok')
           }
           className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
           <Image className={`mr-4 w-8`} src={TikTokIcon} alt={''} />
