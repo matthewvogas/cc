@@ -9,15 +9,13 @@ import { Campaign, CampaignPayload, Client, User, Post } from '@prisma/client'
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-
-
-export function SharedCampaign({ campaign }: { campaign: CampaignRes}) {
+export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
   const [tags, setTags] = useState<string[]>([])
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
 
-  const filteredPosts = campaign?.posts?.filter((post) => {
+  const filteredPosts = campaign?.posts?.filter(post => {
     if (!post.caption) return false
 
     const isInstagramActive = activePlatforms.includes('Instagram')

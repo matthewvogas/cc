@@ -31,7 +31,13 @@ import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 //     }
 //   }
 // }
-export default function CampaingTabs({ campaign, creators }: { campaign: CampaignRes, creators: any }) {
+export default function CampaingTabs({
+  campaign,
+  creators,
+}: {
+  campaign: CampaignRes
+  creators: any
+}) {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [openTab, setOpenTab] = useState(1)
@@ -50,7 +56,7 @@ export default function CampaingTabs({ campaign, creators }: { campaign: Campaig
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
 
-  const filteredPosts = campaign?.posts?.filter((post) => {
+  const filteredPosts = campaign?.posts?.filter(post => {
     if (!post.caption) return false
 
     const isInstagramActive = activePlatforms.includes('Instagram')

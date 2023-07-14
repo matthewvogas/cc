@@ -16,7 +16,10 @@ const dropdownButton =
 const thTable = 'bg-white text-sm normal-case '
 const infoLabel = 'bg-active px-8 py-3 rounded-full text-black text-sm '
 
-export default function CreatorRow(props: { comeFrom: string, creators: CreatorsByCampaignRes }) {
+export default function CreatorRow(props: {
+  comeFrom: string
+  creators: CreatorsByCampaignRes
+}) {
   const [isOpen, setIsOpen] = useState(false)
   const [tags, setTags] = useState<string[]>([])
 

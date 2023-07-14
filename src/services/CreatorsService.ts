@@ -68,14 +68,13 @@ export class CreatorsService {
     return creator
   }
 
-
   static async findByCampaignId(campaignId: number) {
     const creators = await db.creator.findMany({
       where: {
         campaigns: {
           some: {
             id: +campaignId,
-          }
+          },
         },
       },
       include: {
@@ -84,11 +83,11 @@ export class CreatorsService {
             posts: {
               where: {
                 campaignId: +campaignId,
-              }
+              },
             },
-          }
-        }
-      }
+          },
+        },
+      },
     })
 
     return creators

@@ -39,9 +39,9 @@ const creatorCards = [
   },
 ]
 
-export default function TopPost({ posts }: { posts:any }) {
+export default function TopPost({ posts }: { posts: any }) {
   const postData =
-    posts.sort((a:any, b:any) => b.likesCount! - a.likesCount!).slice(0, 4) ||
+    posts.sort((a: any, b: any) => b.likesCount! - a.likesCount!).slice(0, 4) ||
     creatorCards
 
   return (

@@ -18,7 +18,7 @@ export default async function CampaignPage({
 }) {
   const { id } = params
   try {
-    const campaign = await CampaignsService.findUnique(id) as CampaignRes
+    const campaign = (await CampaignsService.findUnique(id)) as CampaignRes
     const creators = await CreatorsService.findByCampaignId(id)
 
     return (

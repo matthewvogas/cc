@@ -10,7 +10,9 @@ export const dynamic = 'force-dynamic'
 
 export default async function CampaignPage() {
   const session = await getServerSession(authOptions)
-  const campaigns = await CampaignsService.findMany(session!.user.id) as CampaignRes
+  const campaigns = (await CampaignsService.findMany(
+    session!.user.id,
+  )) as CampaignRes
   const clients = await ClientsService.findMany(session!.user.id)
   //const creators = await CreatorsService.findMany(session!.user.id)
 
@@ -19,7 +21,6 @@ export default async function CampaignPage() {
       campaignsFallback={campaigns}
       clientsFallback={clients}
       // creatorsFallback={creators}
-
     />
   )
 }

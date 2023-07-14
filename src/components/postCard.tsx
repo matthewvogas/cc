@@ -34,7 +34,13 @@ export default function PostCard({ post }: { post: Post }) {
         const username = post.creator?.username || 'username'
         const extension = post.mediaUrl?.includes('mp4') ? 'mp4' : 'jpg'
         const filename =
-          username + '-campaign-' + post.campaignId + '-post-' + post.id + '.' + extension
+          username +
+          '-campaign-' +
+          post.campaignId +
+          '-post-' +
+          post.id +
+          '.' +
+          extension
         const objectUrl = URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = objectUrl

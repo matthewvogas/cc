@@ -36,7 +36,7 @@ export class CampaignsService {
         posts: {
           include: {
             creator: true,
-          }
+          },
         },
         _count: {
           select: {

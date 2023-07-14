@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions)
     const { searchParams } = new URL(req.url)
     const id = searchParams.get('campaign')
-    if(id){
+    if (id) {
       const campaign = await CreatorsService.findByCampaignId(parseInt(id))
       return NextResponse.json(campaign)
     }

@@ -17,10 +17,10 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 export default function CampaignsDashBoard({
   campaignsFallback,
   clientsFallback,
-  // creatorsFallback
-}: {
+} // creatorsFallback
+: {
   campaignsFallback: CampaignRes
-  clientsFallback: any,
+  clientsFallback: any
   // creatorsFallback: any
 }) {
   const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
