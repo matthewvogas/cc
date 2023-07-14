@@ -16,9 +16,8 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 
 export default function CampaignsDashBoard({
   campaignsFallback,
-  clientsFallback,
-} // creatorsFallback
-: {
+  clientsFallback, // creatorsFallback
+}: {
   campaignsFallback: CampaignRes
   clientsFallback: any
   // creatorsFallback: any
