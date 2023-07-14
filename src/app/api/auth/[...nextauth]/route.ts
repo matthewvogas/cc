@@ -72,6 +72,14 @@ export const authOptions: NextAuthOptions = {
         },
       },
       token: {
+        request(context) {
+          console.log('context',context)
+          return {
+            tokens: {
+              access_token: 'xd'
+            }
+          }
+        },
         url: 'https://open.tiktokapis.com/v2/oauth/token',
         params: {
           client_key: process.env.TIKTOK_CLIENT_KEY,
