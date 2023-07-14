@@ -1,4 +1,5 @@
 import db from '@/lib/db'
+import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 
 export class CreatorsService {
   static async findMany(userId: string, limit?: number, offset?: number) {
@@ -65,5 +66,31 @@ export class CreatorsService {
     })
 
     return creator
+  }
+
+
+  static async findByCampaignId(campaignId: number) {
+    const creators = await db.creator.findMany({
+      where: {
+        campaigns: {
+          some: {
+            id: +campaignId,
+          }
+        },
+      },
+      include: {
+        _count: {
+          select: {
+            posts: {
+              where: {
+                campaignId: +campaignId,
+              }
+            },
+          }
+        }
+      }
+    })
+
+    return creators
   }
 }

@@ -5,6 +5,9 @@ import ButtonsGroupTabs from '@/components/buttonsGroupTabs'
 import { ptMono } from '@/app/fonts'
 import CampaingsTabs from '@/components/tabs/CampaingTabs'
 import TitlePage from '@/components/titlePage'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import { CreatorsService } from '@/services/CreatorsService'
+import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,7 +18,8 @@ export default async function CampaignPage({
 }) {
   const { id } = params
   try {
-    const campaign = await CampaignsService.findUnique(id)
+    const campaign = await CampaignsService.findUnique(id) as CampaignRes
+    const creators = await CreatorsService.findByCampaignId(id)
 
     return (
       <div className='flex flex-col items-center justify-center'>
@@ -28,7 +32,7 @@ export default async function CampaignPage({
         />
 
         <div className='divider' />
-        <CampaingsTabs campaign={campaign} />
+        <CampaingsTabs campaign={campaign} creators={creators} />
       </div>
     )
   } catch (err: any) {

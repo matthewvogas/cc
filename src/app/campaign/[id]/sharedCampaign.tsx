@@ -4,32 +4,20 @@ import ManagePosts from '@/components/ManagePosts'
 import OverviewCampaignPublic from '@/components/overviewCampaignPublic'
 import PostCard from '@/components/postCard'
 import TitleDashboard from '@/components/titleDashboard'
+import { CampaignRes } from '@/types/campaign/campaignRes'
 import { Campaign, CampaignPayload, Client, User, Post } from '@prisma/client'
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-export interface NewType {
-  id: number
-  campaign: Partial<
-    Campaign & {
-      user: User
-      client: Client
-      posts: Post[]
-      _count: {
-        creators?: number
-        posts?: number
-      }
-    }
-  > | null
-}
 
-export function SharedCampaign({ campaign, id }: NewType) {
+
+export function SharedCampaign({ campaign }: { campaign: CampaignRes}) {
   const [tags, setTags] = useState<string[]>([])
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
 
-  const filteredPosts = campaign?.posts?.filter((post: Post) => {
+  const filteredPosts = campaign?.posts?.filter((post) => {
     if (!post.caption) return false
 
     const isInstagramActive = activePlatforms.includes('Instagram')
@@ -67,7 +55,7 @@ export function SharedCampaign({ campaign, id }: NewType) {
           plays={1}
         />
         <ManagePosts
-          id={id}
+          id={campaign.id!}
           addPost={''}
           shared={true}
           title={''}
@@ -83,7 +71,7 @@ export function SharedCampaign({ campaign, id }: NewType) {
         />
         <div className='flex pt-6'>
           <div className='mb-12 ml-12 flex flex-wrap gap-x-6 gap-y-8 self-center'>
-            {filteredPosts?.map((post: Post, index: any) => (
+            {filteredPosts?.map((post, index: any) => (
               <PostCard key={index} post={post} />
             ))}
           </div>

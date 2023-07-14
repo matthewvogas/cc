@@ -41,9 +41,9 @@ export default function OverviewCampaign(props: {
           </span>
         </div>
         <div className='m-4 flex'>
-          {/* <span className='rounded-full bg-normalRose px-6 py-2 '>
+          <span className='rounded-full bg-normalRose px-6 py-2 '>
             Plays: {props.plays || 100}
-          </span> */}
+          </span>
         </div>
       </div>
     </div>

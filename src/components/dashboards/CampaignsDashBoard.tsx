@@ -12,13 +12,16 @@ import { Client, Campaign } from '@prisma/client'
 import useCampaigns from '@/hooks/useCampaigns'
 import useClients from '@/hooks/useClients'
 import TitlePage from '../titlePage'
+import { CampaignRes } from '@/types/campaign/campaignRes'
 
 export default function CampaignsDashBoard({
   campaignsFallback,
   clientsFallback,
+  // creatorsFallback
 }: {
-  campaignsFallback: Campaign[]
-  clientsFallback: Client[]
+  campaignsFallback: CampaignRes
+  clientsFallback: any,
+  // creatorsFallback: any
 }) {
   const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)

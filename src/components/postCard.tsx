@@ -3,11 +3,11 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/creatorImg.jpg'
-import { Post } from '@prisma/client'
-import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import { Dialog } from '@headlessui/react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import { Post } from '@/types/campaign/campaignRes'
 import React from 'react'
+import { isVideo } from '@/utils/ValidationsHelper'
 
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -25,57 +25,50 @@ export default function PostCard({ post }: { post: Post }) {
   const [isOpen, setIsOpen] = useState(false)
   const [codeToCopy, setcodeToCopy] = React.useState('')
 
-  // const handleDownloadClick = async () => {
-  //   const url = !isVideo(post) ? post.imageUrl : post.videoUrl
-  //   if (url) {
-  //     try {
-  //       const response = await fetch(url)
-  //       const blob = await response.blob()
-  //       const username = post.username ? post.username.replace(/\./g, '-') : ''
-  //       const filename =
-  //         username + '-campaign-' + post.campaignId + '-post-' + post.id
-  //       const objectUrl = URL.createObjectURL(blob)
+  const handleDownloadClick = async () => {
+    const url = post.mediaUrl
+    if (url) {
+      try {
+        const response = await fetch(url)
+        const blob = await response.blob()
+        const username = post.creator?.username || 'username'
+        const extension = post.mediaUrl?.includes('mp4') ? 'mp4' : 'jpg'
+        const filename =
+          username + '-campaign-' + post.campaignId + '-post-' + post.id + '.' + extension
+        const objectUrl = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = objectUrl
+        link.download = filename
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
 
-  //       const link = document.createElement('a')
-  //       link.href = objectUrl
-  //       link.download = filename
-  //       link.style.display = 'none'
-  //       document.body.appendChild(link)
-  //       link.click()
-  //       document.body.removeChild(link)
-
-  //       // Liberar el objeto URL
-  //       URL.revokeObjectURL(objectUrl)
-  //     } catch (error) {
-  //       console.error('Error al descargar el archivo:', error)
-  //     }
-  //   }
-  // }
+        // Liberar el objeto URL
+        URL.revokeObjectURL(objectUrl)
+      } catch (error) {
+        console.error('Error al descargar el archivo:', error)
+      }
+    }
+  }
 
   return (
     <div
       className={`h-fit w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
-      {!isVideo(post) && (
-        <Image
-          priority
-          className={`h-64 rounded-2xl object-cover`}
-          src={post.imageUrl || imageCover}
-          alt='background'
-          width={0}
-          height={0}
-          sizes='100vw'
-          style={{ width: '100%', height: 'auto' }}
-          unoptimized
-        />
-      )}
-      {/* {isVideo(post) && (
-        <video className={`rounded-2xl `} controls>
-          <source src={post.videoUrl || undefined} type='video/mp4' />
-        </video>
-      )} */}
+      <Image
+        priority
+        className={`h-64 rounded-2xl object-cover`}
+        src={post.imageUrl || imageCover}
+        alt='background'
+        width={0}
+        height={0}
+        sizes='100vw'
+        style={{ width: '100%', height: 'auto' }}
+        unoptimized
+      />
       <div className='px-6 pt-6'>
         <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
-          {/* @{post.username} */}0 Followers
+          @{post.creator?.username || 'username'}
         </h4>
         <span className=' inline-flex h-6 w-full rounded text-center text-sm text-gray-500 '>
           <svg
@@ -90,7 +83,7 @@ export default function PostCard({ post }: { post: Post }) {
               d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
             />
           </svg>
-          {/* {post.followersCount} followers */}0 Followers
+          {post.creator?.followersCount || 0}
         </span>
         <div className='flex-grow border-t border-gray-200 pb-2'></div>
       </div>
@@ -144,7 +137,7 @@ export default function PostCard({ post }: { post: Post }) {
                 <div className='w-full'>
                   <div
                     className={`h-fit w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
-                    {!isVideo(post) && (
+                    {!post.mediaUrl?.includes('.mp4') && (
                       <Image
                         priority
                         className={`h-64 rounded-2xl object-cover`}
@@ -157,7 +150,7 @@ export default function PostCard({ post }: { post: Post }) {
                         unoptimized
                       />
                     )}
-                    {isVideo(post) && (
+                    {post.mediaUrl?.includes('.mp4') && (
                       <video className={`rounded-2xl `} controls>
                         <source
                           src={post.mediaUrl || undefined}
@@ -167,8 +160,7 @@ export default function PostCard({ post }: { post: Post }) {
                     )}
                     <div className='px-6 pt-6'>
                       <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
-                        {/* @{post.username} */}
-                        xd
+                        @{post.creator?.username || 'username'}
                       </h4>
                       <span className=' inline-flex h-6 w-full rounded text-center text-sm text-gray-500 '>
                         <svg
@@ -183,7 +175,7 @@ export default function PostCard({ post }: { post: Post }) {
                             d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
                           />
                         </svg>
-                        {/* {post.followersCount} followers */}0 followers
+                        {post.creator?.followersCount || 0}
                       </span>
                       <div className='flex-grow border-t border-gray-200 pb-2'></div>
                     </div>
@@ -207,7 +199,7 @@ export default function PostCard({ post }: { post: Post }) {
                     Embed this post on your website or use the content.
                   </p>
                   <button
-                    // onClick={handleDownloadClick}
+                    onClick={handleDownloadClick}
                     className='mb-2 w-fit rounded-full bg-[#D3F0E2] px-8 py-3 text-base font-medium'>
                     download media
                   </button>
@@ -231,6 +223,7 @@ export default function PostCard({ post }: { post: Post }) {
                   </div>
                   <textarea
                     value={codeToCopy}
+                    readOnly
                     placeholder='<<<'
                     className='h-full w-full resize-none rounded-xl bg-[#E2DED4] bg-opacity-20 p-7 outline-none'
                     name=''

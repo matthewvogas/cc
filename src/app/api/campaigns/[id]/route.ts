@@ -4,7 +4,7 @@ import { authOptions } from '../../auth/[...nextauth]/route'
 import { CampaignsService } from '@/services/CampaignsService'
 
 export async function GET(
-  Request: Request,
+  req: Request,
   { params }: { params: { id: string } },
 ) {
   try {

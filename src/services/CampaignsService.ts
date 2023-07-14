@@ -29,12 +29,15 @@ export class CampaignsService {
   static async findUnique(id: number) {
     const campaign = await db.campaign.findUnique({
       where: {
-        id,
+        id: +id,
       },
       include: {
         client: true,
-        creators: true,
-        posts: true,
+        posts: {
+          include: {
+            creator: true,
+          }
+        },
         _count: {
           select: {
             creators: true,
@@ -47,7 +50,7 @@ export class CampaignsService {
     const stats = await db.post.groupBy({
       by: ['campaignId'],
       where: {
-        campaignId: id,
+        campaignId: +id,
       },
       _sum: {
         likesCount: true,
@@ -62,7 +65,7 @@ export class CampaignsService {
 
     return {
       ...campaign,
-      stats,
+      stats: stats[0]._sum,
     }
   }
 }

@@ -1,12 +1,13 @@
 import { inter } from '@/app/fonts'
 import { ptMono } from '@/app/fonts'
+import { CampaignRes } from '@/types/campaign/campaignRes'
 import { fetcher } from '@/utils/ValidationsHelper'
 import { Campaign } from '@prisma/client'
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function SettingsTab({ campaign }: { campaign: Campaign }) {
+export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
   const router = useRouter()
   const [name, setName] = useState(campaign.name)
   const [description, setDescription] = useState(campaign.description)

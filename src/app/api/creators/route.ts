@@ -1,16 +1,20 @@
 import db from '@/lib/db'
 import { getServerSession } from 'next-auth'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { CreatorsService } from '@/services/CreatorsService'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-
     // if (!session)
     //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-
+    const session = await getServerSession(authOptions)
+    const { searchParams } = new URL(req.url)
+    const id = searchParams.get('campaign')
+    if(id){
+      const campaign = await CreatorsService.findByCampaignId(parseInt(id))
+      return NextResponse.json(campaign)
+    }
     const creators = await CreatorsService.findMany(session!.user.id)
     return NextResponse.json(creators)
   } catch (err) {

@@ -33,7 +33,7 @@ export default async function shareCampaign({
 
   return (
     <div>
-      <SharedCampaign campaign={campaign} id={id}></SharedCampaign>
+      <SharedCampaign campaign={campaign}></SharedCampaign>
     </div>
   )
 }

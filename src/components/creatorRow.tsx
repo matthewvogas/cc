@@ -9,13 +9,14 @@ import { SetStateAction, useState } from 'react'
 import { Dialog, Tab } from '@headlessui/react'
 import TagsInput from './TagsInput'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
+import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 
 const dropdownButton =
   'text-sm border-2 inline-block py-2 px-8 m-2 text-back font-medium bg-whiteBrown rounded-full hover:bg-transparent hover:border-orange-100'
 const thTable = 'bg-white text-sm normal-case '
 const infoLabel = 'bg-active px-8 py-3 rounded-full text-black text-sm '
 
-export default function CreatorRow(props: { comeFrom: string }) {
+export default function CreatorRow(props: { comeFrom: string, creators: CreatorsByCampaignRes }) {
   const [isOpen, setIsOpen] = useState(false)
   const [tags, setTags] = useState<string[]>([])
 

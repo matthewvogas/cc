@@ -17,6 +17,8 @@ import OverviewCampaign from '@/components/overviewCampaign'
 import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
 import ManagePosts from '@/components/ManagePosts'
 import { ptMono } from '@/app/fonts'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 
 // type campaignWithStats = Campaign & {
 //   posts: Post[]
@@ -29,17 +31,17 @@ import { ptMono } from '@/app/fonts'
 //     }
 //   }
 // }
-export default function CampaingTabs({ campaign }: { campaign: any }) {
+export default function CampaingTabs({ campaign, creators }: { campaign: CampaignRes, creators: any }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [openTab, setOpenTab] = useState(1)
-  const [creators, setCreators] = useState(campaign?.stats?.creatorsCount || 0)
-  const [audience, setAudience] = useState(
-    campaign?.stats?.engagement?.likes +
-      campaign?.stats?.engagement?.comments || 0,
-  )
+  // const [creators, setCreators] = useState(campaign?.stats?.creatorsCount || 0)
+  // const [audience, setAudience] = useState(
+  //   campaign?.stats?.engagement?.likes +
+  //     campaign?.stats?.engagement?.comments || 0,
+  // )
   const [loading, setLoading] = useState(false)
-  const [content, setContent] = useState(campaign.stats?.postCount)
+  // const [content, setContent] = useState(campaign.stats?.postCount)
   const [newPosts, setNewPosts] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
 
@@ -48,7 +50,7 @@ export default function CampaingTabs({ campaign }: { campaign: any }) {
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
 
-  const filteredPosts = campaign?.posts?.filter((post: Post) => {
+  const filteredPosts = campaign?.posts?.filter((post) => {
     if (!post.caption) return false
 
     const isInstagramActive = activePlatforms.includes('Instagram')
@@ -193,11 +195,11 @@ export default function CampaingTabs({ campaign }: { campaign: any }) {
                 <section className={openTab === 1 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
                     <OverviewCampaign
-                      brief={campaign.description || ''}
-                      creators={creators}
-                      content={content}
-                      audience={audience}
-                      plays={1}
+                      brief={campaign?.description || ''}
+                      creators={campaign?._count?.creators || 0}
+                      content={campaign?._count?.posts || 0}
+                      audience={campaign?.stats?.engagementCount || 0}
+                      plays={campaign?.stats?.playsCount || 0}
                     />
 
                     <ManagePosts
@@ -210,7 +212,7 @@ export default function CampaingTabs({ campaign }: { campaign: any }) {
                       setCreatorsSelecteds={setCreatorsSelecteds}
                       activePlatforms={activePlatforms}
                       setActivePlatforms={setActivePlatforms}
-                      id={campaign.id}
+                      id={campaign.id!}
                       activeButton={activeButton}
                       setActiveButton={setActiveButton}
                       mostView={activeButton}
@@ -218,10 +220,10 @@ export default function CampaingTabs({ campaign }: { campaign: any }) {
 
                     <div className='pt-6'>
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
-                        {filteredPosts?.map((post: Post, index: any) => (
+                        {filteredPosts?.map((post, index: any) => (
                           <PostCard key={index} post={post} />
                         ))}
-                        {campaign.posts.length === 0 && (
+                        {campaign?.posts?.length === 0 && (
                           <>
                             <h1>{`Seems like you dont have posts! :(`}</h1>
                           </>
@@ -231,15 +233,15 @@ export default function CampaingTabs({ campaign }: { campaign: any }) {
                   </div>
                 </section>
                 <div className={openTab === 2 ? 'block' : 'hidden'}>
-                  <CreatorRow comeFrom={'campigns'} />
+                  <CreatorRow comeFrom={'campigns'} creators={creators} />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
                     <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
-                      {filteredPosts?.map((post: Post, index: any) => (
+                      {filteredPosts?.map((post, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                      {campaign.posts.length === 0 && (
+                      {campaign?.posts?.length === 0 && (
                         <>
                           <h1>{`Seems like you dont have posts! :(`}</h1>
                         </>
@@ -256,7 +258,7 @@ export default function CampaingTabs({ campaign }: { campaign: any }) {
                           {`👤 1 Creators`}
                         </p>
                         <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
-                          {`📝 ${campaign.posts.length} Posts`}
+                          {`📝 ${campaign?.posts?.length} Posts`}
                         </p>
                       </div>
                       {/* <p className='my-8 italic'>by platform</p>
