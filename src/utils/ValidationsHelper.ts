@@ -4,7 +4,7 @@ export function isMp4(url: string) {
 }
 
 export function isVideo(post: any) {
-  if (post.videoUrl) return true
+  if (post?.videoUrl) return true
   return false
 }
 
