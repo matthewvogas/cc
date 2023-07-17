@@ -64,10 +64,10 @@ model VerificationToken {
 }
 
 model Creator {
-  id             Int        @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   name           String?
-  uuid           String     @unique
-  imageUrl       String?    @map("image_url")
+  uuid           String         @unique
+  imageUrl       String?        @map("image_url")
   status         CreatorStatus?
   username       String?
   platform       String?
@@ -75,15 +75,14 @@ model Creator {
   clients        Client[]
   posts          Post[]
   users          User[]
-  followersCount Int?       @map("followers_count")
-  accessToken    String?    @map("access_token")
-  refreshToken   String?    @map("refresh_token")
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  followersCount Int?           @map("followers_count")
+  accessToken    String?        @map("access_token")
+  refreshToken   String?        @map("refresh_token")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
   @@map("creators")
 }
-
 
 model Client {
   id        Int        @id @default(autoincrement())
@@ -131,8 +130,8 @@ model Campaign {
 model Post {
   id               Int       @id @default(autoincrement())
   uuid             String    @unique
-  userId      String    @map("user_id")
-  user        User      @relation(fields: [userId], references: [id])
+  userId           String    @map("user_id")
+  user             User      @relation(fields: [userId], references: [id])
   campaign         Campaign? @relation(fields: [campaignId], references: [id])
   campaignId       Int?      @map("campaign_id")
   creator          Creator?  @relation(fields: [creatorId], references: [id])
@@ -141,7 +140,7 @@ model Post {
   permalink        String?
   shortcode        String?
   imageUrl         String?   @map("image_url")
-  mediaUrl        String?   @map("media_url")
+  mediaUrl         String?   @map("media_url")
   commentsCount    Int?      @map("comments_count")
   likesCount       Int?      @map("likes_count")
   engagementCount  Int?      @map("engagement_count")
@@ -155,7 +154,6 @@ model Post {
 
   @@map("posts")
 }
-
 
 enum CreatorStatus {
   SIGNEDUP
