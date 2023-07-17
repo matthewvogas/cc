@@ -106,6 +106,7 @@ CREATE TABLE "campaigns" (
 -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
+    "uuid" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "campaign_id" INTEGER,
     "creator_id" INTEGER,
@@ -172,6 +173,9 @@ CREATE UNIQUE INDEX "creators_uuid_key" ON "creators"("uuid");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tags_name_key" ON "tags"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "posts_uuid_key" ON "posts"("uuid");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_CreatorToUser_AB_unique" ON "_CreatorToUser"("A", "B");

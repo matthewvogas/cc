@@ -6,9 +6,10 @@ import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/creatorImg.jpg'
 import React from 'react'
+import { Post } from '@/types/campaign/campaignRes'
 
 type Props = {
-  post: any
+  post?: Post
 }
 
 export default function UseThisPost({ post }: Props) {
@@ -27,18 +28,22 @@ export default function UseThisPost({ post }: Props) {
     ' height="200" width="300"></iframe>'
 
   const handleDownloadClick = async () => {
-    const url = !isVideo(post) ? post?.imageUrl : post?.videoUrl
+    const url = post?.mediaUrl
     if (url) {
       try {
         const response = await fetch(url)
         const blob = await response.blob()
-        const username = post?.username
-          ? post?.username.replace(/\./g, '-')
-          : ''
+        const username = post.creator?.username || 'username'
+        const extension = post.mediaUrl?.includes('mp4') ? 'mp4' : 'jpg'
         const filename =
-          username + '-campaign-' + post?.campaignId + '-post?-' + post?.id
+          username +
+          '-campaign-' +
+          post.campaignId +
+          '-post-' +
+          post.id +
+          '.' +
+          extension
         const objectUrl = URL.createObjectURL(blob)
-
         const link = document.createElement('a')
         link.href = objectUrl
         link.download = filename
@@ -62,7 +67,7 @@ export default function UseThisPost({ post }: Props) {
           <div className='w-full'>
             <div
               className={`h-fit w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
-              {!isVideo(post) && (
+              {!post?.mediaUrl?.includes('.mp4') && (
                 <Image
                   priority
                   className={`h-64 rounded-2xl object-cover`}
@@ -75,16 +80,16 @@ export default function UseThisPost({ post }: Props) {
                   unoptimized
                 />
               )}
-              {isVideo(post) && (
+              {post?.mediaUrl?.includes('.mp4') && (
                 <video className={`rounded-2xl `} controls>
-                  <source src={post?.videoUrl || undefined} type='video/mp4' />
+                  <source src={post?.mediaUrl || undefined} type='video/mp4' />
                 </video>
               )}
 
               <div>
                 <div className='px-6 pt-6'>
                   <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
-                    @{post?.username}
+                    @{post?.creator?.username}
                   </h4>
                   <span className=' inline-flex h-6 w-full rounded text-center text-sm text-gray-500 '>
                     <svg
@@ -99,7 +104,7 @@ export default function UseThisPost({ post }: Props) {
                         d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
                       />
                     </svg>
-                    {post?.followersCount} followers
+                    {post?.creator?.followersCount} followers
                   </span>
                   <div className='flex-grow border-t border-gray-200 pb-2'></div>
                 </div>
@@ -117,9 +122,7 @@ export default function UseThisPost({ post }: Props) {
             </div>
           </div>
           <div className='flex w-full flex-col justify-end'>
-            <h3 className='mb-3 text-2xl font-semibold'>
-              Use this post? 🥥 {}
-            </h3>
+            <h3 className='mb-3 text-2xl font-semibold'>Use this post? 🥥</h3>
             <p className='mb-3 text-base font-light'>
               Embed this post? on your website or use the content.
             </p>

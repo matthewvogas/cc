@@ -6,6 +6,9 @@ const nextConfig = {
       'scontent.cdninstagram.com',
       'avatars.githubusercontent.com',
       'platform-lookaside.fbsbx.com',
+      'fbcdn.net',
+      'scontent.fmga3-2.fna.fbcdn.net',
+      'scontent.fmga3-1.fna.fbcdn.net'
     ],
   },
 }

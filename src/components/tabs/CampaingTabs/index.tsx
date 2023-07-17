@@ -19,6 +19,9 @@ import ManagePosts from '@/components/ManagePosts'
 import { ptMono } from '@/app/fonts'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
+import TagsInput from '@/components/TagsInput'
+import Image from 'next/image'
+import modalCover from 'public/assets/register/addpostToTrack.jpg'
 
 // type campaignWithStats = Campaign & {
 //   posts: Post[]
@@ -110,8 +113,13 @@ export default function CampaingTabs({
   }
 
   const handleFileSubmit = async (e: React.FormEvent) => {
+    setFetchError(null)
     e.preventDefault()
     const file = (e.target as HTMLFormElement).campaignExcel.files[0]
+    if (!file) {
+      setFetchError('Please select a file')
+      return
+    }
     const data = await excelToJson(file)
 
     const res = await fetch('/api/instagram/excel', {
@@ -288,16 +296,12 @@ export default function CampaingTabs({
         </div>
       </div>
 
-      <Dialog
+      {/* <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className='relative z-[99]'>
-        {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
-
-        {/* Full-screen container to center the panel */}
         <div className='fixed inset-0 flex items-center justify-center p-4'>
-          {/* The actual dialog panel  */}
           <Dialog.Panel
             className={`${ptMono.className} flex w-full max-w-lg flex-col rounded-md bg-white p-16 sm:px-0`}>
             <Dialog.Title className='mb-8 text-center'>add posts</Dialog.Title>
@@ -390,6 +394,124 @@ export default function CampaingTabs({
                       add
                     </button>
                   </form>
+                </Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
+          </Dialog.Panel>
+        </div>
+      </Dialog> */}
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className='relative z-[99]'>
+        {/* The backdrop, rendered as a fixed sibling to the panel container */}
+        <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
+
+        {/* Full-screen container to center the panel */}
+        <div className='fixed inset-0 flex items-center justify-center p-4'>
+          {/* The actual dialog panel  */}
+          <Dialog.Panel
+            className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
+            <Image src={modalCover} className='rounded-t-xl' alt={''} />
+            <Dialog.Title className=' text-lg font-medium mb-8 text-center'>
+              Automatically track when your creators post 🥥
+            </Dialog.Title>
+
+            <Tab.Group>
+              <Tab.List
+                className={`flex flex-row items-center justify-center gap-6 ${ptMono.className}`}>
+                <Tab
+                  className={({ selected }) =>
+                    ` rounded-3xl border-2 border-primary px-12 py-2 ${
+                      selected ? 'bg-primary' : ''
+                    }`
+                  }>
+                  add manually
+                </Tab>
+
+                <Tab
+                  className={({ selected }) =>
+                    `rounded-3xl border-2 border-primary px-8  py-2 ${
+                      selected ? 'bg-primary' : ''
+                    }`
+                  }>
+                  upload from file
+                </Tab>
+              </Tab.List>
+              <Tab.Panels className='mt-2'>
+                <Tab.Panel className=''>
+                  <div className='divider px-8'></div>
+                  <div className='flex gap-4  px-7 justify-between mb-4'>
+                    <div className='w-full'>
+                      <p className='text-sm font-semibold'>Assign to creator</p>
+                      <select
+                        className='w-full mt-4 rounded-xl border border-gray-300 bg-gray-50 pl-4 py-3 text-sm text-gray-900 flex-grow bg-transparent outline-none'
+                        name=''
+                        id=''></select>
+                    </div>
+                    <div className='w-full'>
+                      <p className='text-sm font-semibold'>
+                        Hashtag(s) your creator will use
+                      </p>
+                      <TagsInput tags={tags} setTags={setTags} />
+                    </div>
+                  </div>
+                  <div className='flex w-full flex-col justify-end items-end px-7 mb-6'>
+                    <span className='text-xs italic font-light mb-4'>
+                      separate multiple with a enter
+                    </span>
+                    <button
+                      className={`px-9 py-3 bg-green-200 ${ptMono.className} rounded-full`}>
+                      start tracking
+                    </button>
+                  </div>
+                </Tab.Panel>
+
+                <Tab.Panel className=''>
+                  <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
+                    <h2>
+                      Download a{' '}
+                      <Link href={'/'}>
+                        sample CSV template to see an example of the format
+                        required
+                      </Link>
+                    </h2>
+                    <form
+                      className='flex flex-col gap-3'
+                      onSubmit={handleFileSubmit}>
+                      <input
+                        name='campaignExcel'
+                        id='campaignExcel'
+                        type='file'
+                        accept='.xlsx, .xls'
+                        className='file-input-bordered file-input w-full'
+                      />
+                      {fetchError && (
+                        <div className='alert alert-error flex justify-center shadow-lg'>
+                          <div className='flex flex-row gap-4'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              className='h-6 w-6 flex-shrink-0 stroke-current'
+                              fill='none'
+                              viewBox='0 0 24 24'>
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='2'
+                                d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
+                              />
+                            </svg>
+                            <span>{fetchError}</span>
+                          </div>
+                        </div>
+                      )}
+                      <button
+                        className='flex self-end rounded-full bg-green-200 px-8 py-2'
+                        type='submit'>
+                        add
+                      </button>
+                    </form>
+                  </div>
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>

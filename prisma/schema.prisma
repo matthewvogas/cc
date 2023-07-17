@@ -130,6 +130,7 @@ model Campaign {
 
 model Post {
   id               Int       @id @default(autoincrement())
+  uuid             String    @unique
   userId      String    @map("user_id")
   user        User      @relation(fields: [userId], references: [id])
   campaign         Campaign? @relation(fields: [campaignId], references: [id])

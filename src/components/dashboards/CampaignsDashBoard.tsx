@@ -119,7 +119,7 @@ export default function CampaignsDashBoard({
                   <option value={0} disabled>
                     Choose a client
                   </option>
-                  <option value={549}>No Client</option>
+                  <option>No Client</option>
                   {clients.map((client: Client, index: any) => (
                     <option value={client.id} key={index}>
                       {client.name}

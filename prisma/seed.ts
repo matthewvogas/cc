@@ -165,6 +165,7 @@ async function main() {
 
     return {
       userId: user!.id!,
+      uuid: post.id,
       campaignId: campaign.id,
       caption: post.caption,
       commentsCount,

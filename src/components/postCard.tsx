@@ -3,11 +3,11 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/creatorImg.jpg'
-import { Post } from '@prisma/client'
 import { Dialog } from '@headlessui/react'
 import React, { useState } from 'react'
 import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import UseThisPost from './useThisPost'
+import { Post } from '@/types/campaign/campaignRes'
 
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -27,7 +27,13 @@ export default function PostCard({ post }: { post: Post }) {
   return (
     <div
       className={`h-fit w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
-      <Image
+      {post?.mediaUrl?.includes('.mp4') && (
+        <video className={`rounded-2xl `} controls>
+          <source src={post?.mediaUrl} type='video/mp4' />
+        </video>
+      )}
+      {!post?.mediaUrl?.includes('.mp4') && (
+        <Image
         priority
         className={`h-64 rounded-2xl object-cover`}
         src={post.imageUrl || imageCover}
@@ -38,6 +44,7 @@ export default function PostCard({ post }: { post: Post }) {
         style={{ width: '100%', height: 'auto' }}
         unoptimized
       />
+      )}
       <div className='px-6 pt-6'>
         <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
           @{post.creator?.username || 'username'}

@@ -10,6 +10,7 @@ import { Dialog, Tab } from '@headlessui/react'
 import TagsInput from './TagsInput'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
+import Link from 'next/link'
 
 const dropdownButton =
   'text-sm border-2 inline-block py-2 px-8 m-2 text-back font-medium bg-whiteBrown rounded-full hover:bg-transparent hover:border-orange-100'
@@ -87,7 +88,7 @@ export default function CreatorRow(props: {
                       </div>
                     </td>
                     <td className='flex'>
-                      <PostHashtagStatus state={'NOT'} link={''} />
+                      <PostHashtagStatus state={'NOT'} />
                     </td>
                     <td>
                       <div className='dropdown-end dropdown cursor-pointer'>
@@ -196,14 +197,29 @@ export default function CreatorRow(props: {
                 </Tab.Panel>
 
                 <Tab.Panel className=''>
-                  <div className=' w-full mx-9 my-9 flex justify-center'>
+                <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
+                  <h2>
+                    Download a{' '}
+                    <Link href={'/'}>
+                      sample CSV template to see an example of the format
+                      required
+                    </Link>
+                  </h2>
+                  <form
+                    className='flex flex-col gap-3'>
                     <input
                       name='campaignExcel'
                       id='campaignExcel'
                       type='file'
                       accept='.xlsx, .xls'
-                      className=''
+                      className='file-input-bordered file-input w-full'
                     />
+                    <button
+                      className='flex self-end rounded-full bg-green-200 px-8 py-2'
+                      type='submit'>
+                      add
+                    </button>
+                  </form>
                   </div>
                 </Tab.Panel>
               </Tab.Panels>

@@ -90,7 +90,7 @@ export const chipStateMap: { [key in ChipStateName]: ChipState } = {
 export const PostHashtagStatus = ({ state }: { state: ChipStateName }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const post = undefined
+  //const post = undefined
 
   return (
     <>
@@ -167,7 +167,7 @@ export const PostHashtagStatus = ({ state }: { state: ChipStateName }) => {
                 </Tab.Panel>
 
                 <Tab.Panel className=''>
-                  <UseThisPost post={undefined} />
+                  <UseThisPost/>
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>
