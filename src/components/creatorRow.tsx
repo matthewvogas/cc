@@ -60,6 +60,7 @@ export default function CreatorRow(props: {
                               height={100}
                               src={creator.imageUrl || avatar}
                               alt='background'
+                              unoptimized
                             />
                           </div>
                         </div>
