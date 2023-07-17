@@ -34,16 +34,16 @@ export default function PostCard({ post }: { post: Post }) {
       )}
       {!post?.mediaUrl?.includes('.mp4') && (
         <Image
-        priority
-        className={`h-64 rounded-2xl object-cover`}
-        src={post.imageUrl || imageCover}
-        alt='background'
-        width={0}
-        height={0}
-        sizes='100vw'
-        style={{ width: '100%', height: 'auto' }}
-        unoptimized
-      />
+          priority
+          className={`h-64 rounded-2xl object-cover`}
+          src={post.imageUrl || imageCover}
+          alt='background'
+          width={0}
+          height={0}
+          sizes='100vw'
+          style={{ width: '100%', height: 'auto' }}
+          unoptimized
+        />
       )}
       <div className='px-6 pt-6'>
         <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>

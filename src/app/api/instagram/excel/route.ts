@@ -79,7 +79,7 @@ export async function POST(req: Request) {
           },
         })
         res.business_discovery.media?.data?.forEach(async media => {
-          if(post.link === media.permalink){
+          if (post.link === media.permalink) {
             const postToSave = await db.post.upsert({
               where: {
                 uuid: media.id!,
@@ -105,15 +105,12 @@ export async function POST(req: Request) {
                 mediaUrl: media.media_url!,
                 commentsCount: media.comments_count || 0,
                 likesCount: media.like_count || 0,
-              }
+              },
             })
             console.log(postToSave)
-
           }
-
         })
         // console.log(creator)
-
       }
     })
     // const formatedData = formatExcelData(data)

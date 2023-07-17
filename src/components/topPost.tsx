@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/TopPost.jpg'
-import { Post } from '@prisma/client'
 import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import Link from 'next/link'
+import { Post } from '@/types/campaign/campaignRes'
 
 // Fonts
 
@@ -39,24 +39,23 @@ const creatorCards = [
   },
 ]
 
-export default function TopPost({ posts }: { posts: any }) {
+export default function TopPost({ posts }: { posts: Post[] }) {
   const postData =
     posts.sort((a: any, b: any) => b.likesCount! - a.likesCount!).slice(0, 4) ||
     creatorCards
 
   return (
     <div className='md-12 flex gap-x-6 gap-y-8 overflow-scroll'>
-      {postData.map((card: Post, index: any) => (
+      {postData.map((card, index: any) => (
         <div
           key={index}
           className={`h-fit w-96 max-w-sm overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>
           <div className='flex h-96 flex-col justify-between bg-white'>
             <h4 className='absolute z-10 ml-4 mt-4 rounded-xl bg-white px-4 py-3 text-base opacity-80 '>
-              {/* @{card.username} */}
-              XD
+              @{card.creator?.username || 'username'}
             </h4>
 
-            {!isVideo(card) && (
+            {!card.mediaUrl?.includes('.mp4') && (
               <Image
                 priority
                 className={`h-96 w-full  object-cover`}
@@ -69,14 +68,12 @@ export default function TopPost({ posts }: { posts: any }) {
                 unoptimized
               />
             )}
-            {/* {isVideo(card) && (
+            {card.mediaUrl?.includes('.mp4') && (
               <video className={` h-96 w-full object-cover `} controls>
-                <source src={card.videoUrl || undefined} type='video/mp4' />
+                <source src={card.mediaUrl || undefined} type='video/mp4' />
               </video>
-            )} */}
-            {/* <p className='truncate z-10 absolute mt-80 '>
-                {card.caption}
-              </p> */}
+            )}
+            <p className='truncate z-10 absolute mt-80 '>{card.caption}</p>
           </div>
 
           <div className='flex gap-4 px-6 pt-6'>

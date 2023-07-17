@@ -83,6 +83,30 @@ export default function CampaingTabs({
     return false
   })
 
+  const handleDownloadClick = async () => {
+    const url = 'https://dewinu.com/docs/exampleShort.xlsx'
+    if (url) {
+      try {
+        const response = await fetch(url)
+        const blob = await response.blob()
+        const filename = 'example_codecoco.xlsx'
+        const objectUrl = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = objectUrl
+        link.download = filename
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+
+        // Liberar el objeto URL
+        URL.revokeObjectURL(objectUrl)
+      } catch (error) {
+        console.error('Error al descargar el archivo:', error)
+      }
+    }
+  }
+
   const handlePosts = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -280,7 +304,7 @@ export default function CampaingTabs({
                     </div>
                     <div className=''>
                       <p className='mb-8 mt-12'>Top posts by views</p>
-                      <TopPost posts={campaign.posts} />
+                      <TopPost posts={campaign.posts!} />
                     </div>
                   </div>
                 </div>
@@ -471,10 +495,10 @@ export default function CampaingTabs({
                   <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
                     <h2>
                       Download a{' '}
-                      <Link href={'/'}>
+                      <button onClick={handleDownloadClick}>
                         sample CSV template to see an example of the format
                         required
-                      </Link>
+                      </button>
                     </h2>
                     <form
                       className='flex flex-col gap-3'

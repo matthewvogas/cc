@@ -197,29 +197,28 @@ export default function CreatorRow(props: {
                 </Tab.Panel>
 
                 <Tab.Panel className=''>
-                <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
-                  <h2>
-                    Download a{' '}
-                    <Link href={'/'}>
-                      sample CSV template to see an example of the format
-                      required
-                    </Link>
-                  </h2>
-                  <form
-                    className='flex flex-col gap-3'>
-                    <input
-                      name='campaignExcel'
-                      id='campaignExcel'
-                      type='file'
-                      accept='.xlsx, .xls'
-                      className='file-input-bordered file-input w-full'
-                    />
-                    <button
-                      className='flex self-end rounded-full bg-green-200 px-8 py-2'
-                      type='submit'>
-                      add
-                    </button>
-                  </form>
+                  <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
+                    <h2>
+                      Download a{' '}
+                      <Link href={'/'}>
+                        sample CSV template to see an example of the format
+                        required
+                      </Link>
+                    </h2>
+                    <form className='flex flex-col gap-3'>
+                      <input
+                        name='campaignExcel'
+                        id='campaignExcel'
+                        type='file'
+                        accept='.xlsx, .xls'
+                        className='file-input-bordered file-input w-full'
+                      />
+                      <button
+                        className='flex self-end rounded-full bg-green-200 px-8 py-2'
+                        type='submit'>
+                        add
+                      </button>
+                    </form>
                   </div>
                 </Tab.Panel>
               </Tab.Panels>

@@ -167,7 +167,7 @@ export const PostHashtagStatus = ({ state }: { state: ChipStateName }) => {
                 </Tab.Panel>
 
                 <Tab.Panel className=''>
-                  <UseThisPost/>
+                  <UseThisPost />
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>
