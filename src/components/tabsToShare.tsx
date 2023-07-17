@@ -27,6 +27,7 @@ export default function TabsToShare(props: { campaignId: any }) {
   const iframe =
     '<iframe src="http://dev.codecoco.co/campaign/' +
     props.campaignId +
+    '"' +
     ' height="200" width="300"></iframe>'
   return (
     <>
