@@ -135,7 +135,7 @@ export async function POST(req: Request) {
           savesCount: 0,
           sharesCount: 0,
           playsCount: 0,
-          shortcode: post
+          shortcode: post,
         },
         create: {
           caption: postOnRes.caption || null,
