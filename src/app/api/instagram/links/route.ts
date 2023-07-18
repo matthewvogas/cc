@@ -1,6 +1,6 @@
 import db from '@/lib/db'
 import { BussinesDiscoveryRes } from '@/types/businessDiscovery/BussinesDiscoveryRes'
-import { getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth/next'
 import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../../auth/[...nextauth]/route'
 

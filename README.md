@@ -52,6 +52,13 @@ The following environment variables are used in this project:
 
 Check for any migrations pending
 
+Staging
+
+```bash
+npx prisma migrate reset
+npx prisma migrate dev
+```
+
 ```bash
 npx prisma migrate deploy
 ```
