@@ -22,6 +22,7 @@ import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import TagsInput from '@/components/TagsInput'
 import Image from 'next/image'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
+import useCampaigns from '@/hooks/useCampaigns'
 
 // type campaignWithStats = Campaign & {
 //   posts: Post[]
@@ -53,6 +54,7 @@ export default function CampaingTabs({
   // const [content, setContent] = useState(campaign.stats?.postCount)
   const [newPosts, setNewPosts] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
+  const [links, setLinks] = useState<string> ('')
 
   const [tags, setTags] = useState<string[]>([])
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
@@ -137,6 +139,7 @@ export default function CampaingTabs({
   }
 
   const handleFileSubmit = async (e: React.FormEvent) => {
+    setLoading(true)
     setFetchError(null)
     e.preventDefault()
     const file = (e.target as HTMLFormElement).campaignExcel.files[0]
@@ -146,22 +149,65 @@ export default function CampaingTabs({
     }
     const data = await excelToJson(file)
 
-    const res = await fetch('/api/instagram/excel', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        data,
-        campaignId: campaign.id,
-      }),
-    })
+    try {
+      const res = await fetch('/api/instagram/excel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data,
+          campaignId: campaign.id,
+        }),
+      })
 
-    if (res.status === 200) {
-      router.refresh()
-    } else {
-      console.log('error')
+      if (res.status === 200 && res.ok) {
+        setLoading(false)
+        setIsOpen(false)
+        await router.refresh()
+      } else {
+        console.log('error')
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  const handleLinksSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setFetchError(null)
+    try {
+      const res = await fetch('/api/instagram/links', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          posts: links,
+          campaignId: campaign.id,
+        }),
+      })
+
+      if (res.status === 200 && res.ok) {
+        setLinks('')
+        setLoading(false)
+        setIsOpen(false)
+        await router.refresh()
+      }
+    }catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleHashTagSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setFetchError(null)
+    console.log('si aca falta')
+    setLoading(false)
   }
 
   return (
@@ -465,30 +511,66 @@ export default function CampaingTabs({
               <Tab.Panels className='mt-2'>
                 <Tab.Panel className=''>
                   <div className='divider px-8'></div>
-                  <div className='flex gap-4  px-7 justify-between mb-4'>
-                    <div className='w-full'>
-                      <p className='text-sm font-semibold'>Assign to creator</p>
-                      <select
-                        className='w-full mt-4 rounded-xl border border-gray-300 bg-gray-50 pl-4 py-3 text-sm text-gray-900 flex-grow bg-transparent outline-none'
-                        name=''
-                        id=''></select>
+                  <form onSubmit={handleHashTagSubmit}>
+                    <div className='flex gap-4  px-7 justify-between mb-4'>
+                      <div className='w-full'>
+                        <p className='text-sm font-semibold'>
+                          Assign to creator
+                        </p>
+                        <select
+                          required
+                          className='w-full mt-4 rounded-xl border border-gray-300 bg-gray-50 pl-4 py-3 text-sm text-gray-900 flex-grow bg-transparent outline-none'
+                          name=''
+                          id=''></select>
+                      </div>
+                      <div className='w-full'>
+                        <p className='text-sm font-semibold'>
+                          Hashtag(s) your creator will use
+                        </p>
+                        <TagsInput required tags={tags} setTags={setTags} />
+                      </div>
                     </div>
-                    <div className='w-full'>
-                      <p className='text-sm font-semibold'>
-                        Hashtag(s) your creator will use
-                      </p>
-                      <TagsInput tags={tags} setTags={setTags} />
+                    <div className='flex w-full flex-col justify-end items-end px-7 mb-2'>
+                      <span className='text-xs italic font-light mb-4'>
+                        separate multiple with a enter
+                      </span>
+                      <button
+                        className={`px-9 py-3 bg-green-200 ${ptMono.className} rounded-full`}>
+                        {loading ? (
+                          <Spinner width='w-4' height='h-4' border='border-2' />
+                        ) : (
+                          'start tracking'
+                        )}
+                      </button>
                     </div>
-                  </div>
-                  <div className='flex w-full flex-col justify-end items-end px-7 mb-6'>
-                    <span className='text-xs italic font-light mb-4'>
-                      separate multiple with a enter
-                    </span>
-                    <button
-                      className={`px-9 py-3 bg-green-200 ${ptMono.className} rounded-full`}>
-                      start tracking
-                    </button>
-                  </div>
+                  </form>
+                  <div className='divider mx-0'>OR</div>
+                  <form onSubmit={handleLinksSubmit}>
+                    <div className='flex flex-col gap-4 px-7'>
+                      <h2 className='text-center font-medium'>
+                        Drop the link(s) of your creators
+                      </h2>
+                      <textarea
+                        value={links}
+                        onChange={(e) => setLinks(e.target.value)}
+                        required
+                        className='textarea textarea-bordered rounded-md'
+                        placeholder='Intagram, Tiktok, Pinterest links'></textarea>
+                    </div>
+                    <div className='flex w-full flex-col justify-end items-end px-7 mb-6'>
+                      <span className='text-xs italic font-light mb-4'>
+                        separate multiple with a comma
+                      </span>
+                      <button
+                        className={`px-9 py-3 bg-green-200 ${ptMono.className} rounded-full`}>
+                        {loading ? (
+                          <Spinner width='w-4' height='h-4' border='border-2' />
+                        ) : (
+                          'add'
+                        )}
+                      </button>
+                    </div>
+                  </form>
                 </Tab.Panel>
 
                 <Tab.Panel className=''>
@@ -530,9 +612,14 @@ export default function CampaingTabs({
                         </div>
                       )}
                       <button
+                        disabled={loading}
                         className='flex self-end rounded-full bg-green-200 px-8 py-2'
                         type='submit'>
-                        add
+                        {loading ? (
+                          <Spinner width='w-4' height='h-4' border='border-2' />
+                        ) : (
+                          'add'
+                        )}
                       </button>
                     </form>
                   </div>
