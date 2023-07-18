@@ -4,9 +4,9 @@ import AuthProvider from '@/providers/AuthProvider'
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      <div className='flex overflow-clip'>
+      <div className='flex overflow-x-clip'>
         <Sidebar />
-        <main className='flex-1'>{children}</main>
+        <main className='flex-1 '>{children}</main>
       </div>
     </AuthProvider>
   )
