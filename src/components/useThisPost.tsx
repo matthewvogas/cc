@@ -7,6 +7,7 @@ import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/creatorImg.jpg'
 import React from 'react'
 import { Post } from '@/types/campaign/campaignRes'
+import Spinner from './ui/spinner'
 
 type Props = {
   post?: Post
@@ -14,6 +15,7 @@ type Props = {
 
 export default function UseThisPost({ post }: Props) {
   const [codeToCopy, setcodeToCopy] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
@@ -28,7 +30,8 @@ export default function UseThisPost({ post }: Props) {
     ' height="200" width="300"></iframe>'
 
   const handleDownloadClick = async () => {
-    const url = post?.mediaUrl
+    setLoading(true)
+    const url = post?.mediaUrl || post?.imageUrl
     if (url) {
       try {
         const response = await fetch(url)
@@ -56,6 +59,8 @@ export default function UseThisPost({ post }: Props) {
         URL.revokeObjectURL(objectUrl)
       } catch (error) {
         console.error('Error al descargar el archivo:', error)
+      } finally {
+        setLoading(false)
       }
     }
   }
@@ -127,9 +132,14 @@ export default function UseThisPost({ post }: Props) {
               Embed this post? on your website or use the content.
             </p>
             <button
+              disabled={loading}
               onClick={handleDownloadClick}
               className='mb-2 w-fit rounded-full bg-[#D3F0E2] px-8 py-3 text-base font-medium'>
-              download media
+              {loading ? (
+                <Spinner width='w-4' height='h-4' border='border-2' />
+              ) : (
+                'download media'
+              )}
             </button>
 
             <div className='divider mb-4'></div>
@@ -149,6 +159,7 @@ export default function UseThisPost({ post }: Props) {
             </div>
             <textarea
               value={codeToCopy}
+              readOnly
               placeholder='<<<'
               className='h-full w-full resize-none rounded-xl bg-[#E2DED4] bg-opacity-20 p-7 outline-none'
               name=''
