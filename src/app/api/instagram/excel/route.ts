@@ -7,8 +7,7 @@ import { NextResponse } from 'next/server'
 import { authOptions } from '../../auth/[...nextauth]/route'
 
 type postsFromExcel = {
-  username: string
-  link: string
+  links: string
 }
 
 export async function POST(req: Request) {
@@ -22,7 +21,7 @@ export async function POST(req: Request) {
       campaignId: string
     }
 
-    const postsShortCode = data.map(post => post.link.split('/')[4]!)
+    const postsShortCode = data.map(post => post.links.split('/')[4]!)
 
     for (const post of postsShortCode) {
       const oemBedUrl = new URL(

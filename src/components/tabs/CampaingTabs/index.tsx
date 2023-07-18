@@ -86,7 +86,7 @@ export default function CampaingTabs({
   })
 
   const handleDownloadClick = async () => {
-    const url = 'https://dewinu.com/docs/exampleShort.xlsx'
+    const url = 'https://dewinu.com/docs/example.xlsx'
     if (url) {
       try {
         const response = await fetch(url)
