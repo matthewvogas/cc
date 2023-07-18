@@ -59,7 +59,6 @@ npx prisma migrate reset
 npx prisma migrate dev
 ```
 
-
 ```bash
 npx prisma migrate deploy
 ```
