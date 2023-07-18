@@ -70,7 +70,7 @@ export default function TopPost({ posts }: { posts: Post[] }) {
               @{card.creator?.username || 'username'}
             </h4>
 
-            {!card.mediaUrl?.includes('.mp4') && (
+            {card.imageUrl && (
               <Image
                 priority
                 className={`h-96 w-full  object-cover`}
@@ -83,7 +83,7 @@ export default function TopPost({ posts }: { posts: Post[] }) {
                 unoptimized
               />
             )}
-            {card.mediaUrl?.includes('.mp4') && (
+            {!card.imageUrl && card.mediaUrl?.includes('.mp4') && (
               <div
                 style={{ position: 'relative', width: '100%', height: '100%' }}>
                 <video

@@ -129,6 +129,13 @@ export async function POST(req: Request) {
           mediaUrl: postOnRes.media_url!,
           commentsCount: postOnRes.comments_count ?? 0,
           likesCount: postOnRes.like_count ?? 0,
+          reachCount: 0,
+          impressionsCount: 0,
+          engagementCount: 0,
+          savesCount: 0,
+          sharesCount: 0,
+          playsCount: 0,
+          shortcode: post
         },
         create: {
           caption: postOnRes.caption || null,
@@ -141,6 +148,13 @@ export async function POST(req: Request) {
           mediaUrl: postOnRes.media_url!,
           commentsCount: postOnRes.comments_count ?? 0,
           likesCount: postOnRes.like_count ?? 0,
+          reachCount: 0,
+          engagementCount: 0,
+          impressionsCount: 0,
+          playsCount: 0,
+          sharesCount: 0,
+          savesCount: 0,
+          shortcode: post,
         },
       })
 
