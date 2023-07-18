@@ -54,7 +54,7 @@ export default function CampaingTabs({
   // const [content, setContent] = useState(campaign.stats?.postCount)
   const [newPosts, setNewPosts] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
-  const [links, setLinks] = useState<string> ('')
+  const [links, setLinks] = useState<string>('')
 
   const [tags, setTags] = useState<string[]>([])
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
@@ -197,7 +197,7 @@ export default function CampaingTabs({
         setIsOpen(false)
         await router.refresh()
       }
-    }catch (error) {
+    } catch (error) {
       console.log(error)
     }
   }
@@ -552,7 +552,7 @@ export default function CampaingTabs({
                       </h2>
                       <textarea
                         value={links}
-                        onChange={(e) => setLinks(e.target.value)}
+                        onChange={e => setLinks(e.target.value)}
                         required
                         className='textarea textarea-bordered rounded-md'
                         placeholder='Intagram, Tiktok, Pinterest links'></textarea>

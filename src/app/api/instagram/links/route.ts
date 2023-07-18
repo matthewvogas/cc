@@ -1,24 +1,31 @@
-import db from "@/lib/db"
-import { BussinesDiscoveryRes } from "@/types/businessDiscovery/BussinesDiscoveryRes"
-import { getServerSession } from "next-auth"
-import { NextRequest, NextResponse } from "next/server"
-import { authOptions } from "../../auth/[...nextauth]/route"
+import db from '@/lib/db'
+import { BussinesDiscoveryRes } from '@/types/businessDiscovery/BussinesDiscoveryRes'
+import { getServerSession } from 'next-auth'
+import { NextRequest, NextResponse } from 'next/server'
+import { authOptions } from '../../auth/[...nextauth]/route'
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
   const { posts, campaignId } = (await req.json()) as {
-    posts: string,
+    posts: string
     campaignId: string
   }
 
   const postsArray = posts.split(',').map(post => post.split('/')[4]!)
 
-  for (const post of postsArray){
-    const oemBedUrl = new URL(`https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}/instagram_oembed`)
+  for (const post of postsArray) {
+    const oemBedUrl = new URL(
+      `https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}/instagram_oembed`,
+    )
     oemBedUrl.searchParams.append('url', `https://www.instagram.com/p/${post}/`)
-    oemBedUrl.searchParams.append('access_token', process.env.BUSINESS_TOKEN_SOPHIA!)
+    oemBedUrl.searchParams.append(
+      'access_token',
+      process.env.BUSINESS_TOKEN_SOPHIA!,
+    )
 
-    const oemBedResponse = await fetch(oemBedUrl.toString()).then(res => res.json())
+    const oemBedResponse = await fetch(oemBedUrl.toString()).then(res =>
+      res.json(),
+    )
 
     if (oemBedResponse.error) {
       console.log(oemBedResponse.error)
@@ -41,7 +48,7 @@ export async function POST(req: NextRequest) {
       res.json(),
     )) as BussinesDiscoveryRes
 
-    if (!res.business_discovery){
+    if (!res.business_discovery) {
       console.log(res)
       return
     }

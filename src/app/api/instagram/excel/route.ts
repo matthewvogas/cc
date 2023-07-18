@@ -24,12 +24,22 @@ export async function POST(req: Request) {
 
     const postsShortCode = data.map(post => post.link.split('/')[4]!)
 
-    for (const post of postsShortCode){
-      const oemBedUrl = new URL(`https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}/instagram_oembed`)
-      oemBedUrl.searchParams.append('url', `https://www.instagram.com/p/${post}/`)
-      oemBedUrl.searchParams.append('access_token', process.env.BUSINESS_TOKEN_SOPHIA!)
+    for (const post of postsShortCode) {
+      const oemBedUrl = new URL(
+        `https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}/instagram_oembed`,
+      )
+      oemBedUrl.searchParams.append(
+        'url',
+        `https://www.instagram.com/p/${post}/`,
+      )
+      oemBedUrl.searchParams.append(
+        'access_token',
+        process.env.BUSINESS_TOKEN_SOPHIA!,
+      )
 
-      const oemBedResponse = await fetch(oemBedUrl.toString()).then(res => res.json())
+      const oemBedResponse = await fetch(oemBedUrl.toString()).then(res =>
+        res.json(),
+      )
 
       if (oemBedResponse.error) {
         console.log(oemBedResponse.error)
@@ -52,7 +62,7 @@ export async function POST(req: Request) {
         res.json(),
       )) as BussinesDiscoveryRes
 
-      if (!res.business_discovery){
+      if (!res.business_discovery) {
         console.log(res)
         return
       }
