@@ -60,20 +60,27 @@ export default function TopPost({ posts }: { posts: Post[] }) {
     creatorCards
 
   return (
-    <div className='md-12 flex gap-x-6 gap-y-8 overflow-scroll'>
+    <div className='md-12 flex gap-x-6 gap-y-8'>
       {postData.map((card, index: any) => (
         <div
           key={index}
           className={`h-fit min-w-[384px] overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>
-          <div className='flex h-96 flex-col justify-between bg-white'>
-            <h4 className='absolute z-10 ml-4 mt-4 rounded-xl bg-white px-4 py-3 text-base opacity-80 '>
-              @{card.creator?.username || 'username'}
-            </h4>
+          <div
+            className='flex h-96 flex-col justify-between bg-white'
+            style={{ overflowX: 'auto' }}>
+            <div className='z-10' style={{ position: 'sticky', left: '0' }}>
+              <h4 className='absolute z-10 ml-4 mt-4 rounded-xl bg-white px-4 py-3 text-base opacity-80'>
+                @{card.creator?.username || 'username'}
+              </h4>
+              <p className='max-h-24 z-10 absolute mt-[280px] ml-3 w-[356px] text-white overflow-clip'>
+                {card.caption}
+              </p>
+            </div>
 
             {card.imageUrl && (
               <Image
                 priority
-                className={`h-96 w-full  object-cover`}
+                className={`h-96 w-full object-cover`}
                 src={card.imageUrl || imageCover}
                 alt='background'
                 width={0}
@@ -107,9 +114,6 @@ export default function TopPost({ posts }: { posts: Post[] }) {
                   }}></div>
               </div>
             )}
-            <p className='max-h-24 z-10 absolute mt-[280px] ml-3 w-[356px] text-white overflow-clip'>
-              {card.caption}
-            </p>
           </div>
 
           <div className='flex gap-4 px-6 pt-6 mb-6'>

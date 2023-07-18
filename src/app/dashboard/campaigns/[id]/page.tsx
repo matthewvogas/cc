@@ -22,17 +22,21 @@ export default async function CampaignPage({
     const creators = await CreatorsService.findByCampaignId(id)
 
     return (
-      <div className='flex flex-col items-center justify-center'>
-        <TitlePage
-          title={String(campaign?.name)}
-          moduleText={'singleCampaign'}
-          client={String(campaign?.client?.name)}
-          createClient={null}
-          createCampaign={null}
-        />
+      <div className='overflow-clip'>
+        <div>
+          <TitlePage
+            title={String(campaign?.name)}
+            moduleText={'singleCampaign'}
+            client={String(campaign?.client?.name)}
+            createClient={null}
+            createCampaign={null}
+          />
+          <div className='divider' />
+        </div>
 
-        <div className='divider' />
-        <CampaingsTabs campaign={campaign} creators={creators} />
+        <div className='overflow-auto'>
+          <CampaingsTabs campaign={campaign} creators={creators} />
+        </div>
       </div>
     )
   } catch (err: any) {

@@ -212,7 +212,7 @@ export default function CampaingTabs({
 
   return (
     <>
-      <div className='flex w-full flex-wrap'>
+      <div className='flex flex-wrap'>
         <div className='w-full'>
           <div className='mb-8 md:px-12'>
             <button
@@ -348,9 +348,13 @@ export default function CampaingTabs({
                       {/* <p className='my-8 italic'>by platform</p>
                       <SinglePlatform /> */}
                     </div>
-                    <div className=''>
-                      <p className='mb-8 mt-12'>Top posts by views</p>
-                      <TopPost posts={campaign.posts!} />
+
+                    <div className='relative'></div>
+                    <div className='overflow-scroll'>
+                      <p className='absolute '>Top posts by views</p>
+                      <div className='w-full mt-12'>
+                        <TopPost posts={campaign.posts!} />
+                      </div>
                     </div>
                   </div>
                 </div>
