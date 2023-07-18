@@ -3,9 +3,10 @@
 type Props = {
   tags: string[]
   setTags: React.Dispatch<React.SetStateAction<string[]>>
+  required?: boolean
 }
 
-function TagsInput({ tags, setTags }: Props) {
+function TagsInput({ tags, setTags, required }: Props) {
   function handleKeyDown(e: any) {
     // If user did not press enter key, return
     if (e.key !== 'Enter') return
@@ -44,6 +45,7 @@ function TagsInput({ tags, setTags }: Props) {
         type='text'
         className='flex-grow bg-transparent px-2 py-1 outline-none'
         placeholder='#tag'
+        required={required ? true : false}
       />
     </div>
   )
