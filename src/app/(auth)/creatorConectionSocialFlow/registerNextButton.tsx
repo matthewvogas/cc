@@ -1,6 +1,7 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import { useSwiper } from 'swiper/react'
 
+// Botón de siguiente para los sliders
 export const RegisterNextButton = ({
   children,
   ...props
