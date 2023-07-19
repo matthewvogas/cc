@@ -39,7 +39,7 @@ export const InvitationOption = () => {
               here
             </span>
             <Link
-              href={'/creatorConnectSocial'}
+              href={'/creatorConectionSocialFlow'}
               className={`bg-[#C7C7C7] px-6 py-3 rounded-full text-white w-fit hover:bg-opacity-80`}>
               Get Started 🥥
             </Link>
