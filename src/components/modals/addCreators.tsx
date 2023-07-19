@@ -62,131 +62,116 @@ const socialNetworks = social.map((social, index) => (
 export default function AddCreators() {
   return (
     <div>
-      <label htmlFor='my-modal-3' className=''>
-        MODAL
+      <div>
+        <h3 className='text-lg font-bold'>Add Creators</h3>
+      </div>
+      <label className='' htmlFor=''>
+        {comment[0].label}
       </label>
-      <input type='checkbox' id='my-modal-3' className='modal-toggle' />
-      <div className='modal '>
-        <div className='modal-box relative flex max-w-5xl flex-col items-center justify-center  rounded-xl bg-white px-20 py-12'>
-          <div>
-            <label
-              htmlFor='my-modal-3'
-              className='absolute right-4 top-2 cursor-pointer text-lg'>
-              ✕
-            </label>
-            <h3 className='text-lg font-bold'>Add Creators</h3>
-          </div>
-          <label className='' htmlFor=''>
-            {comment[0].label}
-          </label>
 
-          <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Creator name</p>
+      <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Creator name</p>
+      <input
+        type='text'
+        id='default-input'
+        placeholder='name'
+        className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+      />
+
+      <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Creator name</p>
+      <div className='flex gap-2'>
+        <input
+          type='text'
+          id='default-input'
+          placeholder='name'
+          className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+        />
+        <button className='rounded-xl bg-green-200 px-8 py-2 '>send</button>
+      </div>
+
+      <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Copy link</p>
+      <div className='flex gap-2'>
+        <input
+          type='text'
+          id='default-input'
+          placeholder='name'
+          className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+        />
+        <button className='rounded-xl bg-green-200 px-8 py-2 '>copy</button>
+      </div>
+
+      <div className='flex gap-5'>
+        <div className=' mt-4'>
+          <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
+            Instagram Handle
+          </label>
           <input
             type='text'
             id='default-input'
-            placeholder='name'
-            className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+            placeholder='#example'
+            className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
           />
-
-          <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Creator name</p>
-          <div className='flex gap-2'>
-            <input
-              type='text'
-              id='default-input'
-              placeholder='name'
-              className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-            />
-            <button className='rounded-xl bg-green-200 px-8 py-2 '>send</button>
-          </div>
-
-          <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Copy link</p>
-          <div className='flex gap-2'>
-            <input
-              type='text'
-              id='default-input'
-              placeholder='name'
-              className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-            />
-            <button className='rounded-xl bg-green-200 px-8 py-2 '>copy</button>
-          </div>
-
-          <div className='flex gap-5'>
-            <div className=' mt-4'>
-              <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
-                Instagram Handle
-              </label>
-              <input
-                type='text'
-                id='default-input'
-                placeholder='#example'
-                className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-              />
-            </div>
-            <div className=' mt-4'>
-              <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
-                TikTok Handle
-              </label>
-              <input
-                type='text'
-                id='default-input'
-                placeholder='#example'
-                className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-              />
-            </div>
-          </div>
-
-          <div className='flex gap-5'>
-            <div className=' mt-4'>
-              <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
-                Facebook Handle
-              </label>
-              <input
-                type='text'
-                id='default-input'
-                placeholder='#example'
-                className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-              />
-            </div>
-            <div className=' mt-4'>
-              <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
-                Pinterest Handle
-              </label>
-              <input
-                type='text'
-                id='default-input'
-                placeholder='#example'
-                className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-              />
-            </div>
-          </div>
-          <div className='mt-6 text-right'>
-            <button className='rounded-full bg-green-200 px-8 py-2 '>
-              add
-            </button>
-          </div>
-          <hr className='my-8 h-px border-0 bg-gray-200'></hr>
-
-          <div className='flex'>
-            <button className='mr-6 w-80 rounded-full bg-green-200 px-8 py-2'>
-              upload from file
-            </button>
-            <label htmlFor=''>
-              Download a sample CSV template to see an example fo the format
-              required.
-            </label>
-          </div>
-          <hr className='my-8 h-px border-0 bg-gray-200'></hr>
-
-          <div className='flex'>
-            <label htmlFor=''>
-              Have your own site you want to invite your creators to sign up for
-              this campaign from? Copy this embed code.
-            </label>
-            <button className='mr-6 w-72 rounded-full bg-green-200 px-8 py-2'>
-              embed a form
-            </button>
-          </div>
         </div>
+        <div className=' mt-4'>
+          <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
+            TikTok Handle
+          </label>
+          <input
+            type='text'
+            id='default-input'
+            placeholder='#example'
+            className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+          />
+        </div>
+      </div>
+
+      <div className='flex gap-5'>
+        <div className=' mt-4'>
+          <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
+            Facebook Handle
+          </label>
+          <input
+            type='text'
+            id='default-input'
+            placeholder='#example'
+            className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+          />
+        </div>
+        <div className=' mt-4'>
+          <label className={`text-xm pb-2 pt-6 ${inter.className}`}>
+            Pinterest Handle
+          </label>
+          <input
+            type='text'
+            id='default-input'
+            placeholder='#example'
+            className=' mt-2 w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+          />
+        </div>
+      </div>
+      <div className='mt-6 text-right'>
+        <button className='rounded-full bg-green-200 px-8 py-2 '>add</button>
+      </div>
+      <hr className='my-8 h-px border-0 bg-gray-200'></hr>
+
+      <div className='flex'>
+        <button className='mr-6 w-80 rounded-full bg-green-200 px-8 py-2'>
+          upload from file
+        </button>
+        <label htmlFor=''>
+          Download a sample CSV template to see an example fo the format
+          required.
+        </label>
+      </div>
+      <hr className='my-8 h-px border-0 bg-gray-200'></hr>
+
+      <div className='flex'>
+        <label htmlFor=''>
+          Have your own site you want to invite your creators to sign up for
+          this campaign from? Copy this embed code.
+        </label>
+        <button className='mr-6 w-72 rounded-full bg-green-200 px-8 py-2'>
+          embed a form
+        </button>
       </div>
     </div>
   )

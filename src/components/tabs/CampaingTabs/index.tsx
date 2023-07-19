@@ -7,22 +7,19 @@ import { Dialog } from '@headlessui/react'
 import TopPost from '@/components/topPost'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
-import { Campaign, Post } from '@prisma/client'
 import PostCard from '@/components/postCard'
 import CreatorRow from '@/components/creatorRow'
 import { excelToJson } from '@/utils/ExcelHelper'
 import SettingsTab from '@/components/settingsTab'
 import TabsToShare from '@/components/tabsToShare'
 import OverviewCampaign from '@/components/overviewCampaign'
-import FeatureNotImplemented from '@/components/ui/featureNotImplemented'
 import ManagePosts from '@/components/ManagePosts'
 import { ptMono } from '@/app/fonts'
 import { CampaignRes } from '@/types/campaign/campaignRes'
-import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import TagsInput from '@/components/TagsInput'
 import Image from 'next/image'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
-import useCampaigns from '@/hooks/useCampaigns'
+import FilterCreators from '@/components/filtersCreators'
 
 // type campaignWithStats = Campaign & {
 //   posts: Post[]
@@ -317,6 +314,9 @@ export default function CampaingTabs({
                   </div>
                 </section>
                 <div className={openTab === 2 ? 'block' : 'hidden'}>
+                  <div className='relative z-50'>
+                    <FilterCreators />
+                  </div>
                   <CreatorRow comeFrom={'campigns'} creators={creators} />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
