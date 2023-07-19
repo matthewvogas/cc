@@ -13,9 +13,19 @@
 }
 
 .swiper-pagination-progressbar {
-  background-color: #fff1ec;
+  background-color: transparent;
+  display: none;
 }
 
 .swiper-slide.swiper-slide-active {
   height: 100%;
+}
+
+.swiper-wrapper {
+  background: #fff;
+}
+
+.swiper.swiper-initialized {
+  background: #fff;
+  border-radius: 10px;
 }
