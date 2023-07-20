@@ -33,7 +33,7 @@ const Tabs = ({ posts }: any) => {
               }}
               data-toggle='tab'
               role='tablist'
-              className='text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200 '>
+              className='text-xm -mb-px  inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200 '>
               overview
             </button>
             <button
@@ -43,7 +43,7 @@ const Tabs = ({ posts }: any) => {
               }}
               data-toggle='tab'
               role='tablist'
-              className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+              className='text-xm -mb-px inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
               creators
             </button>
             <button
@@ -53,7 +53,7 @@ const Tabs = ({ posts }: any) => {
               }}
               data-toggle='tab'
               role='tablist'
-              className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+              className='text-xm -mb-px inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
               posts
             </button>
             <button
@@ -63,7 +63,7 @@ const Tabs = ({ posts }: any) => {
               }}
               data-toggle='tab'
               role='tablist'
-              className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+              className='text-xm -mb-px inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
               stats
             </button>
             <button
@@ -71,7 +71,7 @@ const Tabs = ({ posts }: any) => {
                 e.preventDefault()
                 setOpenTab(5)
               }}
-              className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+              className='text-xm -mb-px inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
               share
             </button>
             <button
@@ -79,7 +79,7 @@ const Tabs = ({ posts }: any) => {
                 e.preventDefault()
                 setOpenTab(6)
               }}
-              className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+              className='text-xm -mb-px inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
               settings
             </button>
           </div>

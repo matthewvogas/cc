@@ -57,7 +57,9 @@ export default function TabsToShare(props: { campaignId: any }) {
                 role='tablist'>
                 <div className='p-2'>
                   <p className='pb-1 text-2xl font-bold '>share via link</p>
-                  <label className='flex w-4/6 pb-2 text-lg' htmlFor=''>
+                  <label
+                    className='flex w-4/6 pb-2 text-lg leading-[18px]'
+                    htmlFor=''>
                     get a shareable link or invite specific people to view this
                     campaign
                   </label>
@@ -82,7 +84,9 @@ export default function TabsToShare(props: { campaignId: any }) {
                 role='tablist'>
                 <div className='p-2'>
                   <p className='pb-1 text-2xl font-bold'>embed</p>
-                  <label className='flex w-4/6 pb-2 text-lg' htmlFor=''>
+                  <label
+                    className='flex w-4/6 pb-2 text-lg leading-[18px]'
+                    htmlFor=''>
                     embed your campaign grid and results on your own webpage
                   </label>
                 </div>
@@ -123,7 +127,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                   <div>
                     <div className='flex divide-x-2'>
                       <div className='w-4/6'>
-                        <h4 className='mb-4 block font-bold'>
+                        <h4 className='mb-4 block font-semibold text-base'>
                           Invite people to view
                         </h4>
                         <div className='mr-4 rounded-xl border-2  '>
@@ -161,7 +165,7 @@ export default function TabsToShare(props: { campaignId: any }) {
 
                       {/* Users who currently have access */}
                       <div className='w-2/6 pl-4'>
-                        <h4 className='mb-4 font-bold'>
+                        <h4 className='mb-4 font-semibold text-base'>
                           Users who currently have access
                         </h4>
                         <div className='flex flex-wrap gap-4'>
@@ -190,7 +194,9 @@ export default function TabsToShare(props: { campaignId: any }) {
                     </div>
 
                     {/* Privacy options */}
-                    <h4 className='my-4 font-bold'>Privacy options</h4>
+                    <h4 className='my-4 font-semibold text-base'>
+                      Privacy options
+                    </h4>
                     <div className='mr-4 inline-block gap-3 rounded-xl bg-beigeFirst p-3'>
                       <input className='mx-2' type='checkbox' />
                       <label className='' htmlFor=''>

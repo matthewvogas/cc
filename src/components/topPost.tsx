@@ -43,18 +43,6 @@ const creatorCards = [
 ]
 
 export default function TopPost({ posts }: { posts: Post[] }) {
-  const [isPlaying, setIsPlaying] = useState(false)
-
-  const handleVideoClick = () => {
-    const video = document.getElementById('videoPlayer') as HTMLVideoElement
-    if (isPlaying) {
-      video.pause()
-    } else {
-      video.play()
-    }
-    setIsPlaying(!isPlaying)
-  }
-
   const postData =
     posts.sort((a: any, b: any) => b.likesCount! - a.likesCount!).slice(0, 4) ||
     creatorCards
@@ -66,7 +54,7 @@ export default function TopPost({ posts }: { posts: Post[] }) {
           key={index}
           className={`h-fit min-w-[384px] overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>
           <div
-            className='flex h-96 flex-col justify-between bg-white'
+            className='flex h-96 flex-col justify-between bg-white overflow-clip'
             style={{ overflowX: 'auto' }}>
             <div className='z-10' style={{ position: 'sticky', left: '0' }}>
               <h4 className='absolute z-10 ml-4 mt-4 rounded-xl bg-white px-4 py-3 text-base opacity-80'>
@@ -94,20 +82,18 @@ export default function TopPost({ posts }: { posts: Post[] }) {
               <div
                 style={{ position: 'relative', width: '100%', height: '100%' }}>
                 <video
-                  className={`h-96 w-full object-cover`}
+                  className={`h-96 w-full object-cover relative`}
                   id='videoPlayer'
-                  controls={false}
-                  onClick={handleVideoClick}>
+                  controls={false}>
                   <source src={card.mediaUrl || undefined} type='video/mp4' />
                 </video>
                 <div
-                  className='relative z-20 opacity-90'
                   style={{
                     position: 'absolute',
                     bottom: 0,
                     left: 0,
                     width: '100%',
-                    height: '50%',
+                    height: '100%',
                     background:
                       'linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))',
                     pointerEvents: 'none',

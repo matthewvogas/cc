@@ -34,7 +34,7 @@ export default async function CampaignPage({
           <div className='divider' />
         </div>
 
-        <div className='overflow-auto'>
+        <div className=''>
           <CampaingsTabs campaign={campaign} creators={creators} />
         </div>
       </div>

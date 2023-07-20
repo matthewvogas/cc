@@ -18,10 +18,10 @@ export default function TitleDashboard({ title, user }: Props) {
   return (
     <div className='w-full'>
       <Image className=' w-full' src={bgdashboard} alt='' />
-      <div className='mx-auto -mt-28 mb-8 h-36 w-full justify-between px-4 md:px-14'>
+      <div className='mx-auto -mt-28 h-[4rem] w-full justify-between px-4 md:px-14'>
         <div className='w-full'>
           <div className={`flex items-center justify-between`}>
-            <h2 className={`text-2xl`}>
+            <h2 className={`text-2xl text-white`}>
               {title} {user.name} 🥥
             </h2>
             <div className={`flex ${ptMono.className}`}>

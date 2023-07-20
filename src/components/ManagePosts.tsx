@@ -83,10 +83,6 @@ export default function ManagePosts({
     handleDisplay(true)
   }
 
-  const openCreateCard = () => {
-    addPost(true)
-  }
-
   const manageType = (key: any) => {
     switch (key) {
       case 'creator':
@@ -129,7 +125,7 @@ export default function ManagePosts({
       <div className=' my-4 mb-5 w-full md:px-12'>
         <h3 className='mb-4 mt-16 text-lg font-bold'>{title}</h3>
         <div className='flex justify-between'>
-          <div className='z-10 flex items-center gap-6'>
+          <div className='z-10 flex items-center justify-start flex-wrap'>
             <button
               type='button'
               onClick={() => {
@@ -156,7 +152,7 @@ export default function ManagePosts({
                   : 'border-2 border-transparent'
               } ${buttonsStyle}`}
               type='button'>
-              by creator
+              by influencer
             </button>
 
             <button
@@ -239,31 +235,6 @@ export default function ManagePosts({
               top performing 🥥
             </button>
           </div>
-
-          {shared ? (
-            ''
-          ) : (
-            <div className='flex gap-6'>
-              <button
-                onClick={openCreateCard}
-                className={`mx-2 flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                add a post
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth='1.5'
-                  stroke='currentColor'
-                  className='ml-4 inline h-4 w-4'>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M12 4.5v15m7.5-7.5h-15'
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
         </div>
 
         <div className='mt-4 flex flex-col gap-3'>
