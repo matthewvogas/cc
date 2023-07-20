@@ -1,10 +1,11 @@
 import { ptMono } from '@/app/fonts'
 import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
+import avatar from 'public/assets/register/avatar.jpg'
+import angleDown from 'public/assets/register/angle-down.svg'
 import FeatureNotImplemented from './ui/featureNotImplemented'
 import React from 'react'
-
-// Fonts
+import Image from 'next/image'
 
 // Style Variables
 const ActionButtonStyle =
@@ -40,19 +41,51 @@ const singleCampaign = (title: string, client: string) => {
     <>
       <div>
         <h3
-          className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
+          className={`pb-8 align-middle text-[22px] font-medium text-gray-800 `}>
           {title}
         </h3>
-        <label
-          className={`rounded-full bg-background px-8 py-2 text-sm text-black ${ptMono.className}`}>
-          {client}
-        </label>
+        <div className='flex items-center'>
+          <div className='avatar'>
+            <div className='mask mask-circle mr-3 h-10 w-10'>
+              <Image
+                priority
+                className={``}
+                width={100}
+                height={100}
+                src={avatar}
+                alt='background'
+                unoptimized
+              />
+            </div>
+            <p
+              className={`flex items-center rounded-full text-base font-medium text-black`}>
+              {client}
+            </p>
+          </div>
+        </div>
       </div>
       <div className={`flex ${ptMono.className}`}>
         {/* <label className={`${ActionButtonStyle}`}>
         view as client
       </label> */}
-        <label className={`${ActiveLabel}`}>active</label>
+        <div className='flex items-center gap-3'>
+          <div className='w-[15px] h-[15px] bg-active rounded-full'></div>
+          <label
+            className={`flex items-center  rounded-full text-black text-lg`}>
+            active
+          </label>
+          <div className=' h-5 w-5'>
+            <Image
+              priority
+              className={``}
+              width={100}
+              height={100}
+              src={angleDown}
+              alt='background'
+              unoptimized
+            />
+          </div>
+        </div>
       </div>
     </>
   )
