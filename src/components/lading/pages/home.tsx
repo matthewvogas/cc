@@ -25,9 +25,13 @@ import imageEight from 'public/assets/SandBox/headSection/EightCardImage.jpg'
 
 // cards section 3
 import OneCard from 'public/assets/SandBox/Cards/liveTracking.svg'
+import OneCardMobile from 'public/assets/SandBox/Cards/liveTrackingMobile.png'
 import TwoCard from 'public/assets/SandBox/Cards/FilterAndExplore.svg'
+import TwoCardMobile from 'public/assets/SandBox/Cards/FilterAndExploreMobile.png'
 import ThreeCard from 'public/assets/SandBox/Cards/automaticTracking.svg'
+import ThreeCardMobile from 'public/assets/SandBox/Cards/automaticTrackingMobile.png'
 import FourCard from 'public/assets/SandBox/Cards/shareCampaigns.svg'
+import FourCardMobile from 'public/assets/SandBox/Cards/shareCampaignsMobile.png'
 import InfoCards from './homeComponents/infoCards'
 import SliderCard from './homeComponents/sliderCard'
 
@@ -91,7 +95,9 @@ const DataEight = {
 const cardData = [
   {
     size: '700px',
+    bg: 'bg-secondBackground',
     imageCard: OneCard,
+    imageCardMobile: OneCardMobile,
     subTitle: 'live campaign tracking',
     title:
       'Create campaigns to organize and track post analytics across platforms',
@@ -102,39 +108,42 @@ const cardData = [
     },
   },
   {
-    size: '100%',
+    size: '700px',
+    bg: 'bg-white',
     imageCard: TwoCard,
-    subTitle: 'live campaign tracking',
-    title:
-      'Create campaigns to organize and track post analytics across platforms',
+    imageCardMobile: TwoCardMobile,
+    subTitle: 'deep dive into results',
+    title: 'View, filter, and analyze live results in a visual and dynamic way',
     features: {
-      1: 'Live post analytics in one place',
-      2: 'A clear view of your campaigns + their results',
-      3: 'Post stats automatically pulled',
+      1: 'See all posts across platforms together in a grid view',
+      2: 'Filter down by results, creators, platform, + more',
+      3: 'Identify top performing content',
     },
   },
   {
     size: '550px',
+    bg: 'bg-secondBackground',
     imageCard: ThreeCard,
-    subTitle: 'live campaign tracking',
-    title:
-      'Create campaigns to organize and track post analytics across platforms',
+    imageCardMobile: ThreeCardMobile,
+    subTitle: 'know when your creators have posted',
+    title: 'Automated tracking of when your creators post for your campaigns',
     features: {
-      1: 'Live post analytics in one place',
-      2: 'A clear view of your campaigns + their results',
-      3: 'Post stats automatically pulled',
+      1: 'Codecoco can track when your creators post for you with hashtags',
+      2: 'Codecoco automatically adds posts to your campaign',
+      3: 'Save hours of following up and checking',
     },
   },
   {
-    size: '100%',
+    size: '700px',
+    bg: 'bg-white',
     imageCard: FourCard,
-    subTitle: 'live campaign tracking',
-    title:
-      'Create campaigns to organize and track post analytics across platforms',
+    imageCardMobile: FourCardMobile,
+    subTitle: 'share live campaigns in seconds',
+    title: 'Share campaigns publicly or privately with your clients',
     features: {
-      1: 'Live post analytics in one place',
-      2: 'A clear view of your campaigns + their results',
-      3: 'Post stats automatically pulled',
+      1: 'Share live campaign results in real time with clients',
+      2: 'Create public and private links',
+      3: 'Embed campaigns on your own site',
     },
   },
 ]
@@ -214,11 +223,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='relative z-10 w-full bg-white pb-24  hidden lg:block '></section>
+      <section className='relative z-10 w-full bg-white pb-24 lg:block '></section>
 
-      <section className='relative z-10 w-full bg-secondBackground pb-24 hidden lg:block'>
+      <section className='relative z-10 w-full bg-white px-10 lg:bg-secondBackground lg:pb-24  lg:block'>
         <div className='m-auto flex lg:w-[1060px] flex-col justify-center   '>
-          <div className='-mt-16 flex gap-4'>
+          <div className='-mt-16 flex gap-4 lg:flex-row flex-col'>
             <InfoCards
               description={'Create campaigns to track posts across platforms'}
             />
@@ -236,14 +245,15 @@ export default function Home() {
       </section>
 
       {/* Steps */}
-      <section className='relative z-10 bg-secondBackground pb-24 hidden lg:block'>
-        <div className='m-auto flex lg:w-[1290px] flex-col justify-center  '>
+      <section className='relative z-10  lg:bg-secondBackground pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
           {cardData.map((card, index) => (
             <FunctionalityCard
               key={index}
               card={card}
-              flex={index % 2 === 0 ? 'flex-row-reverse' : 'flex-row'}
+              flex={index % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}
               justify={index % 2 === 0 ? 'justify-end' : ''}
+              space={index === 0 ? 'w-[80%]' : ''}
             />
           ))}
         </div>
@@ -251,9 +261,9 @@ export default function Home() {
 
       {/* Slider Cards */}
       <section>
-        <div className='m-auto flex lg:w-[1290px] flex-col justify-center lg:pt-20'>
+        <div className='m-auto flex lg:w-[1190px] flex-col justify-center lg:pt-20'>
           <h2 className='mb-9 text-2xl font-bold text-black text-center lg:text-left px-20 lg:px-0'>
-            <span className='hidden lg:block'>
+            <span className='hidden lg:block lg:text-[28px]'>
               How to create a Codecoco campaign 🥥
             </span>
             <span className=' lg:hidden '>

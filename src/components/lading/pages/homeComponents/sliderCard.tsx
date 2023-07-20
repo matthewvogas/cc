@@ -72,7 +72,7 @@ export default function SliderCard() {
     <div>
       <div
         className='flex overflow-x-auto'
-        style={{ paddingLeft: 'calc(50vw - 645px)' }}>
+        style={{ paddingLeft: 'calc(50vw - 595px)' }}>
         <div className='mb-9 gap-4 hidden lg:flex'>
           {buttons.map((button, index) => (
             <button
@@ -90,7 +90,7 @@ export default function SliderCard() {
         ref={cardContainerRef}
         className=' pr-4 lg:pr-[50vw] ml-4 lg:ml-0 mb-12 lg:mb-24 flex gap-4 overflow-x-auto'
         style={{
-          paddingLeft: 'calc(50vw - 645px)',
+          paddingLeft: 'calc(50vw - 595px)',
         }}>
         {sliderCard.map((card, index) => (
           <div
@@ -99,7 +99,7 @@ export default function SliderCard() {
               activeCard === index ? 'bg-[#F8F5F1]' : ''
             }`}>
             <div className='flex flex-col items-center justify-center'>
-              <h5 className='mb-5 w-full text-center text-base lg:text-2xl font-semibold'>
+              <h5 className='mb-5 w-full text-center text-base lg:text-[24px] font-semibold'>
                 {card.title}
               </h5>
               <p
