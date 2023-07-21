@@ -346,7 +346,11 @@ export default function CampaingTabs({
                   <div className='relative z-50'>
                     <FilterCreators />
                   </div>
-                  <CreatorRow comeFrom={'campigns'} creators={creators} />
+                  <CreatorRow
+                    comeFrom={'campigns'}
+                    creators={creators}
+                    clients={[]}
+                  />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>

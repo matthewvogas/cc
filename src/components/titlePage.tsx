@@ -11,7 +11,7 @@ import Image from 'next/image'
 const ActionButtonStyle =
   'flex text-lg   border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 '
 const ActiveLabel =
-  'flex items-center bg-active px-8 mx-2 py-3 rounded-full text-black text-lg '
+  'flex items-center bg-active px-8 mx-2 py-2 rounded-full text-black text-lg '
 const InActiveLabel =
   'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-lg '
 
