@@ -11,6 +11,7 @@ import { Dialog } from '@headlessui/react'
 import useClients from '@/hooks/useClients'
 import TitlePage from '../titlePage'
 import TagsInput from '../TagsInput'
+import CreatorRow from '../creatorRow'
 
 export default function ClientsDashBoard({ clientsFallback }: any) {
   const { clients, areClientsLoading, clientsError, refreshClients } =
@@ -57,26 +58,30 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
         <label className='italic md:px-12' htmlFor=''>
           lastest
         </label>
-        <div className=' flex  flex-wrap gap-4 md:px-12'>
-          {clients.map((card: any, index: any) => (
+        <div className='flex gap-4 md:px-12 overflow-x-auto'>
+          {clients.slice(0, 5).map((client: any, index: any) => (
             <Link
-              href={`/dashboard/clients/${card.id || 1}`}
+              href={`/dashboard/clients/${client.id || 1}`}
               key={index}
-              className='h-80 w-80 border-gray-100 '>
+              className='h-80 min-w-[320px] w-80 border-gray-100 relative' // Agregamos la clase 'relative'
+            >
               <Image
                 priority
                 className={`h-64 object-cover`}
-                src={card.image || imageCover}
-                alt={card.name}
+                src={client.image || imageCover}
+                alt={client.name}
               />
-              <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
+              <div className='h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                 <p className={`text-lg font-medium text-gray-800`}>
-                  {card.name}
+                  {client.name}
                 </p>
               </div>
             </Link>
           ))}
+          <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
+
+        <CreatorRow comeFrom={'clients'} creators={[]} clients={clients} />
       </div>
 
       {/* Esta es el modal  */}
