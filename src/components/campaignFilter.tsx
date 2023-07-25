@@ -2,7 +2,7 @@
 
 // Style Variables
 const ActionButtonStyle =
-  'flex text-lg flex items-center border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back h-12 font-medium rounded-full  hover:bg-rose-100 cursor-pointer '
+  'flex text-lg flex items-center  border-2 inline-block py-2.5 px-8 mx-2 text-back h-12 font-medium rounded-full  hover:bg-rose-100 cursor-pointer '
 
 // Arrays
 const client = [
