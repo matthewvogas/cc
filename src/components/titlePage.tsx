@@ -168,7 +168,7 @@ export default function TitlePage(props: {
   }
 
   return (
-    <div className=' w-full pt-20 '>
+    <div className=' w-full pt-20 relative z-30'>
       <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
         <div className='w-full'>
           <div className={`flex items-center justify-between`}>
