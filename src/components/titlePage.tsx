@@ -1,4 +1,5 @@
-import { ptMono } from '@/app/fonts'
+'use client'
+import { inter, ptMono } from '@/app/fonts'
 import AddNewCampaign from './addNewCampaign'
 import CampaignFilter from './campaignFilter'
 import avatar from 'public/assets/register/avatar.jpg'
@@ -36,7 +37,24 @@ const campaigns = (
   )
 }
 
-const singleCampaign = (title: string, client: string) => {
+const singleCampaign = (
+  title: string,
+  client: string,
+  active: boolean,
+  setActive: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  const CampaignStatus = async () => {
+    try {
+      const status = document.getElementById('campaignStatusChange')
+      status?.classList.remove('hidden')
+      setTimeout(() => {
+        status?.classList.add('hidden')
+      }, 1000)
+    } catch (err) {
+      console.error('error ', err)
+    }
+  }
+
   return (
     <>
       <div>
@@ -69,22 +87,36 @@ const singleCampaign = (title: string, client: string) => {
         view as client
       </label> */}
         <div className='flex items-center gap-3'>
-          <div className='w-[15px] h-[15px] bg-active rounded-full'></div>
+          <div
+            className={`w-[15px] h-[15px] ${
+              active == true ? 'bg-active' : 'bg-[#B6BDBA]'
+            } rounded-full`}></div>
           <label
             className={`flex items-center  rounded-full text-black text-lg`}>
-            active
+            {active == true ? 'active' : 'inactive'}
           </label>
-          <div className=' h-5 w-5'>
-            <Image
-              priority
-              className={``}
-              width={100}
-              height={100}
-              src={angleDown}
-              alt='background'
-              unoptimized
-            />
-          </div>
+          <button
+            onClick={() => {
+              setActive(active == true ? false : true)
+              CampaignStatus()
+            }}>
+            <div
+              id='campaignStatusChange'
+              className={`${inter.className} fixed top-1/2 left-1/2 transform -translate-x-1/2  -translate-y-1/2 px-4 py-2 border border-[#b6fcdb] bg-[#e9faf2] bg-opacity-90 text-sm rounded-md z-50 hidden`}>
+              status of campaig changed
+            </div>
+            <div className=' h-5 w-5'>
+              <Image
+                priority
+                className={`${active == true ? '' : 'transform rotate-180'}`}
+                width={100}
+                height={100}
+                src={angleDown}
+                alt='background'
+                unoptimized
+              />
+            </div>
+          </button>
         </div>
       </div>
     </>
@@ -146,6 +178,8 @@ export default function TitlePage(props: {
   createClient: any
   createCampaign: any
 }) {
+  const [active, setActive] = React.useState(true)
+
   const builder: any = (
     title: string,
     moduleText: string,
@@ -159,7 +193,7 @@ export default function TitlePage(props: {
       case 'creators':
         return creators(title)
       case 'singleCampaign':
-        return singleCampaign(title, client)
+        return singleCampaign(title, client, active, setActive)
       case 'campaigns':
         return campaigns(title, createCampaign[0], createCampaign[1])
       default:
