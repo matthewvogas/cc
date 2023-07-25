@@ -20,6 +20,7 @@ import TagsInput from '@/components/TagsInput'
 import Image from 'next/image'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import FilterCreators from '@/components/filtersCreators'
+import TikTokNotAccountConnected from '@/components/tiktokNotAccountsConnected'
 
 // type campaignWithStats = Campaign & {
 //   posts: Post[]
@@ -211,6 +212,29 @@ export default function CampaingTabs({
     // addPost(true)
   }
 
+  const unconnectedTikTokLinks = [
+    {
+      username: '@stmbind',
+      link: 'https://www.tiktok.com/embello_inc/1',
+      creatorEmail: 'creator@mail.com',
+    },
+    {
+      username: '@hello',
+      link: 'https://www.tiktok.com/embello_inc/2',
+      creatorEmail: 'creator@mail.com',
+    },
+    {
+      username: '@sophia',
+      link: 'https://www.tiktok.com/embello_inc/3',
+      creatorEmail: 'creator@mail.com',
+    },
+    {
+      username: '@blackandwhite',
+      link: 'https://www.tiktok.com/embello_inc/4',
+      creatorEmail: 'creator@mail.com',
+    },
+  ]
+
   return (
     <>
       <div className='flex flex-wrap'>
@@ -326,6 +350,11 @@ export default function CampaingTabs({
                       activeButton={activeButton}
                       setActiveButton={setActiveButton}
                       mostView={activeButton}
+                    />
+
+                    {/* tiktok handler */}
+                    <TikTokNotAccountConnected
+                      tiktokCards={unconnectedTikTokLinks}
                     />
 
                     <div className='pt-6'>
