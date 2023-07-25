@@ -1,4 +1,4 @@
-import { ptMono } from '@/app/fonts'
+import { inter, ptMono } from '@/app/fonts'
 import tiktok from 'public/assets/register/tiktok-white.png'
 import angleDown from 'public/assets/register/angle-down.svg'
 import copyLink from 'public/assets/register/copy-link.svg'
@@ -86,7 +86,7 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
                   </button>
                   <div
                     id='copiadoModal'
-                    className='fixed top-1/2 left-1/2 transform -translate-x-1/2  -translate-y-1/2 px-4 py-2 border border-[#b6fcdb] bg-[#e9faf2] bg-opacity-90 text-sm rounded-md z-50 hidden'>
+                    className={` ${inter.className} fixed top-1/2 left-1/2 transform -translate-x-1/2  -translate-y-1/2 px-4 py-2 border border-[#b6fcdb] bg-[#e9faf2] bg-opacity-90 text-sm rounded-md z-50 hidden`}>
                     link copied successfully!
                   </div>
                 </div>

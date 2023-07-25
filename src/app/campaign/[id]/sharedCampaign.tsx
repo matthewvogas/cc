@@ -8,6 +8,9 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import { Campaign, CampaignPayload, Client, User, Post } from '@prisma/client'
 import React from 'react'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import bgdashboard from 'public/assets/register/dashboardBackground.jpg'
+import { ptMono } from '@/app/fonts'
 
 export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
   const [tags, setTags] = useState<string[]>([])
@@ -43,8 +46,11 @@ export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
   })
 
   return (
-    <div className='flex flex-col items-center justify-center'>
-      <TitleDashboard title={'Revolve Clothing'} user={''} />
+    <div className='  flex flex-col items-center justify-center'>
+      <div className='mt-14 mb-14 w-[1480px] md:px-14'>
+        <h2 className={`text-2xl text-black`}>{campaign.name}</h2>
+      </div>
+
       <div className='w-[1480px]  pt-6 '>
         <OverviewCampaignPublic
           creators={campaign?._count?.creators || 0}
