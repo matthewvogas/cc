@@ -3,6 +3,12 @@ import { BussinesDiscoveryRes } from '@/types/businessDiscovery/BussinesDiscover
 import { getServerSession } from 'next-auth/next'
 import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../../auth/[...nextauth]/route'
+import {
+  PutObjectCommand,
+  PutObjectCommandInput,
+  S3Client,
+} from '@aws-sdk/client-s3'
+import s3Client from '@/lib/s3'
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
@@ -20,7 +26,7 @@ export async function POST(req: NextRequest) {
     oemBedUrl.searchParams.append('url', `https://www.instagram.com/p/${post}/`)
     oemBedUrl.searchParams.append(
       'access_token',
-      process.env.BUSINESS_TOKEN_SOPHIA!,
+      process.env.BUSINESS_TOKEN_DEWIN!,
     )
 
     const oemBedResponse = await fetch(oemBedUrl.toString()).then(res =>
@@ -28,12 +34,12 @@ export async function POST(req: NextRequest) {
     )
 
     if (oemBedResponse.error) {
-      console.log(oemBedResponse.error)
+      console.log('XXDDD', oemBedResponse.error)
       return
     }
 
     const publicResUrl = new URL(
-      `https://graph.facebook.com/${process.env.BUSINESS_SOPHIA}`,
+      `https://graph.facebook.com/${process.env.BUSINESS_ID_DEWIN}/`,
     )
     publicResUrl.searchParams.append(
       'fields',
@@ -41,7 +47,7 @@ export async function POST(req: NextRequest) {
     )
     publicResUrl.searchParams.append(
       'access_token',
-      process.env.BUSINESS_TOKEN!,
+      `${process.env.BUSINESS_TOKEN_DEWIN}`,
     )
 
     const res = (await fetch(publicResUrl.toString()).then(res =>
@@ -49,7 +55,7 @@ export async function POST(req: NextRequest) {
     )) as BussinesDiscoveryRes
 
     if (!res.business_discovery) {
-      console.log(res)
+      console.log('Business Discovery Error', res)
       return
     }
 
@@ -101,6 +107,43 @@ export async function POST(req: NextRequest) {
       return
     }
 
+    const thumbnail = (await fetch(oemBedResponse.thumbnail_url).then(res =>
+      res.blob(),
+    )) as File
+    const thumbnailBuffer = await thumbnail.arrayBuffer()
+
+    const putParamsThumnail: PutObjectCommandInput = {
+      Bucket: process.env.S3_BUCKET_NAME!,
+      Key: postOnRes.id! + '.jpeg',
+      ContentType: thumbnail.type,
+      Body: new Uint8Array(thumbnailBuffer),
+    }
+
+    await s3Client.send(new PutObjectCommand(putParamsThumnail))
+
+    let urlThumbnail = `https://${process.env.S3_BUCKET_NAME}.s3.${
+      process.env.AWS_REGION
+    }.amazonaws.com/${postOnRes.id!}.jpeg`
+    let urlMedia = urlThumbnail
+
+    if (postOnRes.media_url && postOnRes.media_url.includes('mp4')) {
+      const file = (await fetch(postOnRes.media_url!).then(res =>
+        res.blob(),
+      )) as File
+      const buffer = await file.arrayBuffer()
+      const putParams: PutObjectCommandInput = {
+        Bucket: process.env.S3_BUCKET_NAME!,
+        Key: postOnRes.id! + '.mp4',
+        ContentType: file.type,
+        Body: new Uint8Array(buffer),
+      }
+
+      await s3Client.send(new PutObjectCommand(putParams))
+      urlMedia = `https://${process.env.S3_BUCKET_NAME}.s3.${
+        process.env.AWS_REGION
+      }.amazonaws.com/${postOnRes.id!}.mp4`
+    }
+
     const postToSave = await db.post.upsert({
       where: {
         uuid: postOnRes.id!,
@@ -112,8 +155,8 @@ export async function POST(req: NextRequest) {
         userId: session!.user.id,
         permalink: postOnRes.permalink!,
         creatorId: creator.id,
-        imageUrl: oemBedResponse.thumbnail_url,
-        mediaUrl: postOnRes.media_url!,
+        imageUrl: urlThumbnail,
+        mediaUrl: urlMedia ?? urlThumbnail,
         commentsCount: postOnRes.comments_count ?? 0,
         likesCount: postOnRes.like_count ?? 0,
         reachCount: 0,
@@ -131,8 +174,8 @@ export async function POST(req: NextRequest) {
         userId: session!.user.id,
         permalink: postOnRes.permalink!,
         creatorId: creator.id,
-        imageUrl: oemBedResponse.thumbnail_url,
-        mediaUrl: postOnRes.media_url!,
+        imageUrl: urlThumbnail,
+        mediaUrl: urlMedia ?? urlThumbnail,
         commentsCount: postOnRes.comments_count ?? 0,
         likesCount: postOnRes.like_count ?? 0,
         reachCount: 0,

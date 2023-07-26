@@ -655,7 +655,7 @@ export default function CampaingTabs({
                         name='campaignExcel'
                         id='campaignExcel'
                         type='file'
-                        accept='.xlsx, .xls'
+                        accept='.xlsx, .xls, .csv'
                         className='file-input-bordered file-input w-full'
                       />
                       {fetchError && (

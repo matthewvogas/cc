@@ -5,6 +5,12 @@ import { isMp4 } from '@/utils/ValidationsHelper'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '../../auth/[...nextauth]/route'
+import {
+  PutObjectCommand,
+  PutObjectCommandInput,
+  S3Client,
+} from '@aws-sdk/client-s3'
+import s3Client from '@/lib/s3'
 
 type postsFromExcel = {
   links: string
@@ -12,7 +18,7 @@ type postsFromExcel = {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
-  console.log(session!.user.id)
+  console.log('Session', session!.user.id)
   if (!session) return NextResponse.json({ message: 'No session' })
 
   try {
@@ -33,7 +39,7 @@ export async function POST(req: Request) {
       )
       oemBedUrl.searchParams.append(
         'access_token',
-        process.env.BUSINESS_TOKEN_SOPHIA!,
+        process.env.BUSINESS_TOKEN_DEWIN!,
       )
 
       const oemBedResponse = await fetch(oemBedUrl.toString()).then(res =>
@@ -41,12 +47,12 @@ export async function POST(req: Request) {
       )
 
       if (oemBedResponse.error) {
-        console.log(oemBedResponse.error)
-        return
+        console.log('oembed Error', oemBedResponse.error)
+        continue
       }
 
       const publicResUrl = new URL(
-        `https://graph.facebook.com/${process.env.BUSINESS_SOPHIA}`,
+        `https://graph.facebook.com/${process.env.BUSINESS_ID_DEWIN}`,
       )
       publicResUrl.searchParams.append(
         'fields',
@@ -54,7 +60,7 @@ export async function POST(req: Request) {
       )
       publicResUrl.searchParams.append(
         'access_token',
-        process.env.BUSINESS_TOKEN!,
+        process.env.BUSINESS_TOKEN_DEWIN!,
       )
 
       const res = (await fetch(publicResUrl.toString()).then(res =>
@@ -62,8 +68,8 @@ export async function POST(req: Request) {
       )) as BussinesDiscoveryRes
 
       if (!res.business_discovery) {
-        console.log(res)
-        return
+        console.log('Bussiness Discovery Error', res)
+        continue
       }
 
       const creator = await db.creator.upsert({
@@ -111,7 +117,44 @@ export async function POST(req: Request) {
 
       if (!postOnRes) {
         console.log('Post not found')
-        return
+        continue
+      }
+
+      const thumbnail = (await fetch(oemBedResponse.thumbnail_url).then(res =>
+        res.blob(),
+      )) as File
+      const thumbnailBuffer = await thumbnail.arrayBuffer()
+
+      const putParamsThumnail: PutObjectCommandInput = {
+        Bucket: process.env.S3_BUCKET_NAME!,
+        Key: postOnRes.id! + '.jpeg',
+        ContentType: thumbnail.type,
+        Body: new Uint8Array(thumbnailBuffer),
+      }
+
+      await s3Client.send(new PutObjectCommand(putParamsThumnail))
+
+      let urlThumbnail = `https://${process.env.S3_BUCKET_NAME}.s3.${
+        process.env.AWS_REGION
+      }.amazonaws.com/${postOnRes.id!}.jpeg`
+      let urlMedia = urlThumbnail
+
+      if (postOnRes.media_url && postOnRes.media_url.includes('mp4')) {
+        const file = (await fetch(postOnRes.media_url!).then(res =>
+          res.blob(),
+        )) as File
+        const buffer = await file.arrayBuffer()
+        const putParams: PutObjectCommandInput = {
+          Bucket: process.env.S3_BUCKET_NAME!,
+          Key: postOnRes.id! + '.mp4',
+          ContentType: file.type,
+          Body: new Uint8Array(buffer),
+        }
+
+        await s3Client.send(new PutObjectCommand(putParams))
+        urlMedia = `https://${process.env.S3_BUCKET_NAME}.s3.${
+          process.env.AWS_REGION
+        }.amazonaws.com/${postOnRes.id!}.mp4`
       }
 
       const postToSave = await db.post.upsert({
@@ -125,16 +168,16 @@ export async function POST(req: Request) {
           userId: session!.user.id,
           permalink: postOnRes.permalink!,
           creatorId: creator.id,
-          imageUrl: oemBedResponse.thumbnail_url,
-          mediaUrl: postOnRes.media_url!,
+          imageUrl: urlThumbnail,
+          mediaUrl: urlMedia ?? urlThumbnail,
           commentsCount: postOnRes.comments_count ?? 0,
           likesCount: postOnRes.like_count ?? 0,
           reachCount: 0,
-          impressionsCount: 0,
           engagementCount: 0,
+          impressionsCount: 0,
+          playsCount: 0,
           savesCount: 0,
           sharesCount: 0,
-          playsCount: 0,
           shortcode: post,
         },
         create: {
@@ -144,16 +187,16 @@ export async function POST(req: Request) {
           userId: session!.user.id,
           permalink: postOnRes.permalink!,
           creatorId: creator.id,
-          imageUrl: oemBedResponse.thumbnail_url,
-          mediaUrl: postOnRes.media_url!,
+          imageUrl: urlThumbnail,
+          mediaUrl: urlMedia ?? urlThumbnail,
           commentsCount: postOnRes.comments_count ?? 0,
           likesCount: postOnRes.like_count ?? 0,
           reachCount: 0,
           engagementCount: 0,
           impressionsCount: 0,
           playsCount: 0,
-          sharesCount: 0,
           savesCount: 0,
+          sharesCount: 0,
           shortcode: post,
         },
       })
