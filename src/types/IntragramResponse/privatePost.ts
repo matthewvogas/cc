@@ -1,8 +1,9 @@
-export interface Welcome {
+export interface InstagramResponse {
   username?: string
   followers_count?: number
   media?: Media
   id?: string
+  profile_picture_url?: string
 }
 
 export interface Media {
