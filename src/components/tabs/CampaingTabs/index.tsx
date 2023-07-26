@@ -240,7 +240,7 @@ export default function CampaingTabs({
       <div className='flex flex-wrap'>
         <div className='w-full'>
           <div className='mb-8 md:px-12 flex justify-between flex-wrap gap-5'>
-            <div>
+            <div className='whitespace-nowrap overflow-y-hidden overflow-x-auto'>
               <button
                 onClick={e => {
                   e.preventDefault()
@@ -322,7 +322,6 @@ export default function CampaingTabs({
               </button>
             </div>
           </div>
-
           <div className='relative mb-6 flex w-full min-w-0 flex-col break-words bg-white '>
             <div className='flex-auto '>
               <div className='tab-content tab-space'>
