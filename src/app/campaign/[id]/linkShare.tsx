@@ -37,7 +37,7 @@ export const RedirectLink = (props: {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className='rounded-full border border-black px-8 py-3 text-base hover:bg-black hover:text-white'>
+        className='rounded-full text-sm border border-black px-8 py-3 md:text-base hover:bg-black hover:text-white'>
         share this view
       </button>
       <Dialog

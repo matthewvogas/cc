@@ -8,8 +8,6 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import { Campaign, CampaignPayload, Client, User, Post } from '@prisma/client'
 import React from 'react'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import bgdashboard from 'public/assets/register/dashboardBackground.jpg'
 import { ptMono } from '@/app/fonts'
 
 export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
@@ -47,17 +45,18 @@ export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
 
   return (
     <div className='  flex flex-col items-center justify-center'>
-      <div className='mt-14 mb-14 w-[1480px] md:px-14'>
+      <div className='mt-14 mb-12 md:mb-14 w-full  px-6 md:px-14'>
         <h2 className={`text-2xl text-black`}>{campaign.name}</h2>
       </div>
 
-      <div className='w-[1480px]  pt-6 '>
+      <div className='w-full  '>
         <OverviewCampaignPublic
           creators={campaign?._count?.creators || 0}
           content={campaign?._count?.posts || 0}
           audience={campaign?.stats?.impressionsCount || 0}
           plays={campaign?.stats?.playsCount || 0}
         />
+
         <ManagePosts
           id={campaign.id!}
           addPost={''}
@@ -73,6 +72,7 @@ export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
           setActiveButton={setActiveButton}
           mostView={activeButton}
         />
+
         <div className='flex pt-6'>
           <div className='mb-12 ml-12 flex flex-wrap gap-x-6 gap-y-8 self-center'>
             {filteredPosts?.map((post, index: any) => (

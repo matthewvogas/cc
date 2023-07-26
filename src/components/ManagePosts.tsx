@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { RedirectLink } from '@/app/campaign/[id]/linkShare'
 
 const buttonsStyle =
-  'px-8 py-2 mr-4 border-2 text-xm rounded-full items-center rounded-full p-2 text-gray-900 hover:border-rose-200 '
+  'px-8 py-2  border-2 text-base rounded-full items-center rounded-full p-2 text-gray-900 hover:border-rose-200  whitespace-nowrap'
 
 export interface Props {
   readonly id: number
@@ -122,10 +122,10 @@ export default function ManagePosts({
 
   return (
     <>
-      <div className=' my-4 mb-5 w-full md:px-12'>
+      <div className=' my-0 md:my-4 mb-5 w-full px-6 md:px-12 '>
         <h3 className='mb-4 mt-16 text-lg font-bold'>{title}</h3>
-        <div className='flex justify-between'>
-          <div className='z-10 flex items-center justify-start flex-wrap'>
+        <div className='flex justify-between '>
+          <div className=' flex items-center justify-start overflow-x-auto gap-4 overflow-y-hidden'>
             <button
               type='button'
               onClick={() => {
@@ -170,23 +170,22 @@ export default function ManagePosts({
               by hashtag
             </button>
 
-            <div className='dropdown-end dropdown '>
+            {/* <div className='dropdown-end dropdown '>
               <button
                 tabIndex={0}
                 type='button'
                 onClick={() => {
                   setActiveButton('platform')
                 }}
-                className={`${
-                  activeButton == 'platform'
+                className={`${activeButton == 'platform'
                     ? 'border-2 border-rose-200'
                     : 'border-2 border-transparent'
-                } ${buttonsStyle}`}>
+                  } ${buttonsStyle}`}>
                 by platform
               </button>
               <div
                 tabIndex={0}
-                className='dropdown-content menu rounded-box mr-4 mt-2 w-auto border-2 border-gray-100 bg-white p-2'>
+                className='  relative z-50 menu rounded-box mr-4 mt-2 w-auto border-2 border-gray-100 bg-white p-2  '>
                 <div className='m-4 flex flex-col gap-5'>
                   <div className='flex flex-row gap-2'>
                     <button
@@ -207,7 +206,7 @@ export default function ManagePosts({
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <button
               type='button'
@@ -231,7 +230,7 @@ export default function ManagePosts({
                 activeButton == 'topPerforming'
                   ? 'border-2 border-[#D9F0F1] bg-[#D9F0F1]'
                   : ''
-              } text-xm mr-4 items-center rounded-full  border-2  border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-[#D9F0F1] `}>
+              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full  border-2  border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-[#D9F0F1] `}>
               top performing 🥥
             </button>
           </div>
@@ -325,7 +324,7 @@ export default function ManagePosts({
           </div>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex  flex-wrap md:flex-nowrap justify-between'>
           {activeButton == 'topPerforming' && (
             <div className=''>
               <h5 className='mb-4 mt-4 font-semibold italic'>
@@ -341,7 +340,7 @@ export default function ManagePosts({
             </div>
           )}
 
-          <div className='flex w-full items-end justify-end'>
+          <div className='flex w-full items-end md:justify-end mt-4'>
             {shared === true && (
               <RedirectLink
                 id={id}
