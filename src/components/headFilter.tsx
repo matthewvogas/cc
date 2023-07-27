@@ -1,52 +1,14 @@
 'use client'
 
-// Style Variables
 const ActionButtonStyle =
   'flex text-lg flex items-center  border-2 inline-block py-2.5 px-8 mx-2 text-back h-12 font-medium rounded-full  hover:bg-rose-100 cursor-pointer '
 
-// Arrays
-const client = [
-  {
-    name: "L'Oreal",
-    email: 'loreal@lroeal.com',
-  },
-  {
-    name: "Matthew's, Client",
-    email: 'loreal@lroeal.com',
-  },
-  {
-    name: "Sophia's Client",
-    email: 'loreal@lroeal.com',
-  },
-]
+type Props = {
+  list: any
+  setSort: React.Dispatch<React.SetStateAction<string>>
+}
 
-const button = [
-  {
-    label: 'newer',
-    action: 'Hello',
-  },
-  {
-    label: 'older',
-    action: '',
-  },
-]
-
-// Show Arrays
-const buttons = button.map((btn, index) => (
-  <button
-    key={index}
-    className=' rounded-full bg-beigeFirst px-6 py-2.5  hover:bg-beigeSelected focus:bg-beigeSelected'>
-    {btn.label}
-  </button>
-))
-
-const clients = client.map((client, index) => (
-  <option value={index} id='companies-menu' key={index}>
-    {client.name}
-  </option>
-))
-
-export default function CampaignFilter() {
+export default function HeadFilter({ list, setSort }: Props) {
   return (
     <div className='dropdown-end dropdown '>
       <label tabIndex={0} className={`${ActionButtonStyle}`}>
@@ -56,10 +18,21 @@ export default function CampaignFilter() {
         tabIndex={0}
         className='dropdown-content menu rounded-box mr-4 mt-2 w-auto border-2 border-gray-100 bg-white p-2'>
         <div className='m-4 flex flex-col gap-5'>
-          <div className='flex flex-row gap-2'>{buttons}</div>
-          <div className='w-full'>
+          <div className='flex flex-row gap-2'>
+            <button
+              onClick={() => setSort('newest')}
+              className=' rounded-full bg-beigeFirst px-6 py-2.5  hover:bg-beigeSelected focus:bg-beigeSelected'>
+              newest
+            </button>
+            <button
+              onClick={() => setSort('oldest')}
+              className=' rounded-full bg-beigeFirst px-6 py-2.5  hover:bg-beigeSelected focus:bg-beigeSelected'>
+              oldest
+            </button>
+          </div>
+          {/* <div className='w-full'>
             <label className='' htmlFor=''>
-              Client
+              Client or Campaign
             </label>
             <select
               id='countries'
@@ -67,9 +40,13 @@ export default function CampaignFilter() {
               <option value={0} disabled>
                 Choose a client
               </option>
-              {clients}
+              {list.map((item: any, index: number) => (
+                < option value={index} id='companies-menu' key={index} >
+                  {item.name}
+                </option>
+              ))}
             </select>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

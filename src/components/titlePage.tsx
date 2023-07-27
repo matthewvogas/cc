@@ -1,7 +1,7 @@
 'use client'
 import { inter, ptMono } from '@/app/fonts'
 import AddNewCampaign from './addNewCampaign'
-import CampaignFilter from './campaignFilter'
+import HeadFilter from './headFilter'
 import avatar from 'public/assets/register/avatar.jpg'
 import angleDown from 'public/assets/register/angle-down.svg'
 import FeatureNotImplemented from './ui/featureNotImplemented'
@@ -20,6 +20,7 @@ const campaigns = (
   title: string,
   createCampaign: any,
   createCampaignModal: any,
+  setSort: React.Dispatch<React.SetStateAction<string>>,
 ) => {
   return (
     <>
@@ -27,7 +28,7 @@ const campaigns = (
         {title}
       </h3>
       <div className={`flex ${ptMono.className}`}>
-        <CampaignFilter />
+        <HeadFilter list={[]} setSort={setSort} />
         <AddNewCampaign
           createCampaign={createCampaign}
           campaignType={createCampaignModal}
@@ -140,14 +141,18 @@ const creators = (title: string) => {
   )
 }
 
-const clients = (title: string, createClient: any) => {
+const clients = (
+  title: string,
+  createClient: any,
+  setSort: React.Dispatch<React.SetStateAction<string>>,
+) => {
   return (
     <>
       <h3 className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
         {title}
       </h3>
       <div className={`flex ${ptMono.className}`}>
-        <CampaignFilter />
+        <HeadFilter list={[]} setSort={setSort} />
         <button
           onClick={() => createClient(true)}
           className={`${ActiveLabel} `}>
@@ -177,6 +182,7 @@ export default function TitlePage(props: {
   client: String
   createClient: any
   createCampaign: any
+  setSort: React.Dispatch<React.SetStateAction<string>> | any
 }) {
   const [active, setActive] = React.useState(true)
 
@@ -189,13 +195,18 @@ export default function TitlePage(props: {
   ) => {
     switch (moduleText) {
       case 'clients':
-        return clients(title, createClient)
+        return clients(title, createClient, props.setSort)
       case 'creators':
         return creators(title)
       case 'singleCampaign':
         return singleCampaign(title, client, active, setActive)
       case 'campaigns':
-        return campaigns(title, createCampaign[0], createCampaign[1])
+        return campaigns(
+          title,
+          createCampaign[0],
+          createCampaign[1],
+          props.setSort,
+        )
       default:
         break
     }

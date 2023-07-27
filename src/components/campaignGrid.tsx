@@ -1,5 +1,4 @@
 import { ptMono } from '@/app/fonts'
-import CampaignFilter from './campaignFilter'
 
 const clients = [
   {

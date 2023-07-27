@@ -378,6 +378,7 @@ export default function CampaingTabs({
                     comeFrom={'campigns'}
                     creators={creators}
                     clients={[]}
+                    search={''}
                   />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>

@@ -12,6 +12,10 @@ import useClients from '@/hooks/useClients'
 import TitlePage from '../titlePage'
 import TagsInput from '../TagsInput'
 import CreatorRow from '../creatorRow'
+import React from 'react'
+import Search from '../search'
+import FilterBy from '../modals/filterBy'
+import SearchByTag from '../searchByTag'
 
 export default function ClientsDashBoard({ clientsFallback }: any) {
   const { clients, areClientsLoading, clientsError, refreshClients } =
@@ -21,6 +25,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
+  const [tagSelected, setSearchTags] = useState<string[]>([])
 
   const handleCreate = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -44,6 +49,16 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
     }
   }
 
+  const [sort, setSort] = React.useState('')
+  const [inputSearchValue, setInputSearchValue] = useState('')
+
+  const searchTags = [
+    // Aquí puedes agregar las opciones de tags disponibles
+    'Tag1',
+    'Tag2',
+    '3',
+  ]
+
   return (
     <>
       <TitlePage
@@ -52,19 +67,22 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
         client={''}
         createClient={setIsOpen}
         createCampaign={null}
+        setSort={setSort}
       />
 
       <div className='flex flex-col gap-4 bg-white'>
         <label className='italic md:px-12' htmlFor=''>
-          lastest
+          {sort !== 'newest' ? 'oldest' : 'lastest'}
         </label>
         <div className='flex gap-4 md:px-12 overflow-x-auto'>
-          {clients.slice(0, 5).map((client: any, index: any) => (
+          {(sort !== 'newest'
+            ? clients.slice(0, 5).reverse()
+            : clients.slice(0, 5)
+          ).map((client: any, index: any) => (
             <Link
               href={`/dashboard/clients/${client.id || 1}`}
               key={index}
-              className='h-80 min-w-[320px] w-80 border-gray-100 relative' // Agregamos la clase 'relative'
-            >
+              className='h-80 min-w-[320px] w-80 border-gray-100 relative'>
               <Image
                 priority
                 className={`h-64 object-cover`}
@@ -78,10 +96,24 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
               </div>
             </Link>
           ))}
+
           <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
 
-        <CreatorRow comeFrom={'clients'} creators={[]} clients={clients} />
+        <div className='flex items-end'>
+          <Search
+            inputSearchValue={inputSearchValue}
+            setInputSearchValue={setInputSearchValue}
+          />
+          {/* <SearchByTag setSearchTags={setSearchTags} tagSelected={tagSelected} searchTags={tags} /> */}
+        </div>
+
+        <CreatorRow
+          comeFrom={'clients'}
+          creators={[]}
+          clients={clients}
+          search={inputSearchValue}
+        />
       </div>
 
       {/* Esta es el modal  */}

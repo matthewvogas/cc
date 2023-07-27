@@ -1,5 +1,4 @@
 import { PT_Mono } from 'next/font/google'
-import CampaignFilter from './campaignFilter'
 import { User } from '@prisma/client'
 import Image from 'next/image'
 import bgdashboard from 'public/assets/register/dashboardBackground.jpg'

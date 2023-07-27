@@ -1,7 +1,6 @@
 'use client'
 
 import imageCover from 'public/assets/register/campaignCover.jpg'
-import useSWR from 'swr'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
@@ -13,6 +12,7 @@ import useCampaigns from '@/hooks/useCampaigns'
 import useClients from '@/hooks/useClients'
 import TitlePage from '../titlePage'
 import { CampaignRes } from '@/types/campaign/campaignRes'
+import React from 'react'
 
 export default function CampaignsDashBoard({
   campaignsFallback,
@@ -60,6 +60,8 @@ export default function CampaignsDashBoard({
     }
   }
 
+  const [sort, setSort] = React.useState('')
+
   return (
     <>
       <TitlePage
@@ -68,11 +70,18 @@ export default function CampaignsDashBoard({
         client={''}
         createClient={null}
         createCampaign={[setIsOpen, setTitle]}
+        setSort={setSort}
       />
 
       <div className='flex flex-col gap-4 bg-white pt-12'>
+        <label className='italic md:px-12' htmlFor=''>
+          {sort !== 'newest' ? 'oldest' : 'lastest'}
+        </label>
         <div className='flex flex-wrap gap-6 md:px-12'>
-          {campaigns.map((card: any, index: any) => (
+          {(sort !== 'newest'
+            ? campaigns.slice(0, campaigns.length).reverse()
+            : campaigns.slice(0, campaigns.length)
+          ).map((card: any, index: any) => (
             <Link
               href={`/dashboard/campaigns/${card.id || 1}`}
               key={index}

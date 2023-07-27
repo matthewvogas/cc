@@ -127,9 +127,9 @@ export default function UseThisPost({ post }: Props) {
             </div>
           </div>
           <div className='flex w-full flex-col justify-end'>
-            <h3 className='mb-3 text-2xl font-semibold'>Use this post? 🥥</h3>
+            <h3 className='mb-3 text-2xl font-semibold'>Use this post 🥥</h3>
             <p className='mb-3 text-base font-light'>
-              Embed this post? on your website or use the content.
+              Embed this post on your website or use the content.
             </p>
             <button
               disabled={loading}
