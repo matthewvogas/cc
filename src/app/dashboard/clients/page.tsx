@@ -1,11 +1,6 @@
-import ButtonsGroupTabs from '@/components/buttonsGroupTabs'
-import CampaignCard from '@/components/campaignCard'
-import Search from '@/components/search'
-import Tags from '@/components/tags'
-import TitlePage from '@/components/titlePage'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { ClientsService } from '@/services/ClientsServices'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import ClientsDashBoard from '@/components/dashboards/ClientsDashBoard'
 
 export const dynamic = 'force-dynamic'

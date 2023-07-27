@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import UseThisPost from './useThisPost'
 import { Post } from '@/types/campaign/campaignRes'
+import Link from 'next/link'
 
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -99,6 +100,12 @@ export default function PostCard({ post }: { post: Post }) {
               className='text-back m-2 inline-block rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
               use this post
             </button>
+            <Link
+              href={post.permalink || ''}
+              target='_blank'
+              className='text-back m-2 inline-block rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
+              see the post
+            </Link>
           </ul>
         </div>
       </div>

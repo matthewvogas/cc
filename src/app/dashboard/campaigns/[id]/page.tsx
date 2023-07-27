@@ -1,13 +1,9 @@
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { CampaignsService } from '@/services/CampaignsService'
-import ButtonsGroupTabs from '@/components/buttonsGroupTabs'
 import { ptMono } from '@/app/fonts'
 import CampaingsTabs from '@/components/tabs/CampaingTabs'
 import TitlePage from '@/components/titlePage'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CreatorsService } from '@/services/CreatorsService'
-import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,6 +26,7 @@ export default async function CampaignPage({
             client={String(campaign?.client?.name)}
             createClient={null}
             createCampaign={null}
+            setSort={null}
           />
           <div className='divider' />
         </div>

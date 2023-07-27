@@ -30,12 +30,22 @@ type Props = {
   comeFrom: string
   creators: CreatorsByCampaignRes[]
   clients: any
+  search: string
 }
 
-export default function CreatorRow({ comeFrom, creators, clients }: Props) {
+export default function CreatorRow({
+  comeFrom,
+  creators,
+  clients,
+  search,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
   const [tags, setTags] = useState<string[]>([])
+
+  const filteredClients = clients.filter((client: any) =>
+    client.name.toLowerCase().includes(search.toLowerCase()),
+  )
 
   return (
     <>
@@ -151,7 +161,7 @@ export default function CreatorRow({ comeFrom, creators, clients }: Props) {
               </tr>
             ))}
 
-            {clients.map((client: any, index: any) => (
+            {filteredClients.map((client: any, index: any) => (
               <tr key={index} className={`text-sm ${ptMono.className} `}>
                 {comeFrom === 'clients' && (
                   <>

@@ -1,10 +1,8 @@
-import FilterCreators from '@/components/filtersCreators'
+'use client'
 import ButtonGroup from '@/components/buttonsGroup'
-import CreatorRow from '@/components/creatorRow'
-import EmbedToConnect from '@/components/modals/embedToConnect'
-import InviteToConnect from '@/components/modals/inviteToConnect'
 import TitlePage from '@/components/titlePage'
 import ShareStat from '@/components/modals/shareStats'
+import React from 'react'
 
 export default async function creators() {
   return (
@@ -15,6 +13,7 @@ export default async function creators() {
         client={''}
         createClient={null}
         createCampaign={null}
+        setSort={null}
       />
       <ShareStat />
       <ButtonGroup title='' />
