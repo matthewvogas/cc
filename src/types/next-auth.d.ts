@@ -15,4 +15,9 @@ declare module 'next-auth' {
       id: UserId
     }
   }
+
+  interface Profile {
+    username?: string
+    followersCount?: number
+  }
 }

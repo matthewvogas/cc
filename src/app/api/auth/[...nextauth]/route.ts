@@ -1,14 +1,16 @@
 import NextAuth from 'next-auth/next'
-import type { NextAuthOptions } from 'next-auth'
+import type { NextAuthOptions, Profile, TokenSet } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GithubProvider from 'next-auth/providers/github'
-import FacebookProvider from 'next-auth/providers/facebook'
-import InstagramProvider from 'next-auth/providers/instagram'
+import GoogleProvider from 'next-auth/providers/google'
+import InstagramProvider from './(providers)/instagram.provider'
+import TiktokProvider from './(providers)/tiktok.provider'
 import db from '@/lib/db'
 import { compare } from 'bcrypt'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
 export const authOptions: NextAuthOptions = {
+  // debug: true,
   pages: {
     signIn: '/login',
   },
@@ -19,6 +21,8 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
+      id: 'credentials',
+      type: 'credentials',
       credentials: {
         email: {
           label: 'email',
@@ -55,78 +59,26 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
-    {
-      id: 'tiktok',
-      name: 'tiktok',
-      type: 'oauth',
-      clientId: process.env.TIKTOK_CLIENT_ID!,
+    TiktokProvider({
+      allowDangerousEmailAccountLinking: true,
+      clientId: process.env.TIKTOK_CLIENT_KEY!,
       clientSecret: process.env.TIKTOK_CLIENT_SECRET!,
-      authorization: {
-        url: 'https://www.tiktok.com/v2/auth/authorize',
-        params: {
-          scope: 'user.info.basic,video.list',
-          client_key: process.env.TIKTOK_CLIENT_KEY,
-          response_type: 'code',
-          client_id: process.env.TIKTOK_CLIENT_ID,
-        },
-      },
-      token: {
-        async request({ checks, client, params, provider }) {
-          const data = await client.grant({
-            code: params.code,
-            redirect_uri: provider.callbackUrl,
-            params,
-            grant_type: 'authorization_code',
-            client_key: process.env.TIKTOK_CLIENT_KEY,
-            client_secret: process.env.TIKTOK_CLIENT_SECRET,
-            code_verifier: checks.code_verifier,
-          })
-          console.log(data)
-          return {
-            tokens: {
-              access_token: data.access_token,
-              refresh_token: data.refresh_token,
-              token_type: data.token_type,
-              expires_in: data.expires_in,
-              expires_at: data.expires_at,
-              id_token: data.id_token,
-              scope: data.scope,
-              session_state: data.session_state,
-            },
-          }
-        },
-        url: 'https://open.tiktokapis.com/v2/oauth/token',
-        params: {
-          client_key: process.env.TIKTOK_CLIENT_KEY,
-          client_secret: process.env.TIKTOK_CLIENT_SECRET,
-          grant_type: 'client_credentials',
-          client_id: process.env.TIKTOK_CLIENT_ID,
-        },
-      },
-      userinfo: 'https://open.tiktokapis.com/v2/user/info',
-      profile(profile) {
-        return {
-          id: profile.id,
-          name: profile.kakao_account?.profile.nickname,
-          email: profile.kakao_account?.email,
-          image: profile.kakao_account?.profile.profile_image_url,
-        }
-      },
-    },
-    FacebookProvider({
+    }),
+    InstagramProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          scope:
-            'email,instagram_basic,instagram_manage_insights,read_insights,pages_show_list',
-        },
-      },
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {
-    async session({ token, session }) {
+    async session({ token, session, newSession, trigger, user }) {
       if (token) {
         session.user.id = token.id
         session.user.name = token.name
@@ -136,7 +88,7 @@ export const authOptions: NextAuthOptions = {
 
       return session
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile, isNewUser }) {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email,
@@ -158,18 +110,21 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async signIn({ user, account, profile, credentials, email }) {
-      console.log('user', user)
-      console.log('account', account)
-      console.log('profile', profile)
-      credentials && console.log('credentials', credentials)
-      email && console.log('email', email)
-      if (account && profile && account.provider === 'facebook') {
+      if (
+        account &&
+        profile &&
+        (account.provider === 'instagram' || account.provider === 'tiktok')
+      ) {
+        console.log('EL PROFILE XDD', profile)
+        console.log('EL ACCOUNT XDD', account)
         await db.creator.upsert({
           where: {
             uuid: account?.providerAccountId,
           },
           update: {
             name: profile?.name,
+            username: profile?.username,
+            followersCount: profile?.followersCount,
             accessToken: account?.access_token,
             refreshToken: account?.refresh_token,
             platform: account?.provider,
@@ -178,6 +133,8 @@ export const authOptions: NextAuthOptions = {
           },
           create: {
             name: profile?.name,
+            username: profile?.username,
+            followersCount: profile?.followersCount,
             accessToken: account?.access_token,
             refreshToken: account?.refresh_token,
             platform: account?.provider,
