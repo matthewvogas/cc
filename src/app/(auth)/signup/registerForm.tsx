@@ -111,15 +111,15 @@ export const RegisterForm = () => {
             'create your account'
           )}
         </button>
-        <div className='flex w-full gap-5'>
+        {/* <div className='flex w-full gap-5'>
           <button className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
             <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
           </button>
-          {/* <button
+          <button
             className=' flex w-full h-14 justify-center items-center rounded-full border border-white hover:text-black hover:opacity-80  '>
             <Image className={`w-8 mr-4`} src={TikTokIcon} alt={''} />
-          </button> */}
-        </div>
+          </button>
+        </div> */}
       </div>
     </form>
   )

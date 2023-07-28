@@ -88,13 +88,9 @@ export const LoginForm = () => {
           </button>
         </div>
       </form>
-      {/* <div className='flex w-full gap-5'>
+      {/* <div className='flex w-full gap-5 flex-col'>
         <button
-          onClick={async () =>
-            await signIn('facebook', {
-              callbackUrl,
-            })
-          }
+          onClick={async () => await signIn('instagram')}
           className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:text-black hover:opacity-80  '>
           <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
           <p>Log in with instagram</p>
@@ -104,6 +100,18 @@ export const LoginForm = () => {
           className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
           <Image className={`mr-4 w-8`} src={TikTokIcon} alt={''} />
           <p>Log in with Tiktok</p>
+        </button>
+        <button
+          onClick={async () => await signIn('google')}
+          className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:text-black hover:opacity-80  '>
+          <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
+          <p>Log in with google</p>
+        </button>
+        <button
+          onClick={async () => await signIn('github')}
+          className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:text-black hover:opacity-80  '>
+          <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
+          <p>Log in with github</p>
         </button>
       </div> */}
     </div>

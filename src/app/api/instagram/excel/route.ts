@@ -10,7 +10,8 @@ import {
   PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3'
-import s3Client from '@/lib/s3'
+import s3Client from '@/lib/S3Service'
+import S3Service from '@/lib/S3Service'
 
 type postsFromExcel = {
   links: string
@@ -72,6 +73,14 @@ export async function POST(req: Request) {
         continue
       }
 
+      const profileUrl = await fetch(
+        res.business_discovery.profile_picture_url!,
+      ).then(res => res.blob())
+      const profileImageUrl = await S3Service.uploadCreatorImage(
+        profileUrl,
+        res.business_discovery.id!,
+      )
+
       const creator = await db.creator.upsert({
         where: {
           uuid: res.business_discovery.id!,
@@ -89,7 +98,7 @@ export async function POST(req: Request) {
               id: session!.user.id,
             },
           },
-          imageUrl: res.business_discovery.profile_picture_url!,
+          imageUrl: profileImageUrl!,
           username: res.business_discovery.username!,
         },
         create: {
@@ -120,41 +129,19 @@ export async function POST(req: Request) {
         continue
       }
 
-      const thumbnail = (await fetch(oemBedResponse.thumbnail_url).then(res =>
+      const thumbnail = await fetch(oemBedResponse.thumbnail_url).then(res =>
         res.blob(),
-      )) as File
-      const thumbnailBuffer = await thumbnail.arrayBuffer()
+      )
 
-      const putParamsThumnail: PutObjectCommandInput = {
-        Bucket: process.env.S3_BUCKET_NAME!,
-        Key: postOnRes.id! + '.jpeg',
-        ContentType: thumbnail.type,
-        Body: new Uint8Array(thumbnailBuffer),
-      }
-
-      await s3Client.send(new PutObjectCommand(putParamsThumnail))
-
-      let urlThumbnail = `https://${process.env.S3_BUCKET_NAME}.s3.${
-        process.env.AWS_REGION
-      }.amazonaws.com/${postOnRes.id!}.jpeg`
-      let urlMedia = urlThumbnail
-
+      const thumbnail_url = await S3Service.uploadPostObject(
+        thumbnail,
+        postOnRes.id!,
+      )
+      let media_url = thumbnail_url
       if (postOnRes.media_url && postOnRes.media_url.includes('mp4')) {
-        const file = (await fetch(postOnRes.media_url!).then(res =>
-          res.blob(),
-        )) as File
-        const buffer = await file.arrayBuffer()
-        const putParams: PutObjectCommandInput = {
-          Bucket: process.env.S3_BUCKET_NAME!,
-          Key: postOnRes.id! + '.mp4',
-          ContentType: file.type,
-          Body: new Uint8Array(buffer),
-        }
+        const video = await fetch(postOnRes.media_url!).then(res => res.blob())
 
-        await s3Client.send(new PutObjectCommand(putParams))
-        urlMedia = `https://${process.env.S3_BUCKET_NAME}.s3.${
-          process.env.AWS_REGION
-        }.amazonaws.com/${postOnRes.id!}.mp4`
+        media_url = await S3Service.uploadPostObject(video, postOnRes.id!)
       }
 
       const postToSave = await db.post.upsert({
@@ -168,8 +155,8 @@ export async function POST(req: Request) {
           userId: session!.user.id,
           permalink: postOnRes.permalink!,
           creatorId: creator.id,
-          imageUrl: urlThumbnail,
-          mediaUrl: urlMedia ?? urlThumbnail,
+          imageUrl: thumbnail_url!,
+          mediaUrl: media_url ?? thumbnail_url!,
           commentsCount: postOnRes.comments_count ?? 0,
           likesCount: postOnRes.like_count ?? 0,
           reachCount: 0,
@@ -187,8 +174,8 @@ export async function POST(req: Request) {
           userId: session!.user.id,
           permalink: postOnRes.permalink!,
           creatorId: creator.id,
-          imageUrl: urlThumbnail,
-          mediaUrl: urlMedia ?? urlThumbnail,
+          imageUrl: thumbnail_url!,
+          mediaUrl: media_url ?? thumbnail_url!,
           commentsCount: postOnRes.comments_count ?? 0,
           likesCount: postOnRes.like_count ?? 0,
           reachCount: 0,

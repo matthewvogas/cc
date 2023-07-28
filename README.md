@@ -35,20 +35,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The following environment variables are used in this project:
 
-- `DATABASE_URL`: The URL of the PostgreSQL database.
-- `NEXTAUTH_SECRET`: The secret used by NextAuth.js for signing cookies and tokens.
-- `BUSINESS_ID`: The ID of the Facebook Business Manager account.
-- `BUSINESS_TOKEN`: The access token for the Facebook Business Manager account.
-- `BUSINESS_SOPHIA`: The ID of the Facebook Business Manager account for Sophia.
-- `BUSINESS_TOKEN_SOPHIA`: The access token for the Facebook Business Manager account for Sophia.
-- `GITHUB_CLIENT_ID`: The client ID of the GitHub OAuth app.
-- `GITHUB_CLIENT_SECRET`: The client secret of the GitHub OAuth app.
-- `NEXT_PUBLIC_URL`: The public URL of the Next.js app.
-- `NEXTAUTH_URL`: The URL of the NextAuth.js server.
-- `FACEBOOK_CLIENT_ID`: The client ID of the Facebook OAuth app.
-- `FACEBOOK_CLIENT_SECRET`: The client secret of the Facebook OAuth app.
-- `INSTAGRAM_CLIENT_ID`: The client ID of the Instagram Basic Display API app.
-- `INSTAGRAM_CLIENT_SECRET`: The client secret of the Instagram Basic Display API app.
+- `DATABASE_URL` - The URL to your database.
+- `NEXTAUTH_SECRET` - A secret used for NextAuth.js.
+- `NEXTAUTH_URL` - The URL to your app.
+- `GITHUB_CLIENT_ID` - Your GitHub OAuth app's client ID.
+- `GITHUB_CLIENT_SECRET` - Your GitHub OAuth app's client secret.
+- `FACEBOOK_CLIENT_ID` - Your Facebook OAuth app's client ID.
+- `FACEBOOK_CLIENT_SECRET` - Your Facebook OAuth app's client secret.
+- `FACEBOOK_GRAPH_VERSION` - Your Facebook Graph API version.
+- `TIKTOK_CLIENT_KEY ` - Your TikTok OAuth app's client ID.
+- `TIKTOK_CLIENT_SECRET` - Your TikTok OAuth app's client secret.
+- `GOOGLE_CLIENT_ID` - Your Google OAuth app's client ID.
+- `GOOGLE_CLIENT_SECRET` - Your Google OAuth app's client secret.
+- `AWS_ACCESS_KEY_ID` - Your AWS access key ID.
+- `AWS_SECRET_ACCESS_KEY` - Your AWS secret access key.
+- `AWS_REGION` - The AWS region your bucket is in.
+- `AWS_BUCKET_NAME` - The name of your AWS bucket.
+- `BUSINESS_ID_DEWIN ` - The ID of your business on Dewin.
+- `BUSINESS_TOKEN_DEWIN` - The token of your business on Dewin.
+- `BUSINESS_ID_SOPHIA ` - The ID of your business on Sophia.
+- `BUSINESS_TOKEN_SOPHIA` - The token of your business on Sophia.
 
 Check for any migrations pending
 
