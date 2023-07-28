@@ -14,7 +14,7 @@ export default function Search(props: {
   }
 
   return (
-    <div className='px-12'>
+    <div className=''>
       <p className={`${ptMono.className} mb-2 text-sm`}>search</p>
       <input
         placeholder='Name'

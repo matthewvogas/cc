@@ -25,7 +25,9 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
-  const [tagSelected, setSearchTags] = useState<string[]>([])
+  const [tagSelected, setSearchTags] = useState('')
+  const [sort, setSort] = React.useState('')
+  const [inputSearchValue, setInputSearchValue] = useState('')
 
   const handleCreate = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -48,16 +50,6 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
       setFetchError(error?.message)
     }
   }
-
-  const [sort, setSort] = React.useState('')
-  const [inputSearchValue, setInputSearchValue] = useState('')
-
-  const searchTags = [
-    // Aquí puedes agregar las opciones de tags disponibles
-    'Tag1',
-    'Tag2',
-    '3',
-  ]
 
   return (
     <>
@@ -100,12 +92,16 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
           <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
 
-        <div className='flex items-end'>
+        <div className='flex items-start px-12 gap-3 overflow-clip overflow-x-auto'>
           <Search
             inputSearchValue={inputSearchValue}
             setInputSearchValue={setInputSearchValue}
           />
-          {/* <SearchByTag setSearchTags={setSearchTags} tagSelected={tagSelected} searchTags={tags} /> */}
+          <SearchByTag
+            setSearchTags={setSearchTags}
+            tagSelected={tagSelected}
+            searchTags={clients}
+          />
         </div>
 
         <CreatorRow
@@ -113,6 +109,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
           creators={[]}
           clients={clients}
           search={inputSearchValue}
+          searchByTag={tagSelected}
         />
       </div>
 

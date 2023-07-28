@@ -31,6 +31,7 @@ type Props = {
   creators: CreatorsByCampaignRes[]
   clients: any
   search: string
+  searchByTag: any
 }
 
 export default function CreatorRow({
@@ -38,14 +39,37 @@ export default function CreatorRow({
   creators,
   clients,
   search,
+  searchByTag,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
   const [tags, setTags] = useState<string[]>([])
 
-  const filteredClients = clients.filter((client: any) =>
-    client.name.toLowerCase().includes(search.toLowerCase()),
-  )
+  const filteredClients = clients.filter((client: any) => {
+    const clientNameMatches = client.name
+      .toLowerCase()
+      .includes(search.toLowerCase())
+    const tagFilterIsActive = searchByTag == false ? false : true
+    const tagSearchIsActive = search === '' ? false : true
+
+    if (!tagSearchIsActive && !tagFilterIsActive) {
+      return true
+    } else if (tagFilterIsActive && tagSearchIsActive) {
+      // Si ambos filtros están activos, se deben cumplir ambas condiciones
+      const tagsMatch = client.tags.some(
+        (tag: { name: string }) => tag.name === searchByTag,
+      )
+      return clientNameMatches && tagsMatch
+    } else if (tagFilterIsActive) {
+      // Si solo el filtro de etiqueta está activo, se comprueba si coincide con alguna etiqueta
+      return client.tags.some(
+        (tag: { name: string }) => tag.name === searchByTag,
+      )
+    } else if (tagSearchIsActive) {
+      // Si solo la búsqueda de nombre está activa, se comprueba si el nombre coincide
+      return clientNameMatches
+    }
+  })
 
   return (
     <>
