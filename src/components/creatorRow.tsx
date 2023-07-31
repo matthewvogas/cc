@@ -31,7 +31,7 @@ type Props = {
   creators: CreatorsByCampaignRes[]
   clients: any
   search: string
-  searchByTag: any
+  searchByTag?: any
 }
 
 export default function CreatorRow({
