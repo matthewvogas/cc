@@ -12,35 +12,12 @@ export function excelToJson(excelFile: File): Promise<any> {
         header: 2,
         blankrows: false,
       })
-      resolve(jsonData)
+      const links = jsonData.map((row: any) => row.links)
+      resolve(links)
     }
     reader.onerror = event => {
       reject(event.target?.error)
     }
     reader.readAsBinaryString(excelFile)
   })
-}
-
-type FormattedData = {
-  username: string
-  permalinks: string[]
-}
-
-export function formatExcelData(data: any[]) {
-  let formattedData: FormattedData[] = []
-  data.forEach((post: any) => {
-    const [permalink, username] = Object.values(post) as string[]
-    const existingUser = formattedData.find(user => user.username === username)
-    if (existingUser) {
-      existingUser.permalinks.push(permalink)
-    } else {
-      const newUser = {
-        username: username,
-        permalinks: [permalink],
-      }
-      formattedData.push(newUser)
-    }
-  })
-
-  return formattedData
 }

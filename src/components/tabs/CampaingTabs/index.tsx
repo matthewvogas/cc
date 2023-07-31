@@ -50,7 +50,6 @@ export default function CampaingTabs({
   // )
   const [loading, setLoading] = useState(false)
   // const [content, setContent] = useState(campaign.stats?.postCount)
-  const [newPosts, setNewPosts] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [links, setLinks] = useState<string>('')
 
@@ -107,35 +106,6 @@ export default function CampaingTabs({
     }
   }
 
-  const handlePosts = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    try {
-      const res = await fetch('/api/instagram/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          newPosts,
-          campaignId: campaign.id,
-        }),
-      })
-
-      //If res is loading
-
-      if (res.status === 200) {
-        setIsOpen(false)
-        router.refresh()
-      } else {
-        setFetchError('There was an error fetching the posts!')
-      }
-    } catch (error: any) {
-      setFetchError(error.message)
-    }
-    setLoading(false)
-  }
-
   const handleFileSubmit = async (e: React.FormEvent) => {
     setLoading(true)
     setFetchError(null)
@@ -145,16 +115,18 @@ export default function CampaingTabs({
       setFetchError('Please select a file')
       return
     }
-    const data = await excelToJson(file)
+    const posts = await excelToJson(file)
+    console.log(posts)
+    console.log(campaign.id)
 
     try {
-      const res = await fetch('/api/instagram/excel', {
+      const res = await fetch('/api/urls', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          data,
+          posts,
           campaignId: campaign.id,
         }),
       })
@@ -177,8 +149,11 @@ export default function CampaingTabs({
     e.preventDefault()
     setLoading(true)
     setFetchError(null)
+
+    console.log(links)
+    console.log(campaign.id)
     try {
-      const res = await fetch('/api/instagram/links', {
+      const res = await fetch('/api/urls', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
