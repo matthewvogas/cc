@@ -117,7 +117,7 @@ export default function CreatorRow({
                               height={100}
                               src={creator.imageUrl || avatar}
                               alt='background'
-                              unoptimized
+
                             />
                           </div>
                         </div>
@@ -200,7 +200,7 @@ export default function CreatorRow({
                               height={100}
                               src={client.image || avatar}
                               alt='background'
-                              unoptimized
+
                             />
                           </div>
                         </div>

@@ -217,7 +217,7 @@ export default function Home() {
               width={0}
               height={0}
               style={{ width: '370px', height: 'auto' }}
-              unoptimized
+
             />
           </div>
         </div>

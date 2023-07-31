@@ -82,7 +82,7 @@ export default function UseThisPost({ post }: Props) {
                   height={0}
                   sizes='100vw'
                   style={{ width: '100%', height: 'auto' }}
-                  unoptimized
+
                 />
               )}
               {post?.mediaUrl?.includes('.mp4') && (

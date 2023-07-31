@@ -73,7 +73,7 @@ const singleCampaign = (
                 height={100}
                 src={avatar}
                 alt='background'
-                unoptimized
+
               />
             </div>
             <p
@@ -114,7 +114,7 @@ const singleCampaign = (
                 height={100}
                 src={angleDown}
                 alt='background'
-                unoptimized
+
               />
             </div>
           </button>

@@ -31,7 +31,7 @@ export default function HomePostCard(props: {
             height={0}
             sizes='100vw'
             style={{ width: '100%', height: 'auto' }}
-            unoptimized
+
           />
           <div className='px-4 pt-4'>
             <h4 className=' mb-2 rounded-xl bg-cardRose py-2 pl-5 text-xs text-black'>
@@ -81,7 +81,7 @@ export default function HomePostCard(props: {
             height={0}
             sizes='100vw'
             style={{ width: '100%' }}
-            unoptimized
+
           />
           <div className='px-4 pt-4'>
             <h4 className=' mb-2 rounded-xl bg-cardRose py-2 pl-5 text-xs text-black'>
