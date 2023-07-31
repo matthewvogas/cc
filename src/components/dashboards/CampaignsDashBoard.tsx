@@ -91,7 +91,6 @@ export default function CampaignsDashBoard({
                 className={`h-64 w-64`}
                 src={card.image || imageCover}
                 alt={card.name}
-
               />
               <div className=' bg-white px-2 py-4'>
                 <p className={`text-sm font-medium text-gray-800`}>

@@ -75,7 +75,6 @@ export default function TopPost({ posts }: { posts: Post[] }) {
                 height={0}
                 sizes='100vw'
                 style={{ width: '100%', height: 'auto' }}
-
               />
             )}
             {!card.imageUrl && card.mediaUrl?.includes('.mp4') && (

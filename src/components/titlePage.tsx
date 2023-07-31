@@ -73,7 +73,6 @@ const singleCampaign = (
                 height={100}
                 src={avatar}
                 alt='background'
-
               />
             </div>
             <p
@@ -114,7 +113,6 @@ const singleCampaign = (
                 height={100}
                 src={angleDown}
                 alt='background'
-
               />
             </div>
           </button>
