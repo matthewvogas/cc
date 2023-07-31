@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
+      'devcodecoco.s3.us-east-1.amazonaws.com',
       'scontent.cdninstagram.com',
       'avatars.githubusercontent.com',
       'platform-lookaside.fbsbx.com',
