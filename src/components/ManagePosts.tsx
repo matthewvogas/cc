@@ -240,8 +240,7 @@ export default function ManagePosts({
           <div className=' flex flex-wrap gap-3'>
             {creatorsSelecteds?.map(creator => (
               <div
-                className={`} flex flex-col rounded-xl bg-beigeSelected px-8
-                py-2`}
+                className={`flex flex-col rounded-xl bg-beigeSelected px-8 py-2`}
                 key={creator.username}>
                 <div className='flex gap-2'>
                   <label className={`${ptMono.className}`}>

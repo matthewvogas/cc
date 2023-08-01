@@ -32,6 +32,7 @@ type Props = {
   clients: any
   search: string
   searchByTag?: any
+  creatorsFilter: any
 }
 
 export default function CreatorRow({
@@ -40,6 +41,7 @@ export default function CreatorRow({
   clients,
   search,
   searchByTag,
+  creatorsFilter,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
@@ -55,20 +57,43 @@ export default function CreatorRow({
     if (!tagSearchIsActive && !tagFilterIsActive) {
       return true
     } else if (tagFilterIsActive && tagSearchIsActive) {
-      // Si ambos filtros están activos, se deben cumplir ambas condiciones
       const tagsMatch = client.tags.some(
         (tag: { name: string }) => tag.name === searchByTag,
       )
       return clientNameMatches && tagsMatch
     } else if (tagFilterIsActive) {
-      // Si solo el filtro de etiqueta está activo, se comprueba si coincide con alguna etiqueta
       return client.tags.some(
         (tag: { name: string }) => tag.name === searchByTag,
       )
     } else if (tagSearchIsActive) {
-      // Si solo la búsqueda de nombre está activa, se comprueba si el nombre coincide
       return clientNameMatches
     }
+  })
+
+  const filteredCreators = creators.filter((creator: CreatorsByCampaignRes) => {
+    console.log(creator)
+
+    if (creator.followersCount === undefined) {
+      return false
+    }
+
+    if (
+      creatorsFilter.socialActiveFilter.length > 0 &&
+      !creatorsFilter.socialActiveFilter.includes(creator.platform)
+    ) {
+      return false
+    }
+
+    if (
+      (creatorsFilter.followerCountFilter > 0 &&
+        creator.followersCount < creatorsFilter.followerCountFilter) ||
+      (creatorsFilter.followerCountFilterSecond > 0 &&
+        creator.followersCount > creatorsFilter.followerCountFilterSecond)
+    ) {
+      return false
+    }
+
+    return true
   })
 
   return (
@@ -102,7 +127,7 @@ export default function CreatorRow({
             </tr>
           </thead>
           <tbody>
-            {creators.map((creator, index) => (
+            {filteredCreators.map((creator, index) => (
               <tr key={index} className={`text-sm ${ptMono.className} `}>
                 {comeFrom === 'campigns' && (
                   <>
@@ -165,11 +190,11 @@ export default function CreatorRow({
                         <ul
                           tabIndex={0}
                           className='dropdown-content menu rounded-box w-max  border-2 border-gray-100 bg-white p-2'>
-                          <button
+                          {/* <button
                             onClick={() => setIsOpen(true)}
                             className={`${dropdownButton}`}>
                             add post tracking 🥥
-                          </button>
+                          </button> */}
                           <button className={`${dropdownButton}`}>
                             View Creator
                           </button>

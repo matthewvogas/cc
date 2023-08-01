@@ -20,10 +20,10 @@ const links = [
     href: '/dashboard/campaigns',
     name: 'Campaigns',
   },
-  // {
-  //   href: '/dashboard/creators',
-  //   name: 'Creators',
-  // },
+  {
+    href: '/dashboard/creators',
+    name: 'Creators',
+  },
 ]
 
 // Show Arrays
