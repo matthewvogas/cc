@@ -7,6 +7,8 @@ import { Inter } from 'next/font/google'
 import AddCreators from './modals/addCreators'
 import Link from 'next/link'
 import EmailsInput from './EmailInput'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import { Campaign, CampaignPayload, Client, User, Post } from '@prisma/client'
 
 const inter = Inter({ weight: '400', subsets: ['latin'] })
 
@@ -19,93 +21,65 @@ const comment = [
     label: '',
   },
 ]
-// Fonts
 
-// Arrays
-const button = [
-  {
-    label: 'Instagram',
-    action: 'Hello',
-  },
-  {
-    label: 'Pinterest',
-    action: '',
-  },
-  {
-    label: 'TikTok',
-    action: '',
-  },
-  {
-    label: 'Facebook',
-    action: '',
-  },
-]
+type Props = {
+  campaigns: any
+  socialActiveFilter: any[]
+  setSocialActiveFilter: any
+  followerCountFilter: number
+  setFollowerCountFilter: any
+  followerCountFilterSecond: number
+  setFollowerCountFilterSecond: any
+  selectedCampaign: any
+  setSelectedCampaign: any
+}
 
-const count = [
-  {
-    qty: '10',
-    action: '',
-  },
-  {
-    qty: '10-50',
-    action: '',
-  },
-  {
-    qty: '50-100',
-    action: '',
-  },
-  {
-    qty: '100-500',
-    action: '',
-  },
-]
-
-const campaign = [
-  {
-    name: "L'Oreal",
-    email: 'loreal@lroeal.com',
-  },
-  {
-    name: "Matthew's, Agency",
-    email: 'loreal@lroeal.com',
-  },
-  {
-    name: "Sophia's Agency",
-    email: 'loreal@lroeal.com',
-  },
-]
-
-// Show Arrays
-const CountButtons = count.map((btn, index) => (
-  <button
-    key={index}
-    className='rounded-full border border-gray-200 bg-white px-6  py-2.5 hover:bg-gray-100'>
-    {btn.qty}
-  </button>
-))
-
-const SocialButtons = button.map((btn, index) => (
-  <button
-    key={index}
-    className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
-    {btn.label}
-  </button>
-))
-
-const campaigns = campaign.map((client, index) => (
-  <option value={index} key={index}>
-    {client.name}
-  </option>
-))
-
-export default function FilterCreators() {
+export default function FilterCreators({
+  campaigns,
+  socialActiveFilter,
+  setSocialActiveFilter,
+  followerCountFilter,
+  setFollowerCountFilter,
+  followerCountFilterSecond,
+  setFollowerCountFilterSecond,
+  selectedCampaign,
+  setSelectedCampaign,
+}: Props) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [emails, setEmails] = useState<string[]>([])
   const [linkToShareInvite, setLinkToShareInvite] = useState<string[]>([])
 
+  const [customRangeFirst, setCustomRangeFirst] = useState('')
+  const [customRangeSecond, setCustomRangeSecond] = useState('')
+
+  // Función para manejar el cambio en el input
+  const handleInputChangeRangeFirst = (event: any) => {
+    setCustomRangeFirst(event.target.value)
+    setFollowerCountFilter(event.target.value)
+  }
+  const handleInputChangeRangeSecond = (event: any) => {
+    setCustomRangeSecond(event.target.value)
+    setFollowerCountFilterSecond(event.target.value)
+  }
+
+  const handleSelectCampaignChange = (event: any) => {
+    setSelectedCampaign(event.target.value)
+  }
+
+  const handlSocialActiveClick = (social: string) => {
+    if (socialActiveFilter.includes(social)) {
+      const updatedPlatforms = socialActiveFilter.filter(
+        (p: string) => p !== social,
+      )
+      setSocialActiveFilter(updatedPlatforms)
+    } else {
+      setSocialActiveFilter([...socialActiveFilter, social])
+    }
+  }
+
   return (
     <>
-      <div className='my-5 flex w-full justify-between md:px-12'>
+      <div className='my-5 flex w-full justify-between md:px-12 relative z-50'>
         <div>
           <div className='dropdown'>
             <label
@@ -125,37 +99,117 @@ export default function FilterCreators() {
                 />
               </svg>
             </label>
-
             <div
               tabIndex={0}
               className={`dropdown-content rounded-box mt-2 w-auto border-2 border-gray-100 bg-white ${ptMono.className}`}>
               <div className='p-6'>
-                <div className='mb-4 flex flex-row gap-2'>{SocialButtons}</div>
-                <label htmlFor=''>Follower count</label>
-                <div className='my-4 flex flex-row gap-2'>{CountButtons}</div>
+                <div className='mb-4 flex flex-row gap-2'>
+                  <button
+                    onClick={() => {
+                      handlSocialActiveClick('instagram')
+                    }}
+                    className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
+                    Instagram
+                  </button>
+                  <button
+                    onClick={() => {
+                      handlSocialActiveClick('pinterest')
+                    }}
+                    className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
+                    Pinterest
+                  </button>
+                  <button
+                    onClick={() => {
+                      handlSocialActiveClick('tiktok')
+                    }}
+                    className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
+                    TikTok
+                  </button>
+                  <button
+                    onClick={() => {
+                      handlSocialActiveClick('facebook')
+                    }}
+                    className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
+                    Facebook
+                  </button>
+                </div>
+                <label htmlFor=''>Follower count (in thousands)</label>
+                <div className='my-4 flex flex-row gap-2'>
+                  <button
+                    onClick={() => {
+                      setFollowerCountFilter(0)
+                      setFollowerCountFilterSecond(10000)
+                    }}
+                    className='rounded-full border border-gray-200 bg-white px-6  py-2.5 hover:bg-gray-100'>
+                    10
+                  </button>
+                  <button
+                    onClick={() => {
+                      setFollowerCountFilter(10000)
+                      setFollowerCountFilterSecond(50000)
+                    }}
+                    className='rounded-full border border-gray-200 bg-white px-6  py-2.5 hover:bg-gray-100'>
+                    10-50
+                  </button>
+                  <button
+                    onClick={() => {
+                      setFollowerCountFilter(50000)
+                      setFollowerCountFilterSecond(100000)
+                    }}
+                    className='rounded-full border border-gray-200 bg-white px-6  py-2.5 hover:bg-gray-100'>
+                    50-100
+                  </button>
+                  <button
+                    onClick={() => {
+                      setFollowerCountFilter(100000)
+                      setFollowerCountFilterSecond(500000)
+                    }}
+                    className='rounded-full border border-gray-200 bg-white px-6  py-2.5 hover:bg-gray-100'>
+                    100-500
+                  </button>
+                  <button
+                    onClick={() => {
+                      setFollowerCountFilter(500000)
+                      setFollowerCountFilterSecond(100000000)
+                    }}
+                    className='rounded-full border border-gray-200 bg-white px-6  py-2.5 hover:bg-gray-100'>
+                    +500
+                  </button>
+                </div>
                 <label htmlFor=''>Custom range</label>
-
                 <div className='flex gap-4'>
                   <input
                     type='number'
                     placeholder='Type here'
-                    className=' my-4 w-full max-w-xs rounded-md bg-beigeFirst p-2 pl-4 text-gray-600'
+                    className='outline-none my-4 w-full max-w-xs rounded-md bg-beigeFirst p-2 pl-4 text-gray-600'
+                    value={customRangeFirst}
+                    onChange={handleInputChangeRangeFirst}
                   />
                   <input
                     type='number'
                     placeholder='Type here'
-                    className=' my-4 w-full max-w-xs rounded-md bg-beigeFirst p-2 pl-4 text-gray-600'
+                    className='outline-none my-4 w-full max-w-xs rounded-md bg-beigeFirst p-2 pl-4 text-gray-600'
+                    value={customRangeSecond}
+                    onChange={handleInputChangeRangeSecond}
                   />
                 </div>
-                <div className='w-full'>
-                  <label htmlFor=''>By Campaign</label>
-                  <select
-                    id='countries'
-                    className='mt-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-rose-400 focus:ring-rose-300 '>
-                    <option disabled>Choose a Campaign</option>
-                    {campaigns}
-                  </select>
-                </div>
+                {campaigns.length > 0 ? (
+                  <div className='w-full'>
+                    <label htmlFor=''>By Campaign</label>
+                    <select
+                      value={selectedCampaign}
+                      onChange={handleSelectCampaignChange}
+                      id='countries'
+                      className='outline-none mt-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-rose-400 focus:ring-rose-300 '>
+                      <option value={''}>Choose a Campaign</option>
+                      {campaigns.map((campaign: any, index: number) => (
+                        <option key={index}>{campaign.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div className='hidden'></div>
+                )}
               </div>
             </div>
           </div>
@@ -197,8 +251,10 @@ export default function FilterCreators() {
             className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
             <Dialog.Title className=' text-lg font-medium mb-8 text-center mt-12'>
               add creators
+              <p className='text-sm  font-normal px-4 py-2 border border-rose-200 bg-rose-50 mt-4'>
+                this feature is under construction
+              </p>
             </Dialog.Title>
-
             <Tab.Group>
               <Tab.List
                 className={`flex flex-row items-center justify-center gap-6 ${ptMono.className}`}>

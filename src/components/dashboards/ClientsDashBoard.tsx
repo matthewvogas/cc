@@ -110,6 +110,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
           clients={clients}
           search={inputSearchValue}
           searchByTag={tagSelected}
+          creatorsFilter={undefined}
         />
       </div>
 

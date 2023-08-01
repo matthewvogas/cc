@@ -126,7 +126,6 @@ const creators = (title: string) => {
   return (
     <>
       <div>
-        <FeatureNotImplemented />
         <h3
           className={`pb-4 align-middle text-2xl font-semibold text-gray-800 `}>
           {title}

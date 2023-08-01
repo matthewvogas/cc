@@ -58,6 +58,32 @@ export default function CampaingTabs({
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
 
+  const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
+  const [followerCountFilter, setFollowerCountFilter] = useState(0)
+  const [followerCountFilterSecond, setFollowerCountFilterSecond] = useState(0)
+  const [selectedCampaign, setSelectedCampaign] = useState('')
+
+  const handleRemoveSocial = (red: any) => {
+    const updatedSocialFilter = socialActiveFilter.filter(c => c !== red)
+    setSocialActiveFilter(updatedSocialFilter)
+  }
+
+  const handleRemoveCount = (count: any) => {
+    setFollowerCountFilter(0)
+    setFollowerCountFilterSecond(0)
+  }
+
+  const handleRemoveCampaign = (count: any) => {
+    setSelectedCampaign('')
+  }
+
+  const filters = {
+    socialActiveFilter: socialActiveFilter,
+    followerCountFilter: followerCountFilter,
+    followerCountFilterSecond: followerCountFilterSecond,
+    selectedCampaign: selectedCampaign,
+  }
+
   const filteredPosts = campaign?.posts?.filter(post => {
     if (!post.caption) return false
 
@@ -347,13 +373,128 @@ export default function CampaingTabs({
                 </section>
                 <div className={openTab === 2 ? 'block' : 'hidden'}>
                   <div className='relative z-50'>
-                    <FilterCreators />
+                    <FilterCreators
+                      campaigns={campaign}
+                      socialActiveFilter={socialActiveFilter}
+                      setSocialActiveFilter={setSocialActiveFilter}
+                      followerCountFilter={followerCountFilter}
+                      setFollowerCountFilter={setFollowerCountFilter}
+                      followerCountFilterSecond={followerCountFilterSecond}
+                      setFollowerCountFilterSecond={
+                        setFollowerCountFilterSecond
+                      }
+                      selectedCampaign={selectedCampaign}
+                      setSelectedCampaign={setSelectedCampaign}
+                    />
+                  </div>
+                  <div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-white'>
+                    {/* active social filter */}
+                    <div className='flex justify-start w-full gap-4 px-12'>
+                      {socialActiveFilter?.map((social: any, index: number) => (
+                        <div
+                          className={`flex flex-col rounded-xl bg-beigeSelected px-8 py-2`}
+                          key={index}>
+                          <div className='flex gap-2 items-center'>
+                            <label className={`${ptMono.className}`}>
+                              {social}
+                            </label>
+                            <button onClick={() => handleRemoveSocial(social)}>
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth={1.5}
+                                stroke='currentColor'
+                                className='h-4 w-4'>
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  d='M6 18L18 6M6 6l12 12'
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* active follower count filter */}
+                    {followerCountFilter != 0 ||
+                    followerCountFilterSecond != 0 ? (
+                      <div className='flex justify-start w-full gap-4 px-12'>
+                        <div
+                          className={`flex flex-col rounded-xl border-2 bg-beigeFirst border-beigeBorder px-8 py-2`}>
+                          <div className='flex gap-2 items-center'>
+                            <label className={`${ptMono.className}`}>
+                              <p>
+                                {followerCountFilter} -{' '}
+                                {followerCountFilterSecond}
+                              </p>
+                            </label>
+                            <button
+                              onClick={() =>
+                                handleRemoveCount(followerCountFilter)
+                              }>
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth={1.5}
+                                stroke='currentColor'
+                                className='h-4 w-4'>
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  d='M6 18L18 6M6 6l12 12'
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='hidden'></div>
+                    )}
+
+                    {selectedCampaign != '' ? (
+                      <div className='flex justify-start w-full gap-4 px-12'>
+                        <div
+                          className={`flex flex-col rounded-xl  bg-beigeBorder px-8 py-2`}>
+                          <div className='flex gap-2 items-center'>
+                            <label className={`${ptMono.className}`}>
+                              <p>{selectedCampaign}</p>
+                            </label>
+                            <button
+                              onClick={() =>
+                                handleRemoveCampaign(selectedCampaign)
+                              }>
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth={1.5}
+                                stroke='currentColor'
+                                className='h-4 w-4'>
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  d='M6 18L18 6M6 6l12 12'
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='hidden'></div>
+                    )}
                   </div>
                   <CreatorRow
                     comeFrom={'campigns'}
                     creators={creators}
                     clients={[]}
                     search={''}
+                    creatorsFilter={filters}
                   />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
