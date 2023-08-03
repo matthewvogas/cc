@@ -8,7 +8,7 @@ import AddCreators from './modals/addCreators'
 import Link from 'next/link'
 import EmailsInput from './EmailInput'
 import { CampaignRes } from '@/types/campaign/campaignRes'
-import { Campaign, CampaignPayload, Client, User, Post } from '@prisma/client'
+import { Campaign, Client, User, Post } from '@prisma/client'
 
 const inter = Inter({ weight: '400', subsets: ['latin'] })
 
