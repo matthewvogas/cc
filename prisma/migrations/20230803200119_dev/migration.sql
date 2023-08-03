@@ -53,11 +53,11 @@ CREATE TABLE "verificationtokens" (
 CREATE TABLE "creators" (
     "id" SERIAL NOT NULL,
     "name" TEXT,
-    "uuid" TEXT NOT NULL,
+    "uuid" TEXT,
     "image_url" TEXT,
     "status" "CreatorStatus",
-    "username" TEXT,
-    "platform" TEXT,
+    "username" TEXT NOT NULL,
+    "platform" TEXT NOT NULL,
     "followers_count" INTEGER,
     "access_token" TEXT,
     "refresh_token" TEXT,
@@ -107,13 +107,14 @@ CREATE TABLE "campaigns" (
 -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
-    "uuid" TEXT NOT NULL,
+    "uuid" TEXT,
     "user_id" TEXT NOT NULL,
     "campaign_id" INTEGER,
     "creator_id" INTEGER,
     "caption" TEXT,
     "permalink" TEXT,
-    "shortcode" TEXT,
+    "shortcode" TEXT NOT NULL,
+    "platform" TEXT NOT NULL,
     "image_url" TEXT,
     "media_url" TEXT,
     "comments_count" INTEGER,
@@ -170,13 +171,13 @@ CREATE UNIQUE INDEX "verificationtokens_token_key" ON "verificationtokens"("toke
 CREATE UNIQUE INDEX "verificationtokens_identifier_token_key" ON "verificationtokens"("identifier", "token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "creators_uuid_key" ON "creators"("uuid");
+CREATE UNIQUE INDEX "creators_username_platform_key" ON "creators"("username", "platform");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tags_name_key" ON "tags"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "posts_uuid_key" ON "posts"("uuid");
+CREATE UNIQUE INDEX "posts_shortcode_platform_key" ON "posts"("shortcode", "platform");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_CreatorToUser_AB_unique" ON "_CreatorToUser"("A", "B");

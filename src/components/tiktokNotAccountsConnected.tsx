@@ -7,9 +7,10 @@ import arrow from 'public/assets/register/arrow.svg'
 import Image from 'next/image'
 import { lato } from '@/app/fonts'
 import Link from 'next/link'
+import { Posts } from '@/types/posts/PostByCampaignRes'
 
 type Props = {
-  tiktokCards: any
+  tiktokCards: Posts[]
 }
 
 export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
@@ -60,17 +61,21 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
           {/* box of rows */}
           <div className='bg-white px-10 py-7 rounded-[10px] flex flex-col gap-3'>
             {/* row */}
-            {tiktokCards.map((card: any, index: number) => (
+            {tiktokCards.map((card, index: number) => (
               <div key={index} className='flex items-center justify-between'>
                 <div className={`${ptMono.className} flex gap-12 items-center`}>
-                  <p className={`text-black text-sm`}>{card.username}</p>
-                  <p className='text-black opacity-50 text-sm'>{card.link}</p>
+                  <p className={`text-black text-sm`}>
+                    {card.creator?.username}
+                  </p>
+                  <p className='text-black opacity-50 text-sm'>
+                    {card.permalink!}
+                  </p>
                 </div>
 
                 <div className='flex gap-4 items-center'>
                   <button
                     onClick={() => {
-                      copiarTexto(card.link)
+                      copiarTexto(card.permalink!)
                     }}>
                     <Image
                       src={copyLink}

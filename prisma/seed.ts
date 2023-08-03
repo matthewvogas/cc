@@ -1,13 +1,3 @@
-import {
-  InstagramResponse,
-  MediaDatum,
-  Name,
-} from '@/types/IntragramResponse/privatePost'
-import {
-  PutObjectCommand,
-  PutObjectCommandInput,
-  S3Client,
-} from '@aws-sdk/client-s3'
 import { Post, PrismaClient } from '@prisma/client'
 import { hash } from 'bcrypt'
 

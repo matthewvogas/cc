@@ -67,11 +67,11 @@ model VerificationToken {
 model Creator {
   id             Int            @id @default(autoincrement())
   name           String?
-  uuid           String         @unique
+  uuid           String?
   imageUrl       String?        @map("image_url")
   status         CreatorStatus?
-  username       String?
-  platform       String?
+  username       String
+  platform       String
   campaigns      Campaign[]
   clients        Client[]
   posts          Post[]
@@ -82,6 +82,7 @@ model Creator {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
+  @@unique([username, platform])
   @@map("creators")
 }
 
@@ -130,7 +131,7 @@ model Campaign {
 
 model Post {
   id               Int       @id @default(autoincrement())
-  uuid             String    @unique
+  uuid             String?
   userId           String    @map("user_id")
   user             User      @relation(fields: [userId], references: [id])
   campaign         Campaign? @relation(fields: [campaignId], references: [id])
@@ -139,7 +140,8 @@ model Post {
   creatorId        Int?      @map("creator_id")
   caption          String?
   permalink        String?
-  shortcode        String?
+  shortcode        String
+  platform         String
   imageUrl         String?   @map("image_url")
   mediaUrl         String?   @map("media_url")
   commentsCount    Int?      @map("comments_count")
@@ -154,6 +156,8 @@ model Post {
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
   @@map("posts")
+
+  @@unique([shortcode, platform])
 }
 
 enum CreatorStatus {

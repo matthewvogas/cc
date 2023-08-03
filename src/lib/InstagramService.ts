@@ -3,11 +3,11 @@ import {
   InstagramOembed,
   MediaDatum,
 } from '@/types/InstagramTypes'
-import { BussinesDiscoveryRes } from '@/types/businessDiscovery/BussinesDiscoveryRes'
+import { Post } from '@prisma/client'
 
 export default class InstagramService {
-  static async getShortcode(post: string) {
-    return post.split('/')[4]
+  static async getShortcode(url: string) {
+    return url.split('/')[4]
   }
 
   static async getPostInfo(shortcode: string): Promise<InstagramOembed | null> {
@@ -28,13 +28,13 @@ export default class InstagramService {
       const data = await oemBedResponse.json()
 
       if (oemBedResponse.status !== 200) {
-        console.log('Oembed Error', data.error)
+        console.log('Instagram Oembed Error', data.error || data)
         return null
       }
 
       return data as InstagramOembed
     } catch (e) {
-      console.log(e)
+      console.log('IgOembed', e)
     }
     return null
   }
@@ -57,13 +57,13 @@ export default class InstagramService {
       const data = await res.json()
 
       if (res.status !== 200) {
-        console.log('Public Data error', data.error)
+        console.log('Instagram Public Data error', data.error || data)
         return null
       }
 
       return data.business_discovery as InstagramData
     } catch (e) {
-      console.log(e)
+      console.log('PublicIgData', e)
     }
     return null
   }
@@ -83,16 +83,21 @@ export default class InstagramService {
       const data = await res.json()
 
       if (res.status !== 200) {
-        console.log('Private data error', data.error)
+        console.log('Instagram Private data error', data.error || data)
         return null
       }
 
       return res as InstagramData
     } catch (e) {
-      console.log(e)
+      console.log('PrivateIgData', e)
     }
     return null
   }
+
+  // static async getPostsByHashtag(username: string, hashtag: string):Promise<MediaDatum[] | null> {
+  //   const
+
+  // }
 
   static getInsights(post: MediaDatum) {
     let commentsCount = post.comments_count ?? 0

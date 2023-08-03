@@ -218,7 +218,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                       onClick={() => {
                         setcodeToCopy(iframe)
                       }}
-                     className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                      className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
                       iframe
                     </button>
                     <button

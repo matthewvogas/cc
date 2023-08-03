@@ -21,6 +21,7 @@ import Image from 'next/image'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import FilterCreators from '@/components/filtersCreators'
 import TikTokNotAccountConnected from '@/components/tiktokNotAccountsConnected'
+import { Posts } from '@/types/posts/PostByCampaignRes'
 
 // type campaignWithStats = Campaign & {
 //   posts: Post[]
@@ -36,10 +37,13 @@ import TikTokNotAccountConnected from '@/components/tiktokNotAccountsConnected'
 export default function CampaingTabs({
   campaign,
   creators,
+  posts,
 }: {
   campaign: CampaignRes
   creators: any
+  posts: Posts[]
 }) {
+  const tiktokPosts = posts.filter(post => post.platform === 'tiktok')
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [openTab, setOpenTab] = useState(1)
@@ -353,13 +357,13 @@ export default function CampaingTabs({
                     />
 
                     {/* tiktok handler */}
-                    <TikTokNotAccountConnected
-                      tiktokCards={unconnectedTikTokLinks}
-                    />
+                    {tiktokPosts.length !== 0 && (
+                      <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
+                    )}
 
                     <div className='pt-6'>
                       <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
-                        {filteredPosts?.map((post, index: any) => (
+                        {campaign!.posts!.map((post, index: any) => (
                           <PostCard key={index} post={post} />
                         ))}
                         {campaign?.posts?.length === 0 && (

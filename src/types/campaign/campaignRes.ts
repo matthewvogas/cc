@@ -31,6 +31,7 @@ export interface Client {
 export interface Post {
   id?: number
   userId?: string
+  platform?: string
   campaignId?: number
   creatorId?: number
   caption?: string
