@@ -19,16 +19,16 @@ export default function TabsToShare(props: { campaignId: any }) {
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
-    '<iframe src="http://dev.codecoco.co/campaign/' +
+    '<iframe src="https://dev.codecoco.co/campaign/' +
     props.campaignId +
     '"' +
-    ' height="200" width="300"></iframe>' +
+    ' height="400" width="300"></iframe>' +
     '</body> </html>'
   const iframe =
-    '<iframe src="http://dev.codecoco.co/campaign/' +
+    '<iframe src="https://dev.codecoco.co/campaign/' +
     props.campaignId +
     '"' +
-    ' height="200" width="300"></iframe>'
+    ' height="400" width="300"></iframe>'
   return (
     <>
       <div className='flex w-full flex-wrap  '>
@@ -114,10 +114,9 @@ export default function TabsToShare(props: { campaignId: any }) {
                     <p className='mb-4 text-xl'>Campaign permalink</p>
                     <input
                       className='mb-2 w-full rounded-xl px-5 py-3 focus:outline-none'
-                      placeholder='https://campaign.codecoco.co/349500'
                       type='text'
                       value={
-                        'http://dev.codecoco.co/campaign/' + props.campaignId
+                        'https://dev.codecoco.co/campaign/' + props.campaignId
                       }
                       readOnly
                     />
@@ -219,7 +218,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                       onClick={() => {
                         setcodeToCopy(iframe)
                       }}
-                      className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                     className='text-xm mr-4 items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
                       iframe
                     </button>
                     <button

@@ -12,7 +12,7 @@ export const RedirectLink = (props: {
   activePlatforms: any
   mostView: string
 }) => {
-  const baseUrl = 'codecoco.co/campaign'
+  const baseUrl = 'https://dev.codecoco.co/campaign'
   const params = `?tags=${props.tags?.join(
     ',',
   )}&creators=${props.creatorsSelecteds?.join(
@@ -24,13 +24,13 @@ export const RedirectLink = (props: {
   const [openTab, setOpenTab] = React.useState(1)
   const [codeToCopy, setcodeToCopy] = React.useState('')
 
-  const iframe = '<iframe src="' + link + '" height="200" width="300"></iframe>'
+  const iframe = '<iframe src="' + link + '" height="400" width="300"></iframe>'
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
     '<iframe src="' +
     link +
-    '" height="200" width="300"></iframe>' +
+    '" height="400" width="300"></iframe>' +
     '</body> </html>'
 
   return (
@@ -126,7 +126,7 @@ export const RedirectLink = (props: {
                         className='mb-2 w-full select-all rounded-xl px-5 py-3 focus:outline-none'
                         placeholder='https://campaign.codecoco.co/349500'
                         type='text'
-                        value={'https://dev.codecoco.co' + link}
+                        value={link}
                         readOnly
                       />
                     </div>
