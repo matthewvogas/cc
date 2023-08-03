@@ -299,7 +299,6 @@ export async function POST(req: NextRequest) {
         }
         console.log(`Post ${url.trim()} saved to db`)
         postSaved++
-
       } catch (err) {
         console.log(err)
         postError++
