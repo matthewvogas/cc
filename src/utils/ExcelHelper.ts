@@ -9,8 +9,8 @@ export function excelToJson(excelFile: File): Promise<any> {
       const sheetName = workbook.SheetNames[0]
       const sheet = workbook.Sheets[sheetName]
       const jsonData = XLSX.utils.sheet_to_json(sheet, {
-        header: 2,
         blankrows: false,
+        raw: false,
       })
       const links = jsonData.map((row: any) => row.links)
       resolve(links)

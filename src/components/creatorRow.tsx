@@ -71,7 +71,7 @@ export default function CreatorRow({
   })
 
   const filteredCreators = creators.filter((creator: CreatorsByCampaignRes) => {
-    console.log(creator)
+    // console.log(creator)
 
     if (creator.followersCount === undefined) {
       return false

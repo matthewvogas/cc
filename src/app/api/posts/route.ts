@@ -3,24 +3,24 @@ import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const url = new URL(req.url)
     const session = await getServerSession(authOptions)
-
-    // if (!session)
-    //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-    const campaigns = await db.post.findMany({
+    const campaignId = url.searchParams.get('campaign')
+    const posts = await db.post.findMany({
       where: {
-        campaign: {
-          userId: session!.user.id,
-        },
+        campaignId: +campaignId!,
       },
-      orderBy: {
-        createdAt: 'desc',
+      include: {
+        creator: true,
       },
     })
 
-    return NextResponse.json(campaigns)
+    // if (!session)
+    //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+
+    return NextResponse.json(posts)
   } catch (err) {
     console.log(err)
     return NextResponse.json(err, {

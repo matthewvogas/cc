@@ -119,7 +119,10 @@ export const authOptions: NextAuthOptions = {
         console.log('EL ACCOUNT XDD', account)
         await db.creator.upsert({
           where: {
-            uuid: account?.providerAccountId,
+            username_platform: {
+              username: profile?.username!,
+              platform: account?.provider,
+            },
           },
           update: {
             name: profile?.name,
@@ -133,7 +136,7 @@ export const authOptions: NextAuthOptions = {
           },
           create: {
             name: profile?.name,
-            username: profile?.username,
+            username: profile?.username!,
             followersCount: profile?.followersCount,
             accessToken: account?.access_token,
             refreshToken: account?.refresh_token,
