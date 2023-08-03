@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
   let postError = 0
   let postSkipped = 0
 
+  // console.log(urls)
+
   for (const url of urls) {
     if (url.includes('instagram')) {
       const shortcode = await InstagramService.getShortcode(url.trim())
@@ -295,6 +297,9 @@ export async function POST(req: NextRequest) {
           postError++
           continue
         }
+        console.log(`Post ${url.trim()} saved to db`)
+        postSaved++
+
       } catch (err) {
         console.log(err)
         postError++
@@ -305,7 +310,7 @@ export async function POST(req: NextRequest) {
 
   console.log('Posts saved: ' + postSaved)
   console.log('Posts errors: ' + postError)
-  console.log('Posts total: ' + posts.length)
+  console.log('Posts total: ' + urls.length)
 
   return NextResponse.json('ok')
 }
