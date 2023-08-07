@@ -10,12 +10,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Missing recipent' }, { status: 400 })
 
   try {
-    const xd = await EmailService.sendEmail({
+    const welcomeEmail = await EmailService.sendEmail({
       subject: 'Welcome',
       to,
-      html: render(WelcomeEmail()),
+      html: render(
+        WelcomeEmail({
+          baseURL: process.env.NEXTAPP_URL!,
+        }),
+      ),
     })
-    console.log(xd)
 
     return NextResponse.json({ message: 'Email sent' })
   } catch (err: any) {
