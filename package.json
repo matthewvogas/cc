@@ -14,7 +14,8 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "emails": "email dev"
+    "emails": "email dev",
+    "emails2": "email dev -p 3030"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.383.0",
