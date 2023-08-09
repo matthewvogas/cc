@@ -73,7 +73,7 @@ export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
         />
 
         <div className='flex pt-6'>
-          <div className='mb-12 ml-12 flex flex-wrap gap-x-6 gap-y-8 self-center'>
+          <div className='mb-32 ml-12 flex flex-wrap gap-x-6 gap-y-8 self-center'>
             {filteredPosts?.map((post, index: any) => (
               <PostCard key={index} post={post} />
             ))}
