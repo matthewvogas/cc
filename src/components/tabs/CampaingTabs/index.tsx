@@ -246,7 +246,7 @@ export default function CampaingTabs({
       <div className='flex flex-wrap'>
         <div className='w-full'>
           <div className='mb-8 md:px-12 flex justify-between flex-wrap gap-5'>
-            <div className='whitespace-nowrap overflow-y-hidden overflow-x-auto'>
+            <div className='whitespace-nowrap overflow-y-hidden overflow-x-auto pb-2'>
               <button
                 onClick={e => {
                   e.preventDefault()
@@ -254,7 +254,11 @@ export default function CampaingTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200 `}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 1
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 overview
               </button>
               <button
@@ -264,7 +268,11 @@ export default function CampaingTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 2
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 creators
               </button>
               <button
@@ -274,7 +282,11 @@ export default function CampaingTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8 py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 3
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 posts
               </button>
               <button
@@ -284,7 +296,11 @@ export default function CampaingTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 4
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 stats
               </button>
               <button
@@ -292,7 +308,11 @@ export default function CampaingTabs({
                   e.preventDefault()
                   setOpenTab(5)
                 }}
-                className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 5
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 share
               </button>
               <button
@@ -300,7 +320,11 @@ export default function CampaingTabs({
                   e.preventDefault()
                   setOpenTab(6)
                 }}
-                className='text-xm -mb-px mr-2 inline-block flex-auto items-center rounded-full border-2 border-transparent p-2 px-8  py-2 text-left text-gray-900 last:mr-0 hover:border-2 hover:border-rose-200 focus:border-rose-200'>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full border-2 p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 6
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 settings
               </button>
             </div>

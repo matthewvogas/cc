@@ -14,7 +14,15 @@ export default async function shareCampaign({
 
   return (
     <div>
-      <SharedCampaign campaign={campaign}></SharedCampaign>
+      {campaign.id ? (
+        <SharedCampaign campaign={campaign}></SharedCampaign>
+      ) : (
+        <div className='flex justify-center items-center h-screen bg-[#F3F0EC]'>
+          <h3 className='text-lg px-6 py-3  bg-[#8a7356] text-white shadow-xl  rounded-xl'>
+            Hello! it is possible that this campaign does not exist, sorry
+          </h3>
+        </div>
+      )}
     </div>
   )
 }

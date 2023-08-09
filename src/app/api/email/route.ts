@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { render } from '@react-email/render'
-import WelcomeEmail from '../../../../emails/WelcomeTemplate'
+import WelcomeEmail from '../../../../emails/creatorInvitation'
 import EmailService from '@/lib/EmailService'
 
 export async function GET(req: NextRequest) {

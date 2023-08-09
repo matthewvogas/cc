@@ -178,36 +178,38 @@ export default function ManagePosts({
                 top performing 🥥
               </button>
             </div>
-            <div className='flex gap-4 justify-end'>
-              <button
-                onClick={() => {
-                  // addPost(true)
-                }}
-                className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                refresh data
-              </button>
+            {shared != true && (
+              <div className='flex gap-4 justify-end'>
+                <button
+                  onClick={() => {
+                    // addPost(true)
+                  }}
+                  className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                  refresh data
+                </button>
 
-              <button
-                onClick={() => {
-                  addPost(true)
-                }}
-                className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                add a post
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth='1.5'
-                  stroke='currentColor'
-                  className='ml-4 inline h-4 w-4'>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M12 4.5v15m7.5-7.5h-15'
-                  />
-                </svg>
-              </button>
-            </div>
+                <button
+                  onClick={() => {
+                    addPost(true)
+                  }}
+                  className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                  add a post
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth='1.5'
+                    stroke='currentColor'
+                    className='ml-4 inline h-4 w-4'>
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M12 4.5v15m7.5-7.5h-15'
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
