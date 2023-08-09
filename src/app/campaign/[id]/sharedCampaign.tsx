@@ -16,15 +16,13 @@ export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
   const [activeButton, setActiveButton] = useState('galleryView')
 
   const filteredPosts = campaign?.posts?.filter(post => {
-    if (!post.caption) return false
-
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
     if (
       (!isFilterActive || (isFilterActive && isInstagramActive)) &&
       (tags.length === 0 ||
-        post.caption.split(' ').some(tag => tags.includes(tag)))
+        post.caption?.split(' ').some(tag => tags.includes(tag)))
     ) {
       if (activeButton === 'most') {
         if (post.reachCount && post.reachCount > 0) {
@@ -73,7 +71,7 @@ export function SharedCampaign({ campaign }: { campaign: CampaignRes }) {
         />
 
         <div className='flex pt-6'>
-          <div className='mb-32 ml-12 flex flex-wrap gap-x-6 gap-y-8 self-center'>
+          <div className='mb-12 ml-12 flex flex-wrap gap-x-6 gap-y-8 self-center'>
             {filteredPosts?.map((post, index: any) => (
               <PostCard key={index} post={post} />
             ))}
