@@ -101,7 +101,7 @@ const Tabs = ({ posts }: any) => {
                   <ButtonGroup title={'Grid'} />
 
                   <div className='pt-6'>
-                    <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
+                    <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8 pb-32'>
                       {posts.map((card: any, index: any) => (
                         <div
                           key={index}

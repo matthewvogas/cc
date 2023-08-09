@@ -1,9 +1,11 @@
 'use client'
 import { ptMono } from '@/app/fonts'
 import { Dialog } from '@headlessui/react'
+import Image from 'next/image'
 import FilterBy from './modals/filterBy'
 import React, { useState } from 'react'
 import { RedirectLink } from '@/app/campaign/[id]/linkShare'
+import arrow from 'public/assets/register/arrow.svg'
 
 const buttonsStyle =
   'px-8 py-2  border-2 text-base rounded-full items-center rounded-full p-2 text-gray-900 hover:border-rose-200  whitespace-nowrap'
@@ -41,6 +43,7 @@ export default function ManagePosts({
 }: Props) {
   const [openDialog, handleDisplay] = React.useState(false)
   const [titleCampaign, setTitleCampaign] = React.useState('')
+  const [filterPosts, setFilterPosts] = React.useState('hidden')
 
   const handleRemoveTag = (tag: string) => {
     const updatedTags = tags.filter(t => t !== tag)
@@ -125,21 +128,94 @@ export default function ManagePosts({
       <div className=' my-0 md:my-4 mb-5 w-full px-6 md:px-12 '>
         <h3 className='mb-4 mt-16 text-lg font-bold'>{title}</h3>
         <div className='flex justify-between '>
-          <div className=' flex items-center justify-start overflow-x-auto gap-4 overflow-y-hidden'>
-            <button
-              type='button'
-              onClick={() => {
-                setActiveButton('galleryView')
-                handleClearArrays()
-              }}
-              className={`${
-                activeButton == 'galleryView'
-                  ? 'border-2 border-rose-200'
-                  : 'border-2 border-transparent'
-              } ${buttonsStyle}`}>
-              gallery view
-            </button>
+          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden'>
+            <div className='flex gap-4'>
+              <button
+                type='button'
+                onClick={() => {
+                  filterPosts == 'hidden'
+                    ? setFilterPosts('block')
+                    : setFilterPosts('hidden')
+                }}
+                className={`${
+                  activeButton == 'filters' ? ' border' : ' border'
+                } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap`}>
+                filters
+              </button>
 
+              <button
+                type='button'
+                onClick={() => {
+                  setActiveButton('most')
+                }}
+                className={`${
+                  activeButton == 'most' ? ' bg-[#e4ddd5]' : ' bg-[#F3F0EC]'
+                } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-rose-200  whitespace-nowrap`}>
+                most viewed
+              </button>
+
+              <button
+                type='button'
+                onClick={() => {
+                  setActiveButton('lastest')
+                }}
+                className={`${
+                  activeButton == 'lastest' ? ' bg-[#e4ddd5]' : ' bg-[#F3F0EC]'
+                } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-rose-200  whitespace-nowrap`}>
+                lastest
+              </button>
+
+              <button
+                type='button'
+                onClick={() => {
+                  setActiveButton('topPerforming')
+                }}
+                className={`${
+                  activeButton == 'topPerforming'
+                    ? ' bg-[#D9F0F1]'
+                    : 'bg-[#EBF6F6]'
+                } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                top performing 🥥
+              </button>
+            </div>
+            <div className='flex gap-4 justify-end'>
+              <button
+                onClick={() => {
+                  // addPost(true)
+                }}
+                className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                refresh data
+              </button>
+
+              <button
+                onClick={() => {
+                  addPost(true)
+                }}
+                className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                add a post
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='ml-4 inline h-4 w-4'>
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M12 4.5v15m7.5-7.5h-15'
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* filter div */}
+        <div
+          className={`px-8 py-6 bg-[#F3F0EC] rounded-xl mt-4 flex gap-6 ${filterPosts}`}>
+          <div>
+            <p className='font-medium text-base mb-2'>by creator</p>
             <button
               onClick={() => {
                 setActiveButton('creator')
@@ -148,13 +224,16 @@ export default function ManagePosts({
               }}
               className={`${
                 activeButton === 'creator'
-                  ? 'border-2 border-rose-200'
-                  : 'border-2 border-transparent'
-              } ${buttonsStyle}`}
+                  ? 'border border-[#acacac]'
+                  : 'border border-[#acacac]'
+              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-2 text-gray-900 `}
               type='button'>
-              by influencer
+              search influencers
             </button>
+          </div>
 
+          <div>
+            <p className='font-medium text-base mb-2'>by hashtag</p>
             <button
               onClick={() => {
                 setActiveButton('hashtag')
@@ -163,75 +242,11 @@ export default function ManagePosts({
               }}
               className={`${
                 activeButton === 'hashtag'
-                  ? 'border-2 border-rose-200'
-                  : 'border-2 border-transparent'
-              } ${buttonsStyle}`}
+                  ? 'border border-[#acacac]'
+                  : 'border border-[#acacac]'
+              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-2 text-gray-900 `}
               type='button'>
-              by hashtag
-            </button>
-
-            {/* <div className='dropdown-end dropdown '>
-              <button
-                tabIndex={0}
-                type='button'
-                onClick={() => {
-                  setActiveButton('platform')
-                }}
-                className={`${activeButton == 'platform'
-                    ? 'border-2 border-rose-200'
-                    : 'border-2 border-transparent'
-                  } ${buttonsStyle}`}>
-                by platform
-              </button>
-              <div
-                tabIndex={0}
-                className='  relative z-50 menu rounded-box mr-4 mt-2 w-auto border-2 border-gray-100 bg-white p-2  '>
-                <div className='m-4 flex flex-col gap-5'>
-                  <div className='flex flex-row gap-2'>
-                    <button
-                      onClick={() => handlePlatformClick('Instagram')}
-                      className=' rounded-full bg-beigeFirst px-6 py-2.5  hover:bg-beigeSelected focus:bg-beigeSelected'>
-                      Instagram
-                    </button>
-                    <button
-                      onClick={() => handlePlatformClick('TikTok')}
-                      className=' rounded-full bg-beigeFirst px-6 py-2.5  hover:bg-beigeSelected focus:bg-beigeSelected'>
-                      TikTok
-                    </button>
-                    <button
-                      onClick={() => handlePlatformClick('Facebook')}
-                      className=' rounded-full bg-beigeFirst px-6 py-2.5  hover:bg-beigeSelected focus:bg-beigeSelected'>
-                      Facebook
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
-            <button
-              type='button'
-              onClick={() => {
-                setActiveButton('most')
-              }}
-              className={`${
-                activeButton == 'most'
-                  ? 'border-2 border-rose-200'
-                  : 'border-2 border-transparent'
-              } ${buttonsStyle}`}>
-              most viewed
-            </button>
-
-            <button
-              type='button'
-              onClick={() => {
-                setActiveButton('topPerforming')
-              }}
-              className={`${
-                activeButton == 'topPerforming'
-                  ? 'border-2 border-[#D9F0F1] bg-[#D9F0F1]'
-                  : ''
-              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full  border-2  border-transparent p-2 px-8 py-2 text-gray-900 hover:border-2 hover:border-[#D9F0F1] `}>
-              top performing 🥥
+              search hastags
             </button>
           </div>
         </div>

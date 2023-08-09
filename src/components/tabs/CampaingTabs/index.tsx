@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { SetStateAction, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { Dialog } from '@headlessui/react'
 import TopPost from '@/components/topPost'
@@ -22,6 +22,7 @@ import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import FilterCreators from '@/components/filtersCreators'
 import TikTokNotAccountConnected from '@/components/tiktokNotAccountsConnected'
 import { Posts } from '@/types/posts/PostByCampaignRes'
+import ButtonsGroupTabs2 from '@/components/socialPostsPlatform'
 
 // type campaignWithStats = Campaign & {
 //   posts: Post[]
@@ -303,29 +304,6 @@ export default function CampaingTabs({
                 settings
               </button>
             </div>
-
-            <div className='flex gap-6'>
-              <button
-                onClick={() => {
-                  setIsOpen(true)
-                }}
-                className={`mx-2 flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                add a post
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth='1.5'
-                  stroke='currentColor'
-                  className='ml-4 inline h-4 w-4'>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M12 4.5v15m7.5-7.5h-15'
-                  />
-                </svg>
-              </button>
-            </div>
           </div>
           <div className='relative mb-6 flex w-full min-w-0 flex-col break-words bg-white '>
             <div className='flex-auto '>
@@ -340,39 +318,22 @@ export default function CampaingTabs({
                       plays={campaign?.stats?.playsCount || 0}
                     />
 
-                    <ManagePosts
+                    <ButtonsGroupTabs2
+                      campaign={campaign}
+                      tiktokPosts={tiktokPosts}
+                      id={campaign.id!}
                       addPost={setIsOpen}
                       shared={false}
-                      title={'Grid'}
+                      title={''}
                       tags={tags}
                       setTags={setTags}
                       creatorsSelecteds={creatorsSelecteds}
                       setCreatorsSelecteds={setCreatorsSelecteds}
                       activePlatforms={activePlatforms}
                       setActivePlatforms={setActivePlatforms}
-                      id={campaign.id!}
                       activeButton={activeButton}
                       setActiveButton={setActiveButton}
-                      mostView={activeButton}
                     />
-
-                    {/* tiktok handler */}
-                    {tiktokPosts.length !== 0 && (
-                      <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
-                    )}
-
-                    <div className='pt-6'>
-                      <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
-                        {campaign!.posts!.map((post, index: any) => (
-                          <PostCard key={index} post={post} />
-                        ))}
-                        {campaign?.posts?.length === 0 && (
-                          <>
-                            <h1>{`Seems like you dont have posts! :(`}</h1>
-                          </>
-                        )}
-                      </div>
-                    </div>
                   </div>
                 </section>
                 <div className={openTab === 2 ? 'block' : 'hidden'}>
@@ -503,7 +464,7 @@ export default function CampaingTabs({
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
-                    <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8'>
+                    <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8 pb-32'>
                       {filteredPosts?.map((post, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
