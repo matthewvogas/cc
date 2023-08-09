@@ -14,6 +14,16 @@ export default function SearchByTag(props: {
     props.setSearchTags(event.target.value)
   }
 
+  // Extract unique tags from the searchTags array
+  const uniqueTags: string[] = []
+  props.searchTags.forEach((tag: any) => {
+    tag.tags?.forEach((t: any) => {
+      if (!uniqueTags.includes(t.name)) {
+        uniqueTags.push(t.name)
+      }
+    })
+  })
+
   return (
     <div className=''>
       <p className={`${ptMono.className} mb-2 text-sm`}>tags</p>
@@ -25,14 +35,11 @@ export default function SearchByTag(props: {
             onChange={handleChange}
             className='bg-transparent outline-none cursor-pointer'>
             <option value={''}>search by tag</option>
-            {props.searchTags.map(
-              (tag: any, index: number) =>
-                tag.tags?.map((tag: any, index: number) => (
-                  <option key={index} value={tag.name}>
-                    {tag.name}
-                  </option>
-                )),
-            )}
+            {uniqueTags.map((tag: string, index: number) => (
+              <option key={index} value={tag}>
+                {tag}
+              </option>
+            ))}
           </select>
         </div>
       </div>

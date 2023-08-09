@@ -48,12 +48,15 @@ export const YelpRecentLoginEmail = ({
       <Body style={main}>
         <Container>
           <Section style={logo}>
-            <Img width={114} src={`${baseURL}/assets/register/codecoco.svg`} />
+            <Img
+              width={114}
+              src={`https://golabsdewinu.s3.amazonaws.com/email/codecoco.png`}
+            />
           </Section>
           <Section
             style={{
               ...content,
-              backgroundImage: `url(${baseURL}/assets/mails/creators/bg-invitationMail-computer.jpg)`,
+              backgroundImage: `url(https://golabsdewinu.s3.amazonaws.com/email/bg-invitationMail-computer.jpg)`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}>
@@ -106,11 +109,17 @@ export const YelpRecentLoginEmail = ({
                   you don’t have to!
                 </Heading>
                 {featuresList.map((feature, index) => (
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '8px',
+                      alignItems: 'center',
+                    }}>
                     <Img
-                      width={30}
+                      height={24}
+                      width={24}
                       style={{ opacity: '40%' }}
-                      src={`${baseURL}/assets/SandBox/Cards/check.svg`}
+                      src={`https://golabsdewinu.s3.amazonaws.com/email/check.png`}
                     />
                     <p
                       style={{
@@ -128,7 +137,7 @@ export const YelpRecentLoginEmail = ({
 
                 <Img
                   width='100%'
-                  src={`${baseURL}/assets/mails/creators/SuccesfullyCreatorConnectionImage.png`}
+                  src={`https://golabsdewinu.s3.amazonaws.com/email/SuccesfullyCreatorConnectionImage.png`}
                 />
               </Column>
             </Row>
