@@ -1,14 +1,16 @@
 'use client'
 
+import Link from 'next/link'
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
-import imageCover from 'public/assets/register/creatorImg.jpg'
-import { Dialog } from '@headlessui/react'
 import React, { useState } from 'react'
-import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import UseThisPost from './useThisPost'
+import { Dialog } from '@headlessui/react'
 import { Post } from '@/types/campaign/campaignRes'
-import Link from 'next/link'
+import { isMp4, isVideo } from '@/utils/ValidationsHelper'
+import imageCover from 'public/assets/register/creatorImg.jpg'
+import InstagramLogo from 'public/assets/creatorRegister/instagram-black-share-icon.svg'
+import TikToksLogo from 'public/assets/creatorRegister/tiktok-black-share-icon.svg'
 
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -47,7 +49,16 @@ export default function PostCard({ post }: { post: Post }) {
       )}
       <div className='px-6 pt-6'>
         <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-[10px] lg:text-base'>
-          @{post.creator?.username || 'username'}
+          <div className='flex gap-2 items-center'>
+            {/* svg de la red social */}
+            {post.creator?.platform == 'instagram' && (
+              <Image src={InstagramLogo} className='w-[22px] h-[22px]' alt='' />
+            )}
+            {post.creator?.platform == 'tiktok' && (
+              <Image src={TikToksLogo} className='w-[22px] h-[22px]' alt='' />
+            )}
+            @{post.creator?.username || 'username'}
+          </div>
         </h4>
         <span className=' inline-flex h-6 w-full rounded text-center text-[10px] lg:text-sm text-gray-500 '>
           <svg

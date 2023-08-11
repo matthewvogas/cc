@@ -5,7 +5,7 @@ import Image from 'next/image'
 import FilterBy from './modals/filterBy'
 import React, { useState } from 'react'
 import { RedirectLink } from '@/app/campaign/[id]/linkShare'
-import arrow from 'public/assets/register/arrow.svg'
+import angleDown from 'public/assets/register/angle-down.svg'
 
 const buttonsStyle =
   'px-8 py-2  border-2 text-base rounded-full items-center rounded-full p-2 text-gray-900 hover:border-rose-200  whitespace-nowrap'
@@ -137,10 +137,15 @@ export default function ManagePosts({
                     ? setFilterPosts('block')
                     : setFilterPosts('hidden')
                 }}
-                className={`${
-                  activeButton == 'filters' ? ' border' : ' border'
-                } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap`}>
+                className={` flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap`}>
                 filters
+                <Image
+                  src={angleDown}
+                  className={`ml-8 w-[22px] h-[22px] ${
+                    filterPosts == 'block' ? '' : 'rotate-180 transform-g'
+                  }`}
+                  alt=''
+                />
               </button>
 
               <button
@@ -214,129 +219,110 @@ export default function ManagePosts({
         </div>
 
         {/* filter div */}
-        <div
-          className={`px-8 py-6 bg-[#F3F0EC] rounded-xl mt-4 flex gap-6 ${filterPosts}`}>
-          <div>
-            <p className='font-medium text-base mb-2'>by creator</p>
-            <button
-              onClick={() => {
-                setActiveButton('creator')
-                openDialogBoxCreator()
-                setTitleCampaign('filter view by creator')
-              }}
-              className={`${
-                activeButton === 'creator'
-                  ? 'border border-[#acacac]'
-                  : 'border border-[#acacac]'
-              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-2 text-gray-900 `}
-              type='button'>
-              search influencers
-            </button>
+        <div className={`py-6 bg-[#F3F0EC] rounded-xl mt-4  ${filterPosts}`}>
+          <div className='flex gap-6 px-8 '>
+            <div>
+              <p className='font-medium text-base mb-2'>by creator</p>
+              <button
+                onClick={() => {
+                  setActiveButton('creator')
+                  openDialogBoxCreator()
+                  setTitleCampaign('filter view by creator')
+                }}
+                className={`${
+                  activeButton === 'creator'
+                    ? 'border border-[#acacac]'
+                    : 'border border-[#acacac]'
+                } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-2 text-gray-900 `}
+                type='button'>
+                search influencers
+              </button>
+            </div>
+
+            <div>
+              <p className='font-medium text-base mb-2'>by hashtag</p>
+              <button
+                onClick={() => {
+                  setActiveButton('hashtag')
+                  openDialogBoxHashtag()
+                  setTitleCampaign('filter view by hashtag')
+                }}
+                className={`${
+                  activeButton === 'hashtag'
+                    ? 'border border-[#acacac]'
+                    : 'border border-[#acacac]'
+                } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-2 text-gray-900 `}
+                type='button'>
+                search hastags
+              </button>
+            </div>
           </div>
 
           <div>
-            <p className='font-medium text-base mb-2'>by hashtag</p>
-            <button
-              onClick={() => {
-                setActiveButton('hashtag')
-                openDialogBoxHashtag()
-                setTitleCampaign('filter view by hashtag')
-              }}
-              className={`${
-                activeButton === 'hashtag'
-                  ? 'border border-[#acacac]'
-                  : 'border border-[#acacac]'
-              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-2 text-gray-900 `}
-              type='button'>
-              search hastags
-            </button>
-          </div>
-        </div>
-
-        <div className='mt-4 flex flex-col gap-3'>
-          <div className=' flex flex-wrap gap-3'>
-            {creatorsSelecteds?.map(creator => (
-              <div
-                className={`flex flex-col rounded-xl bg-beigeSelected px-8 py-2`}
-                key={creator.username}>
-                <div className='flex gap-2'>
-                  <label className={`${ptMono.className}`}>
-                    @{creator.username}
-                  </label>
-                  <button onClick={() => handleRemoveCreator(creator)}>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'>
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M6 18L18 6M6 6l12 12'
-                      />
-                    </svg>
-                  </button>
-                </div>
+            <div
+              className={` flex flex-col gap-3 border-t-2 border-white pt-6 mt-8 ${
+                creatorsSelecteds.length > 0 || tags.length > 0
+                  ? 'block'
+                  : 'hidden'
+              }`}>
+              <div className=' flex flex-wrap gap-3 px-8 '>
+                {creatorsSelecteds?.map(creator => (
+                  <div
+                    className={`flex flex-col rounded-full bg-white px-8 py-2`}
+                    key={creator.username}>
+                    <div className='flex gap-2'>
+                      <label className={`${ptMono.className} mr-6`}>
+                        @{creator.username}
+                      </label>
+                      <button onClick={() => handleRemoveCreator(creator)}>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='h-4 w-4'>
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M6 18L18 6M6 6l12 12'
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className=' flex flex-wrap gap-3'>
-            {tags?.map(tag => (
-              <div
-                className='flex flex-col rounded-xl border-2 border-beigeFirst px-8 py-2'
-                key={tag}>
-                <div className='flex gap-2'>
-                  <label className={`${ptMono.className}`}>{tag}</label>
-                  <button onClick={() => handleRemoveTag(tag)}>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'>
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M6 18L18 6M6 6l12 12'
-                      />
-                    </svg>
-                  </button>
-                </div>
+              <div className=' flex flex-wrap gap-3 px-8 '>
+                {tags?.map(tag => (
+                  <div
+                    className='flex flex-col rounded-full bg-white px-8 py-2'
+                    key={tag}>
+                    <div className='flex gap-2'>
+                      <label className={`${ptMono.className} mr-6`}>
+                        {tag}
+                      </label>
+                      <button onClick={() => handleRemoveTag(tag)}>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='h-4 w-4'>
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M6 18L18 6M6 6l12 12'
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          <div className='flex flex-wrap gap-3'>
-            {activePlatforms?.map(platform => (
-              <div
-                className='flex flex-col rounded-xl  bg-rose-100 bg-opacity-50  px-8 py-2'
-                key={platform}>
-                <div className='flex gap-2'>
-                  <label className={`${ptMono.className} text-gray-500`}>
-                    {platform}
-                  </label>
-                  <button onClick={() => handleRemovePlatform(platform)}>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'>
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M6 18L18 6M6 6l12 12'
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            ))}
+            </div>
           </div>
         </div>
 
