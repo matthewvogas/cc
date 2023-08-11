@@ -1,6 +1,5 @@
 // 'use client'
 import ButtonGroup from '@/components/buttonsGroup'
-import TitlePage from '@/components/titlePage'
 import ShareStat from '@/components/modals/shareStats'
 import React from 'react'
 import CreatorRow from '@/components/creatorRow'

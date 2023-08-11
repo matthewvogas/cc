@@ -19,7 +19,6 @@ export default function Instagram<P extends FacebookProfile>(
         const longToken = await fetch(
           `https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}/oauth/access_token?grant_type=fb_exchange_token&client_id=${provider.clientId}&client_secret=${provider.clientSecret}&fb_exchange_token=${res.access_token}`,
         ).then(res => res.json())
-        // console.log('EL TOKEN XDDD',longToken)
         const tokens: TokenSet = {
           access_token: longToken.access_token,
           token_type: longToken.token_type,
@@ -51,8 +50,6 @@ export default function Instagram<P extends FacebookProfile>(
           `https://graph.facebook.com/v17.0/${id}/?fields=username,profile_picture_url,followers_count&access_token=${tokens.access_token}`,
         ).then(res => res.json())
 
-        // console.log(res)
-        // console.log(tokens)
         return {
           name: res.name ?? null,
           image: res.picture?.data.url ?? null,

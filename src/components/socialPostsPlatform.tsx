@@ -91,7 +91,7 @@ export default function ButtonsGroupTabs2({
             <Tab.Panel>
               <ManagePosts
                 addPost={addPost}
-                shared={false}
+                shared={shared}
                 title={title}
                 tags={tags}
                 setTags={setTags}
@@ -106,7 +106,7 @@ export default function ButtonsGroupTabs2({
               />
 
               <div className='pt-6'>
-                <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8 pb-32'>
+                <div className='mx-6 lg:ml-12 justify-start flex flex-wrap gap-x-4 lg:gap-x-6 gap-y-8 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
@@ -124,7 +124,7 @@ export default function ButtonsGroupTabs2({
             <Tab.Panel>
               <ManagePosts
                 addPost={addPost}
-                shared={false}
+                shared={shared}
                 title={title}
                 tags={tags}
                 setTags={setTags}
@@ -139,12 +139,11 @@ export default function ButtonsGroupTabs2({
               />
 
               <div className='pt-6'>
-                <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8 pb-32'>
+                <div className='mx-6 lg:ml-12 justify-start flex flex-wrap gap-x-4 lg:gap-x-6 gap-y-8 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
 
-                  {console.log(campaign.posts)}
                   {campaign?.posts?.length === 0 && (
                     <>
                       <h1>{`Seems like you dont have posts! :(`}</h1>
@@ -165,7 +164,7 @@ export default function ButtonsGroupTabs2({
 
               <ManagePosts
                 addPost={addPost}
-                shared={false}
+                shared={shared}
                 title={title}
                 tags={tags}
                 setTags={setTags}
@@ -180,7 +179,7 @@ export default function ButtonsGroupTabs2({
               />
 
               <div className='pt-6'>
-                <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8 pb-32'>
+                <div className='mx-6 lg:ml-12 justify-start flex flex-wrap gap-x-4 lg:gap-x-6 gap-y-8 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}

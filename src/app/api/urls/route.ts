@@ -18,8 +18,6 @@ export async function POST(req: NextRequest) {
   let postError = 0
   let postSkipped = 0
 
-  // console.log(urls)
-
   for (const url of urls) {
     if (url.includes('instagram')) {
       const shortcode = await InstagramService.getShortcode(url.trim())

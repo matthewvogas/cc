@@ -27,7 +27,7 @@ export default function PostCard({ post }: { post: Post }) {
 
   return (
     <div
-      className={`h-fit w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
+      className={`h-fit w-40 lg:w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
       {!post.imageUrl && post?.mediaUrl?.includes('.mp4') && (
         <video className={`rounded-2xl `} controls>
           <source src={post?.mediaUrl} type='video/mp4' />
@@ -46,10 +46,10 @@ export default function PostCard({ post }: { post: Post }) {
         />
       )}
       <div className='px-6 pt-6'>
-        <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
+        <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-[10px] lg:text-base'>
           @{post.creator?.username || 'username'}
         </h4>
-        <span className=' inline-flex h-6 w-full rounded text-center text-sm text-gray-500 '>
+        <span className=' inline-flex h-6 w-full rounded text-center text-[10px] lg:text-sm text-gray-500 '>
           <svg
             fill='none'
             stroke='currentColor'
@@ -68,10 +68,10 @@ export default function PostCard({ post }: { post: Post }) {
       </div>
       <div className='flex flex-col px-6 pb-2'>
         <div>
-          <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
+          <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
             Comments: {post.commentsCount}
           </span>
-          <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
+          <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
             Likes: {post.likesCount}
           </span>
         </div>

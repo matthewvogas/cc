@@ -25,7 +25,7 @@ export default async function CampaignPage({
           <TitlePage
             title={String(campaign?.name)}
             moduleText={'singleCampaign'}
-            client={String(campaign?.client?.name)}
+            client={campaign?.client}
             createClient={null}
             createCampaign={null}
             setSort={null}

@@ -115,8 +115,6 @@ export const authOptions: NextAuthOptions = {
         profile &&
         (account.provider === 'instagram' || account.provider === 'tiktok')
       ) {
-        console.log('EL PROFILE XDD', profile)
-        console.log('EL ACCOUNT XDD', account)
         await db.creator.upsert({
           where: {
             username_platform: {

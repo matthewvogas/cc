@@ -16,10 +16,6 @@ async function main() {
 
   // const res = (await fetch(url).then(res => res.json())) as InstagramResponse
 
-  // console.log(res)
-
-  // console.log(url.toString())
-
   const password = await hash(`test`, 12)
   const email = 'test@test.com'
 
@@ -142,12 +138,8 @@ async function main() {
   //         Body: new Uint8Array(buffer),
   //       }
 
-  //       // console.log(file.type)
-
   //       const result = await s3Client.send(new PutObjectCommand(putParams))
-  //       // console.log(result)
   //       const url = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${file.name}`
-  //       // console.log(url)
 
   //       let commentsCount = 0
   //       let likesCount = 0

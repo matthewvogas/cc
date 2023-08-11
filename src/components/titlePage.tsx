@@ -40,7 +40,7 @@ const campaigns = (
 
 const singleCampaign = (
   title: string,
-  client: string,
+  client: any,
   active: boolean,
   setActive: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
@@ -59,25 +59,27 @@ const singleCampaign = (
   return (
     <>
       <div>
-        <h3
-          className={`pb-8 align-middle text-[22px] font-medium text-gray-800 `}>
-          {title}
-        </h3>
-        <div className='flex items-center'>
-          <div className='avatar'>
-            <div className='mask mask-circle mr-3 h-10 w-10'>
-              <Image
-                priority
-                className={``}
-                width={100}
-                height={100}
-                src={avatar}
-                alt='background'
-              />
-            </div>
+        <h3 className={` text-[22px] font-medium text-gray-800 `}>{title}</h3>
+        <div className='flex items-center '>
+          <div className='mt-8 avatar flex items-center'>
+            {client ? (
+              <div className=' mask mask-circle mr-3 h-10 w-10'>
+                <Image
+                  priority
+                  className={``}
+                  width={100}
+                  height={100}
+                  src={client?.imageUrl || avatar}
+                  alt='background'
+                />
+              </div>
+            ) : (
+              <div className='hidden'></div>
+            )}
+
             <p
               className={`flex items-center rounded-full text-base font-medium text-black`}>
-              {client}
+              {client?.name || ''}
             </p>
           </div>
         </div>
@@ -176,7 +178,7 @@ const clients = (
 export default function TitlePage(props: {
   title: String
   moduleText: String
-  client: String
+  client: any
   createClient: any
   createCampaign: any
   setSort: React.Dispatch<React.SetStateAction<string>> | any
@@ -186,7 +188,7 @@ export default function TitlePage(props: {
   const builder: any = (
     title: string,
     moduleText: string,
-    client: string,
+    client: any,
     createClient: any,
     createCampaign: any,
   ) => {
