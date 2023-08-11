@@ -17,8 +17,8 @@ export default function OverviewCampaignPublic(props: {
 }) {
   return (
     <div
-      className={`mb-0 md:mb-4 flex w-full mx-6 md:px-12 overflow-scroll ${ptMono.className}`}>
-      <div className='flex w-full gap-5'>
+      className={`mb-0 md:mb-4 flex w-full mx-6 md:px-12  ${ptMono.className}`}>
+      <div className='flex flex-wrap w-full gap-3 mb-16'>
         <ClientStat
           icon={user}
           value={props.creators || 0}

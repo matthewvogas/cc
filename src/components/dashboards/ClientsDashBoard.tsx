@@ -92,7 +92,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
           <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
 
-        <div className='flex items-start px-12 gap-3 overflow-clip overflow-x-auto'>
+        <div className='flex items-start px-12 gap-3 overflow-clip overflow-x-auto mt-8'>
           <Search
             inputSearchValue={inputSearchValue}
             setInputSearchValue={setInputSearchValue}

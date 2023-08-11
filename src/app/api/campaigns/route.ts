@@ -27,8 +27,6 @@ export async function POST(req: Request) {
 
     const { name, description, clientId, title, hashtag } = await req.json()
 
-    console.log({ name, description, clientId, hashtag, title })
-
     const campaign = await db.campaign.create({
       data: {
         name,

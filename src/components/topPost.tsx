@@ -43,19 +43,31 @@ const creatorCards = [
 ]
 
 export default function TopPost({ posts }: { posts: Post[] }) {
-  const postData =
-    posts.sort((a: any, b: any) => b.likesCount! - a.likesCount!).slice(0, 4) ||
-    creatorCards
+  const calculateScore = (post: any) => {
+    const likesWeight = 2
+    const reachCountWeight = 1
+
+    const likes = post.likesCount || 0
+    const reachCount = post.reachCount || 0
+
+    return likesWeight * likes + reachCountWeight * reachCount
+  }
+
+  const sortedPosts = posts
+    .slice()
+    .sort((a, b) => calculateScore(b) - calculateScore(a))
+
+  const topPosts = sortedPosts
+    .filter(post => post.likesCount || post.reachCount)
+    .slice(0, 5)
 
   return (
     <div className='md-12 flex gap-x-6 gap-y-8'>
-      {postData.map((card, index: any) => (
+      {topPosts.map((card, index: any) => (
         <div
           key={index}
           className={`h-fit min-w-[384px] overflow-hidden border-2 border-slate-200 bg-beigeTransparent ${ptMono.className}`}>
-          <div
-            className='flex h-96 flex-col justify-between bg-white overflow-clip'
-            style={{ overflowX: 'auto' }}>
+          <div className='flex h-96 flex-col justify-between bg-white overflow-clip relative'>
             <div className='z-10' style={{ position: 'sticky', left: '0' }}>
               <h4 className='absolute z-10 ml-4 mt-4 rounded-xl bg-white px-4 py-3 text-base opacity-80'>
                 @{card.creator?.username || 'username'}
@@ -68,37 +80,23 @@ export default function TopPost({ posts }: { posts: Post[] }) {
             {card.imageUrl && (
               <Image
                 priority
-                className={`h-96 w-full object-cover`}
+                className={`h-96 w-96 object-cover`}
                 src={card.imageUrl || imageCover}
                 alt='background'
                 width={0}
                 height={0}
                 sizes='100vw'
-                style={{ width: '100%', height: 'auto' }}
+                style={{}}
               />
             )}
-            {!card.imageUrl && card.mediaUrl?.includes('.mp4') && (
-              <div
-                style={{ position: 'relative', width: '100%', height: '100%' }}>
-                <video
-                  className={`h-96 w-full object-cover relative`}
-                  id='videoPlayer'
-                  controls={false}>
-                  <source src={card.mediaUrl || undefined} type='video/mp4' />
-                </video>
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background:
-                      'linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))',
-                    pointerEvents: 'none',
-                  }}></div>
-              </div>
-            )}
+
+            {/* Agregar degradado invertido */}
+            <div
+              className='absolute inset-0 z-0'
+              style={{
+                backgroundImage:
+                  'linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))',
+              }}></div>
           </div>
 
           <div className='flex gap-4 px-6 pt-6 mb-6'>

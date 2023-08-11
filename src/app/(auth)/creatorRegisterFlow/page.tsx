@@ -272,8 +272,6 @@ export default function RegisterPage() {
       },
       intereses: interested,
     }
-
-    console.log(data)
   }
 
   const handleInteresClick = (intereses: string) => {

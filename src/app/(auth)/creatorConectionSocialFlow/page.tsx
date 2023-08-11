@@ -170,8 +170,6 @@ export default function RegisterPage() {
         tiktok: tiktokConection,
       },
     }
-
-    console.log(data)
   }
   // Componente RegisterPage devuelto por el componente principal
   return (

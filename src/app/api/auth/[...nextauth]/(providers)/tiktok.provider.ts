@@ -83,7 +83,6 @@ export default function Tiktok<P extends TiktokProfile>(
       url: 'https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username',
       async request({ client, provider, tokens }) {
         const res: any = await client.userinfo(tokens.access_token!)
-        console.log(tokens)
         return res.data.user
       },
     },

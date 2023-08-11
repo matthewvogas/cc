@@ -47,7 +47,6 @@ export async function POST(req: Request) {
     })
 
     // Create the new client and associate the tags with it
-    console.log(existingTags)
     const client = await db.client.create({
       data: {
         userId: session!.user.id,

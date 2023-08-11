@@ -13,7 +13,6 @@ import { excelToJson } from '@/utils/ExcelHelper'
 import SettingsTab from '@/components/settingsTab'
 import TabsToShare from '@/components/tabsToShare'
 import OverviewCampaign from '@/components/overviewCampaign'
-import ManagePosts from '@/components/ManagePosts'
 import { ptMono } from '@/app/fonts'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import TagsInput from '@/components/TagsInput'
@@ -147,8 +146,6 @@ export default function CampaingTabs({
       return
     }
     const posts = await excelToJson(file)
-    console.log(posts)
-    console.log(campaign.id)
 
     try {
       const res = await fetch('/api/urls', {
@@ -210,7 +207,7 @@ export default function CampaingTabs({
     e.preventDefault()
     setLoading(true)
     setFetchError(null)
-    console.log('si aca falta')
+    // console.log('si aca falta')
     setLoading(false)
   }
 
