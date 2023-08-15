@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import { Sen } from 'next/font/google'
-import { RegisterForm } from './registerForm'
+import { RegisterForm } from './registerFormReactHookForm'
 import logo from 'public/assets/register/LogoSVG.svg'
 import registerBg from 'public/assets/register/login.jpg'
 
@@ -18,7 +18,7 @@ export default function RegisterPage() {
         fill
       />
 
-      <div className='flex w-[500px] flex-col items-center justify-center gap-4  p-10 text-center text-white '>
+      <div className='flex w-[500px] flex-col items-center justify-center gap-4  px-10 text-center text-white '>
         <div className={`flex flex-col gap-4 ${ptMono.className}`}>
           <Image priority className=' h-auto w-[400px]' src={logo} alt='' />
           <p className='mb-12 text-lg text-white'>create your account</p>

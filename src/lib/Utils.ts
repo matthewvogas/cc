@@ -1,4 +1,13 @@
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 import * as XLSX from 'xlsx'
+
+export const fetcher = (...args: Parameters<typeof fetch>) =>
+  fetch(...args).then(res => res.json())
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 
 export function excelToJson(excelFile: File): Promise<any> {
   return new Promise((resolve, reject) => {

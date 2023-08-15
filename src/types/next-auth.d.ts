@@ -18,6 +18,6 @@ declare module 'next-auth' {
 
   interface Profile {
     username?: string
-    followersCount?: number
+    follower_count?: number
   }
 }

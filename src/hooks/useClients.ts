@@ -1,4 +1,4 @@
-import { fetcher } from '@/utils/ValidationsHelper'
+import { fetcher } from '@/lib/Utils'
 import useSWR from 'swr'
 
 export default function useClients(fallbackData?: any) {

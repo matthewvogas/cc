@@ -10,7 +10,6 @@ import { compare } from 'bcrypt'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
 export const authOptions: NextAuthOptions = {
-  // debug: true,
   pages: {
     signIn: '/login',
   },
@@ -110,11 +109,10 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async signIn({ user, account, profile, credentials, email }) {
-      if (
-        account &&
-        profile &&
-        (account.provider === 'instagram' || account.provider === 'tiktok')
-      ) {
+      if (account?.provider === 'tiktok' || account?.provider === 'instagram') {
+        console.log('EL PROFILE XDD', profile)
+        console.log('EL ACCOUNT XDD', account)
+        console.log('EL USER XDD', user)
         await db.creator.upsert({
           where: {
             username_platform: {
@@ -123,23 +121,23 @@ export const authOptions: NextAuthOptions = {
             },
           },
           update: {
-            name: profile?.name,
-            username: profile?.username,
-            followersCount: profile?.followersCount,
+            name: user.name!,
+            username: profile?.username!,
+            followersCount: profile?.follower_count,
             accessToken: account?.access_token,
             refreshToken: account?.refresh_token,
             platform: account?.provider,
-            imageUrl: profile?.image,
+            imageUrl: user.image!,
             uuid: account?.providerAccountId,
           },
           create: {
-            name: profile?.name,
+            name: user.name!,
             username: profile?.username!,
-            followersCount: profile?.followersCount,
+            followersCount: profile?.follower_count,
             accessToken: account?.access_token,
             refreshToken: account?.refresh_token,
             platform: account?.provider,
-            imageUrl: profile?.image,
+            imageUrl: user.image!,
             uuid: account?.providerAccountId,
           },
         })

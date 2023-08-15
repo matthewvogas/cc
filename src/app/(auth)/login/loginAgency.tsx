@@ -9,8 +9,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 import { ptMono } from '@/app/fonts'
 import Instagram from 'next-auth/providers/instagram'
+import Link from 'next/link'
 
-export const LoginForm = () => {
+export const LoginAgency = () => {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   const callbackError = searchParams.get('error')
@@ -114,6 +115,16 @@ export const LoginForm = () => {
           <p>Log in with github</p>
         </button>
       </div> */}
+      <hr className='my-7 h-px w-full rounded-r-full bg-white opacity-50' />
+
+      <div className='flex w-full justify-between px-4'>
+        <Link href='/signup' className='text-lg '>
+          create a new account
+        </Link>
+        {/* <Link href='/signup' className='text-lg'>
+    reset your password
+  </Link> */}
+      </div>
     </div>
   )
 }

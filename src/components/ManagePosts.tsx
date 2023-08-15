@@ -162,12 +162,12 @@ export default function ManagePosts({
               <button
                 type='button'
                 onClick={() => {
-                  setActiveButton('lastest')
+                  setActiveButton('latest')
                 }}
                 className={`${
-                  activeButton == 'lastest' ? ' bg-[#e4ddd5]' : ' bg-[#F3F0EC]'
+                  activeButton == 'latest' ? ' bg-[#e4ddd5]' : ' bg-[#F3F0EC]'
                 } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-rose-200  whitespace-nowrap`}>
-                lastest
+                latest
               </button>
 
               <button
@@ -221,7 +221,7 @@ export default function ManagePosts({
         {/* filter div */}
         <div className={`py-6 bg-[#F3F0EC] rounded-xl mt-4  ${filterPosts}`}>
           <div className='flex gap-6 px-8 '>
-            <div>
+            {/* <div>
               <p className='font-medium text-base mb-2'>by creator</p>
               <button
                 onClick={() => {
@@ -237,7 +237,7 @@ export default function ManagePosts({
                 type='button'>
                 search influencers
               </button>
-            </div>
+            </div> */}
 
             <div>
               <p className='font-medium text-base mb-2'>by hashtag</p>
