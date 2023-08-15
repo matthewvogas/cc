@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { ReactNode, useState } from 'react'
 import UseThisPost from './useThisPost'
 import backArrow from 'public/assets/register/backArrow.svg'
-import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import imageCover from 'public/assets/register/examplePosts.png'
 import videoCover from 'public/assets/register/creatorImg.jpg'
 
@@ -29,7 +28,7 @@ export default function CardCarouselPost({ post, key }: Props) {
       <div className='w-full flex'>
         <div
           className={` w-80 max-w-sm overflow-visible rounded-2xl ${
-            !isVideo(post) ? 'bg-transparent' : 'bg-beigeFirst'
+            !post.mediaUrl.includes('mp4') ? 'bg-transparent' : 'bg-beigeFirst'
           } flex justify-center items-center ${ptMono.className}`}>
           <Image src={videoCover} className='w-full' alt={''} />
         </div>

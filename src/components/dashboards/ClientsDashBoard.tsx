@@ -64,7 +64,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
 
       <div className='flex flex-col gap-4 bg-white'>
         <label className='italic md:px-12' htmlFor=''>
-          {sort !== 'newest' ? 'oldest' : 'lastest'}
+          {sort !== 'newest' ? 'oldest' : 'latest'}
         </label>
         <div className='flex gap-4 md:px-12 overflow-x-auto'>
           {(sort !== 'newest'

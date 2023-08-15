@@ -2,7 +2,6 @@
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/TopPost.jpg'
-import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import Link from 'next/link'
 import { Post } from '@/types/campaign/campaignRes'
 import { useState } from 'react'

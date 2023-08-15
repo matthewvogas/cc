@@ -156,11 +156,11 @@ export default function ButtonsGroupTabs2({
             {/* panel 3  */}
             <Tab.Panel>
               {/* tiktok handler */}
-              <div className='mt-8'>
+              {/* <div className='mt-8'>
                 {tiktokPosts.length !== 0 && (
                   <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
                 )}
-              </div>
+              </div> */}
 
               <ManagePosts
                 addPost={addPost}

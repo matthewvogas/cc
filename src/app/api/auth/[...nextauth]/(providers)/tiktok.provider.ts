@@ -1,3 +1,5 @@
+import S3Service from '@/lib/S3Service'
+import { S3 } from '@aws-sdk/client-s3'
 import { TokenSet } from 'next-auth'
 import { OAuthConfig, OAuthUserConfig } from 'next-auth/providers'
 
@@ -80,18 +82,35 @@ export default function Tiktok<P extends TiktokProfile>(
       },
     },
     userinfo: {
-      url: 'https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username',
+      url: 'https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username,follower_count',
       async request({ client, provider, tokens }) {
         const res: any = await client.userinfo(tokens.access_token!)
+        console.log(tokens)
+        if (res.data.user.avatar_url) {
+          const avatar = await fetch(res.data.user.avatar_url).then(res =>
+            res.blob(),
+          )
+          const url = await S3Service.uploadObject(
+            avatar,
+            res.data.user.open_id,
+            'tiktok',
+            'creators',
+          )
+          res.data.user.avatar_url = url
+        }
         return res.data.user
       },
     },
-    profile(profile) {
+    async profile(profile) {
+      console.log('EL PROFILE WTFFFF', profile)
       return {
         id: profile.open_id,
         name: profile.display_name,
-        image: profile.avatar_url,
+        image: profile.avatar_url || null,
         email: profile.email || null,
+        // followersCount: profile.follower_count,
+        // username: profile.username,
+        // platform: 'tiktok',
       }
     },
     options,

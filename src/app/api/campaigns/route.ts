@@ -3,8 +3,6 @@ import { NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { CampaignsService } from '@/services/CampaignsService'
 import db from '@/lib/db'
-import { Post } from '@prisma/client'
-import { isMp4 } from '@/utils/ValidationsHelper'
 
 export async function GET() {
   try {

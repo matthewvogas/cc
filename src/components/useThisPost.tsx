@@ -1,7 +1,6 @@
 'use client'
 
 import { PT_Mono } from 'next/font/google'
-import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/creatorImg.jpg'

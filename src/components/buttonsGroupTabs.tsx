@@ -17,7 +17,6 @@ import SinglePlatform from './stats/singlePlatform'
 import CampaignSocialStat from './stats/CampaignSocialStat'
 import DashboardCampaign from './campaignDashboard'
 import ClientStat from './clientStat'
-import { isMp4, isVideo } from '@/utils/ValidationsHelper'
 
 const Tabs = ({ posts }: any) => {
   const [openTab, setOpenTab] = React.useState(1)
@@ -106,7 +105,7 @@ const Tabs = ({ posts }: any) => {
                         <div
                           key={index}
                           className={`h-fit w-80 max-w-sm overflow-hidden rounded-2xl bg-cardBackground ${ptMono.className}`}>
-                          {!isVideo(card) && (
+                          {!card.mediaUrl.includes('.mp4') && (
                             <Image
                               priority
                               className={`h-64 rounded-2xl object-cover`}
@@ -118,7 +117,7 @@ const Tabs = ({ posts }: any) => {
                               style={{ width: '100%', height: 'auto' }}
                             />
                           )}
-                          {isVideo(card) && (
+                          {card.mediaUrl.includes('.mp4') && (
                             <video className={`rounded-2xl `} controls>
                               <source src={card.videoUrl} type='video/mp4' />
                             </video>

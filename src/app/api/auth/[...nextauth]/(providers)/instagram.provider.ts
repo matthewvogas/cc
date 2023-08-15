@@ -1,3 +1,4 @@
+import S3Service from '@/lib/S3Service'
 import { TokenSet } from 'next-auth'
 import { OAuthConfig, OAuthUserConfig } from 'next-auth/providers'
 import { FacebookProfile } from 'next-auth/providers/facebook'
@@ -50,12 +51,25 @@ export default function Instagram<P extends FacebookProfile>(
           `https://graph.facebook.com/v17.0/${id}/?fields=username,profile_picture_url,followers_count&access_token=${tokens.access_token}`,
         ).then(res => res.json())
 
+        let avatar_url = res.picture?.data.url
+        const instagramProfilePic = await fetch(
+          instagramRes.profile_picture_url,
+        ).then(res => res.blob())
+        const url = await S3Service.uploadObject(
+          instagramProfilePic,
+          id,
+          'instagram',
+          'creators',
+        )
+        avatar_url = url
+        // console.log(res)
+        // console.log(tokens)
         return {
           name: res.name ?? null,
-          image: res.picture?.data.url ?? null,
+          image: avatar_url ?? null,
           id: id ?? null,
           username: instagramRes?.username ?? null,
-          followersCount: instagramRes?.followers_count ?? null,
+          follower_count: instagramRes?.followers_count ?? null,
           email: res.email ?? null,
         }
       },

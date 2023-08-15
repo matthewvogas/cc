@@ -75,7 +75,7 @@ export default function CampaignsDashBoard({
 
       <div className='flex flex-col gap-4 bg-white pt-12'>
         <label className='italic md:px-12' htmlFor=''>
-          {sort !== 'newest' ? 'oldest' : 'lastest'}
+          {sort !== 'newest' ? 'oldest' : 'latest'}
         </label>
         <div className='flex flex-wrap gap-6 md:px-12'>
           {(sort !== 'newest'
