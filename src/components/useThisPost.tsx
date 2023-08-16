@@ -94,7 +94,10 @@ export default function UseThisPost({ post }: Props) {
                   <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-base'>
                     @{post?.creator?.username}
                   </h4>
-                  <span className=' inline-flex h-6 w-full rounded text-center text-sm text-gray-500 '>
+
+                  {/* followers */}
+
+                  {/* <span className=' inline-flex h-6 w-full rounded text-center text-sm text-gray-500 '>
                     <svg
                       fill='none'
                       stroke='currentColor'
@@ -108,18 +111,22 @@ export default function UseThisPost({ post }: Props) {
                       />
                     </svg>
                     {post?.creator?.followersCount} followers
-                  </span>
-                  <div className='flex-grow border-t border-gray-200 pb-2'></div>
+                  </span> */}
+
+                  {/* divider */}
+                  {/* <div className='flex-grow border-t border-gray-200 pb-2'></div> */}
                 </div>
                 <div className='flex flex-col px-6 pb-2'>
-                  <div>
+                  {/* post data */}
+
+                  {/* <div>
                     <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
                       Comments: {post?.commentsCount}
                     </span>
                     <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
                       Likes: {post?.likesCount}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

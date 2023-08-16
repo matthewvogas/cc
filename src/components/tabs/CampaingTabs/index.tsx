@@ -23,17 +23,6 @@ import TikTokNotAccountConnected from '@/components/tiktokNotAccountsConnected'
 import { Posts } from '@/types/posts/PostByCampaignRes'
 import ButtonsGroupTabs2 from '@/components/socialPostsPlatform'
 
-// type campaignWithStats = Campaign & {
-//   posts: Post[]
-//   stats: {
-//     postCount: number
-//     creatorsCount: number
-//     engagement: {
-//       likes: number
-//       comments: number
-//     }
-//   }
-// }
 export default function CampaingTabs({
   campaign,
   creators,
@@ -345,9 +334,9 @@ export default function CampaingTabs({
                       id={campaign.id!}
                       addPost={setIsOpen}
                       shared={false}
-                      title={''}
                       tags={tags}
                       setTags={setTags}
+                      creators={creators}
                       creatorsSelecteds={creatorsSelecteds}
                       setCreatorsSelecteds={setCreatorsSelecteds}
                       activePlatforms={activePlatforms}

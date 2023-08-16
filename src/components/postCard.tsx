@@ -56,10 +56,16 @@ export default function PostCard({ post }: { post: Post }) {
             {post.creator?.platform == 'tiktok' && (
               <Image src={TikToksLogo} className='w-[22px] h-[22px]' alt='' />
             )}
-            @{post.creator?.username || 'username'}
+            <span className='truncate'>
+              {' '}
+              @{post.creator?.username || 'username'}{' '}
+            </span>
           </div>
         </h4>
-        <span className=' inline-flex h-6 w-full rounded text-center text-[10px] lg:text-sm text-gray-500 '>
+
+        {/* followers */}
+
+        {/* <span className=' inline-flex h-6 w-full rounded text-center text-[10px] lg:text-sm text-gray-500 '>
           <svg
             fill='none'
             stroke='currentColor'
@@ -73,18 +79,20 @@ export default function PostCard({ post }: { post: Post }) {
             />
           </svg>
           {post.creator?.followersCount || 0} followers
-        </span>
+        </span> */}
         <div className='flex-grow border-t border-gray-200 pb-2'></div>
       </div>
       <div className='flex flex-col px-6 pb-2'>
-        <div>
+        {/* Posts data */}
+
+        {/* <div>
           <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
             Comments: {post.commentsCount}
           </span>
           <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
             Likes: {post.likesCount}
           </span>
-        </div>
+        </div> */}
         <div className='dropdown-end dropdown cursor-pointer '>
           <div className='flex justify-end outline-none'>
             <svg

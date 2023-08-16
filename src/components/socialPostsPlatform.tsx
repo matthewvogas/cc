@@ -11,9 +11,9 @@ type Props = {
   readonly id: number
   readonly addPost: any
   readonly shared: boolean
-  readonly title: string
   readonly tags: string[]
   readonly setTags: React.Dispatch<React.SetStateAction<string[]>>
+  readonly creators: any[]
   readonly creatorsSelecteds: any[]
   readonly setCreatorsSelecteds: any
   readonly activePlatforms: any[]
@@ -27,9 +27,9 @@ export default function ButtonsGroupTabs2({
   id,
   addPost,
   shared,
-  title,
   tags,
   setTags,
+  creators,
   creatorsSelecteds,
   setCreatorsSelecteds,
   activePlatforms,
@@ -92,9 +92,9 @@ export default function ButtonsGroupTabs2({
               <ManagePosts
                 addPost={addPost}
                 shared={shared}
-                title={title}
                 tags={tags}
                 setTags={setTags}
+                creators={creators}
                 creatorsSelecteds={creatorsSelecteds}
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
@@ -125,9 +125,9 @@ export default function ButtonsGroupTabs2({
               <ManagePosts
                 addPost={addPost}
                 shared={shared}
-                title={title}
                 tags={tags}
                 setTags={setTags}
+                creators={creators}
                 creatorsSelecteds={creatorsSelecteds}
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
@@ -165,9 +165,9 @@ export default function ButtonsGroupTabs2({
               <ManagePosts
                 addPost={addPost}
                 shared={shared}
-                title={title}
                 tags={tags}
                 setTags={setTags}
+                creators={creators}
                 creatorsSelecteds={creatorsSelecteds}
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}

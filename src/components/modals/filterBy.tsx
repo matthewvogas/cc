@@ -5,32 +5,30 @@ import TagsInput from '../TagsInput'
 
 export default function FilterBy(props: {
   type: string
+  creators: any
+  creatorsSelecteds: any
   setCreatorsSelecteds: any
   tags: string[]
   setTags: React.Dispatch<React.SetStateAction<string[]>>
-  handleDisplay: any
+  handleDialog: any
 }) {
-  const [creator, setCreators] = React.useState([
-    { id: 1, username: 'ma', creatorName: 'Creator', selected: false },
-    { id: 2, username: 'cr', creatorName: 'Creator 2', selected: false },
-    { id: 3, username: 'sa', creatorName: 'Creator 3', selected: false },
-  ])
-
   const [searchValue, setSearchValue] = React.useState('')
 
-  const handleClick = (id: number) => {
-    setCreators(prevCreators =>
-      prevCreators.map(creator => {
-        if (creator.id === id) {
-          return { ...creator, selected: !creator.selected }
-        }
-        return creator
-      }),
-    )
+  const handleClick = (creator: any) => {
+    props.setCreatorsSelecteds((prevSelectedIds: any) => {
+      if (prevSelectedIds.includes(creator.id)) {
+        return prevSelectedIds.filter(
+          (selectedId: any) => selectedId !== creator.id,
+        )
+      } else {
+        return [...prevSelectedIds, creator]
+      }
+    })
   }
 
-  const searchedCreators = creator.filter(creatorKey =>
-    creatorKey.username.toLowerCase().includes(searchValue.toLowerCase()),
+  const searchedCreators = props.creators.filter(
+    (creatorKey: { username: string }) =>
+      creatorKey.username.toLowerCase().includes(searchValue.toLowerCase()),
   )
 
   const manageType = (key: any) => {
@@ -52,13 +50,16 @@ export default function FilterBy(props: {
             </p>
 
             <div className='flex flex-wrap  gap-2'>
-              {searchedCreators.map(creator => (
+              {searchedCreators.map((creator: any) => (
                 <div
                   className={`flex w-auto flex-col rounded-lg bg-beigeSelected px-8 py-2 ${
                     creator.selected ? 'active-border' : ''
                   }`}
                   key={creator.username}
-                  onClick={() => handleClick(creator.id)}
+                  onClick={() => {
+                    handleClick(creator)
+                    console.log(creator.id)
+                  }}
                   style={{
                     background: creator.selected ? '#F6EDEA' : '#F8F7F4',
                   }}>
@@ -75,10 +76,10 @@ export default function FilterBy(props: {
                 className='rounded-full bg-green-100 px-6 py-2'
                 onClick={() => {
                   const selectedCreators = searchedCreators.filter(
-                    creator => creator.selected,
+                    (creator: any) => creator.selected,
                   )
                   props.setCreatorsSelecteds(selectedCreators)
-                  props.handleDisplay()
+                  props.handleDialog(false)
                 }}>
                 filter creators
               </button>
@@ -94,7 +95,7 @@ export default function FilterBy(props: {
             <div className='text-right'>
               <button
                 onClick={() => {
-                  props.handleDisplay()
+                  props.handleDialog(false)
                 }}
                 className='rounded-full bg-green-100 px-6 py-2 '>
                 filter hashtags
