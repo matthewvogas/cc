@@ -14,9 +14,9 @@ export interface Props {
   readonly id: number
   readonly addPost: any
   readonly shared: boolean
-  readonly title: string
   readonly tags: string[]
   readonly setTags: React.Dispatch<React.SetStateAction<string[]>>
+  readonly creators: any[]
   readonly creatorsSelecteds: any[]
   readonly setCreatorsSelecteds: any
   readonly activePlatforms: any[]
@@ -30,9 +30,9 @@ export default function ManagePosts({
   id,
   addPost,
   shared,
-  title,
   tags,
   setTags,
+  creators,
   creatorsSelecteds,
   setCreatorsSelecteds,
   activePlatforms,
@@ -41,7 +41,7 @@ export default function ManagePosts({
   setActiveButton,
   mostView,
 }: Props) {
-  const [openDialog, handleDisplay] = React.useState(false)
+  const [openDialog, handleDialog] = React.useState(false)
   const [titleCampaign, setTitleCampaign] = React.useState('')
   const [filterPosts, setFilterPosts] = React.useState('hidden')
 
@@ -76,14 +76,14 @@ export default function ManagePosts({
   }
 
   const handleClose = () => {
-    handleDisplay(false)
+    handleDialog(false)
   }
 
   const openDialogBoxCreator = () => {
-    handleDisplay(true)
+    handleDialog(true)
   }
   const openDialogBoxHashtag = () => {
-    handleDisplay(true)
+    handleDialog(true)
   }
 
   const manageType = (key: any) => {
@@ -96,10 +96,12 @@ export default function ManagePosts({
             </Dialog.Title>
             <FilterBy
               type={'creator'}
+              creators={creators}
+              creatorsSelecteds={creatorsSelecteds}
               setCreatorsSelecteds={setCreatorsSelecteds}
               setTags={setTags}
               tags={tags}
-              handleDisplay={handleClose}
+              handleDialog={handleDialog}
             />
           </Dialog.Panel>
         )
@@ -111,10 +113,12 @@ export default function ManagePosts({
             </Dialog.Title>
             <FilterBy
               type={'hashtag'}
+              creators={creators}
+              creatorsSelecteds={creatorsSelecteds}
               setCreatorsSelecteds={[]}
               setTags={setTags}
               tags={tags}
-              handleDisplay={handleClose}
+              handleDialog={handleDialog}
             />
           </Dialog.Panel>
         )
@@ -126,10 +130,10 @@ export default function ManagePosts({
   return (
     <>
       <div className=' my-0 md:my-4 mb-5 w-full px-6 md:px-12 '>
-        <h3 className='mb-4 mt-16 text-lg font-bold'>{title}</h3>
+        {/* <h3 className='mb-4 mt-16 text-lg font-bold'>{title}</h3> */}
         <div className='flex justify-between '>
-          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden'>
-            <div className='flex gap-4'>
+          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4'>
+            {/* <div className='flex gap-4'>
               <button
                 type='button'
                 onClick={() => {
@@ -182,7 +186,7 @@ export default function ManagePosts({
                 } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                 top performing 🥥
               </button>
-            </div>
+            </div> */}
             {shared != true && (
               <div className='flex gap-4 justify-end'>
                 <button
@@ -221,7 +225,7 @@ export default function ManagePosts({
         {/* filter div */}
         <div className={`py-6 bg-[#F3F0EC] rounded-xl mt-4  ${filterPosts}`}>
           <div className='flex gap-6 px-8 '>
-            {/* <div>
+            <div>
               <p className='font-medium text-base mb-2'>by creator</p>
               <button
                 onClick={() => {
@@ -237,7 +241,7 @@ export default function ManagePosts({
                 type='button'>
                 search influencers
               </button>
-            </div> */}
+            </div>
 
             <div>
               <p className='font-medium text-base mb-2'>by hashtag</p>
