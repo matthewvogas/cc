@@ -14,10 +14,7 @@ export default async function shareCampaign({
   params: { id: number }
 }) {
   const { id } = params
-
-  const session = await getServerSession(authOptions)
-  const creators = (await CreatorsService.findMany(
-    session!.user.id,
+  const creators = (await CreatorsService.findByCampaignId(id
   )) as CreatorsByCampaignRes[]
 
   const campaign = (await CampaignsService.findUnique(id)) as CampaignRes
@@ -29,7 +26,8 @@ export default async function shareCampaign({
         <SharedCampaign
           campaign={campaign}
           posts={posts}
-          creators={creators}></SharedCampaign>
+          creators={creators}
+          ></SharedCampaign>
       ) : (
         <div className='flex justify-center items-center h-screen bg-[#F3F0EC]'>
           <h3 className='text-lg px-6 py-3  bg-[#8a7356] text-white shadow-xl  rounded-xl'>
