@@ -49,16 +49,15 @@ export default function FilterBy(props: {
               Select creators below to view only their posts
             </p>
 
-            <div className='flex flex-wrap  gap-2'>
+            <div className='flex flex-wrap gap-2 h-48 md:BUSINESS_TOKEN_DEWIh-auto justify-center md:justify-start overflow-scroll'>
               {searchedCreators.map((creator: any) => (
                 <div
-                  className={`flex w-auto flex-col rounded-lg bg-beigeSelected px-8 py-2 ${
+                  className={`flex w-full md:w-auto h-[42px] flex-col rounded-lg bg-beigeSelected px-8 py-2 ${
                     creator.selected ? 'active-border' : ''
                   }`}
                   key={creator.username}
                   onClick={() => {
                     handleClick(creator)
-                    console.log(creator.id)
                   }}
                   style={{
                     background: creator.selected ? '#F6EDEA' : '#F8F7F4',
@@ -78,7 +77,6 @@ export default function FilterBy(props: {
                   const selectedCreators = searchedCreators.filter(
                     (creator: any) => creator.selected,
                   )
-                  props.setCreatorsSelecteds(selectedCreators)
                   props.handleDialog(false)
                 }}>
                 filter creators

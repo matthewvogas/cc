@@ -28,35 +28,38 @@ export default function PostCard({ post }: { post: Post }) {
 
   return (
     <div
-      className={`h-fit w-40 lg:w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
-      {!post.imageUrl && post?.mediaUrl?.includes('.mp4') && (
-        <video className={`rounded-2xl `} controls>
-          <source src={post?.mediaUrl} type='video/mp4' />
-        </video>
-      )}
+      className={`h-fit w-auto max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
       {post.imageUrl && (
         <Image
           priority
-          className={`h-64 rounded-2xl object-cover`}
+          className={`h-60 md:h-80 rounded-2xl object-cover`}
           src={post.imageUrl || imageCover}
           alt='background'
           width={0}
           height={0}
           sizes='100vw'
-          style={{ width: '100%', height: 'auto' }}
+          style={{ width: '100%' }}
         />
       )}
       <div className='px-6 pt-6'>
-        <h4 className=' mb-2 rounded-xl bg-cardRose px-4 py-3 text-[10px] lg:text-base'>
-          <div className='flex gap-2 items-center'>
+        <h4 className=' mb-2 rounded-xl bg-cardRose px-3 py-2 md:px-4 md:py-3 text-[10px] lg:text-base'>
+          <div className='flex gap-1 md:gap-2 items-center'>
             {/* svg de la red social */}
             {post.creator?.platform == 'instagram' && (
-              <Image src={InstagramLogo} className='w-[22px] h-[22px]' alt='' />
+              <Image
+                src={InstagramLogo}
+                className='w-[16px] h-[16px] md:w-[22px] md:h-[22px]'
+                alt=''
+              />
             )}
             {post.creator?.platform == 'tiktok' && (
-              <Image src={TikToksLogo} className='w-[22px] h-[22px]' alt='' />
+              <Image
+                src={TikToksLogo}
+                className='w-[16px] h-[16px] md:w-[22px] md:h-[22px]'
+                alt=''
+              />
             )}
-            <span className='truncate'>
+            <span className='truncate text-sm lg:text-lg'>
               {' '}
               @{post.creator?.username || 'username'}{' '}
             </span>
