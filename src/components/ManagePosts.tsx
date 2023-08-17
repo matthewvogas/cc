@@ -23,7 +23,6 @@ export interface Props {
   readonly setActivePlatforms: any
   readonly activeButton: any
   readonly setActiveButton: any
-  readonly mostView: string
 }
 
 export default function ManagePosts({
@@ -39,7 +38,6 @@ export default function ManagePosts({
   setActivePlatforms,
   activeButton,
   setActiveButton,
-  mostView,
 }: Props) {
   const [openDialog, handleDialog] = React.useState(false)
   const [titleCampaign, setTitleCampaign] = React.useState('')
@@ -133,7 +131,7 @@ export default function ManagePosts({
         {/* <h3 className='mb-4 mt-16 text-lg font-bold'>{title}</h3> */}
         <div className='flex justify-between '>
           <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4'>
-            {/* <div className='flex gap-4'>
+            <div className='flex gap-4'>
               <button
                 type='button'
                 onClick={() => {
@@ -152,7 +150,7 @@ export default function ManagePosts({
                 />
               </button>
 
-              <button
+              {/* <button
                 type='button'
                 onClick={() => {
                   setActiveButton('most')
@@ -161,9 +159,9 @@ export default function ManagePosts({
                   activeButton == 'most' ? ' bg-[#e4ddd5]' : ' bg-[#F3F0EC]'
                 } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-rose-200  whitespace-nowrap`}>
                 most viewed
-              </button>
+              </button> */}
 
-              <button
+              {/* <button
                 type='button'
                 onClick={() => {
                   setActiveButton('latest')
@@ -172,9 +170,9 @@ export default function ManagePosts({
                   activeButton == 'latest' ? ' bg-[#e4ddd5]' : ' bg-[#F3F0EC]'
                 } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-rose-200  whitespace-nowrap`}>
                 latest
-              </button>
+              </button> */}
 
-              <button
+              {/* <button
                 type='button'
                 onClick={() => {
                   setActiveButton('topPerforming')
@@ -185,15 +183,16 @@ export default function ManagePosts({
                     : 'bg-[#EBF6F6]'
                 } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                 top performing 🥥
-              </button>
-            </div> */}
+              </button> */}
+            </div>
+
             {shared != true && (
               <div className='flex gap-4 justify-end'>
                 <button
                   onClick={() => {
                     // addPost(true)
                   }}
-                  className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                  className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
                   refresh data
                 </button>
 
@@ -201,7 +200,7 @@ export default function ManagePosts({
                   onClick={() => {
                     addPost(true)
                   }}
-                  className={` flex items-center rounded-full bg-active px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                  className={` flex items-center rounded-full bg-active px-8 min-w-max max-h-6 min-h-[52px] py-3 text-lg text-black ${ptMono.className}`}>
                   add a post
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -243,7 +242,7 @@ export default function ManagePosts({
               </button>
             </div>
 
-            <div>
+            {/* <div>
               <p className='font-medium text-base mb-2'>by hashtag</p>
               <button
                 onClick={() => {
@@ -259,7 +258,7 @@ export default function ManagePosts({
                 type='button'>
                 search hastags
               </button>
-            </div>
+            </div> */}
           </div>
 
           <div>
@@ -353,7 +352,7 @@ export default function ManagePosts({
                 tags={tags}
                 creatorsSelecteds={creatorsSelecteds}
                 activePlatforms={activePlatforms}
-                mostView={mostView}
+                mostView={activeButton}
               />
             )}
           </div>

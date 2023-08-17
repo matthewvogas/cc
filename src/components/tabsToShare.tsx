@@ -2,12 +2,12 @@
 import React from 'react'
 import Image from 'next/image'
 import prev from 'public/assets/register/GridExample.jpg'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
+
 import FeatureNotImplemented from './ui/featureNotImplemented'
 import Link from 'next/link'
 
 // Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 // Style Variables
 const ActionButtonStyle =

@@ -6,6 +6,9 @@ import TikTokNotAccountConnected from './tiktokNotAccountsConnected'
 import ManagePosts from './ManagePosts'
 
 type Props = {
+  readonly filteredPosts: any
+  readonly activeSocial: any
+  readonly setActiveSocial: any
   readonly tiktokPosts: any
   readonly campaign: any
   readonly id: number
@@ -21,7 +24,10 @@ type Props = {
   readonly activeButton: any
   readonly setActiveButton: any
 }
-export default function ButtonsGroupTabs2({
+export default function ButtonsGroupTabsSocial({
+  filteredPosts,
+  activeSocial,
+  setActiveSocial,
   tiktokPosts,
   campaign,
   id,
@@ -37,22 +43,6 @@ export default function ButtonsGroupTabs2({
   activeButton,
   setActiveButton,
 }: Props) {
-  const [activeTab, setActiveTab] = useState('All')
-
-  const filteredPosts = campaign?.posts?.filter((post: { platform: any }) => {
-    const allowedPlatforms =
-      activeTab === 'Instagram'
-        ? ['instagram']
-        : activeTab === 'TikTok'
-        ? ['tiktok']
-        : ['tiktok', 'instagram']
-    return allowedPlatforms.includes(post.platform)
-  })
-
-  const handleTabChange = (tabName: string) => {
-    setActiveTab(tabName) // Actualizar el tab activo al cambiar de tab
-  }
-
   return (
     <>
       <div className=''>
@@ -60,29 +50,29 @@ export default function ButtonsGroupTabs2({
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b`}>
             <Tab
               className={` ml-12 p-2 text-base font-medium outline-none ${
-                activeTab === 'All'
+                activeSocial === 'All'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
-              onClick={() => handleTabChange('All')}>
+              onClick={() => setActiveSocial('All')}>
               All posts
             </Tab>
             <Tab
               className={`p-2 text-base font-medium outline-none ${
-                activeTab === 'Instagram'
+                activeSocial === 'Instagram'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
-              onClick={() => handleTabChange('Instagram')}>
+              onClick={() => setActiveSocial('Instagram')}>
               Instagram
             </Tab>
             <Tab
               className={`p-2 text-base font-medium outline-none ${
-                activeTab === 'TikTok'
+                activeSocial === 'TikTok'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
-              onClick={() => handleTabChange('TikTok')}>
+              onClick={() => setActiveSocial('TikTok')}>
               TikTok
             </Tab>
           </Tab.List>
@@ -102,18 +92,17 @@ export default function ButtonsGroupTabs2({
                 id={campaign.id!}
                 activeButton={activeButton}
                 setActiveButton={setActiveButton}
-                mostView={activeButton}
               />
 
               <div className='pt-6'>
-                <div className='mx-6 lg:ml-12 justify-start flex flex-wrap gap-x-4 lg:gap-x-6 gap-y-8 pb-32'>
+                <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
                   {campaign?.posts?.length === 0 && (
-                    <>
+                    <div className='col-span-4 md:col-span-2'>
                       <h1>{`Seems like you dont have posts! :(`}</h1>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
@@ -135,19 +124,17 @@ export default function ButtonsGroupTabs2({
                 id={campaign.id!}
                 activeButton={activeButton}
                 setActiveButton={setActiveButton}
-                mostView={activeButton}
               />
 
               <div className='pt-6'>
-                <div className='mx-6 lg:ml-12 justify-start flex flex-wrap gap-x-4 lg:gap-x-6 gap-y-8 pb-32'>
+                <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
-
                   {campaign?.posts?.length === 0 && (
-                    <>
+                    <div className='col-span-4 md:col-span-2'>
                       <h1>{`Seems like you dont have posts! :(`}</h1>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
@@ -175,18 +162,17 @@ export default function ButtonsGroupTabs2({
                 id={campaign.id!}
                 activeButton={activeButton}
                 setActiveButton={setActiveButton}
-                mostView={activeButton}
               />
 
               <div className='pt-6'>
-                <div className='mx-6 lg:ml-12 justify-start flex flex-wrap gap-x-4 lg:gap-x-6 gap-y-8 pb-32'>
+                <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
                   {campaign?.posts?.length === 0 && (
-                    <>
+                    <div className='col-span-4 md:col-span-2'>
                       <h1>{`Seems like you dont have posts! :(`}</h1>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
