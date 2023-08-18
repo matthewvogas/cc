@@ -1,13 +1,12 @@
 'use client'
 
-import OverviewCampaignPublic from '@/components/overviewCampaignPublic'
-import { CampaignRes } from '@/types/campaign/campaignRes'
 import React from 'react'
-import { Posts } from '@/types/posts/PostByCampaignRes'
-import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import { useEffect, useState } from 'react'
-
-import ButtonsGroupTabs2 from '@/components/socialPostsPlatform'
+import { Posts } from '@/types/posts/PostByCampaignRes'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import OverviewCampaignPublic from '@/components/overviewCampaignPublic'
+import ButtonsGroupTabsSocial from '@/components/socialPostsPlatform'
+import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 
 export function SharedCampaign({
   campaign,
@@ -19,17 +18,29 @@ export function SharedCampaign({
   creators: CreatorsByCampaignRes[]
 }) {
   const [tags, setTags] = useState<string[]>([])
+
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
 
   const tiktokPosts = posts.filter(post => post.platform === 'tiktok')
+  const [activeSocial, setActiveTab] = useState('All')
   const filteredPosts = campaign?.posts?.filter(post => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
+    const allowedPlatforms =
+      activeSocial === 'Instagram'
+        ? ['instagram']
+        : activeSocial === 'TikTok'
+        ? ['tiktok']
+        : ['tiktok', 'instagram']
+
     if (
+      allowedPlatforms.includes(post.platform || '') &&
       (!isFilterActive || (isFilterActive && isInstagramActive)) &&
+      (creatorsSelecteds.length === 0 ||
+        creatorsSelecteds.some(creator => creator.id == post.creator?.id)) &&
       (tags.length === 0 ||
         post.caption?.split(' ').some(tag => tags.includes(tag)))
     ) {
@@ -46,6 +57,7 @@ export function SharedCampaign({
         return true
       }
     }
+
     return false
   })
 
@@ -61,7 +73,10 @@ export function SharedCampaign({
           plays={campaign?.stats?.playsCount || 0}
         /> */}
 
-        <ButtonsGroupTabs2
+        <ButtonsGroupTabsSocial
+          filteredPosts={filteredPosts}
+          activeSocial={activeSocial}
+          setActiveSocial={setActiveTab}
           campaign={campaign}
           tiktokPosts={tiktokPosts}
           id={campaign.id!}

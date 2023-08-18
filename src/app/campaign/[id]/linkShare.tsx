@@ -35,11 +35,14 @@ export const RedirectLink = (props: {
 
   return (
     <>
-      <button
+      {/* button to share view */}
+
+      {/* <button
         onClick={() => setIsOpen(true)}
         className='rounded-full text-sm border border-black px-8 py-3 md:text-base hover:bg-black hover:text-white'>
         share this view
-      </button>
+      </button> */}
+
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}

@@ -21,7 +21,7 @@ export function excelToJson(excelFile: File): Promise<any> {
         blankrows: false,
         raw: false,
       })
-      const links = jsonData.map((row: any) => row.links)
+      const links = jsonData.map((row: any) => row.links || row.Links)
       resolve(links)
     }
     reader.onerror = event => {

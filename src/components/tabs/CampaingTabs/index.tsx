@@ -1,27 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import { SetStateAction, useState } from 'react'
+import Image from 'next/image'
+import { ptMono } from '@/app/fonts'
 import { Tab } from '@headlessui/react'
+import { excelToJson } from '@/lib/Utils'
 import { Dialog } from '@headlessui/react'
 import TopPost from '@/components/topPost'
 import { useRouter } from 'next/navigation'
-import Spinner from '@/components/ui/spinner'
 import PostCard from '@/components/postCard'
+import Spinner from '@/components/ui/spinner'
+import TagsInput from '@/components/TagsInput'
+import { SetStateAction, useState } from 'react'
 import CreatorRow from '@/components/creatorRow'
-import { excelToJson } from '@/lib/Utils'
 import SettingsTab from '@/components/settingsTab'
 import TabsToShare from '@/components/tabsToShare'
-import OverviewCampaign from '@/components/overviewCampaign'
-import { ptMono } from '@/app/fonts'
-import { CampaignRes } from '@/types/campaign/campaignRes'
-import TagsInput from '@/components/TagsInput'
-import Image from 'next/image'
-import modalCover from 'public/assets/register/addpostToTrack.jpg'
-import FilterCreators from '@/components/filtersCreators'
-import TikTokNotAccountConnected from '@/components/tiktokNotAccountsConnected'
 import { Posts } from '@/types/posts/PostByCampaignRes'
-import ButtonsGroupTabs2 from '@/components/socialPostsPlatform'
+import FilterCreators from '@/components/filtersCreators'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import OverviewCampaign from '@/components/overviewCampaign'
+import modalCover from 'public/assets/register/addpostToTrack.jpg'
+import ButtonsGroupTabsSocial from '@/components/socialPostsPlatform'
+import TikTokNotAccountConnected from '@/components/tiktokNotAccountsConnected'
 
 export default function CampaingTabs({
   campaign,
@@ -36,18 +36,13 @@ export default function CampaingTabs({
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [openTab, setOpenTab] = useState(1)
-  // const [creators, setCreators] = useState(campaign?.stats?.creatorsCount || 0)
-  // const [audience, setAudience] = useState(
-  //   campaign?.stats?.engagement?.likes +
-  //     campaign?.stats?.engagement?.comments || 0,
-  // )
+
   const [loading, setLoading] = useState(false)
-  // const [content, setContent] = useState(campaign.stats?.postCount)
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [links, setLinks] = useState<string>('')
 
   const [tags, setTags] = useState<string[]>([])
-  const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
+  const [creatorsSelecteds, setCreatorsSelecteds] = useState<Posts[]>([])
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
 
@@ -77,24 +72,38 @@ export default function CampaingTabs({
     selectedCampaign: selectedCampaign,
   }
 
-  const filteredPosts = campaign?.posts?.filter(post => {
-    if (!post.caption) return false
+  const [activeSocial, setActiveTab] = useState('All')
 
+  const filteredPosts = campaign?.posts?.filter(post => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
-    if (!isFilterActive || (isFilterActive && isInstagramActive)) {
-      const postTags = post.caption.split(' ')
-      const filteredTags = tags.filter(tag => postTags.includes(tag))
+    const allowedPlatforms =
+      activeSocial === 'Instagram'
+        ? ['instagram']
+        : activeSocial === 'TikTok'
+        ? ['tiktok']
+        : ['tiktok', 'instagram']
 
-      if (tags.length === 0 || filteredTags.length > 0) {
-        if (activeButton === 'most') {
-          if (post.impressionsCount && post.impressionsCount > 0) {
-            return true
-          }
-        } else {
+    if (
+      allowedPlatforms.includes(post.platform || '') &&
+      (!isFilterActive || (isFilterActive && isInstagramActive)) &&
+      (creatorsSelecteds.length === 0 ||
+        creatorsSelecteds.some(creator => creator.id == post.creator?.id)) &&
+      (tags.length === 0 ||
+        post.caption?.split(' ').some(tag => tags.includes(tag)))
+    ) {
+      if (activeButton === 'most') {
+        if (post.reachCount && post.reachCount > 0) {
           return true
         }
+      } else if (activeButton === 'topPerforming') {
+        if (post.engagementCount && post.reachCount && post.reachCount > 0) {
+          const ratio = (post.engagementCount / post.reachCount) * 100
+          return ratio > 0
+        }
+      } else {
+        return true
       }
     }
 
@@ -196,36 +205,8 @@ export default function CampaingTabs({
     e.preventDefault()
     setLoading(true)
     setFetchError(null)
-    // console.log('si aca falta')
     setLoading(false)
   }
-
-  const openCreateCard = () => {
-    // addPost(true)
-  }
-
-  const unconnectedTikTokLinks = [
-    {
-      username: '@stmbind',
-      link: 'https://www.tiktok.com/embello_inc/1',
-      creatorEmail: 'creator@mail.com',
-    },
-    {
-      username: '@hello',
-      link: 'https://www.tiktok.com/embello_inc/2',
-      creatorEmail: 'creator@mail.com',
-    },
-    {
-      username: '@sophia',
-      link: 'https://www.tiktok.com/embello_inc/3',
-      creatorEmail: 'creator@mail.com',
-    },
-    {
-      username: '@blackandwhite',
-      link: 'https://www.tiktok.com/embello_inc/4',
-      creatorEmail: 'creator@mail.com',
-    },
-  ]
 
   return (
     <>
@@ -328,7 +309,11 @@ export default function CampaingTabs({
                       plays={campaign?.stats?.playsCount || 0}
                     />
 
-                    <ButtonsGroupTabs2
+                    <ButtonsGroupTabsSocial
+                      setActiveButton={setActiveButton}
+                      filteredPosts={filteredPosts}
+                      activeSocial={activeSocial}
+                      setActiveSocial={setActiveTab}
                       campaign={campaign}
                       tiktokPosts={tiktokPosts}
                       id={campaign.id!}
@@ -342,7 +327,6 @@ export default function CampaingTabs({
                       activePlatforms={activePlatforms}
                       setActivePlatforms={setActivePlatforms}
                       activeButton={activeButton}
-                      setActiveButton={setActiveButton}
                     />
                   </div>
                 </section>
@@ -474,14 +458,14 @@ export default function CampaingTabs({
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
-                    <div className='ml-12 flex flex-wrap gap-x-6 gap-y-8 pb-32'>
+                    <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                       {filteredPosts?.map((post, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
                       {campaign?.posts?.length === 0 && (
-                        <>
-                          <h1>{`Seems like you dont have posts! :(`}</h1>
-                        </>
+                        <div className='col-span-4 md:col-span-2'>
+                          <h1>{`Seems like you don't have posts! :(`}</h1>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -498,8 +482,6 @@ export default function CampaingTabs({
                           {`📝 ${campaign?.posts?.length} Posts`}
                         </p>
                       </div>
-                      {/* <p className='my-8 italic'>by platform</p>
-                      <SinglePlatform /> */}
                     </div>
 
                     <div className='relative'></div>
@@ -523,120 +505,12 @@ export default function CampaingTabs({
         </div>
       </div>
 
-      {/* <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className='relative z-[99]'>
-        <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
-        <div className='fixed inset-0 flex items-center justify-center p-4'>
-          <Dialog.Panel
-            className={`${ptMono.className} flex w-full max-w-lg flex-col rounded-md bg-white p-16 sm:px-0`}>
-            <Dialog.Title className='mb-8 text-center'>add posts</Dialog.Title>
-            <Tab.Group>
-              <Tab.List className='flex flex-row items-center justify-center gap-6'>
-                <Tab
-                  className={({ selected }) =>
-                    ` rounded-3xl border-2 border-primary px-8 py-2 hover:shadow ${
-                      selected ? 'bg-primary' : ''
-                    }`
-                  }>
-                  add manually
-                </Tab>
-
-                <Tab
-                  className={({ selected }) =>
-                    `rounded-3xl border-2 border-primary px-8  py-2 hover:shadow ${
-                      selected ? 'bg-primary' : ''
-                    }`
-                  }>
-                  upload from file
-                </Tab>
-              </Tab.List>
-              <Tab.Panels className='mt-2'>
-                <Tab.Panel className='px-12 py-8'>
-                  <FeatureNotImplemented />
-                  <form onSubmit={handlePosts} className='flex flex-col gap-3'>
-                    <label>{`Instagram Link(s)`}</label>
-                    <textarea
-                      className='textarea-bordered textarea rounded-md'
-                      placeholder='copy and paste multiple links here'
-                      onChange={e => setNewPosts(e.target.value)}
-                      required
-                    />
-                    {fetchError && (
-                      <div className='alert alert-error flex justify-center shadow-lg'>
-                        <div className='flex flex-row gap-4'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            className='h-6 w-6 flex-shrink-0 stroke-current'
-                            fill='none'
-                            viewBox='0 0 24 24'>
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth='2'
-                              d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-                            />
-                          </svg>
-                          <span>{fetchError}</span>
-                        </div>
-                      </div>
-                    )}
-
-                    <button
-                      disabled={true}
-                      className='flex self-end rounded-full bg-green-200 px-8 py-2'
-                      type='submit'>
-                      {loading ? (
-                        <Spinner width='w-4' height='h-4' border='border-2' />
-                      ) : (
-                        'add'
-                      )}
-                    </button>
-                  </form>
-                </Tab.Panel>
-
-                <Tab.Panel className='flex flex-col gap-4 px-16 py-8'>
-                  <h2>
-                    Download a{' '}
-                    <Link href={'/'}>
-                      sample CSV template to see an example of the format
-                      required
-                    </Link>
-                  </h2>
-                  <form
-                    className='flex flex-col gap-3'
-                    onSubmit={handleFileSubmit}>
-                    <input name='test' id='test' type='text' />
-                    <input
-                      name='campaignExcel'
-                      id='campaignExcel'
-                      type='file'
-                      accept='.xlsx, .xls'
-                      className='file-input-bordered file-input w-full'
-                    />
-                    <button
-                      className='flex self-end rounded-full bg-green-200 px-8 py-2'
-                      type='submit'>
-                      add
-                    </button>
-                  </form>
-                </Tab.Panel>
-              </Tab.Panels>
-            </Tab.Group>
-          </Dialog.Panel>
-        </div>
-      </Dialog> */}
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className='relative z-[99]'>
-        {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
-
-        {/* Full-screen container to center the panel */}
         <div className='fixed inset-0 flex items-center justify-center p-4'>
-          {/* The actual dialog panel  */}
           <Dialog.Panel
             className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
             <Image src={modalCover} className='rounded-t-xl' alt={''} />
