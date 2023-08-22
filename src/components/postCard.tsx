@@ -39,6 +39,7 @@ export default function PostCard({ post }: { post: Post }) {
           height={0}
           sizes='100vw'
           style={{ width: '100%' }}
+          unoptimized={true}
         />
       )}
       <div className='px-6 pt-6'>

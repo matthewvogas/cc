@@ -73,6 +73,7 @@ export default function UseThisPost({ post }: Props) {
               className={`h-fit w-80 max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
               {!post?.mediaUrl?.includes('.mp4') && (
                 <Image
+                  unoptimized={true}
                   priority
                   className={`h-64 rounded-2xl object-cover`}
                   src={post?.imageUrl || imageCover}

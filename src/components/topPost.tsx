@@ -78,6 +78,7 @@ export default function TopPost({ posts }: { posts: Post[] }) {
 
             {card.imageUrl && (
               <Image
+                unoptimized={true}
                 priority
                 className={`h-96 w-96 object-cover`}
                 src={card.imageUrl || imageCover}
