@@ -47,7 +47,9 @@ export default function ClientCard({
         frome={'clients'}
         campaigns={campaignsFallback}
         clients={clientsFallback}
-      />{' '}
+        userPositionId={0} 
+        stats={undefined}
+        />{' '}
       <div className='flex overflow-x-auto gap-4 md:px-12'>{cards} </div>{' '}
     </>
   )
