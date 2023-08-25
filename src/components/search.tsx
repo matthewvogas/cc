@@ -14,14 +14,13 @@ export default function Search(props: {
   }
 
   return (
-    <div className=''>
-      <p className={`${ptMono.className} mb-2 text-sm`}>search</p>
+    <>
       <input
-        placeholder='Name'
+        placeholder='search'
         value={props.inputSearchValue}
         onChange={handleChange}
         className={`flex cursor-pointer content-center items-center justify-center gap-5 rounded-full border border-gray-400 px-6 py-2 text-gray-500 ${ptMono.className}  focus:outline-none`}
       />
-    </div>
+    </>
   )
 }

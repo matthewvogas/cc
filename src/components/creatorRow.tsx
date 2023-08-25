@@ -20,6 +20,7 @@ import TagsInput from './TagsInput'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import Link from 'next/link'
+import AddNewPosts from './modals/addPosts'
 
 const dropdownButton =
   'text-sm border-2 inline-block py-2 px-8 m-2 text-back font-medium bg-whiteBrown rounded-full hover:bg-transparent hover:border-orange-100'
@@ -29,6 +30,7 @@ const infoLabel = 'bg-active px-8 py-3 rounded-full text-black text-sm '
 type Props = {
   comeFrom: string
   creators: CreatorsByCampaignRes[]
+  campaign: any
   clients: any
   search: string
   searchByTag?: any
@@ -38,6 +40,7 @@ type Props = {
 export default function CreatorRow({
   comeFrom,
   creators,
+  campaign,
   clients,
   search,
   searchByTag,
@@ -107,10 +110,10 @@ export default function CreatorRow({
                   <th className={`${thTable} ${ptMono.className}`}>creator</th>
                   <th className={`${thTable} ${ptMono.className}`}>status</th>
                   <th className={`${thTable} ${ptMono.className}`}>
-                    posts assigned
+                    followers
                   </th>
                   <th className={`${thTable} ${ptMono.className}`}>
-                    post status
+                    posts assigned
                   </th>
                 </>
               )}
@@ -157,20 +160,11 @@ export default function CreatorRow({
                       <CreatorStatus state={'INVITE'} />
                     </td>
                     <td className='bg-white'>
-                      <div className='flex items-center justify-between '>
-                        <div className='flex'>
-                          <label className={`${infoLabel}`}>
-                            {creator._count?.posts}
-                          </label>
-                          <button className='px-2 text-lg font-bold text-gray-400'>
-                            {' '}
-                            +{' '}
-                          </button>
-                        </div>
-                      </div>
+                      <p>{creator.followersCount || 'no data getting yet'}</p>
                     </td>
                     <td className='flex'>
                       <PostHashtagStatus state={'NOT'} />
+                      {/* <AddNewPosts campaignsFallback={undefined} clientsFallback={undefined} text={''} icon={undefined}/> */}
                     </td>
                     <td>
                       <div className='dropdown-end dropdown cursor-pointer'>
@@ -425,26 +419,6 @@ export default function CreatorRow({
                 </div>
 
                 <hr className='my-2 h-px border-0 bg-gray-200' />
-
-                {/* {fetchError && (
-                  <div className='alert alert-error shadow-lg'>
-                    <div>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        className='h-6 w-6 flex-shrink-0 stroke-current'
-                        fill='none'
-                        viewBox='0 0 24 24'>
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-                        />
-                      </svg>
-                      <span>{fetchError}</span>
-                    </div>
-                  </div>
-                )} */}
 
                 <button
                   type='submit'

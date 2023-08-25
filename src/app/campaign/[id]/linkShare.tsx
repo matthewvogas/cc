@@ -4,6 +4,8 @@ import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
 import prev from 'public/assets/register/sharePublicModal.jpg'
+import { ptMono } from '@/app/fonts'
+import { BsArrowUpRight } from 'react-icons/bs'
 
 export const RedirectLink = (props: {
   id: number
@@ -37,11 +39,11 @@ export const RedirectLink = (props: {
     <>
       {/* button to share view */}
 
-      {/* <button
+      <button
         onClick={() => setIsOpen(true)}
-        className='rounded-full text-sm border border-black px-8 py-3 md:text-base hover:bg-black hover:text-white'>
-        share this view
-      </button> */}
+        className={`rounded-full flex items-center gap-4 bg-[#E2F5EC] text-sm px-8 py-3 md:text-base hover:bg-[#c8f1de]  ${ptMono.className}`}>
+        share this view <BsArrowUpRight />
+      </button>
 
       <Dialog
         open={isOpen}

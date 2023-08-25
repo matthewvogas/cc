@@ -1,7 +1,4 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import db from '@/lib/db'
-import { getServerSession } from 'next-auth'
-import { getSession } from 'next-auth/react'
 
 //Service that the constructor get a session id
 

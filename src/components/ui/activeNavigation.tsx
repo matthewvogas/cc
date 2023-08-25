@@ -21,8 +21,8 @@ export function Navigation({ navLinks }: { navLinks: navLink[] }) {
 
         return (
           <Link
-            className={`ml-3 flex flex-1 items-center  whitespace-nowrap rounded-full border-2 p-2 pl-6 text-gray-900 hover:bg-rose-100 ${
-              isActive ? 'border-rose-100' : 'border-transparent'
+            className={`ml-3 flex flex-1 items-center  whitespace-nowrap rounded-full border p-3 pl-8 text-gray-900 hover:bg-beigeSelected hover:bg-opacity-80 ${
+              isActive ? 'border-[#FACEBC]' : 'border-transparent'
             }`}
             href={link.href}
             key={link.name}>

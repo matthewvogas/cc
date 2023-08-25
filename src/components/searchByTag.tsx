@@ -26,22 +26,19 @@ export default function SearchByTag(props: {
 
   return (
     <div className=''>
-      <p className={`${ptMono.className} mb-2 text-sm`}>tags</p>
-      <div className='relative inline-block'>
-        <div
-          className={`h-[42px] flex cursor-pointer content-center items-center justify-center gap-5 rounded-full bg-transparent border border-gray-400 px-6 py-2 text-gray-500 ${ptMono.className}`}>
-          <select
-            value={props.tagSelected}
-            onChange={handleChange}
-            className='bg-transparent outline-none cursor-pointer'>
-            <option value={''}>search by tag</option>
-            {uniqueTags.map((tag: string, index: number) => (
-              <option key={index} value={tag}>
-                {tag}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div
+        className={`h-[42px] flex cursor-pointer content-center items-center justify-center gap-5 rounded-full bg-transparent border border-gray-400 px-6 py-2 text-gray-500 ${ptMono.className}`}>
+        <select
+          value={props.tagSelected}
+          onChange={handleChange}
+          className='bg-transparent outline-none cursor-pointer'>
+          <option value={''}>search by tag</option>
+          {uniqueTags.map((tag: string, index: number) => (
+            <option key={index} value={tag}>
+              {tag}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   )

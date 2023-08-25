@@ -26,8 +26,8 @@ export default async function CampaignPage({
             title={String(campaign?.name)}
             moduleText={'singleCampaign'}
             client={campaign?.client}
-            createClient={null}
-            createCampaign={null}
+            clientsFallback={null}
+            campaignsFallback={null}
             setSort={null}
           />
           <div className='divider' />

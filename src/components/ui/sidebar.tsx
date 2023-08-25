@@ -31,23 +31,24 @@ const links = [
 export default function Sidebar() {
   return (
     <aside className='sticky inset-0 z-[51] h-screen w-64' aria-label='Sidebar'>
-      <div className='flex h-screen w-64 flex-col overflow-y-auto bg-sidebarBackground px-3 py-4  '>
+      <div className='flex h-screen w-64 flex-col overflow-y-auto bg-sidebarBackground px-6 py-4  '>
         <div>
           <Image
             priority
-            className={`pl-4`}
+            className={`pl-4 mb-6`}
             width={150}
             src={logo}
             alt='background'
           />
-          <nav className={`space-y-2 font-medium ${ptMono.className}`}>
+          <nav
+            className={`flex flex-col gap-3 font-medium ${ptMono.className}`}>
             <Navigation navLinks={links} />
           </nav>
         </div>
 
         <div className='divider'></div>
 
-        <div className=' flex w-full items-center gap-4 p-2'>
+        <div className=' flex w-full justify-center  items-center gap-4 p-2'>
           <SingInButton />
           <SingOutButton />
         </div>

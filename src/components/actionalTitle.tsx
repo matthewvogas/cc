@@ -1,55 +1,78 @@
+import Link from 'next/link'
 import { ptMono } from '@/app/fonts'
-
-// Fonts
-
-// Style Variables
-const ActionButtonStyle =
-  'flex text-lg   border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 '
-const ActiveLabel =
-  'flex items-center bg-active px-8 mx-2 py-3 rounded-full text-black text-lg '
-const InActiveLabel =
-  'bg-inactive px-8 mx-2 py-3 rounded-full text-black text-lg '
+import { FiPlus, FiRotateCw, FiChevronDown } from 'react-icons/fi'
+import AddCampaign from './modals/addCampaigns'
+import AddCreators from './modals/addCreators'
+import AddClients from './modals/addClients'
+import ShareStat from './modals/shareStats'
 
 type Props = {
+  userPositionId: number
   title: string
+  frome: string
+  stats: any
+  campaigns: any
+  clients: any
 }
 
-export default function ActionalTitle({ title }: Props) {
+export default function ActionalTitle({
+  userPositionId,
+  title,
+  frome,
+  stats,
+  campaigns,
+  clients,
+}: Props) {
   return (
-    <div className='w-full '>
-      <div className='mx-auto mb-8 w-full justify-between px-4 md:px-14'>
-        <div className='mt-8 flex w-full content-center justify-between align-middle'>
-          <h3
-            className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
-            {title}
-          </h3>
-          <div className={`flex items-center justify-between`}>
-            {/* <div className={`flex ${ptMono.className}`}>
-              <button className={`${ActiveLabel} `}>
-                Action Buttons
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth='1.5'
-                  stroke='currentColor'
-                  className='ml-4 inline h-4 w-4'>
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M12 4.5v15m7.5-7.5h-15'
-                  />
-                </svg>
-              </button>
+    <div className='w-full mt-9 mb-8 flex content-center justify-between align-middle px-12'>
+      <h3
+        className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
+        {title}
+      </h3>
+      <div className={`flex items-center justify-between`}>
+        <div className={`flex`}>
+          {frome == 'stats' ? (
+            <ShareStat userPositionId={userPositionId} stats={stats} />
+          ) : null}
+          {frome == 'clients' ? (
+            <AddClients
+              campaignsFallback={campaigns}
+              clientsFallback={clients}
+              text={'create new'}
+              icon={
+                <FiPlus
+                  style={{
+                    color: '#00000080',
+                    fontSize: '1.2em',
+                    marginLeft: '12px',
+                  }}
+                />
+              }
+            />
+          ) : null}
 
-              {/* <label className={`${ActiveLabel}`}>
-                active
-              </label>
-              <label className={`${InActiveLabel}`}>
-                Inactive
-              </label> */
-            /* </div> */}
-          </div>
+          {frome == 'campaigns' ? (
+            <AddCampaign
+              campaignsFallback={campaigns}
+              clientsFallback={clients}
+              text={'create new'}
+              icon={
+                <FiPlus
+                  style={{
+                    color: '#00000080',
+                    fontSize: '1.2em',
+                    marginLeft: '12px',
+                  }}
+                />
+              }
+            />
+          ) : null}
+
+          <Link
+            href={`/dashboard/${frome}`}
+            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+            {frome != 'stats' ? 'view all' : 'go to reports'}
+          </Link>
         </div>
       </div>
     </div>
