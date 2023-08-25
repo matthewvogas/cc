@@ -33,7 +33,7 @@ export class CampaignsService {
   ) {
     const campaigns = await db.campaign.findMany({
       where: {
-        clientId: client,
+        clientId: +client,
       },
       orderBy: {
         createdAt: 'desc',

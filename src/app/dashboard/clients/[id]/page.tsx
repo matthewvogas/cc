@@ -19,7 +19,7 @@ export default async function CampaignPage({
 }) {
   const session = await getServerSession(authOptions)
   const client = await ClientsService.findUnique(params.id)
-  const campaigns = await CampaignsService.findManyByClient(parseInt(params.id))
+  const campaigns = await CampaignsService.findManyByClient(params.id)
 
   return <ClientTabs client={client} campaigns={campaigns} />
 }
