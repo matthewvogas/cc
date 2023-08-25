@@ -1,68 +1,31 @@
-import { PT_Mono } from 'next/font/google'
-import { Tag } from '@prisma/client'
+'use client'
 
-// Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
-
-// Style Variables
-const ActionButtonStyle =
-  'flex text-sm  border-gray-200 h-7 border-2 flex items-center py-2.5 px-6  text-back font-medium bg-transparent rounded-full '
+import Link from 'next/link'
+import Image from 'next/image'
+import { ptMono } from '@/app/fonts'
+import { Tab } from '@headlessui/react'
+import coverImageClient from 'public/assets/uniqueClient/clientCoverPage.jpg'
 
 type Props = {
-  title: string
-  tags?: Tag[]
+  client: any
 }
 
-export default function TitleSingleClient({ title, tags }: Props) {
+export default function TitleSingleClient({ client }: Props) {
   return (
-    <div className='w-full pt-20 '>
-      <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
+    <div className='w-full'>
+      <div className='relative'>
+        <Image className='w-full -mb-24' src={coverImageClient} alt='' />
+        <div className='absolute  inset-0 bg-gradient-to-t from-[#000000d0] to-transparent'></div>
+      </div>
+      <div className='mx-auto  h-full w-full justify-between px-12'>
         <div className='w-full'>
-          <h3
-            className={`items-center pb-8 text-2xl font-semibold text-gray-800 `}>
-            {title}
-          </h3>
-          <div className={`flex items-center justify-between`}>
-            <div className='flex content-center items-center gap-3'>
-              <div className={`${ActionButtonStyle} `}>
-                tags
-                {/* <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='ml-4 inline h-4 w-4'>
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M12 4.5v15m7.5-7.5h-15'
-                />
-              </svg> */}
-              </div>
-              {tags?.map(tag => (
-                <span
-                  key={tag.id}
-                  className={`flex h-7  items-center rounded-full bg-gray-100 px-5 text-sm font-semibold text-gray-700`}>
-                  {tag.name}
-                </span>
-              ))}
-            </div>
-            <div className={`flex ${ptMono.className}`}>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='gray'
-                className='h-10 w-10 cursor-pointer'>
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
-                />
-              </svg>
-            </div>
+          <div className={`flex items-center justify-between relative z-50`}>
+            <h2 className={`text-2xl text-white`}>{client.name} 🥥</h2>
+            <Link
+              className='text-white rounded-full px-9 py-3 border border-white'
+              href={'/dashboard/clients'}>
+              all clients
+            </Link>
           </div>
         </div>
       </div>

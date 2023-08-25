@@ -59,19 +59,16 @@ export default function CreatorsDashBoard({
 
   return (
     <>
-      <div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-white'>
-        <TitlePage
-          title={'Creators'}
-          moduleText={'creators'}
-          client={''}
-          createClient={null}
-          createCampaign={null}
-          setSort={null}
-        />
-        <p className='px-4 py-2 border border-rose-200 bg-rose-50 rounded-lg'>
-          some features are not working correctly, however now you can see the
-          creators of all campaigns in one place
-        </p>
+      <TitlePage
+        title={'Creators'}
+        moduleText={'creators'}
+        client={''}
+        clientsFallback={null}
+        campaignsFallback={null}
+        setSort={null}
+      />
+
+      <div className='flex h-full w-full flex-col gap-4 bg-white'>
         <FilterCreators
           campaigns={campaigns}
           socialActiveFilter={socialActiveFilter}
@@ -141,9 +138,7 @@ export default function CreatorsDashBoard({
               </div>
             </div>
           </div>
-        ) : (
-          <div className='hidden'></div>
-        )}
+        ) : null}
 
         {selectedCampaign != '' ? (
           <div className='flex justify-start w-full gap-4 px-12'>
@@ -171,15 +166,14 @@ export default function CreatorsDashBoard({
               </div>
             </div>
           </div>
-        ) : (
-          <div className='hidden'></div>
-        )}
+        ) : null}
         <CreatorRow
           comeFrom={'campigns'}
           creators={creators}
           clients={[]}
           search={''}
           creatorsFilter={filters}
+          campaign={undefined}
         />
       </div>
     </>

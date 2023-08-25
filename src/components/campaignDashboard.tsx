@@ -6,32 +6,7 @@ import imageCover from 'public/assets/register/campaignCover.jpg'
 import { Campaign } from '@prisma/client'
 import Link from 'next/link'
 import useCampaigns from '@/hooks/useCampaigns'
-
-// Fonts
-
-// Arrays
-const creatorCards = [
-  {
-    media_url: imageCover,
-    views: '20,000',
-    likes: '2 ,000',
-  },
-  {
-    media_url: imageCover,
-    views: '120',
-    likes: '20000',
-  },
-  {
-    media_url: imageCover,
-    views: '322',
-    likes: '15,000',
-  },
-  {
-    media_url: imageCover,
-    views: '15,000',
-    likes: '98',
-  },
-]
+import ActionalTitle from './actionalTitle'
 
 type Props = {
   campaignsFallback: (Campaign & {
@@ -39,30 +14,38 @@ type Props = {
       posts: number
     }
   })[]
+  clientsFallback: any
 }
 
-export default function DashboardCampaign({ campaignsFallback }: Props) {
+export default function DashboardCampaign({
+  campaignsFallback,
+  clientsFallback,
+}: Props) {
   const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
-  const postData = campaigns || creatorCards
+  const postData = campaigns
 
   return (
-    <div className='min-w-full overflow-auto whitespace-nowrap pl-14'>
-      {postData.map(
-        (
-          card: Campaign & {
-            _count: {
-              posts: number
-            }
-          },
-          index: any,
-        ) => (
+    <>
+      <ActionalTitle
+        title={'your campaigns'}
+        frome={'campaigns'}
+        campaigns={campaignsFallback}
+        clients={clientsFallback}
+      />
+      <div className='bg-white flex overflow-x-auto gap-4 md:px-12'>
+        {postData.map((card: any, index: any) => (
           <Link
             href={`/dashboard/campaigns/${card.id}`}
             key={index}
-            className={`mr-8 inline-block bg-beigeTransparent ${ptMono.className}`}>
-            <Image src={imageCover} alt={card.name} height={320} />
-            <div className='mb-4 flex justify-between gap-4 px-6 pt-6'>
+            className={`bg-beigeTransparent border min-w-[250px] ${ptMono.className}`}>
+            <Image
+              className={`object-cover`}
+              src={imageCover}
+              alt={card.name}
+              style={{ width: '250px', height: '310px' }}
+            />
+            <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
               <h5>{card.name}</h5>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -78,16 +61,18 @@ export default function DashboardCampaign({ campaignsFallback }: Props) {
                 />
               </svg>
             </div>
-            <hr className='my-2 h-px border-0 bg-gray-200'></hr>
-            <div className='flex  flex-col gap-4 px-6 pt-6'>
-              <h4 className=' mb-2 self-baseline rounded-full bg-white px-4 py-3 text-base'>
-                {card?._count?.posts || 0} {`post(s)`}
+            <hr className=' h-px bg-gray-200'></hr>
+            <div className='flex  flex-col gap-2 px-6 py-[14px]'>
+              <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                {card?._count?.creators || 0} {`creators`}
               </h4>
-              <div className='flex-grow border-t border-gray-200 pb-2'></div>
+              <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                {card?._count?.posts || 0} {`posts`}
+              </h4>
             </div>
           </Link>
-        ),
-      )}
-    </div>
+        ))}
+      </div>
+    </>
   )
 }

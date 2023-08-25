@@ -26,6 +26,33 @@ export class CampaignsService {
     return campaigns
   }
 
+  static async findManyByClient(
+    client: number,
+    limit?: number,
+    offset?: number,
+  ) {
+    const campaigns = await db.campaign.findMany({
+      where: {
+        clientId: client,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        _count: {
+          select: {
+            creators: true,
+            posts: true,
+          },
+        },
+      },
+      take: limit,
+      skip: offset,
+    })
+
+    return campaigns
+  }
+
   static async findUnique(id: number) {
     const campaign = await db.campaign.findUnique({
       where: {

@@ -1,150 +1,373 @@
-import { inter } from '@/app/fonts'
+import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
-import React from 'react'
+import TagsInput from '../TagsInput'
+import { Tab } from '@headlessui/react'
+import React, { useState } from 'react'
+import { excelToJson } from '@/lib/Utils'
+import { Dialog } from '@headlessui/react'
+import { useRouter } from 'next/navigation'
+import useClients from '@/hooks/useClients'
+import Spinner from '@/components/ui/spinner'
+import { Posts } from '@/types/posts/PostByCampaignRes'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import modalCover from 'public/assets/register/addpostToTrack.jpg'
 
-// Fonts
+import { FiChevronDown } from 'react-icons/fi'
 
-// Arrays
-const social = [
-  {
-    name: 'Instagram',
-  },
-  {
-    name: 'TikTok',
-  },
-  {
-    name: 'Pinterest',
-  },
-]
+type Props = {
+  campaignsFallback: CampaignRes
+  clientsFallback: any
+  text: string
+  icon: any
+}
 
-const client = [
-  {
-    name: "L'Oreal",
-    email: 'loreal@lroeal.com',
-  },
-  {
-    name: "Matthew's, Client",
-    email: 'loreal@lroeal.com',
-  },
-  {
-    name: "Sophia's Client",
-    email: 'loreal@lroeal.com',
-  },
-]
+export default function AddNewPosts({
+  campaignsFallback,
+  clientsFallback,
+  text,
+  icon,
+}: Props) {
+  const { clients, areClientsLoading, clientsError, refreshClients } =
+    useClients(clientsFallback)
 
-// Show Arrays
-const clients = client.map((client, index) => (
-  <option value={index} id='companies-menu' key={index}>
-    {client.name}
-  </option>
-))
+  const router = useRouter()
 
-const socialNetworks = social.map((social, index) => (
-  <option value={index} id='companies-menu' key={index}>
-    {social.name}
-  </option>
-))
+  const [loading, setLoading] = useState(false)
+  const [links, setLinks] = useState<string>('')
+  const [tags, setTags] = useState<string[]>([])
+  const [rowsLinks, setRowsLinks] = useState(1)
 
-export default function AddNewPost() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [fetchError, setFetchError] = useState<string | null>(null)
+  const [fileSelected, setFileSelected] = useState(false) // Nuevo estado
+
+  const handleFileChange = (e: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileSelected(true)
+    } else {
+      setFileSelected(false)
+    }
+  }
+
+  const handleDownloadClick = async () => {
+    const url = 'https://dewinu.com/docs/example.xlsx'
+    if (url) {
+      try {
+        const response = await fetch(url)
+        const blob = await response.blob()
+        const filename = 'example_codecoco.xlsx'
+        const objectUrl = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = objectUrl
+        link.download = filename
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+
+        // Liberar el objeto URL
+        URL.revokeObjectURL(objectUrl)
+      } catch (error) {
+        console.error('Error al descargar el archivo:', error)
+      }
+    }
+  }
+
+  const handleLinksChange = (e: any) => {
+    setLinks(e.target.value)
+  }
+
+  const handleHashTagSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setFetchError(null)
+    setLoading(false)
+  }
+
+  const handleLinksSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setFetchError(null)
+
+    console.log(links)
+    console.log(campaignsFallback.id)
+    try {
+      const res = await fetch('/api/urls', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          posts: links,
+          campaignId: campaignsFallback.id,
+        }),
+      })
+
+      if (res.status === 200 && res.ok) {
+        setLinks('')
+        setLoading(false)
+        setIsOpen(false)
+        await router.refresh()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleFileSubmit = async (e: React.FormEvent) => {
+    setLoading(true)
+    setFetchError(null)
+    e.preventDefault()
+    const fileInput = document.getElementById(
+      'campaignExcel',
+    ) as HTMLInputElement
+
+    if (fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0]
+
+      if (!file) {
+        setFetchError('Please select a file')
+        return
+      }
+      const posts = await excelToJson(file)
+
+      try {
+        const res = await fetch('/api/urls', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            posts,
+            campaignId: campaignsFallback.id,
+          }),
+        })
+
+        if (res.status === 200 && res.ok) {
+          setLoading(false)
+          setIsOpen(false)
+          await router.refresh()
+        } else {
+          console.log('error')
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    } else {
+    }
+  }
+
   return (
-    <div>
-      <label className=''>MODAL</label>
-      <div>
-        <div className='relative flex max-w-max flex-col items-center justify-center overflow-hidden rounded-xl bg-white px-20 py-12'>
-          <label className='absolute right-4 top-2 cursor-pointer text-lg'>
-            ✕
-          </label>
-          <h3 className='text-lg font-bold'>Add Posts</h3>
+    <>
+      <button
+        onClick={() => {
+          setIsOpen(true)
+        }}>
+        <label
+          tabIndex={0}
+          className={`flex items-center rounded-full bg-active px-8 min-w-max max-h-6 min-h-[52px] py-3 text-lg text-black cursor-pointer ${ptMono.className}`}>
+          add a post
+          {icon}
+        </label>
+      </button>
 
-          <div className={`w-full justify-start ${ptMono.className}`}>
-            <div className='mt-6 flex justify-between gap-4'>
-              <button className='w-full rounded-full bg-rose-200 px-8 py-2 '>
-                add from link
-              </button>
-              <button className='w-full rounded-full border-2 border-rose-200 px-8 py-2 '>
-                upload from file
-              </button>
-            </div>
-            <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-              Asign To creator
-            </p>
-            <select
-              id='countries'
-              className='inline-block w-full rounded-full border border-gray-300 bg-green-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
-              <option value={0} disabled>
-                Choose a client
-              </option>
-              {clients}
-            </select>
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className='relative z-[99]'>
+        <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
+        <div className='fixed inset-0 flex items-center justify-center p-4'>
+          <Dialog.Panel
+            className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
+            <Image src={modalCover} className='rounded-t-xl' alt={''} />
+            <Dialog.Title className=' text-lg font-medium mb-8 text-center'>
+              Add posts 🥥
+            </Dialog.Title>
 
-            <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-              Instagram, Facebook, or TikTok link
-            </p>
-            <input
-              type='text'
-              id='default-input'
-              placeholder='https://'
-              className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-            />
+            <Tab.Group>
+              <Tab.List
+                className={`flex flex-row items-center justify-center gap-6 px-12  ${ptMono.className}`}>
+                <Tab
+                  className={({ selected }) =>
+                    ` rounded-3xl  border-[#FEF8F6] px-12 py-2 w-full ${
+                      selected ? 'text-black bg-primary' : 'text-[#CCCCCC]'
+                    }`
+                  }>
+                  add manually
+                </Tab>
 
-            <p className={`text-xm pb-2 pt-6 ${inter.className}`}>Hashtag</p>
-            <input
-              type='text'
-              id='default-input'
-              placeholder='#example'
-              className='w-full rounded-xl border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-            />
+                <Tab
+                  className={({ selected }) =>
+                    ` rounded-3xl  bg-[#F8FDFB] px-12 py-2 w-full ${
+                      selected ? ' bg-[#DEF4EA] text-black' : 'text-[#CCCCCC]'
+                    }`
+                  }>
+                  hashtag tracking
+                </Tab>
+              </Tab.List>
+              <Tab.Panels className='mt-2'>
+                <Tab.Panel className=''>
+                  <div className='divider mx-0'></div>
 
-            <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-              Select platform to track on
-            </p>
-            <select
-              id='countries'
-              className='inline-block w-full rounded-full border border-gray-300 bg-green-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
-              <option value={0} disabled>
-                Choose a client
-              </option>
-              {socialNetworks}
-            </select>
+                  <form id='linksForm' onSubmit={handleLinksSubmit}>
+                    <div className='flex flex-col gap-4 px-7'>
+                      <h2 className='text-left font-medium'>
+                        Instagram, Facebook, or TikTok link
+                      </h2>
+                      <textarea
+                        value={links}
+                        onChange={handleLinksChange}
+                        rows={rowsLinks}
+                        required
+                        className='border px-4 py-3 outline-none rounded-lg border-[#7F7F7F] text-[#7F7F7F] h-full'
+                        placeholder='https://'></textarea>
+                    </div>
 
-            <label className='mt-2 flex text-xs text-gray-500' htmlFor=''>
-              bulk add links
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 36 36'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='mr-4 h-6 w-6'>
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M19.5 8.25l-7.5 7.5-7.5-7.5'
-                />
-              </svg>
-            </label>
+                    <div className='flex w-full flex-col justify-end items-end px-7 mb-6'>
+                      <div className='flex justify-between w-full mt-3'>
+                        <button
+                          type='button'
+                          onClick={() =>
+                            rowsLinks == 1 ? setRowsLinks(5) : setRowsLinks(1)
+                          }
+                          className='text-xs font-light mb-4 flex gap-2 items-center'>
+                          <span className='text-[#7F7F7F]'>
+                            {rowsLinks === 1
+                              ? 'bulk add links'
+                              : 'add one link'}
+                          </span>
+                          <FiChevronDown
+                            style={{
+                              color: '#7F7F7F',
+                              transform: rowsLinks == 1 ? '' : 'rotate(180deg)',
+                            }}
+                          />
+                        </button>
 
-            <p className={`text-xm pb-2 pt-6 ${inter.className}`}>
-              Download a sample CSV template to see an example fo the format
-              required.
-            </p>
+                        <p className='text-xs italic font-light mb-4'>
+                          separate multiple with a comma
+                        </p>
+                      </div>
+                    </div>
+                  </form>
 
-            <div className='rounded-xl border-2 border-gray-300 '>
-              <input
-                type='file'
-                className='file-input-ghost file-input h-40 w-full'
-              />
-            </div>
+                  <div className='divider mx-0'> or </div>
 
-            <hr className='my-8 h-px border-0 bg-gray-200'></hr>
-            <div className='text-right'>
-              <button className='rounded-full bg-green-200 px-8 py-2 '>
-                add
-              </button>
-            </div>
-          </div>
+                  <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
+                    <h2 className='text-sm -mb-3'>Upload a file</h2>
+                    <p className='text-xs'>
+                      Download a{' '}
+                      <button
+                        className='underline'
+                        onClick={handleDownloadClick}>
+                        sample CSV template
+                      </button>{' '}
+                      to see an example fo the format required.
+                    </p>
+
+                    <form
+                      id='fileForm'
+                      className='flex flex-col gap-3'
+                      onSubmit={handleFileSubmit}>
+                      <label
+                        htmlFor='campaignExcel'
+                        className={` border px-4 py-3 outline-none rounded-lg border-[#7F7F7F] text-[#7F7F7F] h-full ${
+                          fileSelected
+                            ? 'bg-beigeSelected text-textBlack border-beigeBorder'
+                            : ''
+                        }`}>
+                        {fileSelected
+                          ? 'selected file - select other'
+                          : 'select file'}
+                      </label>
+                      <input
+                        name='campaignExcel'
+                        id='campaignExcel'
+                        type='file'
+                        className='campaignExcel'
+                        accept='.xlsx, .xls, .csv'
+                        style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                      />
+                      {fetchError && (
+                        <div className='alert alert-error flex justify-center shadow-lg'>
+                          <div className='flex flex-row gap-4'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              className='h-6 w-6 flex-shrink-0 stroke-current'
+                              fill='none'
+                              viewBox='0 0 24 24'>
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth='2'
+                                d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
+                              />
+                            </svg>
+                            <span>{fetchError}</span>
+                          </div>
+                        </div>
+                      )}
+                    </form>
+
+                    <button
+                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                        handleFileSubmit(event)
+                        handleLinksSubmit(event)
+                      }}
+                      disabled={loading}
+                      className='flex self-end bg-[#E2DED4] rounded-lg px-7 py-2'
+                      type='submit'>
+                      {loading ? <span>Loading...</span> : 'done'}
+                    </button>
+                  </div>
+                </Tab.Panel>
+                <Tab.Panel className=''>
+                  <form onSubmit={handleHashTagSubmit}>
+                    <div className='divider mx-0'></div>
+
+                    <div className='px-7'>
+                      <p className='text-sm font-semibold'>
+                        Hashtag(s) your creator will use
+                      </p>
+                      <TagsInput required tags={tags} setTags={setTags} />
+                      <span className='text-xs italic font-light mb-4'>
+                        separate multiple with a comma
+                      </span>
+                    </div>
+                    <div className='px-7'>
+                      <p className='text-sm font-semibold'>Assign to creator</p>
+                      <div className='flex gap-3'>
+                        <select
+                          required
+                          className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-gray-50 pl-4 py-3 text-sm text-gray-900 flex-grow bg-transparent outline-none'
+                          name=''
+                          id=''></select>
+                        <button className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-gray-50 pl-4 py-2 text-sm text-gray-900 flex flex-wrap gap-2 bg-transparent outline-none'>
+                          upload a list
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className='flex w-full flex-col justify-end items-end px-7 mt-4 mb-4 '>
+                      <button
+                        className={`flex self-end bg-[#E2DED4] rounded-lg px-8 py-2`}>
+                        {loading ? (
+                          <Spinner width='w-4' height='h-4' border='border-2' />
+                        ) : (
+                          'start tracking'
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
+          </Dialog.Panel>
         </div>
-      </div>
-    </div>
+      </Dialog>
+    </>
   )
 }

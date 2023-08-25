@@ -25,7 +25,7 @@ export function SingOutButton() {
   if (status === 'authenticated') {
     return (
       <button
-        className={`rounded-full border border-gray-400 px-8 py-2 ${ptMono.className}`}
+        className={`rounded-full border w-full border-gray-300 px-8 py-2 hover:bg-[#bdbdbd] hover:bg-opacity-10 ${ptMono.className}`}
         onClick={() => signOut()}>
         log out
       </button>

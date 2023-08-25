@@ -1,87 +1,106 @@
+import registerImage from 'public/assets/shareStats/statsBackground.jpg'
 import { Inter } from 'next/font/google'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
+import Image from 'next/image'
 import React from 'react'
 
 // Fonts
 const inter = Inter({ weight: '400', subsets: ['latin'] })
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
-const stat = [
-  {
-    label: 'creators',
-    qty: 755,
-  },
-  {
-    label: 'campaigns',
-    qty: 55,
-  },
-  {
-    label: 'views',
-    qty: 50.567,
-  },
-  {
-    label: 'plays',
-    qty: '1,555.765',
-  },
-]
+type Props = {
+  userPositionId: number
+  stats: any
+}
 
-// Show Arrays
-const stats = stat.map((stat, index) => (
-  <div key={index}>
-    <h4 className='text-3xl'>{stat.qty}</h4>
-    <span>{stat.label}</span>
-  </div>
-))
+export default function ShareStat({ userPositionId, stats }: Props) {
+  const [codeToCopy, setcodeToCopy] = React.useState('')
 
-export default function ShareStat() {
+  const html =
+    '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Stats</title> </head> <body>' +
+    '<iframe src="http://dev.codecoco.co/stats/' +
+    userPositionId +
+    '"' +
+    ' height="310" width="850"></iframe>' +
+    '</body> </html>'
+  const iframe =
+    '<iframe src="http://dev.codecoco.co/stats/' +
+    userPositionId +
+    ' height="310" width="850"></iframe>'
+
+  const statsGrid = stats
+    ?.find((section: any) => section.section === 'public')
+    ?.data.map((stat: any, index: number) => (
+      <div key={index}>
+        <h4 className='text-3xl'>{stat.title}</h4>
+        <span>{stat.description}</span>
+      </div>
+    ))
+
   return (
     <div>
-      <label htmlFor='my-modal-3'>MODAL</label>
-      <input type='checkbox' id='my-modal-3' className='modal-toggle' />
+      <label
+        htmlFor='my-modal-3'
+        className='bg-[#E9F7F0]  flex bg-text-lg align-center items-center border-rose-100 py-2.5 px-9 text-back font-medium h-full rounded-full cursor-pointer'>
+        share live stats
+      </label>
+      <input type='checkbox' id='my-modal-3' className='  modal-toggle' />
       <div className='modal '>
         <div className='modal-box relative flex max-w-max flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
-          <div className='flex justify-between bg-green-100 px-14 py-20'>
-            {stats}
+          <Image
+            src={registerImage}
+            className='h-[300px] w-full object-cover'
+            alt='register-image'
+          />
+          <div className='absolute w-full top-16 text-white flex justify-evenly px-14 py-20'>
+            {statsGrid}
           </div>
 
           <label
             htmlFor='my-modal-3'
-            className='absolute right-4 top-2 cursor-pointer text-lg'>
+            className='absolute right-4 top-2 cursor-pointer text-lg text-white'>
             ✕
           </label>
 
           <div className='px-10 py-8'>
-            <h3 className='pb-4 text-2xl font-bold'>
+            <h3 className='text-xl font-bold'>
               Embed your total live stats on to a webpage
             </h3>
 
-            <div className={`w-full justify-start ${ptMono.className}`}>
-              <p className='pb-6'>
+            <div className={`w-full justify-start `}>
+              <p className={` pb-6 text-xs text-[#7F7F7F] mt-2`}>
                 Copy and paste a code below. You can manage styles via CSS.
               </p>
 
               <div className='flex gap-6'>
-                <div className=' flex w-52 flex-col gap-3'>
-                  <button className='w-full rounded-full border-2 border-rose-200 px-8 py-2 hover:bg-rose-200 '>
-                    iframe
-                  </button>
-                  <button className='w-full rounded-full border-2 border-rose-200 px-8 py-2 hover:bg-rose-200 '>
-                    javascript
-                  </button>
-                  <button className='w-full rounded-full border-2 border-rose-200 px-8 py-2 hover:bg-rose-200 '>
+                <div className=' flex w-56 text-sm flex-col gap-3'>
+                  <button
+                    onClick={() => setcodeToCopy(html)}
+                    className='w-full rounded-full border border-[#FACEBC] px-8 py-2 hover:bg-[#FACEBC]'>
                     HTML + CSS
+                  </button>
+                  <button
+                    onClick={() => setcodeToCopy(iframe)}
+                    className='w-full rounded-full border border-[#FACEBC] px-8 py-2 hover:bg-[#FACEBC]'>
+                    iframe
                   </button>
                 </div>
 
-                <div className='w-full rounded-xl border-2 border-gray-400 p-6'>
-                  <textarea className='min-h-full min-w-full resize-none text-gray-600 outline-none' />
+                <div
+                  className={`w-full rounded-xl border border-[#7F7F7F] p-6 ${ptMono.className}`}>
+                  <textarea
+                    value={codeToCopy}
+                    readOnly
+                    placeholder='https://'
+                    className='h-[124px] min-w-full resize-none text-gray-600 outline-none'
+                  />
                 </div>
               </div>
 
               <hr className='my-8 h-px border-0 bg-gray-200' />
               <div className='text-right'>
-                <button className='rounded-full bg-green-200 px-8 py-2 '>
-                  copy
+                <button
+                  className={`${ptMono.className} rounded-lg bg-[#D3F0E2] px-8 py-2`}>
+                  {'copy </>'}
                 </button>
               </div>
             </div>
