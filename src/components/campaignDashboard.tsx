@@ -32,7 +32,9 @@ export default function DashboardCampaign({
         frome={'campaigns'}
         campaigns={campaignsFallback}
         clients={clientsFallback}
+        userPositionId={0} stats={undefined}
       />
+
       <div className='bg-white flex overflow-x-auto gap-4 md:px-12'>
         {postData.map((card: any, index: any) => (
           <Link
