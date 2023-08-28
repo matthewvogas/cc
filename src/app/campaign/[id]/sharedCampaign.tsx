@@ -114,7 +114,6 @@ export function SharedCampaign({
               <p className='font-light text-xs'>agency</p>
             </div>
           </div> */}
-          
         </div>
 
         {/* stats */}
