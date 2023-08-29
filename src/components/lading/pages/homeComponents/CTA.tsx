@@ -1,8 +1,18 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import cta_image from 'public/assets/register/cta_footer.jpg'
+import EmailTrigger from './emailTrigger'
+import check from 'public/assets/SandBox/Cards/check.svg'
+import { BsCheck } from 'react-icons/bs'
+import { useState } from 'react'
 
 export default function Try() {
+  const [email, setEmail] = useState('')
+
+  const handleEmailSubmit = (submittedEmail: any) => {
+    setEmail(submittedEmail)
+  }
+
   return (
     <>
       <Image
@@ -11,11 +21,30 @@ export default function Try() {
         alt={''}
       />
       <div>
-        <Link
-          href={'/signup'}
-          className='text-[11px] absolute left-[50%] -mt-[230px] flex w-[360px] lg:w-[500px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center gap-2 rounded-full border-2 border-white px-10 py-4 lg:text-lg text-white'>
-          start creating campaigns now with Codecoco 🥥
-        </Link>
+        <div className='flex-col justify-center items-center absolute left-[50%]  -mt-[230px] flex w-[360px] lg:w-[900px] -translate-x-1/2 -translate-y-1/2 transform'>
+          <h4 className='text-white text-[34px] font-bold flex text-center mb-6'>
+            Start creating campaigns with Codecoco now{' '}
+          </h4>
+          <EmailTrigger />
+          <div className='flex gap-6 mt-6'>
+            <div className='flex gap-2'>
+              <BsCheck
+                style={{ color: 'white', width: '26px', height: 'auto' }}
+              />
+              <p className=' text-base font-medium text-white'>
+                7 day free trial
+              </p>
+            </div>
+            <div className='flex gap-2'>
+              <BsCheck
+                style={{ color: 'white', width: '26px', height: 'auto' }}
+              />
+              <p className=' text-base font-medium text-white'>
+                7 day free trial
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )

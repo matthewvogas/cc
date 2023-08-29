@@ -1,19 +1,16 @@
+'use client'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 // components
 import CTA from './homeComponents/CTA'
 import Try from './homeComponents/Try'
 import Stats from './homeComponents/stats'
-import Share from './homeComponents/Share'
 import HomePostCard from './homeComponents/postCard'
 import FunctionalityCard from './homeComponents/functionalityCard'
 import Testimonial from './homeComponents/testimonial'
-import CardsText from './homeComponents/functionalityCardText'
 
-//Mobile
 import heroImage from 'public/assets/SandBox/Mobile/heroImage.png'
 
-// images section 1
 import imageOne from 'public/assets/SandBox/headSection/FirstCardImage.jpg'
 import imageTwo from 'public/assets/SandBox/headSection/SecondCardImage.jpg'
 import imageThree from 'public/assets/SandBox/headSection/ThridCardImage.jpg'
@@ -23,7 +20,6 @@ import imageSix from 'public/assets/SandBox/headSection/SixCardImage.jpg'
 import imageSeven from 'public/assets/SandBox/headSection/SevenCardImage.jpg'
 import imageEight from 'public/assets/SandBox/headSection/EightCardImage.jpg'
 
-// cards section 3
 import OneCard from 'public/assets/SandBox/Cards/liveTracking.png'
 import OneCardMobile from 'public/assets/SandBox/Cards/liveTrackingMobile.png'
 import TwoCard from 'public/assets/SandBox/Cards/FilterAndExplore.png'
@@ -34,6 +30,8 @@ import FourCard from 'public/assets/SandBox/Cards/shareCampaigns.png'
 import FourCardMobile from 'public/assets/SandBox/Cards/shareCampaignsMobile.png'
 import InfoCards from './homeComponents/infoCards'
 import SliderCard from './homeComponents/sliderCard'
+import EmailTrigger from './homeComponents/emailTrigger'
+import { SetStateAction, useState } from 'react'
 
 const DataOne = {
   username: 'stmbind',
@@ -107,9 +105,12 @@ const cardData = [
       3: 'Post stats automatically pulled',
     },
   },
+]
+
+const cardData1 = [
   {
     size: '700px',
-    bg: 'bg-white',
+    bg: 'bg-[#F2EDE7]',
     imageCard: TwoCard,
     imageCardMobile: TwoCardMobile,
     subTitle: 'deep dive into results',
@@ -120,6 +121,9 @@ const cardData = [
       3: 'Identify top performing content',
     },
   },
+]
+
+const cardData2 = [
   {
     size: '550px',
     bg: 'bg-secondBackground',
@@ -133,9 +137,12 @@ const cardData = [
       3: 'Save hours of following up and checking',
     },
   },
+]
+
+const cardData3 = [
   {
     size: '700px',
-    bg: 'bg-white',
+    bg: 'bg-secondBackground',
     imageCard: FourCard,
     imageCardMobile: FourCardMobile,
     subTitle: 'share live campaigns in seconds',
@@ -153,16 +160,17 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className=' lg:-mb-[380px] w-full bg-white'>
-        <div className='m-auto flex w-full lg:w-[920px] flex-col justify-center bg-white'>
-          <div className='mb-16 text-center px-10 lg:px-[20%] flex flex-col items-center gap-5'>
+        <div className='m-auto flex w-full lg:w-[980px] flex-col justify-center bg-white'>
+          <div className='mb-16 text-center px-10 flex flex-col items-center gap-5'>
             <h1 className='text-2xl lg:text-4xl font-bold text-black'>
-              Real-Time Campaign Insights Made Easy
+              Real-Time Campaign Tracking Made Easy
             </h1>
             <h3
               className={`${ptMono.className} text-sm lg:text-lg text-textBlack `}>
-              The solution for tracking and analyzing your campaign results
-              across multiple platforms.
+              Never ask for screenshots or spend hours collecting links. Fully
+              automated campaign tracking and reports in seconds.
             </h3>
+            <EmailTrigger />
           </div>
 
           <div className='gap-5 hidden lg:flex '>
@@ -252,10 +260,53 @@ export default function Home() {
               card={card}
               flex={index % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}
               justify={index % 2 === 0 ? 'justify-end' : ''}
-              space={index === 0 ? 'w-[80%]' : ''}
             />
           ))}
         </div>
+      </section>
+
+      <section className='relative z-10  lg:bg-[#F2EDE7] pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
+          {cardData1.map((card, index) => (
+            <FunctionalityCard
+              key={index}
+              card={card}
+              flex={index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row '}
+              justify={index % 2 !== 0 ? 'justify-end' : ''}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className='relative z-10  lg:bg-secondBackground pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
+          {cardData2.map((card, index) => (
+            <FunctionalityCard
+              key={index}
+              card={card}
+              flex={index % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}
+              justify={index % 2 === 0 ? 'justify-end' : ''}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className='relative z-10  lg:bg-secondBackground pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
+          {cardData3.map((card, index) => (
+            <FunctionalityCard
+              key={index}
+              card={card}
+              flex={index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}
+              justify={index % 2 !== 0 ? 'justify-end' : ''}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonial */}
+      <section className='w-full'>
+        <Testimonial />
       </section>
 
       {/* Slider Cards */}
@@ -277,10 +328,6 @@ export default function Home() {
       <section className='w-full'>
         <Stats />
       </section>
-
-      {/* Stats */}
-
-      <section className='w-full'>{/* <Testimonial /> */}</section>
 
       {/* try */}
       <section className='w-full'>

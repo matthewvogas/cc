@@ -7,12 +7,11 @@ export default function Cards(props: {
   card: any
   flex: string
   justify: string
-  space: string
 }) {
   return (
     <>
       <div
-        className={` flex flex-col-reverse ${props.flex} pb-12 lg:pb-32 gap-6 items-center ${props.card.bg} lg:bg-secondBackground `}>
+        className={` flex flex-col-reverse ${props.flex} pb-12  gap-6 items-center ${props.card.bg}  `}>
         <div className=' flex w-full flex-col '>
           <div className={`flex h-full ${props.justify}`}>
             <div className='hidden lg:flex flex-col self-center'>
@@ -34,7 +33,8 @@ export default function Cards(props: {
 
         <div
           className={`flex h-full w-[100%] items-center ${props.card.bg} lg:bg-secondBackground`}>
-          <div className='flex flex-col self-center text-[28px] font-bold text-black px-12 lg:px-0'>
+          <div
+            className={`flex flex-col self-center text-[28px] font-bold text-black px-12 lg:px-0 ${props.card.bg}`}>
             <div className='mb-5 pt-14 lg:pt-0 flex content-center items-center'>
               <span className='text-sm lg:text-base mr-2'>🥥</span>
               <span
