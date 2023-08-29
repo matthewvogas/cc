@@ -96,9 +96,9 @@ export function SharedCampaign({
       <div className='w-full overflow-hidden'>
         {/* title */}
         {/* <div className='flex w-full justify-between items-center px-12 my-12'> */}
-          {/* <h4 className='text-3xl font-medium'>{campaign.name}</h4> */}
+        {/* <h4 className='text-3xl font-medium'>{campaign.name}</h4> */}
 
-          {/* <div className='flex gap-4 items-center'>
+        {/* <div className='flex gap-4 items-center'>
             <div className=' mask mask-circle h-12 w-12'>
               <Image
                 priority
