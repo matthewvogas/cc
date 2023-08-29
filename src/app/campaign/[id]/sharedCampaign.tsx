@@ -117,7 +117,7 @@ export function SharedCampaign({
         </div>
 
         {/* stats */}
-        <div className='mx-12 flex rounded-xl border my-12'>
+        {/* <div className='mx-12 flex rounded-xl border my-12'>
           <div className='w-1/4 p-8 flex flex-col gap-8'>
             <h4 className='text-2xl font-medium'>Results</h4>
             <div className='flex gap-8'>
@@ -153,7 +153,7 @@ export function SharedCampaign({
               userPositionId={0}
             />
           </div>
-        </div>
+        </div> */}
 
         {/* <OverviewCampaignPublic
           creators={campaign?._count?.creators || 0}
