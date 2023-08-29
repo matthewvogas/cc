@@ -5,6 +5,7 @@ import { Sen } from 'next/font/google'
 import { RegisterForm } from './registerFormReactHookForm'
 import logo from 'public/assets/register/LogoSVG.svg'
 import registerBg from 'public/assets/register/login.jpg'
+import { useState } from 'react'
 
 const sen = Sen({ weight: '700', subsets: ['latin'] })
 export default function RegisterPage() {

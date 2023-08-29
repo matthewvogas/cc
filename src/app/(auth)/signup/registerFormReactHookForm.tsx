@@ -1,7 +1,7 @@
 'use client'
 
 import Spinner from '@/components/ui/spinner'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import { useForm } from 'react-hook-form'
 import { TSignUpSchema, signUpSchema } from '@/schemas/signUp.schema'
@@ -9,15 +9,28 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 
 export const RegisterForm = () => {
+  const [initialEmail, setInitialEmail] = useState('')
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
     setError,
+    setValue,
   } = useForm<TSignUpSchema>({
     resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      usernameOrEmail: initialEmail,
+    },
   })
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const email = searchParams.get('email') || ''
+    setInitialEmail(email)
+    setValue('usernameOrEmail', email)
+  }, [setValue])
 
   const onSubmit = async (data: TSignUpSchema) => {
     try {
@@ -61,8 +74,13 @@ export const RegisterForm = () => {
       <input
         {...register('usernameOrEmail')}
         type='text'
+        value={initialEmail}
         placeholder='username or email'
-        className='input  mb-4 h-14 w-full  bg-opacity-25 pl-10 placeholder-white '
+        className='input mb-4 h-14 w-full bg-opacity-25 pl-10 placeholder-white'
+        onChange={e => {
+          setInitialEmail(e.target.value)
+          setValue('usernameOrEmail', e.target.value) // Update form field value
+        }}
       />
       {errors.usernameOrEmail && (
         <p className='text-red-500'>{`${errors.usernameOrEmail.message}`}</p>
