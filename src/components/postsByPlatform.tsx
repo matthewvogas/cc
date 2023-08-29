@@ -118,7 +118,7 @@ export default function PostsByPlatform({
                       filterPosts={filterPosts}
                       setFilterPosts={setFilterPosts}
                     />
-                    <button
+                    {/* <button
                       type='button'
                       onClick={() => {
                         activeButton != 'topPerforming'
@@ -131,7 +131,7 @@ export default function PostsByPlatform({
                           : 'bg-[#EBF6F6]'
                       } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                       top performing 🥥
-                    </button>
+                    </button> */}
                   </div>
 
                   {shared != true && (
@@ -193,6 +193,10 @@ export default function PostsByPlatform({
             <Tab.Panel>
               <div className='flex justify-between mx-12 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+                  <FilterPostsTrigger
+                    filterPosts={filterPosts}
+                    setFilterPosts={setFilterPosts}
+                  />
                   {/* <div className='flex gap-4'>
                     <FilterPostsTrigger filterPosts={filterPosts} setFilterPosts={setFilterPosts} />
                     <button
@@ -277,7 +281,7 @@ export default function PostsByPlatform({
                       filterPosts={filterPosts}
                       setFilterPosts={setFilterPosts}
                     />
-                    <button
+                    {/* <button
                       type='button'
                       onClick={() => {
                         activeButton != 'topPerforming'
@@ -290,7 +294,7 @@ export default function PostsByPlatform({
                           : 'bg-[#EBF6F6]'
                       } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                       top performing 🥥
-                    </button>
+                    </button> */}
                   </div>
 
                   {shared != true && (
@@ -359,11 +363,7 @@ export default function PostsByPlatform({
               <div className='flex justify-between mx-12 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
-                    <FilterPostsTrigger
-                      filterPosts={filterPosts}
-                      setFilterPosts={setFilterPosts}
-                    />
-                    <button
+                    {/* <button
                       type='button'
                       onClick={() => {
                         activeButton != 'topPerforming'
@@ -376,7 +376,7 @@ export default function PostsByPlatform({
                           : 'bg-[#EBF6F6]'
                       } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                       top performing 🥥
-                    </button>
+                    </button> */}
                   </div>
 
                   {shared != true && (
