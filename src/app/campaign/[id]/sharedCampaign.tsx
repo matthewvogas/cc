@@ -95,8 +95,8 @@ export function SharedCampaign({
     <div className='  flex flex-col items-center justify-center'>
       <div className='w-full overflow-hidden'>
         {/* title */}
-        <div className='flex w-full justify-between items-center px-12 my-12'>
-          <h4 className='text-3xl font-medium'>{campaign.name}</h4>
+        {/* <div className='flex w-full justify-between items-center px-12 my-12'> */}
+          {/* <h4 className='text-3xl font-medium'>{campaign.name}</h4> */}
 
           {/* <div className='flex gap-4 items-center'>
             <div className=' mask mask-circle h-12 w-12'>
@@ -114,7 +114,7 @@ export function SharedCampaign({
               <p className='font-light text-xs'>agency</p>
             </div>
           </div> */}
-        </div>
+        {/* </div> */}
 
         {/* stats */}
         {/* <div className='mx-12 flex rounded-xl border my-12'>
