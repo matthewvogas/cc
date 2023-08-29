@@ -114,7 +114,7 @@ export function SharedCampaign({
               <p className='font-light text-xs'>agency</p>
             </div>
           </div> */}
-        </div>
+        {/* </div> */}
 
         {/* stats */}
         {/* <div className='mx-12 flex rounded-xl border my-12'>
