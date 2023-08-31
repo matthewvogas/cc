@@ -9,18 +9,16 @@ export default function Try() {
   return (
     <>
       <div className='m-auto flex px-4 lg:px-0 lg:w-[1280px] flex-col items-center justify-center py-16 overflow-hidden lg:overflow-visible'>
-        <div className='mb-4 flex flex-col items-center gap-5'>
-          <h2 className='text-base lg:text-2xl font-bold text-black mb-20'>
+          <h2 className='text-base lg:text-2xl font-bold text-black mb-8 lg:mb-20'>
             but wait, there’s more! 🥥
           </h2>
-        </div>
 
         <div>
           <div
-            className={` flex flex-row pb-12  gap-6 items-center bg-white  `}>
+            className={` flex flex-col lg:flex-row pb-12  gap-6 items-center bg-white  `}>
             <div className=' flex w-full flex-col '>
               <div className={`flex h-full`}>
-                <div className='hidden lg:flex flex-col self-center'>
+                <div className=' lg:flex flex-col self-center'>
                   <Image src={OneCard} className={`w-[700px]`} alt={''} />
                 </div>
               </div>
@@ -28,7 +26,7 @@ export default function Try() {
             <div className={`flex h-full w-[100%] items-center `}>
               <div
                 className={`flex flex-col self-center text-[28px] font-bold text-black px-12 lg:px-0`}>
-                <div className='mb-5 pt-14 lg:pt-0 flex content-center items-center'>
+                <div className='mb-5 pt-4 lg:pt-0 flex content-center items-center'>
                   <span className='text-sm lg:text-base mr-2'>🥥</span>
                   <span
                     className={`text-sm lg:text-base font-light  ${ptMono.className}`}>
@@ -60,7 +58,14 @@ export default function Try() {
           {/* card two */}
 
           <div
-            className={` flex flex-row pb-12  gap-6 bg-white items-end -mt-52 `}>
+            className={` flex flex-col lg:flex-row pb-12  gap-6 bg-white items-end lg:-mt-52 `}>
+            <div className=' flex lg:hidden w-full flex-col '>
+              <div className={`flex h-full`}>
+                <div className=' flex-col self-center'>
+                  <Image src={OneTwo} className={`w-[700px]`} alt={''} />
+                </div>
+              </div>
+            </div>
             <div className={`flex h-full w-[100%] items-center `}>
               <div
                 className={`flex flex-col self-center text-[28px] font-bold text-black px-12 lg:px-0`}>
@@ -91,9 +96,9 @@ export default function Try() {
                 </div>
               </div>
             </div>
-            <div className=' flex w-full flex-col '>
+            <div className=' hidden lg:flex w-full flex-col '>
               <div className={`flex h-full`}>
-                <div className='hidden lg:flex flex-col self-center'>
+                <div className=' lg:flex flex-col self-center'>
                   <Image src={OneTwo} className={`w-[700px]`} alt={''} />
                 </div>
               </div>

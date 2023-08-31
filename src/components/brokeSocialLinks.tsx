@@ -1,19 +1,16 @@
 import { inter, ptMono } from '@/app/fonts'
-import tiktok from 'public/assets/register/tiktok-white.png'
+import heartBroken from 'public/assets/register/heart-broken.svg'
 import angleDown from 'public/assets/register/angle-down.svg'
 import copyLink from 'public/assets/register/copy-link.svg'
 import linkImage from 'public/assets/register/link.svg'
-import arrow from 'public/assets/register/arrow.svg'
 import Image from 'next/image'
 import { lato } from '@/app/fonts'
-import Link from 'next/link'
-import { Posts } from '@/types/posts/PostByCampaignRes'
 
 type Props = {
-  tiktokCards: Posts[]
+  brokeLinks: any
 }
 
-export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
+export default function BrokeSocialLinks({ brokeLinks }: Props) {
   const copiarTexto = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
@@ -29,15 +26,15 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
 
   return (
     <>
-      {tiktokCards.length > 0 ? (
+      {brokeLinks.length > 0 ? (
         <div className='px-12'>
-          <div className='collapse bg-base-200'>
+          <div className='collapse bg-[#FCF5F2]'>
             <input type='checkbox' />
             <div className='collapse-title text-xl font-medium justify-between flex items-center'>
               <div className='flex items-center gap-4 '>
-                <Image src={tiktok} className='w-[25px] h-[25px]' alt={''} />
+                <Image src={heartBroken} className='w-[25px] h-[25px]' alt={''} />
                 <span className='text-lg font-medium'>
-                  View unconnected TikTok links
+                  Problematic links
                 </span>
               </div>
               <div>
@@ -47,23 +44,15 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
             <div className='collapse-content'>
               <div className='flex justify-between mx-14 gap-7 mb-6'>
                 <p className={`text-base italic tracking-wide ${lato.className}`}>
-                  Why is this a thing? Well! because TikTok won’t let us share
-                  content <br /> unless your creators have connected.
+                  Why is this a thing? Well! because these posts have either been
+                  <br /> removed, the user has changed their username or they are private.
                 </p>
-                <div className='flex gap-6'>
-                  <Link
-                    href={'../creators'}
-                    className={`mx-2 flex items-center rounded-full bg-active px-8 py-3 text-base text-black ${ptMono.className}`}>
-                    invite your creators now
-                    <Image src={arrow} className='w-[15px] ml-3' alt='' />
-                  </Link>
-                </div>
               </div>
 
               {/* box of rows */}
               <div className='bg-white px-10 py-7 rounded-[10px] flex flex-col gap-3'>
                 {/* row */}
-                {tiktokCards.map((card, index: number) => (
+                {brokeLinks.map((card: any, index: number) => (
                   <div key={index} className='flex items-center justify-between'>
                     <div className={`${ptMono.className} flex gap-12 items-center`}>
                       <p className={`text-black text-sm`}>

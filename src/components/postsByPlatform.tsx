@@ -2,14 +2,15 @@
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import PostCard from './postCard'
-import TikTokNotAccountConnected from './tiktokNotAccountsConnected'
-import { FiPlus, FiRotateCw, FiChevronDown } from 'react-icons/fi'
-
 import { ptMono } from '@/app/fonts'
 import AddNewPosts from './modals/addPosts'
 import FilterPostsTrigger from './filterPostsTrigger'
 import FilterPostsContainer from './filterPostsContainer'
 import AddNewStories from './modals/addStories'
+import BrokeSocialLinks from './brokeSocialLinks'
+import { FiRotateCw } from 'react-icons/fi'
+import TikTokNotAccountConnected from './tiktokNotAccountsConnected'
+import { EmptyPost } from './emptyPost'
 
 type Props = {
   readonly id: number
@@ -30,6 +31,7 @@ export default function PostsByPlatform({
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
 
+  const tiktokPosts = campaign.posts?.filter((post: any) => post.platform === 'tiktok')
   const filteredPosts = campaign?.posts?.filter((post: any) => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
@@ -38,8 +40,8 @@ export default function PostsByPlatform({
       activeSocial === 'Instagram'
         ? ['instagram']
         : activeSocial === 'TikTok'
-        ? ['tiktok']
-        : ['tiktok', 'instagram']
+          ? ['tiktok']
+          : ['tiktok', 'instagram']
 
     if (
       allowedPlatforms.includes(post.platform || '') &&
@@ -72,52 +74,49 @@ export default function PostsByPlatform({
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b`}>
             <Tab
-              className={` ml-12 p-2 text-base font-medium outline-none ${
-                activeSocial === 'All'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-              }`}
+              className={` ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'All'
+                ? 'border-b-4 border-[#7E7E7D]'
+                : 'opacity-50'
+                }`}
               onClick={() => setActiveSocial('All')}>
               All posts
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${
-                activeSocial === 'Instagram'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-              }`}
+              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Instagram'
+                ? 'border-b-4 border-[#7E7E7D]'
+                : 'opacity-50'
+                }`}
               onClick={() => setActiveSocial('Instagram')}>
               Instagram
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${
-                activeSocial === 'TikTok'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-              }`}
+              className={`p-2 text-base font-medium outline-none ${activeSocial === 'TikTok'
+                ? 'border-b-4 border-[#7E7E7D]'
+                : 'opacity-50'
+                }`}
               onClick={() => setActiveSocial('TikTok')}>
               TikTok
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${
-                activeSocial === 'Stories'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-              }`}
+              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Stories'
+                ? 'border-b-4 border-[#7E7E7D]'
+                : 'opacity-50'
+                }`}
               onClick={() => setActiveSocial('Stories')}>
               Stories
             </Tab>
           </Tab.List>
           <Tab.Panels>
-            {/* panel 1 */}
+            {/* All Posts */}
             <Tab.Panel>
-              <div className='flex justify-between mx-12 '>
+              <div className='flex justify-between mx-12 mb-8'>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
                     <FilterPostsTrigger
                       filterPosts={filterPosts}
                       setFilterPosts={setFilterPosts}
                     />
+
                     {/* <button
                       type='button'
                       onClick={() => {
@@ -133,6 +132,8 @@ export default function PostsByPlatform({
                       top performing 🥥
                     </button> */}
                   </div>
+
+
 
                   {shared != true && (
                     <div className='flex gap-4 justify-end'>
@@ -158,6 +159,8 @@ export default function PostsByPlatform({
                 </div>
               </div>
 
+              <BrokeSocialLinks brokeLinks={[]} />
+
               <FilterPostsContainer
                 id={id}
                 shared={shared}
@@ -181,17 +184,17 @@ export default function PostsByPlatform({
                   ))}
                   {campaign?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
-                      <h1>{`Seems like you dont have posts! :(`}</h1>
+                      <EmptyPost />
                     </div>
                   )}
                 </div>
               </div>
             </Tab.Panel>
 
-            {/* panel 2 */}
+            {/* Instagram */}
 
             <Tab.Panel>
-              <div className='flex justify-between mx-12 '>
+              <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <FilterPostsTrigger
                     filterPosts={filterPosts}
@@ -236,6 +239,8 @@ export default function PostsByPlatform({
                 </div>
               </div>
 
+              <BrokeSocialLinks brokeLinks={[]} />
+
               <FilterPostsContainer
                 id={id}
                 shared={shared}
@@ -259,22 +264,16 @@ export default function PostsByPlatform({
                   ))}
                   {campaign?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
-                      <h1>{`Seems like you dont have posts! :(`}</h1>
+                      <EmptyPost />
                     </div>
                   )}
                 </div>
               </div>
             </Tab.Panel>
 
-            {/* panel 3  */}
+            {/* TikTok  */}
             <Tab.Panel>
-              {/* tiktok handler */}
-              {/* <div className='mt-8'>
-                {tiktokPosts.length !== 0 && (
-                  <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
-                )}
-              </div> */}
-              <div className='flex justify-between mx-12 '>
+              <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
                     <FilterPostsTrigger
@@ -321,6 +320,12 @@ export default function PostsByPlatform({
                 </div>
               </div>
 
+              <div className='flex flex-col gap-4'>
+                <BrokeSocialLinks brokeLinks={[]} />
+                <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
+              </div>
+
+
               <FilterPostsContainer
                 id={id}
                 shared={shared}
@@ -344,23 +349,16 @@ export default function PostsByPlatform({
                   ))}
                   {campaign?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
-                      <h1>{`Seems like you dont have posts! :(`}</h1>
+                      <EmptyPost />
                     </div>
                   )}
                 </div>
               </div>
             </Tab.Panel>
 
-            {/* panel 4  */}
+            {/* Stories */}
             <Tab.Panel>
-              {/* tiktok handler */}
-              {/* <div className='mt-8'>
-                {tiktokPosts.length !== 0 && (
-                  <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
-                )}
-              </div> */}
-
-              <div className='flex justify-between mx-12 '>
+              <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
                     {/* <button
@@ -393,10 +391,8 @@ export default function PostsByPlatform({
                         />
                       </button>
                       <AddNewStories
-                        campaignsFallback={campaign}
-                        clientsFallback={undefined}
-                        text={''}
-                        icon={undefined}
+                        campaignFallback={campaign}
+                        clientFallback={undefined}
                       />
                     </div>
                   )}

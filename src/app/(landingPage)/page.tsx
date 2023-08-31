@@ -5,7 +5,7 @@ import Footer from '@/components/lading/principalComponents/footer'
 export default function Page({}) {
   return (
     <>
-      <Header />
+      <Header frome={'landing'} />
       <Home />
       <Footer />
     </>

@@ -5,8 +5,6 @@ import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
 import { Tab } from '@headlessui/react'
 import imageCover from 'public/assets/register/campaignCover.jpg'
-import coverImageClient from 'public/assets/uniqueClient/clientCoverPage.jpg'
-
 import { useState } from 'react'
 import TitleSingleClient from '@/components/titleSingleClient'
 
@@ -89,7 +87,7 @@ export default function ClientTabs({
                     </Link>
                   ))
                 ) : (
-                  <p className='px-8 py-3 border-gray border rounded-lg mx-12 my-12 text-center bg-gray-100 '>
+                  <p className={`px-8 py-3 border-gray border rounded-full text-center bg-[#F4F2EE] ${ptMono.className}`}>
                     {' '}
                     This client has no campaigns
                   </p>
@@ -100,7 +98,7 @@ export default function ClientTabs({
             {/* panel 2 */}
 
             <Tab.Panel>
-              <p className='px-8 py-3 border-gray border rounded-lg mx-12 my-12 text-center bg-gray-100 '>
+              <p className={`px-8 py-3 border-gray border rounded-full text-center bg-[#F4F2EE] ${ptMono.className} m-12`}>
                 {' '}
                 under construction
               </p>

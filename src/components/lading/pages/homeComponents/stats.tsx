@@ -12,7 +12,7 @@ export default function Stats() {
         alt={''}
       />
       <div>
-        <div className='absolute right-[20px] lg:right-1/2 -mt-[210px] lg:-mt-[370px]  w-[290px] lg:w-[500px]  gap-1 lg:gap-2   '>
+        <div className='absolute right-2/5 ml-12 lg:ml-0 lg:right-1/2 -mt-[370px]  w-[290px] lg:w-[500px]  gap-1 lg:gap-2   '>
           <div className='border-2 border-borderCards bg-white  leading-5 shadow-[1px_1px_2px_0px_#e6e6e646] px-6 py-4 lg:px-10 lg:py-8 rounded-md'>
             <Image
               src={cocoImage}

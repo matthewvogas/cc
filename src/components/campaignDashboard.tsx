@@ -7,6 +7,7 @@ import { Campaign } from '@prisma/client'
 import Link from 'next/link'
 import useCampaigns from '@/hooks/useCampaigns'
 import ActionalTitle from './actionalTitle'
+import { FiCoffee } from "react-icons/fi";
 
 type Props = {
   campaignsFallback: (Campaign & {
@@ -37,44 +38,80 @@ export default function DashboardCampaign({
       />
 
       <div className='bg-white flex overflow-x-auto gap-4 md:px-12'>
-        {postData.map((card: any, index: any) => (
-          <Link
-            href={`/dashboard/campaigns/${card.id}`}
-            key={index}
-            className={`bg-beigeTransparent border min-w-[250px] ${ptMono.className}`}>
-            <Image
-              className={`object-cover`}
-              src={imageCover}
-              alt={card.name}
-              style={{ width: '250px', height: '310px' }}
-            />
-            <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
-              <h5>{card.name}</h5>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className=' ml-8 h-6 w-6'>
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
-                />
-              </svg>
+        {postData.length > 0 ?
+          postData.map((card: any, index: any) => (
+            <Link
+              href={`/dashboard/campaigns/${card.id}`}
+              key={index}
+              className={`bg-beigeTransparent border min-w-[250px] ${ptMono.className}`}>
+              <Image
+                className={`object-cover`}
+                src={imageCover}
+                alt={card.name}
+                style={{ width: '250px', height: '310px' }}
+              />
+              <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
+                <h5>{card.name}</h5>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className=' ml-8 h-6 w-6'>
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
+                  />
+                </svg>
+              </div>
+              <hr className=' h-px bg-gray-200'></hr>
+              <div className='flex  flex-col gap-2 px-6 py-[14px]'>
+                <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                  {card?._count?.creators || 0} {`creators`}
+                </h4>
+                <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                  {card?._count?.posts || 0} {`posts`}
+                </h4>
+              </div>
+            </Link>
+          ))
+          : (
+            <div
+              className={`bg-transparent border min-w-[250px] opacity-40 ${ptMono.className}`}>
+              <div className='w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
+                <FiCoffee style={{ width: '24px' }} />
+                <p className=' text-center text-base'>grab a cup of coffee and start creating a campaign</p>
+              </div>
+              <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
+                <h5>- - - -</h5>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className=' ml-8 h-6 w-6'>
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
+                  />
+                </svg>
+              </div>
+              <hr className=' h-px bg-gray-200'></hr>
+              <div className='flex  flex-col gap-2 px-6 py-[14px]'>
+                <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                  - - {`creators`}
+                </h4>
+                <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                  - - {`posts`}
+                </h4>
+              </div>
             </div>
-            <hr className=' h-px bg-gray-200'></hr>
-            <div className='flex  flex-col gap-2 px-6 py-[14px]'>
-              <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
-                {card?._count?.creators || 0} {`creators`}
-              </h4>
-              <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
-                {card?._count?.posts || 0} {`posts`}
-              </h4>
-            </div>
-          </Link>
-        ))}
+          )}
+
       </div>
     </>
   )

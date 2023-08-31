@@ -252,7 +252,7 @@ export default function Home() {
       </section>
 
       {/* Steps */}
-      <section className='relative z-10  lg:bg-secondBackground pb-24  lg:block'>
+      <section className='relative z-10  lg:bg-secondBackground lg:pb-24  lg:block'>
         <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
           {cardData.map((card, index) => (
             <FunctionalityCard
@@ -265,8 +265,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='relative z-10  lg:bg-[#F2EDE7] pb-24  lg:block'>
-        <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
+      <section className='relative z-10  lg:bg-[#F2EDE7] lg:pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center lg:pt-[69px] '>
           {cardData1.map((card, index) => (
             <FunctionalityCard
               key={index}
@@ -278,8 +278,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='relative z-10  lg:bg-secondBackground pb-24  lg:block'>
-        <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
+      <section className='relative z-10  lg:bg-secondBackground lg:pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center lg:pt-[69px] '>
           {cardData2.map((card, index) => (
             <FunctionalityCard
               key={index}
@@ -291,8 +291,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='relative z-10  lg:bg-secondBackground pb-24  lg:block'>
-        <div className='m-auto flex lg:w-[1290px] flex-col justify-center pt-[69px] '>
+      <section className='relative z-10  lg:bg-secondBackground lg:pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center lg:pt-[69px] '>
           {cardData3.map((card, index) => (
             <FunctionalityCard
               key={index}
@@ -312,7 +312,7 @@ export default function Home() {
       {/* Slider Cards */}
       <section>
         <div className='m-auto flex lg:w-[1190px] flex-col justify-center lg:pt-20'>
-          <h2 className='mb-9 text-2xl font-bold text-black text-center lg:text-left px-20 lg:px-0'>
+          <h2 className='mb-9 mt-9 text-2xl font-bold text-black text-center lg:text-left px-20 lg:px-0'>
             <span className='hidden lg:block lg:text-[28px]'>
               How to create a Codecoco campaign 🥥
             </span>

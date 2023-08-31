@@ -1,40 +1,44 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
+import Image from 'next/image'
 import { Sen } from 'next/font/google'
-import { RegisterForm } from './registerFormReactHookForm'
 import logo from 'public/assets/register/LogoSVG.svg'
 import registerBg from 'public/assets/register/login.jpg'
-import { useState } from 'react'
+import { RegisterForm } from './registerFormReactHookForm'
+import Header from '@/components/lading/principalComponents/header'
 
 const sen = Sen({ weight: '700', subsets: ['latin'] })
 export default function RegisterPage() {
   return (
-    <section className='relative flex h-screen w-screen items-center justify-center'>
+    <>
       <Image
         priority
-        className='absolute -z-20 h-full w-full object-cover object-center '
+        className='absolute -z-50 h-full w-full object-cover object-center '
         src={registerBg}
         alt='background'
         fill
       />
 
-      <div className='flex w-[500px] flex-col items-center justify-center gap-4  px-10 text-center text-white '>
-        <div className={`flex flex-col gap-4 ${ptMono.className}`}>
-          <Image priority className=' h-auto w-[400px]' src={logo} alt='' />
-          <p className='mb-12 text-lg text-white'>create your account</p>
+      <Header frome={'signup'} />
+
+      <section className='relative z-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-30'>
+        <div className='flex w-[500px] flex-col items-center justify-center  pt-28 lg:pt-0 px-10 text-center text-white '>
+          <div className={`flex flex-col gap-4 ${ptMono.className}`}>
+            <Image priority className=' h-auto w-[400px]' src={logo} alt='' />
+            <p className='mb-12 text-lg text-white'>create your account</p>
+          </div>
+          <RegisterForm />
+
+          <div className='my-7 h-px w-full rounded-r-full bg-white opacity-50'></div>
+
+          <p>
+            already have an account?{' '}
+            <Link href='/login' className='text-primary'>
+              log in
+            </Link>
+          </p>
         </div>
-        <RegisterForm />
-
-        <div className='my-7 h-px w-full rounded-r-full bg-white opacity-50'></div>
-
-        <p>
-          already have an account?{' '}
-          <Link href='/login' className='text-primary'>
-            log in
-          </Link>
-        </p>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

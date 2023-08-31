@@ -7,10 +7,10 @@ import Link from 'next/link'
 export default function Testimonial() {
   return (
     <>
-      <div className='flex '>
-        <div className='w-3/6'>
+      <div className='flex flex-col lg:flex-row'>
+        <div className='lg:w-3/6'>
           <Image src={testimonial} className='w-full  object-cover' alt={''} />
-          <div className='absolute ml-24 -mt-44 '>
+          <div className='absolute ml-12 lg:ml-24 -mt-44 '>
             <Image src={Rosalind} className='mb-5' alt={''} />
             <div className='flex gap-4'>
               <Link
@@ -26,7 +26,7 @@ export default function Testimonial() {
             </div>
           </div>
         </div>
-        <div className='flex w-3/6 px-20 flex-col gap-16 bg-beigeSelected pr-20 pt-14 '>
+        <div className='flex lg:w-3/6 px-10 lg:px-20 flex-col gap-16 bg-beigeSelected pr-20 pt-14 pb-12'>
           <div>
             <h3 className='font-semibold text-2xl mb-4'>
               “Codecoco saves my team{' '}
