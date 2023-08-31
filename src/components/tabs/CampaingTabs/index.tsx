@@ -10,7 +10,6 @@ import TabsToShare from '@/components/tabsToShare'
 import { Posts } from '@/types/posts/PostByCampaignRes'
 import FilterCreators from '@/components/filtersCreators'
 import { CampaignRes } from '@/types/campaign/campaignRes'
-import OverviewCampaign from '@/components/overviewCampaign'
 import Stats from '@/components/stats'
 import PostsByPlatform from '@/components/postsByPlatform'
 

@@ -58,7 +58,7 @@ export const RegisterForm = () => {
       await signIn('credentials', {
         email: data.usernameOrEmail,
         password: data.password,
-        callbackUrl: '/dashboard',
+        callbackUrl: '/onboarding',
       })
     } catch (err) {
       console.log(err)

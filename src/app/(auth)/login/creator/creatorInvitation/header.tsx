@@ -1,8 +1,5 @@
 import Image from 'next/image'
 import logo from 'public/assets/register/codecoco.svg'
-import arrow from 'public/assets/register/arrowButtonIcon.svg'
-import { ptMono } from '@/app/fonts'
-import Link from 'next/link'
 
 // Componente para el header de la página de invitación por parte de la agencia al creador
 export default function HeaderCreatorInvitation() {

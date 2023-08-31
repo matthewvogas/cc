@@ -33,15 +33,14 @@ export default function LoginPage() {
 
         <div className='w-full max-w-md px-2 sm:px-0'>
           <Tab.Group>
-            <Tab.List className='flex space-x-1 rounded-xl bg-red-900/20 p-1'>
+            <Tab.List className='flex space-x-1 rounded-full bg-pink-100 bg-opacity-10 p-1'>
               <Tab
                 className={({ selected }) =>
                   classNames(
-                    'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-red-700',
-                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-red-400 focus:outline-none focus:ring-2',
+                    'w-full rounded-full py-2.5  bg-opacity-25 placeholder-white text-white',
                     selected
                       ? 'bg-white shadow'
-                      : 'text-red-100 hover:bg-white/[0.12] hover:text-white',
+                      : 'text-red-100  hover:text-white',
                   )
                 }>
                 Agency
@@ -49,11 +48,10 @@ export default function LoginPage() {
               <Tab
                 className={({ selected }) =>
                   classNames(
-                    'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-red-700',
-                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-red-400 focus:outline-none focus:ring-2',
+                    'w-full rounded-full py-2.5  bg-opacity-25 placeholder-white text-white',
                     selected
                       ? 'bg-white shadow'
-                      : 'text-red-100 hover:bg-white/[0.12] hover:text-white',
+                      : 'text-red-100  hover:text-white',
                   )
                 }>
                 Creator

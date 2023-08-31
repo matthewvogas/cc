@@ -117,7 +117,7 @@ export const LoginAgency = () => {
       </div> */}
       <hr className='my-7 h-px w-full rounded-r-full bg-white opacity-50' />
 
-      <div className='flex w-full justify-between px-4'>
+      <div className='flex w-full justify-center px-4'>
         <Link href='/signup' className='text-lg '>
           create a new account
         </Link>
