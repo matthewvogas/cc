@@ -18,7 +18,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import './swiper.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 
 type Props = {
@@ -31,7 +31,9 @@ export default function Onboarding({session} : Props){
 
 
   const [slideValue, setSlideValue] = useState(0);
-  const slideImages = [signup1, signup2, signup3, signup4, signup5];
+  
+  const slideImages = useMemo(() => [signup1, signup2, signup3, signup4, signup5], []);
+
   const [slideImage, setSlideImage] = useState(slideImages[slideValue]);
 
   useEffect(() => {

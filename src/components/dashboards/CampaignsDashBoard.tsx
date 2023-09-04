@@ -259,7 +259,7 @@ export default function CampaignsDashBoard({
                 className={`bg-transparent border min-w-[250px] opacity-40 ${ptMono.className}`}>
                 <div className='w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
                   <FiCoffee style={{ width: '24px' }} />
-                  <p className=' text-center text-base'>No campaigns in sight! Don't worry, they're just shy. Try a different search term or create a new one</p>
+                  <p className=' text-center text-base'>No campaigns in sight! Don&apos;t worry, they&apos;re just shy. Try a different search term or create a new one</p>
                 </div>
                 <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
                   <h5>- - - -</h5>
