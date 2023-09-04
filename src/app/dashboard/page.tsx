@@ -20,7 +20,7 @@ export default async function Home() {
   const campaigns = await CampaignsService.findMany(session!.user.id)
   const clients = await ClientsService.findMany(session!.user.id)
   const creators = await CreatorsService.findMany(session!.user.id)
-  const allPosts = await PostsService.findAllPosts()
+  const allPosts = await PostsService.findAllPostsFromUser(session!.user.id)
   const totalViews = await PostsService.findViewsFromAllPosts()
   const totalReach = await PostsService.findReachFromAllPosts()
   const totalComments = await PostsService.findCommentsFromAllPosts()
