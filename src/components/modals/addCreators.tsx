@@ -1,14 +1,11 @@
 'use client'
-import { ptMono } from '@/app/fonts'
+import { inter, ptMono } from '@/app/fonts'
 import React from 'react'
 import Link from 'next/link'
 import { useState } from 'react'
 import EmailsInput from '../EmailInput'
-import { Inter } from 'next/font/google'
 import { Dialog, Tab } from '@headlessui/react'
 import { CampaignRes } from '@/types/campaign/campaignRes'
-import { Campaign, Client, User, Post } from '@prisma/client'
-const inter = Inter({ weight: '400', subsets: ['latin'] })
 
 type Props = {
   campaignsFallback: CampaignRes

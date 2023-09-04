@@ -3,14 +3,12 @@ import { ptMono } from '@/app/fonts'
 import { Dialog, Tab } from '@headlessui/react'
 import { useState } from 'react'
 import React from 'react'
-import { Inter } from 'next/font/google'
 import AddCreators from './modals/addCreators'
 import Link from 'next/link'
 import EmailsInput from './EmailInput'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { Campaign, Client, User, Post } from '@prisma/client'
 
-const inter = Inter({ weight: '400', subsets: ['latin'] })
 
 const comment = [
   {
