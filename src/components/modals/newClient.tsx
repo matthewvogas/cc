@@ -1,7 +1,4 @@
-import { PT_Mono } from 'next/font/google'
-
-// Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
+import { inter, ptMono } from '@/app/fonts'
 
 export default function NewClient() {
   return (

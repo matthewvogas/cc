@@ -1,12 +1,3 @@
-import { PT_Mono } from 'next/font/google'
-import { User } from '@prisma/client'
-import Image from 'next/image'
-import bgdashboard from 'public/assets/register/dashboardBackground.jpg'
-
-// Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
-
-// Style Variables
 
 type Props = {
   title: string

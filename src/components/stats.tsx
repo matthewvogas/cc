@@ -1,14 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import { Campaign } from '@prisma/client'
 import Link from 'next/link'
 import useCampaigns from '@/hooks/useCampaigns'
 import ActionalTitle from './actionalTitle'
-
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 type Props = {
   campaignsFallback: (Campaign & {

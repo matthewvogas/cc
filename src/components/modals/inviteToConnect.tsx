@@ -1,10 +1,4 @@
-import { Inter } from 'next/font/google'
-import { PT_Mono } from 'next/font/google'
-import React from 'react'
-
-// Fonts
-const inter = Inter({ weight: '400', subsets: ['latin'] })
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
+import { inter, ptMono } from '@/app/fonts'
 
 export default function InviteToConnect() {
   return (

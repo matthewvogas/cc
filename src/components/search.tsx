@@ -1,9 +1,6 @@
 'use client'
-import { PT_Mono } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
 import { useState } from 'react'
-
-// Fonts
-const ptMono = PT_Mono({ weight: '400', subsets: ['latin'] })
 
 export default function Search(props: {
   inputSearchValue: any
