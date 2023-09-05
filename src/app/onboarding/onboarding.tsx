@@ -31,9 +31,8 @@ export default function Onboarding({session} : Props){
 
 
   const [slideValue, setSlideValue] = useState(0);
-  
-  const slideImages = useMemo(() => [signup1, signup2, signup3, signup4, signup5], []);
 
+  const slideImages = useMemo(() => [signup1, signup2, signup3, signup4, signup5], []);
   const [slideImage, setSlideImage] = useState(slideImages[slideValue]);
 
   useEffect(() => {

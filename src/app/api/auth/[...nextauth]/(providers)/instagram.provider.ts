@@ -35,7 +35,7 @@ export default function Instagram<P extends FacebookProfile>(
       url: `https://www.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}/dialog/oauth`,
       params: {
         scope:
-          'email,instagram_basic,instagram_manage_insights,pages_read_engagement,pages_read_engagement,pages_show_list,read_insights,business_management',
+          'instagram_basic,instagram_manage_insights,pages_show_list,business_management',
       },
     },
     userinfo: {

@@ -9,23 +9,31 @@ import TiktokService from '@/lib/TiktokService'
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
   const { posts, campaignId } = (await req.json()) as {
-    posts: string | string[]
+    posts: string[]
     campaignId: string
   }
 
-  const urls = Array.isArray(posts) ? posts : posts.split(',')
-  let postSaved = 0
-  let postError = 0
-  let postSkipped = 0
 
-  for (const url of urls) {
+  let postSaved: Array<string> = []
+  let postError: Array<string> = []
+  let postSkipped: Array<string> = []
+  // console.log(urls)
+
+  for (const url of posts) {
+    console.log('Processing url: ' + url.trim())
+    if (!url) {
+      console.log('ERROR No url')
+      postError.push(url.trim())
+      continue
+    }
+
     if (url.includes('instagram')) {
       const shortcode = await InstagramService.getShortcode(url.trim())
       const oembed = await InstagramService.getPostInfo(shortcode)
 
       if (!oembed) {
         console.log('ERROR No Oembed')
-        postError++
+        postError.push(url.trim())
         continue
       }
 
@@ -136,6 +144,17 @@ export async function POST(req: NextRequest) {
       // }
 
       //const postInsights = InstagramService.getInsights(postOnRes)
+      const postExists = await db.post.findFirst({
+        where: {
+          shortcode: shortcode,
+        },
+      })
+
+      if (postExists) {
+        postSkipped.push(url.trim())
+        console.log('Post already exists')
+        continue
+      }
 
       const postToSave = await db.post.upsert({
         where: {
@@ -169,18 +188,18 @@ export async function POST(req: NextRequest) {
       // }
       if (postToSave) {
         console.log(`Post ${url.trim()} saved to db`)
-        postSaved++
+        postSaved.push(postToSave.permalink!)
       }
     }
     if (url.includes('tiktok')) {
       if (url.startsWith('https://vm.tiktok.com')) {
-        postError++
+        postError.push(url.trim())
         console.log('ERROR No Oembed for link ' + url.trim())
         continue
       }
       const oembed = await TiktokService.getPostInfo(url.trim())
       if (!oembed || !oembed?.thumbnail_url) {
-        postError++
+        postError.push(url.trim())
         console.log('ERROR No Oembed for link ' + url.trim())
         continue
       }
@@ -236,12 +255,24 @@ export async function POST(req: NextRequest) {
           'thumbnails',
         )
       } catch (err) {
-        postError++
+        postError.push(url.trim())
         console.log('ERROR No thumbnail for link ' + url.trim())
         continue
       }
 
       try {
+        const postExists = await db.post.findFirst({
+          where: {
+            shortcode: oembed.embed_product_id!,
+          },
+        })
+
+        if (postExists) {
+          postSkipped.push(url.trim())
+          console.log('Post already exists')
+          continue
+        }
+
         const postToSave = await db.post.upsert({
           where: {
             shortcode_platform: {
@@ -292,22 +323,31 @@ export async function POST(req: NextRequest) {
 
         if (!postToSave) {
           console.log('Post not saved')
-          postError++
+          postError.push(url.trim())
           continue
         }
-        console.log(`Post ${url.trim()} saved to db`)
-        postSaved++
+        console.log(`Post ${postToSave.permalink} saved to db`)
+        postSaved.push(postToSave.permalink!)
       } catch (err) {
         console.log(err)
-        postError++
+        postError.push(url.trim())
         continue
       }
     }
+    else{
+      postError.push(url.trim())
+      console.log('ERROR No Oembed for link ' + url.trim())
+      continue
+    }
   }
 
-  console.log('Posts saved: ' + postSaved)
+  console.log('Posts saved: ' + postSaved.length)
+  console.log('Posts skipped: ' + postSkipped.length)
+  console.log('Posts errors: ' + postError.length)
+  console.log('Posts total: ' + posts.length)
+
+  //Print the array of posts errors
   console.log('Posts errors: ' + postError)
-  console.log('Posts total: ' + urls.length)
 
   return NextResponse.json('ok')
 }

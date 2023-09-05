@@ -39,15 +39,6 @@ export default function AddNewPosts({
 
   const [isOpen, setIsOpen] = useState(false)
   const [fetchError, setFetchError] = useState<string | null>(null)
-  const [fileSelected, setFileSelected] = useState(false) // Nuevo estado
-
-  const handleFileChange = (e: any) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFileSelected(true)
-    } else {
-      setFileSelected(false)
-    }
-  }
 
   const handleDownloadClick = async () => {
     const url = 'https://dewinu.com/docs/example.xlsx'
@@ -73,10 +64,6 @@ export default function AddNewPosts({
     }
   }
 
-  const handleLinksChange = (e: any) => {
-    setLinks(e.target.value)
-  }
-
   const handleHashTagSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -85,12 +72,21 @@ export default function AddNewPosts({
   }
 
   const handleLinksSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setFetchError(null)
+    e.preventDefault();
+    setLoading(true);
+    setFetchError(null);
 
-    console.log(links)
-    console.log(campaignsFallback.id)
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const file = formData.get('file') as File;
+    const posts: Array<string> = file.name ? await excelToJson(file) : links.split(',').map(post => post.trim());
+
+    if (posts.some(post => !post.startsWith('https://') && !post.includes('instagram') && !post.includes('tiktok'))) {
+      setLoading(false);
+      setFetchError('Please add valid links');
+      return;
+    }
+
     try {
       const res = await fetch('/api/urls', {
         method: 'POST',
@@ -98,66 +94,26 @@ export default function AddNewPosts({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          posts: links,
+          posts,
           campaignId: campaignsFallback.id,
         }),
-      })
+      });
 
-      if (res.status === 200 && res.ok) {
-        setLinks('')
-        setLoading(false)
-        setIsOpen(false)
-        await router.refresh()
+      if (res.ok) {
+        form.reset();
+        setLinks('');
+        setIsOpen(false);
+        router.refresh();
+      } else {
+        setFetchError('An error occurred');
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      setFetchError('An error occurred');
+    } finally {
+      setLoading(false);
     }
-  }
-
-  const handleFileSubmit = async (e: React.FormEvent) => {
-    setLoading(true)
-    setFetchError(null)
-    e.preventDefault()
-    const fileInput = document.getElementById(
-      'campaignExcel',
-    ) as HTMLInputElement
-
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0]
-
-      if (!file) {
-        setFetchError('Please select a file')
-        return
-      }
-      const posts = await excelToJson(file)
-
-      try {
-        const res = await fetch('/api/urls', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            posts,
-            campaignId: campaignsFallback.id,
-          }),
-        })
-
-        if (res.status === 200 && res.ok) {
-          setLoading(false)
-          setIsOpen(false)
-          await router.refresh()
-        } else {
-          console.log('error')
-        }
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setLoading(false)
-      }
-    } else {
-    }
-  }
+  };
 
   return (
     <>
@@ -211,16 +167,15 @@ export default function AddNewPosts({
                 <Tab.Panel className=''>
                   <div className='divider mx-0'></div>
 
-                  <form id='linksForm' onSubmit={handleLinksSubmit}>
+                  <form onSubmit={handleLinksSubmit}>
                     <div className='flex flex-col gap-4 px-7'>
                       <h2 className='text-left font-medium'>
                         Instagram, Facebook, or TikTok link
                       </h2>
                       <textarea
                         value={links}
-                        onChange={handleLinksChange}
+                        onChange={e => setLinks(e.target.value)}
                         rows={rowsLinks}
-                        required
                         className='border px-4 py-3 outline-none rounded-lg border-[#7F7F7F] text-[#7F7F7F] h-full'
                         placeholder='https://'></textarea>
                     </div>
@@ -251,78 +206,57 @@ export default function AddNewPosts({
                         </p>
                       </div>
                     </div>
-                  </form>
 
-                  <div className='divider mx-0'> or </div>
+                    <div className='divider mx-0'> or </div>
 
-                  <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
-                    <h2 className='text-sm -mb-3'>Upload a file</h2>
-                    <p className='text-xs'>
-                      Download a{' '}
-                      <button
-                        className='underline'
-                        onClick={handleDownloadClick}>
-                        sample CSV template
-                      </button>{' '}
-                      to see an example fo the format required.
-                    </p>
+                    <div className='flex gap-4  px-7 justify-between mb-4 flex-col'>
+                      <h2 className='text-sm -mb-3'>Upload a file</h2>
+                      <p className='text-xs'>
+                        Download a{' '}
+                        <button
+                          className='underline'
+                          onClick={handleDownloadClick}>
+                          sample CSV template
+                        </button>{' '}
+                        to see an example fo the format required.
+                      </p>
 
-                    <form
-                      id='fileForm'
-                      className='flex flex-col gap-3'
-                      onSubmit={handleFileSubmit}>
-                      <label
-                        htmlFor='campaignExcel'
-                        className={` border px-4 py-3 outline-none rounded-lg border-[#7F7F7F] text-[#7F7F7F] h-full ${
-                          fileSelected
-                            ? 'bg-beigeSelected text-textBlack border-beigeBorder'
-                            : ''
-                        }`}>
-                        {fileSelected
-                          ? 'selected file - select other'
-                          : 'select file'}
-                      </label>
-                      <input
-                        name='campaignExcel'
-                        id='campaignExcel'
-                        type='file'
-                        className='campaignExcel'
-                        accept='.xlsx, .xls, .csv'
-                        style={{ display: 'none' }}
-                        onChange={handleFileChange}
-                      />
-                      {fetchError && (
-                        <div className='alert alert-error flex justify-center shadow-lg'>
-                          <div className='flex flex-row gap-4'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              className='h-6 w-6 flex-shrink-0 stroke-current'
-                              fill='none'
-                              viewBox='0 0 24 24'>
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                strokeWidth='2'
-                                d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-                              />
-                            </svg>
-                            <span>{fetchError}</span>
+                      <div className='flex flex-col gap-3'>
+                        <input
+                          type='file'
+                          className='file-input file-input-bordered w-full max-w-xs'
+                          name='file'
+                          accept='.xlsx, .xls, .csv'
+                        />
+                        {fetchError && (
+                          <div className='alert alert-error flex justify-center shadow-lg'>
+                            <div className='flex flex-row gap-4'>
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                className='h-6 w-6 flex-shrink-0 stroke-current'
+                                fill='none'
+                                viewBox='0 0 24 24'>
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  strokeWidth='2'
+                                  d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
+                                />
+                              </svg>
+                              <span>{fetchError}</span>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </form>
+                        )}
+                      </div>
 
-                    <button
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                        handleFileSubmit(event)
-                        handleLinksSubmit(event)
-                      }}
-                      disabled={loading}
-                      className='flex self-end bg-[#E2DED4] rounded-lg px-7 py-2'
-                      type='submit'>
-                      {loading ? <span>Loading...</span> : 'done'}
-                    </button>
-                  </div>
+                      <button
+                        disabled={loading}
+                        className='flex self-end bg-[#E2DED4] rounded-lg px-7 py-2'
+                        type='submit'>
+                        {loading ? <span>Loading...</span> : 'done'}
+                      </button>
+                    </div>
+                  </form>
                 </Tab.Panel>
                 <Tab.Panel className=''>
                   <form onSubmit={handleHashTagSubmit}>
