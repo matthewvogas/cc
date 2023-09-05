@@ -15,6 +15,8 @@ type Props = {
   filterPosts: any
   setFilterPosts: any
   activeButton: any
+  setActiveSocial: any
+  activeSocial: any
   setActiveButton: any
   tags: any
   setTags: any
@@ -31,6 +33,8 @@ export default function FilterPostsContainer({
   filterPosts,
   setFilterPosts,
   activeButton,
+  setActiveSocial,
+  activeSocial,
   setActiveButton,
   tags,
   setTags,
@@ -277,8 +281,9 @@ export default function FilterPostsContainer({
                 id={id}
                 tags={tags}
                 creatorsSelecteds={creatorsSelecteds}
-                activePlatforms={activePlatforms}
                 mostView={activeButton}
+                setActiveSocial={setActiveSocial}
+                activeSocial={activeSocial}
               />
             )}
           </div>

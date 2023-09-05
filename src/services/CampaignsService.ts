@@ -12,6 +12,8 @@ export class CampaignsService {
         createdAt: 'desc',
       },
       include: {
+        creators: true,
+        posts: true,
         _count: {
           select: {
             creators: true,
@@ -60,6 +62,7 @@ export class CampaignsService {
       },
       include: {
         client: true,
+        creators: true,
         posts: {
           include: {
             creator: true,

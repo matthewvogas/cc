@@ -21,16 +21,17 @@ import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import Link from 'next/link'
 import AddNewPosts from './modals/addPosts'
+import Search from './search'
+import ViewCreator from './modals/viewCreator'
 
 const dropdownButton =
-  'text-sm border-2 inline-block py-2 px-8 m-2 text-back font-medium bg-whiteBrown rounded-full hover:bg-transparent hover:border-orange-100'
-const thTable = 'bg-white text-sm normal-case '
-const infoLabel = 'bg-active px-8 py-3 rounded-full text-black text-sm '
+  'text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100'
+const thTable = 'bg-white text-sm normal-case'
 
 type Props = {
   comeFrom: string
   creators: CreatorsByCampaignRes[]
-  campaign: any
+  campaigns: any
   clients: any
   search: string
   searchByTag?: any
@@ -40,7 +41,7 @@ type Props = {
 export default function CreatorRow({
   comeFrom,
   creators,
-  campaign,
+  campaigns,
   clients,
   search,
   searchByTag,
@@ -49,6 +50,8 @@ export default function CreatorRow({
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
   const [tags, setTags] = useState<string[]>([])
+
+  const [inputSearchValue, setInputSearchValue] = useState('')
 
   const filteredClients = clients.filter((client: any) => {
     const clientNameMatches = client.name
@@ -183,18 +186,32 @@ export default function CreatorRow({
                         </svg>
                         <ul
                           tabIndex={0}
-                          className='dropdown-content menu rounded-box w-max  border-2 border-gray-100 bg-white p-2'>
-                          {/* <button
+                          className='dropdown-content menu rounded-box w-max z-20 border-2 border-gray-100 bg-white p-2'>
+                          <button
                             onClick={() => setIsOpen(true)}
                             className={`${dropdownButton}`}>
                             add post tracking 🥥
-                          </button> */}
-                          <button className={`${dropdownButton}`}>
-                            View Creator
                           </button>
-                          <button className={`${dropdownButton}`}>
+
+                          <div className='collapse text-sm w-auto border text-back py-[-5] m-2 font-medium bg-whiteBrown hover:bg-transparent hover:border-orange-100 rounded-2xl'>
+                            <input type='checkbox' className='' />
+                            <div className='collapse-title p-2  text-sm font-medium justify-center flex items-center'>
+                              add to campaign 🥥
+                            </div>
+                            <div className='collapse-content'>
+                              <Search
+                                inputSearchValue={inputSearchValue}
+                                setInputSearchValue={setInputSearchValue}
+                              />
+                            </div>
+                          </div>
+
+                          <ViewCreator creator={creator} campaigns={campaigns} />
+
+                          <button className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100`}>
                             Remove creator
                           </button>
+
                         </ul>
                       </div>
                     </td>
@@ -311,8 +328,7 @@ export default function CreatorRow({
                 className={`flex flex-row items-center justify-center gap-6 ${ptMono.className}`}>
                 <Tab
                   className={({ selected }) =>
-                    ` rounded-3xl border-2 border-primary px-12 py-2 ${
-                      selected ? 'bg-primary' : ''
+                    ` rounded-3xl border-2 border-primary px-12 py-2 ${selected ? 'bg-primary' : ''
                     }`
                   }>
                   add manually
@@ -320,8 +336,7 @@ export default function CreatorRow({
 
                 <Tab
                   className={({ selected }) =>
-                    `rounded-3xl border-2 border-primary px-8  py-2 ${
-                      selected ? 'bg-primary' : ''
+                    `rounded-3xl border-2 border-primary px-8  py-2 ${selected ? 'bg-primary' : ''
                     }`
                   }>
                   upload from file

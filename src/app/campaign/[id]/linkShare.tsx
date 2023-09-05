@@ -1,7 +1,7 @@
 'use client'
 import { Dialog, Tab } from '@headlessui/react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import prev from 'public/assets/register/sharePublicModal.jpg'
 import { ptMono } from '@/app/fonts'
@@ -11,15 +11,20 @@ export const RedirectLink = (props: {
   id: number
   tags: any
   creatorsSelecteds: any
-  activePlatforms: any
   mostView: string
+  setActiveSocial: any
+  activeSocial: any
 }) => {
+
   const baseUrl = 'https://dev.codecoco.co/campaign'
+  const creatorNames = props.creatorsSelecteds?.map((creator: any) => creator.username);
+
+
   const params = `?tags=${props.tags?.join(
     ',',
-  )}&creators=${props.creatorsSelecteds?.join(
+  )}&creators=${creatorNames?.join(
     ',',
-  )}&platforms=${props.activePlatforms?.join(',')}&view=${props.mostView}`
+  )}&view=${props.activeSocial}`
 
   const link = `${baseUrl}/${props.id}${params}`
   const [isOpen, setIsOpen] = React.useState(false)

@@ -1,29 +1,29 @@
 'use client'
-import React, { useState } from 'react'
-import { Tab } from '@headlessui/react'
-import PostCard from './postCard'
-import { ptMono } from '@/app/fonts'
-import AddNewPosts from './modals/addPosts'
+
+import imageCover from 'public/assets/register/campaignCover.jpg'
 import FilterPostsTrigger from './filterPostsTrigger'
-import FilterPostsContainer from './filterPostsContainer'
-import AddNewStories from './modals/addStories'
 import BrokeSocialLinks from './brokeSocialLinks'
 import { FiRotateCw } from 'react-icons/fi'
-import TikTokNotAccountConnected from './tiktokNotAccountsConnected'
 import { EmptyPost } from './emptyPost'
+import React, { useState } from 'react'
+import { Tab } from '@headlessui/react'
+import { ptMono } from '@/app/fonts'
+import PostCard from './postCard'
+import Image from 'next/image'
+import Link from 'next/link'
+import AddNewPosts from './modals/addPosts'
+import FilterPostsContainer from './filterPostsContainer'
+
 
 type Props = {
-  readonly id: number
-  readonly campaign: any
-  readonly creators: any[]
-  readonly shared: boolean
+  creator: any
+  campaigns: any
 }
-export default function PostsByPlatform({
-  id,
-  campaign,
-  creators,
-  shared,
+export default function PostsByPlatformAndCreator({
+  creator,
+  campaigns
 }: Props) {
+
   const [filterPosts, setFilterPosts] = React.useState('hidden')
   const [tags, setTags] = useState<string[]>([])
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
@@ -31,47 +31,63 @@ export default function PostsByPlatform({
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
 
-  const tiktokPosts = campaign?.posts?.filter((post: any) => post.platform === 'tiktok')
-  const filteredPosts = campaign?.posts?.filter((post: any) => {
-    const isInstagramActive = activePlatforms.includes('Instagram')
-    const isFilterActive = activePlatforms.length > 0
+  const creatorFilteredPosts = campaigns.reduce((result: any, campaign: any) => {
+    const posts = campaign?.posts?.filter((post: any) => post.creatorId === creator);
+    if (posts.length > 0) {
+      result.push(...posts);
+    }
+    return result;
+  }, []);
+
+  const filteredPosts = creatorFilteredPosts.filter((post: any) => {
+    const isInstagramActive = activePlatforms.includes('Instagram');
+    const isFilterActive = activePlatforms.length > 0;
 
     const allowedPlatforms =
       activeSocial === 'Instagram'
         ? ['instagram']
         : activeSocial === 'TikTok'
           ? ['tiktok']
-          : ['tiktok', 'instagram']
+          : ['tiktok', 'instagram'];
 
     if (
       allowedPlatforms.includes(post.platform || '') &&
       (!isFilterActive || (isFilterActive && isInstagramActive)) &&
       (creatorsSelecteds.length === 0 ||
-        creatorsSelecteds.some(creator => creator.id == post.creator?.id)) &&
+        creatorsSelecteds.some(creator => creator.id === post.creator?.id)) &&
       (tags.length === 0 ||
-        post.caption?.split(' ').some((tag: any) => tags.includes(tag)))
+        post.caption?.split(' ').some((tag: any) => tags.includes(tag))) &&
+      (activeButton !== 'topPerforming' || (post.reachCount && post.reachCount > 0)) &&
+      (activeButton !== 'most' || (post.engagementCount && post.reachCount && post.reachCount > 0))
     ) {
-      if (activeButton === 'most') {
-        if (post.reachCount && post.reachCount > 0) {
-          return true
-        }
-      } else if (activeButton === 'topPerforming') {
-        if (post.engagementCount && post.reachCount && post.reachCount > 0) {
-          const ratio = (post.engagementCount / post.reachCount) * 100
-          return ratio > 0
-        }
-      } else {
-        return true
-      }
+      return true;
     }
 
-    return false
-  })
+    return false;
+  });
 
-  console.log(filteredPosts)
+
+  const campaignsByCreator = campaigns.filter((campaign: any) => {
+    const creators = campaign.creators;
+    const containsCreator = findCreator(creators, creator);
+    return containsCreator;
+  });
+
+  function findCreator(creators: any[], creatorID: any): boolean {
+    for (const creator of creators) {
+      if (String(creator.id) === String(creatorID)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+
 
   return (
     <>
+
       <div className=''>
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b`}>
@@ -107,6 +123,14 @@ export default function PostsByPlatform({
               onClick={() => setActiveSocial('Stories')}>
               Stories
             </Tab>
+            <Tab
+              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Campaigns'
+                ? 'border-b-4 border-[#7E7E7D]'
+                : 'opacity-50'
+                }`}
+              onClick={() => setActiveSocial('Campaigns')}>
+              Campaigns
+            </Tab>
           </Tab.List>
           <Tab.Panels>
             {/* All Posts */}
@@ -137,41 +161,37 @@ export default function PostsByPlatform({
 
 
 
-                  {shared != true && (
-                    <div className='flex gap-4 justify-end'>
-                      <button
-                        className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                        refresh data
-                        <FiRotateCw
-                          style={{
-                            color: '#00000080',
-                            fontSize: '1.2em',
-                            marginLeft: '12px',
-                          }}
-                        />
-                      </button>
-                      <AddNewPosts
-                        campaignsFallback={campaign}
+                  <div className='flex gap-4 justify-end'>
+                    <button
+                      className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                      refresh data
+                      <FiRotateCw
+                        style={{
+                          color: '#00000080',
+                          fontSize: '1.2em',
+                          marginLeft: '12px',
+                        }}
+                      />
+                    </button>
+                    {/* <AddNewPosts
+                        campaignsFallback={undefined}
                         clientsFallback={undefined}
                         text={''}
                         icon={undefined}
-                      />
-                    </div>
-                  )}
+                      /> */}
+                  </div>
                 </div>
               </div>
 
               <BrokeSocialLinks brokeLinks={[]} />
 
-              <FilterPostsContainer
+              {/* <FilterPostsContainer
                 id={id}
                 shared={shared}
                 creators={creators}
                 filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
                 activeButton={activeButton}
-                setActiveSocial={setActiveSocial}
-                activeSocial={activeSocial}
                 setActiveButton={setActiveButton}
                 tags={tags}
                 setTags={setTags}
@@ -179,14 +199,14 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
-              />
+              /> */}
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {filteredPosts!.map((post: any, index: any) => (
-                    <PostCard key={index} post={post} />
+                  {filteredPosts!.map((post: any, key: number) => (
+                    <PostCard key={key} post={post} />
                   ))}
-                  {campaign?.posts?.length === 0 && (
+                  {campaignsByCreator?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -219,41 +239,37 @@ export default function PostsByPlatform({
                     </button>
                   </div> */}
 
-                  {shared != true && (
-                    <div className='flex gap-4 justify-end'>
-                      <button
-                        className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                        refresh data
-                        <FiRotateCw
-                          style={{
-                            color: '#00000080',
-                            fontSize: '1.2em',
-                            marginLeft: '12px',
-                          }}
-                        />
-                      </button>
-                      <AddNewPosts
+                  <div className='flex gap-4 justify-end'>
+                    <button
+                      className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                      refresh data
+                      <FiRotateCw
+                        style={{
+                          color: '#00000080',
+                          fontSize: '1.2em',
+                          marginLeft: '12px',
+                        }}
+                      />
+                    </button>
+                    {/* <AddNewPosts
                         campaignsFallback={campaign}
                         clientsFallback={undefined}
                         text={''}
                         icon={undefined}
-                      />
-                    </div>
-                  )}
+                      /> */}
+                  </div>
                 </div>
               </div>
 
               <BrokeSocialLinks brokeLinks={[]} />
 
-              <FilterPostsContainer
+              {/* <FilterPostsContainer
                 id={id}
                 shared={shared}
                 creators={creators}
                 filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
                 activeButton={activeButton}
-                setActiveSocial={setActiveSocial}
-                activeSocial={activeSocial}
                 setActiveButton={setActiveButton}
                 tags={tags}
                 setTags={setTags}
@@ -261,14 +277,14 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
-              />
+              /> */}
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
-                  {campaign?.posts?.length === 0 && (
+                  {campaignsByCreator?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -302,7 +318,7 @@ export default function PostsByPlatform({
                     </button> */}
                   </div>
 
-                  {shared != true && (
+                  {/* {shared != true && (
                     <div className='flex gap-4 justify-end'>
                       <button
                         className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
@@ -322,25 +338,23 @@ export default function PostsByPlatform({
                         icon={undefined}
                       />
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
 
-              <div className='flex flex-col gap-4'>
+              {/* <div className='flex flex-col gap-4'>
                 <BrokeSocialLinks brokeLinks={[]} />
                 <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
-              </div>
+              </div> */}
 
 
-              <FilterPostsContainer
+              {/* <FilterPostsContainer
                 id={id}
                 shared={shared}
                 creators={creators}
                 filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
                 activeButton={activeButton}
-                setActiveSocial={setActiveSocial}
-                activeSocial={activeSocial}
                 setActiveButton={setActiveButton}
                 tags={tags}
                 setTags={setTags}
@@ -348,14 +362,14 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
-              />
+              /> */}
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
-                  {campaign?.posts?.length === 0 && (
+                  {campaignsByCreator?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -385,7 +399,7 @@ export default function PostsByPlatform({
                     </button> */}
                   </div>
 
-                  {shared != true && (
+                  {/* {shared != true && (
                     <div className='flex gap-4 justify-end'>
                       <button
                         className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
@@ -403,19 +417,17 @@ export default function PostsByPlatform({
                         clientFallback={undefined}
                       />
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
 
-              <FilterPostsContainer
+              {/* <FilterPostsContainer
                 id={id}
                 shared={shared}
                 creators={creators}
                 filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
                 activeButton={activeButton}
-                setActiveSocial={setActiveSocial}
-                activeSocial={activeSocial}
                 setActiveButton={setActiveButton}
                 tags={tags}
                 setTags={setTags}
@@ -423,11 +435,79 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
-              />
+              /> */}
+            </Tab.Panel>
+
+            {/* Campaigns */}
+            <Tab.Panel>
+              <div className='flex justify-between mx-12 mb-8 '>
+                <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+                  <div className='flex gap-4'>
+
+                    {campaignsByCreator?.map((card: any, index: any) => (
+                      <Link
+                        href={`/dashboard/campaigns/${card.id}`}
+                        key={index}
+                        className={`inline-block bg-beigeTransparent border min-w-[250px] ${ptMono.className}`}>
+                        <Image
+                          className={`object-cover`}
+                          src={imageCover}
+                          alt={card.name}
+                          style={{ width: '250px', height: '310px' }}
+                        />
+                        <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
+                          <h5>{card.name}</h5>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth='1.5'
+                            stroke='currentColor'
+                            className=' ml-8 h-6 w-6'>
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
+                            />
+                          </svg>
+                        </div>
+                        <hr className=' h-px bg-gray-200'></hr>
+                        <div className='flex  flex-col gap-2 px-6 py-[14px]'>
+                          <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                            {card?._count?.creators || 0} {`creators`}
+                          </h4>
+                          <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                            {card?._count?.posts || 0} {`posts`}
+                          </h4>
+                        </div>
+                      </Link>
+                    ))}
+
+                  </div>
+                </div>
+              </div>
+
+              {/* <FilterPostsContainer
+                id={id}
+                shared={shared}
+                creators={creators}
+                filterPosts={filterPosts}
+                setFilterPosts={setFilterPosts}
+                activeButton={activeButton}
+                setActiveButton={setActiveButton}
+                tags={tags}
+                setTags={setTags}
+                creatorsSelecteds={creatorsSelecteds}
+                setCreatorsSelecteds={setCreatorsSelecteds}
+                activePlatforms={activePlatforms}
+                setActivePlatforms={setActivePlatforms}
+              /> */}
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
+
+
 
       {/* <Dialog
         open={openDialog}

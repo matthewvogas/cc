@@ -2,7 +2,7 @@ import registerImage from 'public/assets/shareStats/statsBackground.jpg'
 import { Inter } from 'next/font/google'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
-import React from 'react'
+import React, { useRef } from 'react'
 
 // Fonts
 const inter = Inter({ weight: '400', subsets: ['latin'] })
@@ -35,6 +35,19 @@ export default function ShareStat({ userPositionId, stats }: Props) {
         <span>{stat.description}</span>
       </div>
     ))
+
+  const copiarTexto = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      const copiadoModal = document.getElementById('copiadoModal')
+      copiadoModal?.classList.remove('hidden')
+      setTimeout(() => {
+        copiadoModal?.classList.add('hidden')
+      }, 1000)
+    } catch (err) {
+      console.error('Could not copy text: ', err)
+    }
+  }
 
   return (
     <div>
@@ -93,12 +106,19 @@ export default function ShareStat({ userPositionId, stats }: Props) {
                     placeholder='https://'
                     className='h-[124px] min-w-full resize-none text-gray-600 outline-none'
                   />
+                  <div
+                    id='copiadoModal'
+                    className={` ${inter.className} fixed top-1/2 left-1/2 transform -translate-x-1/2  -translate-y-1/2 px-4 py-2 border border-[#b6fcdb] bg-[#e9faf2] bg-opacity-90 text-sm rounded-md z-50 hidden`}>
+                    link copied successfully!
+                  </div>
                 </div>
               </div>
 
-              <hr className='my-8 h-px border-0 bg-gray-200' />
+              <hr className=' h-px bg-gray-200 my-8'></hr>
+
               <div className='text-right'>
                 <button
+                  onClick={() => { copiarTexto(codeToCopy) }}
                   className={`${ptMono.className} rounded-lg bg-[#D3F0E2] px-8 py-2`}>
                   {'copy </>'}
                 </button>

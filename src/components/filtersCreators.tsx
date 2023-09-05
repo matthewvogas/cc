@@ -191,7 +191,7 @@ export default function FilterCreators({
                     onChange={handleInputChangeRangeSecond}
                   />
                 </div>
-                {campaigns.length > 0 ? (
+                {Array.isArray(campaigns) &&
                   <div className='w-full'>
                     <label htmlFor=''>By Campaign</label>
                     <select
@@ -204,8 +204,8 @@ export default function FilterCreators({
                         <option key={index}>{campaign.name}</option>
                       ))}
                     </select>
-                  </div>
-                ) : null}
+                  </div>  
+                }
               </div>
             </div>
           </div>

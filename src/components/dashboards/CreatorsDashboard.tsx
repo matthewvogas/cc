@@ -173,7 +173,7 @@ export default function CreatorsDashBoard({
           clients={[]}
           search={''}
           creatorsFilter={filters}
-          campaign={undefined}
+          campaigns={campaignsFallback}
         />
       </div>
     </>

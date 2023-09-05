@@ -8,6 +8,7 @@ export interface CampaignRes {
   userId?: string
   client?: Client
   posts?: Post[]
+  creators?: Creator[]
   _count?: Count
   stats?: Stats
 }

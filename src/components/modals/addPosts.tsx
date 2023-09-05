@@ -15,7 +15,7 @@ import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import { FiChevronDown } from 'react-icons/fi'
 
 type Props = {
-  campaignsFallback: CampaignRes
+  campaignsFallback: any
   clientsFallback: any
   text: string
   icon: any

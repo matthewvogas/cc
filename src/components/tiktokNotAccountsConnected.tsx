@@ -29,7 +29,7 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
 
   return (
     <>
-      {tiktokCards.length > 0 ? (
+      {tiktokCards?.length > 0 ? (
         <div className='px-12'>
           <div className='collapse bg-base-200'>
             <input type='checkbox' />
@@ -63,7 +63,7 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
               {/* box of rows */}
               <div className='bg-white px-10 py-7 rounded-[10px] flex flex-col gap-3'>
                 {/* row */}
-                {tiktokCards.map((card, index: number) => (
+                {tiktokCards?.map((card, index: number) => (
                   <div key={index} className='flex items-center justify-between'>
                     <div className={`${ptMono.className} flex gap-12 items-center`}>
                       <p className={`text-black text-sm`}>
