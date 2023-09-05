@@ -55,6 +55,7 @@ export function SharedCampaign({
 
   const tiktokPosts = posts.filter(post => post.platform === 'tiktok')
   const [activeSocial, setActiveTab] = useState('All')
+  
   const filteredPosts = campaign?.posts?.filter(post => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0

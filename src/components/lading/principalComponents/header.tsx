@@ -50,7 +50,7 @@ export default function Header({ frome }: Props) {
             href={'/login'}
             className={`${frome === 'signup'
               ? 'bg-[#D3F0E24D] flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base lg:text-white text-black'
-              : 'flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base bg-[#D3F0E2]  lg:text-white text-black opacity-80'
+              : 'flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base bg-[#D3F0E2] text-black opacity-80'
               }`
             }
           >
