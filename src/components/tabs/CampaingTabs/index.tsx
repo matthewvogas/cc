@@ -314,7 +314,7 @@ export default function CampaingTabs({
                   <CreatorRow
                     comeFrom={'campigns'}
                     creators={creators}
-                    campaign={campaign}
+                    campaigns={campaign}
                     clients={[]}
                     search={''}
                     creatorsFilter={filters}
