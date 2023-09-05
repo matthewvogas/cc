@@ -51,6 +51,7 @@ model User {
   campaigns     Campaign[]
   creators      Creator[]
   posts         Post[]
+  stories       Story[]
 
   @@map("users")
 }
@@ -75,6 +76,7 @@ model Creator {
   campaigns      Campaign[]
   clients        Client[]
   posts          Post[]
+  stories        Story[]
   users          User[]
   followersCount Int?           @map("followers_count")
   accessToken    String?        @map("access_token")
@@ -125,6 +127,7 @@ model Campaign {
   userId      String    @map("user_id")
   user        User      @relation(fields: [userId], references: [id])
   posts       Post[]
+  stories     Story[]
 
   @@map("campaigns")
 }
@@ -158,6 +161,22 @@ model Post {
   @@map("posts")
 
   @@unique([shortcode, platform])
+}
+
+model Story{
+  id               Int       @id @default(autoincrement())
+  uuid             String?
+  userId           String    @map("user_id")
+  user             User      @relation(fields: [userId], references: [id])
+  campaign         Campaign? @relation(fields: [campaignId], references: [id])
+  campaignId       Int?      @map("campaign_id")
+  creator          Creator?  @relation(fields: [creatorId], references: [id])
+  creatorId        Int?      @map("creator_id")
+  imageUrl         String?   @map("image_url")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@map("stories")
 }
 
 enum CreatorStatus {

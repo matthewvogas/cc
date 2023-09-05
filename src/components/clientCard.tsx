@@ -54,7 +54,7 @@ export default function ClientCard({
               className='min-h-[250px] min-w-[250px] opacity-40  '>
               <div className='border border-gray-200 w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
                 <FiUsers style={{ width: '24px' }} />
-                <p className={` text-center text-base ${ptMono.className}`}>Looks like the party hasn&apos;t started yet. Create a new client to get the night started </p>
+                <p className={` text-center text-base ${ptMono.className}`}>{`Looks like the party hasn't started yet. Create a new client to get the night started `}</p>
               </div>
               <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                 <p className={`text-lg font-medium text-gray-800 ${inter.className}`}>
