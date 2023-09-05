@@ -152,8 +152,6 @@ export async function POST(req: NextRequest) {
 
       if (postExists) {
         postSkipped.push(url.trim())
-        console.log('Post already exists')
-        continue
       }
 
       const postToSave = await db.post.upsert({
@@ -269,8 +267,6 @@ export async function POST(req: NextRequest) {
 
         if (postExists) {
           postSkipped.push(url.trim())
-          console.log('Post already exists')
-          continue
         }
 
         const postToSave = await db.post.upsert({
