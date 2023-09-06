@@ -8,7 +8,7 @@ export const EmptyPost = () => {
         <div className='w-full h-[320px] flex justify-center items-center'>
           <p className='mx-8 text-center'>
             {' '}
-            add posts through the link or spreadsheet
+            add posts or stories through the link or spreadsheet
           </p>
         </div>
         <div className='px-6 pt-6'>

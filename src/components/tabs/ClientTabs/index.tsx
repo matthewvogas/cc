@@ -32,7 +32,7 @@ export default function ClientTabs({
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b mt-16`}>
             <Tab
-              className={` ml-12 p-2 text-base font-medium outline-none ${
+              className={` ml-2 md:ml-12p-2 text-base font-medium outline-none ${
                 activeSocial === 'Campaigns'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'

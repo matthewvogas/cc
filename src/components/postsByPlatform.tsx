@@ -77,7 +77,7 @@ export default function PostsByPlatform({
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b`}>
             <Tab
-              className={` ml-12 p-2 text-base font-medium outline-none ${
+              className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${
                 activeSocial === 'All'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
@@ -366,79 +366,36 @@ export default function PostsByPlatform({
               </div>
             </Tab.Panel>
 
-            {/* Stories */}
+            {/* stories */}
+
             <Tab.Panel>
               <div className='flex justify-between mx-12 mb-8 '>
-                <div className='w-full flex flex-col justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
-                  <div className='flex gap-4'>
-                    {/* <button
-                      type='button'
-                      onClick={() => {
-                        activeButton != 'topPerforming'
-                          ? setActiveButton('topPerforming')
-                          : setActiveButton('')
-                      }}
-                      className={`${
-                        activeButton == 'topPerforming'
-                          ? ' bg-[#D9F0F1]'
-                          : 'bg-[#EBF6F6]'
-                      } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-                      top performing 🥥
-                    </button> */}
-                  </div>
+                <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+                  <div className='flex gap-4'>{/* filters */}</div>
 
                   {shared != true && (
                     <div className='flex gap-4 justify-end'>
-                      <button
-                        className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                        refresh data
-                        <FiRotateCw
-                          style={{
-                            color: '#00000080',
-                            fontSize: '1.2em',
-                            marginLeft: '12px',
-                          }}
-                        />
-                      </button>
                       <AddNewStories
                         campaignFallback={campaign}
                         clientFallback={undefined}
                       />
                     </div>
                   )}
-
-                  <div className='pt-6'>
-                    <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                      {campaign.stories!.map((story, index) => (
-                        <StoryCard key={index} story={story} />
-                      ))}
-                      {campaign.stories!.length === 0 && (
-                        <div className='col-span-4 md:col-span-2'>
-                          <EmptyPost />
-                        </div>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
 
-              <FilterPostsContainer
-                id={id}
-                shared={shared}
-                creators={creators}
-                filterPosts={filterPosts}
-                setFilterPosts={setFilterPosts}
-                activeButton={activeButton}
-                setActiveSocial={setActiveSocial}
-                activeSocial={activeSocial}
-                setActiveButton={setActiveButton}
-                tags={tags}
-                setTags={setTags}
-                creatorsSelecteds={creatorsSelecteds}
-                setCreatorsSelecteds={setCreatorsSelecteds}
-                activePlatforms={activePlatforms}
-                setActivePlatforms={setActivePlatforms}
-              />
+              <div className='pt-6'>
+                <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+                  {campaign.stories!.map((story, index) => (
+                    <StoryCard key={index} story={story} />
+                  ))}
+                  {campaign.stories!.length === 0 && (
+                    <div className='col-span-4 md:col-span-2'>
+                      <EmptyPost />
+                    </div>
+                  )}
+                </div>
+              </div>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

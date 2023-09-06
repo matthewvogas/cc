@@ -1,5 +1,18 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+## Requirements
+
+- [Node.js](https://nodejs.org/en)
+- [PostgreSQL](https://www.postgresql.org/)
+
+## Instalation
+
+
+git clone https://gitlab.com/go-labs/codecoco.git
+cd codecoco
+npm install
+
 ## Getting Started
 
 First, run the development server:
