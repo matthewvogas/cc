@@ -1,4 +1,3 @@
-
 type Props = {
   title: string
   user: any

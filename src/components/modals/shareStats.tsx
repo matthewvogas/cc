@@ -118,7 +118,9 @@ export default function ShareStat({ userPositionId, stats }: Props) {
 
               <div className='text-right'>
                 <button
-                  onClick={() => { copiarTexto(codeToCopy) }}
+                  onClick={() => {
+                    copiarTexto(codeToCopy)
+                  }}
                   className={`${ptMono.className} rounded-lg bg-[#D3F0E2] px-8 py-2`}>
                   {'copy </>'}
                 </button>

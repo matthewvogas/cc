@@ -5,6 +5,7 @@ import TitlePage from '@/components/titlePage'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CreatorsService } from '@/services/CreatorsService'
 import { PostsService } from '@/services/PostsSerivce'
+import { StoriesService } from '@/services/StoriesService'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,6 +19,7 @@ export default async function CampaignPage({
     const campaign = (await CampaignsService.findUnique(id)) as CampaignRes
     const creators = await CreatorsService.findByCampaignId(id)
     const posts = await PostsService.findMany(id)
+    const stories = await StoriesService.findByCampaign(id)
 
     return (
       <div className='overflow-clip'>
@@ -38,6 +40,7 @@ export default async function CampaignPage({
             campaign={campaign}
             creators={creators}
             posts={posts}
+            stories={stories}
           />
         </div>
       </div>

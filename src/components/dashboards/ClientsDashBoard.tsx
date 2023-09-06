@@ -12,7 +12,7 @@ import SearchByTag from '../searchByTag'
 import useClients from '@/hooks/useClients'
 import imageCover from 'public/assets/register/TopPost.jpg'
 import AddClients from '../modals/addClients'
-import { FiUsers } from "react-icons/fi";
+import { FiUsers } from 'react-icons/fi'
 
 export default function ClientsDashBoard({ clientsFallback }: any) {
   const { clients, areClientsLoading, clientsError, refreshClients } =
@@ -84,39 +84,41 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
           />
         </div>
         <div className='mt-12 flex gap-4 md:px-12 flex-wrap'>
-          {
-            filteredClients.length > 0 ?
-              filteredClients.map((client: any, index: any) => (
-                <Link
-                  href={`/dashboard/clients/${client.id || 1}`}
-                  key={index}
-                  className='h-80 min-w-[320px] w-80 border-gray-100 relative'>
-                  <Image
-                    priority
-                    className={`h-64 object-cover`}
-                    src={client.image || imageCover}
-                    alt={client.name}
-                  />
-                  <div className='h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
-                    <p className={`text-lg font-medium text-gray-800`}>
-                      {client.name}
-                    </p>
-                  </div>
-                </Link>
-
-              )) : (
-                <div
-                  className='min-h-[250px] min-w-[250px] opacity-40  '>
-                  <div className='border border-gray-200 w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
-                      <p className={` text-center text-base ${ptMono.className}`}>Create as many clients as you want and associate them to your campaigns</p>
-                  </div>
-                  <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
-                    <p className={`text-lg font-medium text-gray-800 ${inter.className}`}>
-                      - - -
-                    </p>
-                  </div>
+          {filteredClients.length > 0 ? (
+            filteredClients.map((client: any, index: any) => (
+              <Link
+                href={`/dashboard/clients/${client.id || 1}`}
+                key={index}
+                className='h-80 min-w-[320px] w-80 border-gray-100 relative'>
+                <Image
+                  priority
+                  className={`h-64 object-cover`}
+                  src={client.image || imageCover}
+                  alt={client.name}
+                />
+                <div className='h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
+                  <p className={`text-lg font-medium text-gray-800`}>
+                    {client.name}
+                  </p>
                 </div>
-              )}
+              </Link>
+            ))
+          ) : (
+            <div className='min-h-[250px] min-w-[250px] opacity-40  '>
+              <div className='border border-gray-200 w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
+                <p className={` text-center text-base ${ptMono.className}`}>
+                  Create as many clients as you want and associate them to your
+                  campaigns
+                </p>
+              </div>
+              <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
+                <p
+                  className={`text-lg font-medium text-gray-800 ${inter.className}`}>
+                  - - -
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

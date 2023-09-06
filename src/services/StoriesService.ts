@@ -3,7 +3,7 @@ import { Prisma, Story } from '@prisma/client'
 
 export class StoriesService {
   static async findByCampaign(
-    campaignId: string,
+    campaignId: number,
     limit?: number,
     offset?: number,
   ) {

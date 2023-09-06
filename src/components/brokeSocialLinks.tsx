@@ -32,10 +32,12 @@ export default function BrokeSocialLinks({ brokeLinks }: Props) {
             <input type='checkbox' />
             <div className='collapse-title text-xl font-medium justify-between flex items-center'>
               <div className='flex items-center gap-4 '>
-                <Image src={heartBroken} className='w-[25px] h-[25px]' alt={''} />
-                <span className='text-lg font-medium'>
-                  Problematic links
-                </span>
+                <Image
+                  src={heartBroken}
+                  className='w-[25px] h-[25px]'
+                  alt={''}
+                />
+                <span className='text-lg font-medium'>Problematic links</span>
               </div>
               <div>
                 <Image src={angleDown} className='w-[25px] h-[25px]' alt={''} />
@@ -43,9 +45,12 @@ export default function BrokeSocialLinks({ brokeLinks }: Props) {
             </div>
             <div className='collapse-content'>
               <div className='flex justify-between mx-14 gap-7 mb-6'>
-                <p className={`text-base italic tracking-wide ${lato.className}`}>
-                  Why is this a thing? Well! because these posts have either been
-                  <br /> removed, the user has changed their username or they are private.
+                <p
+                  className={`text-base italic tracking-wide ${lato.className}`}>
+                  Why is this a thing? Well! because these posts have either
+                  been
+                  <br /> removed, the user has changed their username or they
+                  are private.
                 </p>
               </div>
 
@@ -53,8 +58,11 @@ export default function BrokeSocialLinks({ brokeLinks }: Props) {
               <div className='bg-white px-10 py-7 rounded-[10px] flex flex-col gap-3'>
                 {/* row */}
                 {brokeLinks.map((card: any, index: number) => (
-                  <div key={index} className='flex items-center justify-between'>
-                    <div className={`${ptMono.className} flex gap-12 items-center`}>
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'>
+                    <div
+                      className={`${ptMono.className} flex gap-12 items-center`}>
                       <p className={`text-black text-sm`}>
                         {card.creator?.username}
                       </p>
@@ -78,7 +86,11 @@ export default function BrokeSocialLinks({ brokeLinks }: Props) {
                       <button
                         className={`mx-2 flex items-center rounded-[8px] bg-[#D3F0E2] bg-opacity-25 px-5 py-2 text-xs text-black ${ptMono.className}`}>
                         send invitation link to creator
-                        <Image src={linkImage} className='w-[12px] ml-3' alt={''} />
+                        <Image
+                          src={linkImage}
+                          className='w-[12px] ml-3'
+                          alt={''}
+                        />
                       </button>
                       <div
                         id='copiadoModal'
@@ -92,9 +104,7 @@ export default function BrokeSocialLinks({ brokeLinks }: Props) {
             </div>
           </div>
         </div>
-      ) : (
-        null
-      )}
+      ) : null}
     </>
   )
 }

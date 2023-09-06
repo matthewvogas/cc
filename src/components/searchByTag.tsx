@@ -1,6 +1,6 @@
 'use client'
 
-import { ptMono } from "@/app/fonts"
+import { ptMono } from '@/app/fonts'
 
 export default function SearchByTag(props: {
   tagSelected: string

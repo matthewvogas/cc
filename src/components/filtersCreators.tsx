@@ -9,7 +9,6 @@ import EmailsInput from './EmailInput'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { Campaign, Client, User, Post } from '@prisma/client'
 
-
 const comment = [
   {
     label:
@@ -191,7 +190,7 @@ export default function FilterCreators({
                     onChange={handleInputChangeRangeSecond}
                   />
                 </div>
-                {Array.isArray(campaigns) &&
+                {Array.isArray(campaigns) && (
                   <div className='w-full'>
                     <label htmlFor=''>By Campaign</label>
                     <select
@@ -204,8 +203,8 @@ export default function FilterCreators({
                         <option key={index}>{campaign.name}</option>
                       ))}
                     </select>
-                  </div>  
-                }
+                  </div>
+                )}
               </div>
             </div>
           </div>

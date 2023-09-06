@@ -1,7 +1,6 @@
 import { ptMono } from '@/app/fonts'
 import React from 'react'
 
-
 export default function EmbedToConnect() {
   return (
     <div>

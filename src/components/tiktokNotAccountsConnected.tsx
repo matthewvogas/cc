@@ -7,10 +7,10 @@ import arrow from 'public/assets/register/arrow.svg'
 import Image from 'next/image'
 import { lato } from '@/app/fonts'
 import Link from 'next/link'
-import { Posts } from '@/types/posts/PostByCampaignRes'
+import { Post } from '@/types/campaign/campaignRes'
 
 type Props = {
-  tiktokCards: Posts[]
+  tiktokCards: Post[]
 }
 
 export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
@@ -46,7 +46,8 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
             </div>
             <div className='collapse-content'>
               <div className='flex justify-between mx-14 gap-7 mb-6'>
-                <p className={`text-base italic tracking-wide ${lato.className}`}>
+                <p
+                  className={`text-base italic tracking-wide ${lato.className}`}>
                   Why is this a thing? Well! because TikTok won’t let us share
                   content <br /> unless your creators have connected.
                 </p>
@@ -64,8 +65,11 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
               <div className='bg-white px-10 py-7 rounded-[10px] flex flex-col gap-3'>
                 {/* row */}
                 {tiktokCards?.map((card, index: number) => (
-                  <div key={index} className='flex items-center justify-between'>
-                    <div className={`${ptMono.className} flex gap-12 items-center`}>
+                  <div
+                    key={index}
+                    className='flex items-center justify-between'>
+                    <div
+                      className={`${ptMono.className} flex gap-12 items-center`}>
                       <p className={`text-black text-sm`}>
                         {card.creator?.username}
                       </p>
@@ -89,7 +93,11 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
                       <button
                         className={`mx-2 flex items-center rounded-[8px] bg-[#D3F0E2] bg-opacity-25 px-5 py-2 text-xs text-black ${ptMono.className}`}>
                         send invitation link to creator
-                        <Image src={linkImage} className='w-[12px] ml-3' alt={''} />
+                        <Image
+                          src={linkImage}
+                          className='w-[12px] ml-3'
+                          alt={''}
+                        />
                       </button>
                       <div
                         id='copiadoModal'
@@ -103,9 +111,7 @@ export default function TikTokNotAccountConnected({ tiktokCards }: Props) {
             </div>
           </div>
         </div>
-      ) : (
-        null
-      )}
+      ) : null}
     </>
   )
 }

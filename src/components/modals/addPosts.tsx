@@ -72,19 +72,28 @@ export default function AddNewPosts({
   }
 
   const handleLinksSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setFetchError(null);
+    e.preventDefault()
+    setLoading(true)
+    setFetchError(null)
 
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const file = formData.get('file') as File;
-    const posts: Array<string> = file.name ? await excelToJson(file) : links.split(',').map(post => post.trim());
+    const form = e.target as HTMLFormElement
+    const formData = new FormData(form)
+    const file = formData.get('file') as File
+    const posts: Array<string> = file.name
+      ? await excelToJson(file)
+      : links.split(',').map(post => post.trim())
 
-    if (posts.some(post => !post.startsWith('https://') && !post.includes('instagram') && !post.includes('tiktok'))) {
-      setLoading(false);
-      setFetchError('Please add valid links');
-      return;
+    if (
+      posts.some(
+        post =>
+          !post.startsWith('https://') &&
+          !post.includes('instagram') &&
+          !post.includes('tiktok'),
+      )
+    ) {
+      setLoading(false)
+      setFetchError('Please add valid links')
+      return
     }
 
     try {
@@ -97,23 +106,23 @@ export default function AddNewPosts({
           posts,
           campaignId: campaignsFallback.id,
         }),
-      });
+      })
 
       if (res.ok) {
-        form.reset();
-        setLinks('');
-        setIsOpen(false);
-        router.refresh();
+        form.reset()
+        setLinks('')
+        setIsOpen(false)
+        router.refresh()
       } else {
-        setFetchError('An error occurred');
+        setFetchError('An error occurred')
       }
     } catch (error) {
-      console.log(error);
-      setFetchError('An error occurred');
+      console.log(error)
+      setFetchError('An error occurred')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>

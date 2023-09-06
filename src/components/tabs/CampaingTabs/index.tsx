@@ -12,15 +12,18 @@ import FilterCreators from '@/components/filtersCreators'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import Stats from '@/components/stats'
 import PostsByPlatform from '@/components/postsByPlatform'
+import { Story } from '@prisma/client'
 
 export default function CampaingTabs({
   campaign,
   creators,
   posts,
+  stories,
 }: {
   campaign: CampaignRes
   creators: any
   posts: Posts[]
+  stories: Story[]
 }) {
   const [openTab, setOpenTab] = useState(1)
   const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
