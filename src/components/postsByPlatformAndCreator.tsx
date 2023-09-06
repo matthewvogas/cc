@@ -92,7 +92,7 @@ export default function PostsByPlatformAndCreator({
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b`}>
             <Tab
-              className={` ml-12 p-2 text-base font-medium outline-none ${
+              className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${
                 activeSocial === 'All'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'

@@ -18,7 +18,7 @@ export default function StoryCard({ story }: { story: Story }) {
       className={`h-fit w-auto max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>
       <Image
         priority
-        className={`h-60 md:h-80 rounded-2xl object-cover`}
+        className={`h-[222px] md:h-[482px] rounded-2xl object-cover`}
         src={story.imageUrl || imageCover}
         alt='background'
         width={0}
