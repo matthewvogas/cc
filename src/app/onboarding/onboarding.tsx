@@ -22,28 +22,29 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 
 type Props = {
-    session: any
+  session: any
 }
 
-export default function Onboarding({session} : Props){
-
+export default function Onboarding({ session }: Props) {
   const user = session?.user.name
 
+  const [slideValue, setSlideValue] = useState(0)
 
-  const [slideValue, setSlideValue] = useState(0);
-
-  const slideImages = useMemo(() => [signup1, signup2, signup3, signup4, signup5], []);
-  const [slideImage, setSlideImage] = useState(slideImages[slideValue]);
+  const slideImages = useMemo(
+    () => [signup1, signup2, signup3, signup4, signup5],
+    [],
+  )
+  const [slideImage, setSlideImage] = useState(slideImages[slideValue])
 
   useEffect(() => {
     if (slideValue >= 0 && slideValue < slideImages.length) {
-      setSlideImage(slideImages[slideValue]);
+      setSlideImage(slideImages[slideValue])
     }
-  }, [slideValue, slideImages]);
+  }, [slideValue, slideImages])
 
   function handlePositionSlide() {
     if (slideValue < slideImages.length - 1) {
-      setSlideValue(slideValue + 1);
+      setSlideValue(slideValue + 1)
     }
   }
 
@@ -53,7 +54,12 @@ export default function Onboarding({session} : Props){
         <section className='relative h-[600px]'>
           <div className='flex w-[1000px] flex-row items-center justify-center rounded-2xl bg-background bg-opacity-20'>
             <div className='relative h-[579px] w-64'>
-              <Image className='rounded-s-2xl object-cover' src={slideImage} fill alt='register-image' />
+              <Image
+                className='rounded-s-2xl object-cover'
+                src={slideImage}
+                fill
+                alt='register-image'
+              />
             </div>
             <Swiper
               pagination={{
@@ -204,7 +210,8 @@ export default function Onboarding({session} : Props){
                 </div>
               </SwiperSlide>
               <SwiperSlide>
-                <div className={`flex h-[579px] w-full flex-col bg-sidebarBackground px-16 py-20 text-black ${ptMono.className}`} >
+                <div
+                  className={`flex h-[579px] w-full flex-col bg-sidebarBackground px-16 py-20 text-black ${ptMono.className}`}>
                   <p className='mb-8 self-start pt-12 text-left text-sm font-bold'>
                     Yep, that’s fine! Select an feature to start with:
                   </p>

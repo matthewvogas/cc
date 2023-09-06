@@ -14,16 +14,14 @@ import Link from 'next/link'
 import AddNewPosts from './modals/addPosts'
 import FilterPostsContainer from './filterPostsContainer'
 
-
 type Props = {
   creator: any
   campaigns: any
 }
 export default function PostsByPlatformAndCreator({
   creator,
-  campaigns
+  campaigns,
 }: Props) {
-
   const [filterPosts, setFilterPosts] = React.useState('hidden')
   const [tags, setTags] = useState<string[]>([])
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
@@ -31,24 +29,29 @@ export default function PostsByPlatformAndCreator({
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
 
-  const creatorFilteredPosts = campaigns.reduce((result: any, campaign: any) => {
-    const posts = campaign?.posts?.filter((post: any) => post.creatorId === creator);
-    if (posts.length > 0) {
-      result.push(...posts);
-    }
-    return result;
-  }, []);
+  const creatorFilteredPosts = campaigns.reduce(
+    (result: any, campaign: any) => {
+      const posts = campaign?.posts?.filter(
+        (post: any) => post.creatorId === creator,
+      )
+      if (posts.length > 0) {
+        result.push(...posts)
+      }
+      return result
+    },
+    [],
+  )
 
   const filteredPosts = creatorFilteredPosts.filter((post: any) => {
-    const isInstagramActive = activePlatforms.includes('Instagram');
-    const isFilterActive = activePlatforms.length > 0;
+    const isInstagramActive = activePlatforms.includes('Instagram')
+    const isFilterActive = activePlatforms.length > 0
 
     const allowedPlatforms =
       activeSocial === 'Instagram'
         ? ['instagram']
         : activeSocial === 'TikTok'
-          ? ['tiktok']
-          : ['tiktok', 'instagram'];
+        ? ['tiktok']
+        : ['tiktok', 'instagram']
 
     if (
       allowedPlatforms.includes(post.platform || '') &&
@@ -57,77 +60,79 @@ export default function PostsByPlatformAndCreator({
         creatorsSelecteds.some(creator => creator.id === post.creator?.id)) &&
       (tags.length === 0 ||
         post.caption?.split(' ').some((tag: any) => tags.includes(tag))) &&
-      (activeButton !== 'topPerforming' || (post.reachCount && post.reachCount > 0)) &&
-      (activeButton !== 'most' || (post.engagementCount && post.reachCount && post.reachCount > 0))
+      (activeButton !== 'topPerforming' ||
+        (post.reachCount && post.reachCount > 0)) &&
+      (activeButton !== 'most' ||
+        (post.engagementCount && post.reachCount && post.reachCount > 0))
     ) {
-      return true;
+      return true
     }
 
-    return false;
-  });
-
+    return false
+  })
 
   const campaignsByCreator = campaigns.filter((campaign: any) => {
-    const creators = campaign.creators;
-    const containsCreator = findCreator(creators, creator);
-    return containsCreator;
-  });
+    const creators = campaign.creators
+    const containsCreator = findCreator(creators, creator)
+    return containsCreator
+  })
 
   function findCreator(creators: any[], creatorID: any): boolean {
     for (const creator of creators) {
       if (String(creator.id) === String(creatorID)) {
-        return true;
+        return true
       }
     }
-    return false;
+    return false
   }
-
-
-
 
   return (
     <>
-
       <div className=''>
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b`}>
             <Tab
-              className={` ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'All'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={` ml-12 p-2 text-base font-medium outline-none ${
+                activeSocial === 'All'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('All')}>
               All posts
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Instagram'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'Instagram'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('Instagram')}>
               Instagram
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'TikTok'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'TikTok'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('TikTok')}>
               TikTok
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Stories'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'Stories'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('Stories')}>
               Stories
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Campaigns'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'Campaigns'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('Campaigns')}>
               Campaigns
             </Tab>
@@ -158,8 +163,6 @@ export default function PostsByPlatformAndCreator({
                       top performing 🥥
                     </button> */}
                   </div>
-
-
 
                   <div className='flex gap-4 justify-end'>
                     <button
@@ -347,7 +350,6 @@ export default function PostsByPlatformAndCreator({
                 <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
               </div> */}
 
-
               {/* <FilterPostsContainer
                 id={id}
                 shared={shared}
@@ -443,7 +445,6 @@ export default function PostsByPlatformAndCreator({
               <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
-
                     {campaignsByCreator?.map((card: any, index: any) => (
                       <Link
                         href={`/dashboard/campaigns/${card.id}`}
@@ -482,7 +483,6 @@ export default function PostsByPlatformAndCreator({
                         </div>
                       </Link>
                     ))}
-
                   </div>
                 </div>
               </div>
@@ -506,8 +506,6 @@ export default function PostsByPlatformAndCreator({
           </Tab.Panels>
         </Tab.Group>
       </div>
-
-
 
       {/* <Dialog
         open={openDialog}

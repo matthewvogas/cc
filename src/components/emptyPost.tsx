@@ -1,4 +1,4 @@
-import { ptMono } from "@/app/fonts"
+import { ptMono } from '@/app/fonts'
 
 export const EmptyPost = () => {
   return (
@@ -6,21 +6,18 @@ export const EmptyPost = () => {
       <div
         className={`h-fit w-auto max-w-sm overflow-visible rounded-2xl bg-transparent border border-gray-400 opacity-40 ${ptMono.className}`}>
         <div className='w-full h-[320px] flex justify-center items-center'>
-          <p className='mx-8 text-center'> add posts through the link or spreadsheet</p>
+          <p className='mx-8 text-center'>
+            {' '}
+            add posts through the link or spreadsheet
+          </p>
         </div>
         <div className='px-6 pt-6'>
           <h4 className=' mb-2 rounded-xl bg-transparent border border-gray-400 px-3 py-2 md:px-4 md:py-3 text-[10px] lg:text-base'>
             <div className='flex gap-1 md:gap-2 items-center'>
               {/* svg de la red social */}
-              <div >
-
-              </div>
-              <div>
-
-              </div>
-              <span className='truncate text-sm lg:text-lg'>
-                @ - - -
-              </span>
+              <div></div>
+              <div></div>
+              <span className='truncate text-sm lg:text-lg'>@ - - -</span>
             </div>
           </h4>
 

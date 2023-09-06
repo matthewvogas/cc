@@ -12,6 +12,9 @@ CREATE TABLE "stories" (
     CONSTRAINT "stories_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateIndex
+CREATE UNIQUE INDEX "stories_image_url_campaign_id_key" ON "stories"("image_url", "campaign_id");
+
 -- AddForeignKey
 ALTER TABLE "stories" ADD CONSTRAINT "stories_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 

@@ -11,10 +11,13 @@ import BrokeSocialLinks from './brokeSocialLinks'
 import { FiRotateCw } from 'react-icons/fi'
 import TikTokNotAccountConnected from './tiktokNotAccountsConnected'
 import { EmptyPost } from './emptyPost'
+import { Story } from '@prisma/client'
+import StoryCard from './storyCard'
+import { CampaignRes } from '@/types/campaign/campaignRes'
 
 type Props = {
   readonly id: number
-  readonly campaign: any
+  readonly campaign: CampaignRes
   readonly creators: any[]
   readonly shared: boolean
 }
@@ -31,7 +34,7 @@ export default function PostsByPlatform({
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
 
-  const tiktokPosts = campaign?.posts?.filter((post: any) => post.platform === 'tiktok')
+  const tiktokPosts = campaign.posts!.filter(post => post.platform === 'tiktok')
   const filteredPosts = campaign?.posts?.filter((post: any) => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
@@ -40,8 +43,8 @@ export default function PostsByPlatform({
       activeSocial === 'Instagram'
         ? ['instagram']
         : activeSocial === 'TikTok'
-          ? ['tiktok']
-          : ['tiktok', 'instagram']
+        ? ['tiktok']
+        : ['tiktok', 'instagram']
 
     if (
       allowedPlatforms.includes(post.platform || '') &&
@@ -68,42 +71,44 @@ export default function PostsByPlatform({
     return false
   })
 
-  console.log(filteredPosts)
-
   return (
     <>
       <div className=''>
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b`}>
             <Tab
-              className={` ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'All'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={` ml-12 p-2 text-base font-medium outline-none ${
+                activeSocial === 'All'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('All')}>
               All posts
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Instagram'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'Instagram'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('Instagram')}>
               Instagram
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'TikTok'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'TikTok'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('TikTok')}>
               TikTok
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Stories'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'Stories'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveSocial('Stories')}>
               Stories
             </Tab>
@@ -134,8 +139,6 @@ export default function PostsByPlatform({
                       top performing 🥥
                     </button> */}
                   </div>
-
-
 
                   {shared != true && (
                     <div className='flex gap-4 justify-end'>
@@ -331,7 +334,6 @@ export default function PostsByPlatform({
                 <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
               </div>
 
-
               <FilterPostsContainer
                 id={id}
                 shared={shared}
@@ -367,7 +369,7 @@ export default function PostsByPlatform({
             {/* Stories */}
             <Tab.Panel>
               <div className='flex justify-between mx-12 mb-8 '>
-                <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+                <div className='w-full flex flex-col justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
                     {/* <button
                       type='button'
@@ -404,6 +406,19 @@ export default function PostsByPlatform({
                       />
                     </div>
                   )}
+
+                  <div className='pt-6'>
+                    <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+                      {campaign.stories!.map((story, index) => (
+                        <StoryCard key={index} story={story} />
+                      ))}
+                      {campaign.stories!.length === 0 && (
+                        <div className='col-span-4 md:col-span-2'>
+                          <EmptyPost />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 

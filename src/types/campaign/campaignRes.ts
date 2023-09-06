@@ -1,3 +1,5 @@
+import { Story } from '@prisma/client'
+
 export interface CampaignRes {
   id?: number
   name?: string
@@ -8,6 +10,7 @@ export interface CampaignRes {
   userId?: string
   client?: Client
   posts?: Post[]
+  stories?: Story[]
   creators?: Creator[]
   _count?: Count
   stats?: Stats

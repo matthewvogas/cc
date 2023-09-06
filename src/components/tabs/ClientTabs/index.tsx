@@ -10,7 +10,6 @@ import TitleSingleClient from '@/components/titleSingleClient'
 import { useRouter } from 'next/router'
 import coverImage from 'public/assets/campaigns/coverImage.png'
 
-
 export default function ClientTabs({
   client,
   campaigns,
@@ -33,18 +32,20 @@ export default function ClientTabs({
         <Tab.Group>
           <Tab.List className={`flex gap-6 border-b-[#E4E3E2] border-b mt-16`}>
             <Tab
-              className={` ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'Campaigns'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={` ml-12 p-2 text-base font-medium outline-none ${
+                activeSocial === 'Campaigns'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveTab('Campaigns')}>
               Campaigns
             </Tab>
             <Tab
-              className={`p-2 text-base font-medium outline-none ${activeSocial === 'Settings'
-                ? 'border-b-4 border-[#7E7E7D]'
-                : 'opacity-50'
-                }`}
+              className={`p-2 text-base font-medium outline-none ${
+                activeSocial === 'Settings'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+              }`}
               onClick={() => setActiveTab('Settings')}>
               Settings
             </Tab>
@@ -93,7 +94,8 @@ export default function ClientTabs({
                     </Link>
                   ))
                 ) : (
-                  <p className={`px-8 py-3 border-gray border rounded-full text-center bg-[#F4F2EE] ${ptMono.className}`}>
+                  <p
+                    className={`px-8 py-3 border-gray border rounded-full text-center bg-[#F4F2EE] ${ptMono.className}`}>
                     {' '}
                     This client has no campaigns
                   </p>
@@ -104,14 +106,10 @@ export default function ClientTabs({
             {/* panel 2 */}
 
             <Tab.Panel>
-
               <div className={`mt-7 w-full justify-start`}>
-
-
                 <form className='p-4 px-12 '>
                   <div className='flex flex-col gap-6 mt-4'>
                     <div className='flex w-full gap-5 '>
-
                       <div className='flex flex-col gap-8 w-2/3'>
                         <div>
                           <label className={`text-sm`}>Client name</label>
@@ -140,18 +138,12 @@ export default function ClientTabs({
                       <div className='w-full'>
                         <Image className={`w-full`} src={coverImage} alt={''} />
                       </div>
-
                     </div>
 
                     <div className='flex w-full gap-6'>
-                      <div className='w-2/3 flex gap-6 flex-col'>
-
-
-                      </div>
-
+                      <div className='w-2/3 flex gap-6 flex-col'></div>
                     </div>
                   </div>
-
 
                   {/* <p className={`text-xm pb-2 pt-6 `}>add a cover image</p>
                   <div className='flex justify-between'>
@@ -171,9 +163,7 @@ export default function ClientTabs({
                   className='mr-6 w-72 rounded-full bg-green-200 px-8 py-2'>
                   save changes
                 </button> */}
-
               </div>
-
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

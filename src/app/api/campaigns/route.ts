@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       data: {
         name,
         description,
-        clientId: parseInt(clientId) || null,
+        clientId: +clientId || null,
         userId: session!.user.id,
       },
     })

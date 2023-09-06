@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
     campaignId: string
   }
 
-
   let postSaved: Array<string> = []
   let postError: Array<string> = []
   let postSkipped: Array<string> = []
@@ -329,8 +328,7 @@ export async function POST(req: NextRequest) {
         postError.push(url.trim())
         continue
       }
-    }
-    else{
+    } else {
       postError.push(url.trim())
       console.log('ERROR No Oembed for link ' + url.trim())
       continue

@@ -15,14 +15,12 @@ export const RedirectLink = (props: {
   setActiveSocial: any
   activeSocial: any
 }) => {
-
   const baseUrl = 'https://dev.codecoco.co/campaign'
-  const creatorNames = props.creatorsSelecteds?.map((creator: any) => creator.username);
+  const creatorNames = props.creatorsSelecteds?.map(
+    (creator: any) => creator.username,
+  )
 
-
-  const params = `?tags=${props.tags?.join(
-    ',',
-  )}&creators=${creatorNames?.join(
+  const params = `?tags=${props.tags?.join(',')}&creators=${creatorNames?.join(
     ',',
   )}&view=${props.activeSocial}`
 

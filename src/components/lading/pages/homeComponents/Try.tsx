@@ -9,9 +9,9 @@ export default function Try() {
   return (
     <>
       <div className='m-auto flex px-4 lg:px-0 lg:w-[1280px] flex-col items-center justify-center py-16 overflow-hidden lg:overflow-visible'>
-          <h2 className='text-base lg:text-2xl font-bold text-black mb-8 lg:mb-20'>
-            but wait, there’s more! 🥥
-          </h2>
+        <h2 className='text-base lg:text-2xl font-bold text-black mb-8 lg:mb-20'>
+          but wait, there’s more! 🥥
+        </h2>
 
         <div>
           <div

@@ -12,11 +12,16 @@ type Props = {
 export default function Header({ frome }: Props) {
   return (
     <>
-      <div className={`relative z-10 ${frome == 'signup' ? ' text-white -mb-[96px]' : 'shadow-md mb-10 lg:mb-20'}   flex justify-between py-5 px-5 ${frome == 'signup' ? 'bg-transparent' : 'bg-[#F9F8F5]'}  lg:px-7 lg:py-3`}>
+      <div
+        className={`relative z-10 ${
+          frome == 'signup'
+            ? ' text-white -mb-[96px]'
+            : 'shadow-md mb-10 lg:mb-20'
+        }   flex justify-between py-5 px-5 ${
+          frome == 'signup' ? 'bg-transparent' : 'bg-[#F9F8F5]'
+        }  lg:px-7 lg:py-3`}>
         <div className='flex items-center gap-4'>
-          {frome == 'signup' ? (
-            null
-          ) : (
+          {frome == 'signup' ? null : (
             <Link
               href={'/signup'}
               className='flex lg:hidden px-5 py-3 rounded-full items-center gap-2 font-normal text-base opacity-80 '>
@@ -48,26 +53,23 @@ export default function Header({ frome }: Props) {
 
           <Link
             href={'/login'}
-            className={`${frome === 'signup'
-              ? 'bg-[#D3F0E24D] flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base lg:text-white text-black'
-              : 'flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base bg-[#D3F0E2] text-black opacity-80'
-              }`
-            }
-          >
+            className={`${
+              frome === 'signup'
+                ? 'bg-[#D3F0E24D] flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base lg:text-white text-black'
+                : 'flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base bg-[#D3F0E2] text-black opacity-80'
+            }`}>
             <span className='hidden lg:inline'>Login 🥥</span>
           </Link>
           <Link
-            href="/signup"
-            className={`${frome === 'signup'
-              ? 'hidden'
-              : 'flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base  bg-[#D3F0E2] opacity-80'
-              }`
-            }
-          >
-            <span className="hidden lg:inline">Get Started 🥥</span>
+            href='/signup'
+            className={`${
+              frome === 'signup'
+                ? 'hidden'
+                : 'flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base  bg-[#D3F0E2] opacity-80'
+            }`}>
+            <span className='hidden lg:inline'>Get Started 🥥</span>
             {/* <span className='text-lg text-black lg:hidden'>🥥 +</span> */}
           </Link>
-
         </div>
 
         <div className='z-10 flex lg:hidden'>

@@ -6,7 +6,6 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import avatar from 'public/assets/register/avatar.jpg'
 
-
 import PostsByPlatformAndCreator from '../postsByPlatformAndCreator'
 import Link from 'next/link'
 import { ptMono } from '@/app/fonts'
@@ -16,11 +15,7 @@ type Props = {
   campaigns: any
 }
 
-export default function ViewCreator({
-  creator,
-  campaigns,
-}: Props) {
-
+export default function ViewCreator({ creator, campaigns }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -60,7 +55,9 @@ export default function ViewCreator({
                     </div>
                   </div>
                   <div>
-                    <div className='font-medium text-xl'>@{creator.username}</div>
+                    <div className='font-medium text-xl'>
+                      @{creator.username}
+                    </div>
                     <div className='text-xs opacity-50 font-normal'>
                       {/* {creator.followersCount} followers */}
                       {creator.name}
@@ -68,11 +65,16 @@ export default function ViewCreator({
                   </div>
                 </div>
 
-                <button className={`text-base font-normal ${ptMono.className} bg-[#FCDDD1] px-6 py-2 rounded-full`}>invite</button>
+                <button
+                  className={`text-base font-normal ${ptMono.className} bg-[#FCDDD1] px-6 py-2 rounded-full`}>
+                  invite
+                </button>
               </div>
 
-              <PostsByPlatformAndCreator creator={creator.id} campaigns={campaigns} />
-
+              <PostsByPlatformAndCreator
+                creator={creator.id}
+                campaigns={campaigns}
+              />
             </Tab.Group>
           </Dialog.Panel>
         </div>

@@ -216,7 +216,7 @@ export default function CampaignsDashBoard({
 
       <div className='flex flex-col bg-white pt-12'>
         <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
-          {filteredCampaigns.length > 0 ?
+          {filteredCampaigns.length > 0 ? (
             filteredCampaigns.map((card: any, index: any) => (
               <Link
                 href={`/dashboard/campaigns/${card.id}`}
@@ -230,7 +230,9 @@ export default function CampaignsDashBoard({
                 />
                 <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
                   <div className='max-w-[200px] overflow-clip'>
-                    <h5 className='truncate font-medium text-base'>{card.name}</h5>
+                    <h5 className='truncate font-medium text-base'>
+                      {card.name}
+                    </h5>
                   </div>
                   <div className='max-w-[50px]'>
                     <svg
@@ -249,7 +251,8 @@ export default function CampaignsDashBoard({
                   </div>
                 </div>
                 <hr className=' h-px bg-gray-200'></hr>
-                <div className={`flex  flex-col gap-2 px-6 py-[14px] ${ptMono.className}`}>
+                <div
+                  className={`flex  flex-col gap-2 px-6 py-[14px] ${ptMono.className}`}>
                   <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
                     {card?._count?.creators || 0} {`creators`}
                   </h4>
@@ -258,40 +261,41 @@ export default function CampaignsDashBoard({
                   </h4>
                 </div>
               </Link>
-            )) : (
-              <div
-                className={`bg-transparent border min-w-[250px] opacity-40 ${ptMono.className}`}>
-                <div className='w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
-                  <FiCoffee style={{ width: '24px' }} />
-                  <p className=' text-center text-base'>{`No campaigns in sight! Don't worry, they're just shy. Try a different search term or create a new one`}</p>
-                </div>
-                <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
-                  <h5>- - - -</h5>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth='1.5'
-                    stroke='currentColor'
-                    className=' ml-8 h-6 w-6'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
-                    />
-                  </svg>
-                </div>
-                <hr className=' h-px bg-gray-200'></hr>
-                <div className='flex  flex-col gap-2 px-6 py-[14px]'>
-                  <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
-                    - - {`creators`}
-                  </h4>
-                  <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
-                    - - {`posts`}
-                  </h4>
-                </div>
+            ))
+          ) : (
+            <div
+              className={`bg-transparent border min-w-[250px] opacity-40 ${ptMono.className}`}>
+              <div className='w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
+                <FiCoffee style={{ width: '24px' }} />
+                <p className=' text-center text-base'>{`No campaigns in sight! Don't worry, they're just shy. Try a different search term or create a new one`}</p>
               </div>
-            )}
+              <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
+                <h5>- - - -</h5>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className=' ml-8 h-6 w-6'>
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
+                  />
+                </svg>
+              </div>
+              <hr className=' h-px bg-gray-200'></hr>
+              <div className='flex  flex-col gap-2 px-6 py-[14px]'>
+                <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                  - - {`creators`}
+                </h4>
+                <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                  - - {`posts`}
+                </h4>
+              </div>
+            </div>
+          )}
           <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
       </div>

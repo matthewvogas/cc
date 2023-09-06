@@ -18,6 +18,7 @@ export class CampaignsService {
           select: {
             creators: true,
             posts: true,
+            stories: true,
           },
         },
       },
@@ -62,6 +63,7 @@ export class CampaignsService {
       },
       include: {
         client: true,
+        stories: true,
         creators: true,
         posts: {
           include: {

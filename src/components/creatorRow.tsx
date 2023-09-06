@@ -206,12 +206,15 @@ export default function CreatorRow({
                             </div>
                           </div>
 
-                          <ViewCreator creator={creator} campaigns={campaigns} />
+                          <ViewCreator
+                            creator={creator}
+                            campaigns={campaigns}
+                          />
 
-                          <button className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100`}>
+                          <button
+                            className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100`}>
                             Remove creator
                           </button>
-
                         </ul>
                       </div>
                     </td>
@@ -328,7 +331,8 @@ export default function CreatorRow({
                 className={`flex flex-row items-center justify-center gap-6 ${ptMono.className}`}>
                 <Tab
                   className={({ selected }) =>
-                    ` rounded-3xl border-2 border-primary px-12 py-2 ${selected ? 'bg-primary' : ''
+                    ` rounded-3xl border-2 border-primary px-12 py-2 ${
+                      selected ? 'bg-primary' : ''
                     }`
                   }>
                   add manually
@@ -336,7 +340,8 @@ export default function CreatorRow({
 
                 <Tab
                   className={({ selected }) =>
-                    `rounded-3xl border-2 border-primary px-8  py-2 ${selected ? 'bg-primary' : ''
+                    `rounded-3xl border-2 border-primary px-8  py-2 ${
+                      selected ? 'bg-primary' : ''
                     }`
                   }>
                   upload from file
