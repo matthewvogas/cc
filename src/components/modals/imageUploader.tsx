@@ -3,6 +3,7 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import React, { useState, useRef } from 'react'
 import Spinner from '../ui/spinner'
 import { useRouter } from 'next/navigation'
+import { set } from 'zod'
 
 type Props = {
   campaignFallback: CampaignRes
@@ -28,6 +29,7 @@ const ImageUploader = ({ campaignFallback, setIsOpen }: Props) => {
     setIsUploading(true)
     if (selectedImages.length === 0) {
       setFetchError('Please select at least one image')
+      setIsUploading(false)
       return
     }
 
@@ -37,8 +39,16 @@ const ImageUploader = ({ campaignFallback, setIsOpen }: Props) => {
     // }
 
     const form = e.target as HTMLFormElement
-    const formData = new FormData(form)
+    const formData = new FormData()
+    selectedImages.forEach(image => {
+      formData.append('images', image)
+    })
 
+    if(formData.getAll('images').length === 0){
+      setFetchError('Please select at least one image XDDD')
+      setIsUploading(false)
+      return
+    }
     const campaignId = campaignFallback.id!.toString()
 
     try {
@@ -51,6 +61,7 @@ const ImageUploader = ({ campaignFallback, setIsOpen }: Props) => {
 
       if (!res.ok) {
         setFetchError(data.error)
+        setIsUploading(false)
         return
       }
       setIsUploading(false)
