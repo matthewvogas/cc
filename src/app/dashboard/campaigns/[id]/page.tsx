@@ -1,7 +1,7 @@
 import { CampaignsService } from '@/services/CampaignsService'
 import { ptMono } from '@/app/fonts'
 import CampaingsTabs from '@/components/tabs/CampaingTabs'
-import TitlePage from '@/components/titlePage'
+import TitlePage from '@/components/labels/titlePage'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CreatorsService } from '@/services/CreatorsService'
 import { PostsService } from '@/services/PostsSerivce'

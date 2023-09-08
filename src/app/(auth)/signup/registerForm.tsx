@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import InstagramIcon from 'public/assets/register/InstagramRegister.svg'
 import TikTokIcon from 'public/assets/register/TikTokRegister.svg'
-import Spinner from '@/components/ui/spinner'
+import Spinner from '@/components/loading/spinner'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'

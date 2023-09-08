@@ -6,7 +6,7 @@ import { inter, ptMono } from '@/app/fonts'
 import { Tab } from '@headlessui/react'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import { useState } from 'react'
-import TitleSingleClient from '@/components/titleSingleClient'
+import TitleSingleClient from '@/components/labels/titleSingleClient'
 import { useRouter } from 'next/router'
 import coverImage from 'public/assets/campaigns/coverImage.png'
 

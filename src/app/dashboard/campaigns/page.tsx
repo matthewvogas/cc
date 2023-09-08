@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import CampaignsDashBoard from '@/components/dashboards/CampaignsDashBoard'
+import CampaignsDashBoard from '@/components/dashboards/agency/CampaignsDashBoard'
 import { CampaignsService } from '@/services/CampaignsService'
 import { ClientsService } from '@/services/ClientsServices'
 import { CreatorsService } from '@/services/CreatorsService'

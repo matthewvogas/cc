@@ -1,13 +1,13 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import Checkbox from 'public/assets/register/falseCheckbox.svg'
 import CheckboxGreen from 'public/assets/register/falseCheckboxGreen.svg'
-import Radio from 'public/assets/register/falseRadio.svg'
+import Checkbox from 'public/assets/register/falseCheckbox.svg'
 import Banner from 'public/assets/register/BannerPlans.jpg'
-import { ptMono } from '@/app/fonts'
-import { Sen } from 'next/font/google'
-import logo from 'public/assets/register/LogoSVG.svg'
+import Radio from 'public/assets/register/falseRadio.svg'
 import registerBg from 'public/assets/register/login.jpg'
+import logo from 'public/assets/register/LogoSVG.svg'
+import { Sen } from 'next/font/google'
+import { ptMono } from '@/app/fonts'
+import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Plans() {
   return (

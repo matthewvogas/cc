@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import { CampaignRes } from '@/types/campaign/campaignRes'
-import CreatorsDashBoard from '@/components/dashboards/CreatorsDashboard'
+import CreatorsDashBoard from '@/components/dashboards/agency/CreatorsDashboard'
 
 export const dynamic = 'force-dynamic'
 
