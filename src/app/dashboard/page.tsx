@@ -1,14 +1,14 @@
-import Stats from '@/components/stats'
-import { getServerSession } from 'next-auth'
-import ClientCard from '@/components/clientCard'
-import { PostsService } from '@/services/PostsSerivce'
-import TitleDashboard from '@/components/titleDashboard'
-import { ClientsService } from '@/services/ClientsServices'
-import { authOptions } from '../api/auth/[...nextauth]/route'
+import CampaignCard from '@/components/cards/agency/campaigns/campaignCard'
 import { CampaignsService } from '@/services/CampaignsService'
-import DashboardCampaign from '@/components/campaignDashboard'
+import { authOptions } from '../api/auth/[...nextauth]/route'
 import { CreatorsService } from '@/services/CreatorsService'
+import { ClientsService } from '@/services/ClientsServices'
+import TitleDashboard from '@/components/labels/titleDashboard'
+import { PostsService } from '@/services/PostsSerivce'
 import { UserService } from '@/services/UsersService'
+import ClientCard from '@/components/cards/agency/clients/clientCard'
+import { getServerSession } from 'next-auth'
+import Stats from '@/components/stats/stats'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,7 +54,7 @@ export default async function Home() {
   return (
     <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
       <TitleDashboard title={'welcome,'} user={session?.user!} />
-      <DashboardCampaign
+      <CampaignCard
         campaignsFallback={campaigns}
         clientsFallback={clients}
       />

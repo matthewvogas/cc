@@ -1,8 +1,8 @@
-import Sidebar from '@/components/ui/sidebar'
-import AuthProvider from '@/providers/AuthProvider'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../api/auth/[...nextauth]/route'
 import { SingInButton, SingOutButton } from '@/components/auth/AuthButtons'
+import { authOptions } from '../api/auth/[...nextauth]/route'
+import AuthProvider from '@/providers/AuthProvider'
+import Sidebar from '@/components/menus/sidebar'
+import { getServerSession } from 'next-auth'
 
 export default async function AppLayout({
   children,

@@ -1,6 +1,6 @@
 'use client'
 import { ptMono } from '@/app/fonts'
-import Spinner from '@/components/ui/spinner'
+import Spinner from '@/components/loading/spinner'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { SiTiktok } from 'react-icons/si'

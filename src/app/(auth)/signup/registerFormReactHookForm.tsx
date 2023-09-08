@@ -1,6 +1,6 @@
 'use client'
 
-import Spinner from '@/components/ui/spinner'
+import Spinner from '@/components/loading/spinner'
 import React, { useEffect, useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import { useForm } from 'react-hook-form'

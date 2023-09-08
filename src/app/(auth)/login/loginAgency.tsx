@@ -1,6 +1,6 @@
 'use client'
 
-import Spinner from '@/components/ui/spinner'
+import Spinner from '@/components/loading/spinner'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import InstagramIcon from 'public/assets/register/InstagramRegister.svg'
