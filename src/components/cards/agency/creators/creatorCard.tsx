@@ -10,7 +10,7 @@ import { Dialog, Tab } from '@headlessui/react'
 import TagsInput from '../../../inputs/tag'
 import Search from '../../../inputs/search'
 import { ptMono } from '@/app/fonts'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -40,6 +40,25 @@ export default function CreatorRow({
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
   const [tags, setTags] = useState<string[]>([])
+
+  const handleHelloClick = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const helloRef = useRef<HTMLDivElement | null>(null)
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (helloRef.current && !helloRef.current.contains(event.target as Node)) {
+      setIsOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const [inputSearchValue, setInputSearchValue] = useState('')
 
@@ -176,23 +195,31 @@ export default function CreatorRow({
                         </svg>
                         <ul
                           tabIndex={0}
-                          className='dropdown-content menu rounded-box w-max z-20 border-2 border-gray-100 bg-white p-2'>
+                          className={`dropdown-content menu rounded-box w-max z-20 border-2 border-red-100 bg-white p-2 ${
+                            isOpen ? 'hidden' : ''
+                          }`}>
                           <button
-                            onClick={() => setIsOpen(true)}
+                            onClick={handleHelloClick}
                             className={`${dropdownButton}`}>
                             add post tracking 🥥
                           </button>
 
-                          <div className='collapse text-sm w-auto border text-back py-[-5] m-2 font-medium bg-whiteBrown hover:bg-transparent hover:border-orange-100 rounded-2xl'>
+                          <div
+                            ref={helloRef}
+                            className={
+                              'collapse hello text-sm w-auto border text-back py-[-5] m-2 font-medium bg-whiteBrown hover:bg-transparent hover:border-orange-100 rounded-2xl'
+                            }>
                             <input type='checkbox' className='' />
-                            <div className='collapse-title p-2  text-sm font-medium justify-center flex items-center'>
+                            <div className='collapse-title p-2 text-sm font-medium justify-center flex items-center'>
                               add to campaign 🥥
                             </div>
                             <div className='collapse-content'>
-                              <Search
-                                inputSearchValue={inputSearchValue}
-                                setInputSearchValue={setInputSearchValue}
-                              />
+                              <div className={`${isOpen ? 'hidden' : ''} relative z-30`}>
+                                <Search
+                                  inputSearchValue={inputSearchValue}
+                                  setInputSearchValue={setInputSearchValue}
+                                />
+                              </div>
                             </div>
                           </div>
 
@@ -277,7 +304,7 @@ export default function CreatorRow({
                         </svg>
                         <ul
                           tabIndex={0}
-                          className='dropdown-content menu rounded-box w-max  border-2 border-gray-100 bg-white p-2'>
+                          className='dropdown-content menu rounded-box w-max z-20 border-2 border-gray-100 bg-white p-2'>
                           <Link
                             href={'clients/' + client.id}
                             className={`${dropdownButton}`}>
@@ -302,7 +329,7 @@ export default function CreatorRow({
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        className='relative z-[99]'>
+        className='relative z-[100]'>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
 
