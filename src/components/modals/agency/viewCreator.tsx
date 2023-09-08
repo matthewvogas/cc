@@ -22,7 +22,7 @@ export default function ViewCreator({ creator, campaigns }: Props) {
         }}>
         <label
           tabIndex={0}
-          className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl w-full hover:bg-transparent hover:border-orange-100`}>
+          className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl w-64 hover:bg-transparent hover:border-orange-100`}>
           view creator
         </label>
       </button>

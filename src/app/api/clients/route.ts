@@ -89,3 +89,32 @@ export async function POST(req: Request) {
     )
   }
 }
+
+
+export async function DELETE(req: Request){
+  try{
+
+    const session = await getServerSession(authOptions)
+
+    if(!session){
+      return NextResponse.json({error: "Unauthorized"}, {status: 401})
+    }
+    
+    await db.client.deleteMany({
+      where:{
+        userId: session!.user.id,
+      },
+    })
+
+    return NextResponse.json({success: 'All clients deleted'})
+
+  } catch (err: any){
+   console.log(err)
+
+   return NextResponse.json(
+    {error: err.message},
+    {
+      status: 500,
+    })
+  }
+}
