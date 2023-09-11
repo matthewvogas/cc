@@ -21,3 +21,34 @@ export async function GET(
     })
   }
 }
+
+
+export async function DELETE(req: Request, {params}: {params: {id: string} }) {
+
+
+
+  try{
+    const session = await getServerSession(authOptions)
+    
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+
+    const creatorId = parseInt(params.id)
+
+    await CreatorsService.deleteCreatorById(creatorId, session.user.id)
+
+
+    return NextResponse.json({success: 'Creator deleted'})
+  } catch (err: any) {
+    console.log(err)
+      return NextResponse.json(
+      { error: err.message },
+      {
+        status: 500,
+      }
+    );
+  }
+  
+}

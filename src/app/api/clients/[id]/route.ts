@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { authOptions } from '../../auth/[...nextauth]/route'
 import { CampaignsService } from '@/services/CampaignsService'
 import { ClientsService } from '@/services/ClientsServices'
+import db from '@/lib/db'
 
 export async function GET(
   Request: Request,
@@ -22,11 +23,8 @@ export async function DELETE(req: Request, {params}: {params: {id: string} }){
 
   const session = await getServerSession(authOptions)
 
-
   if(!session) {
     return NextResponse.json({error: 'Unauthorized'},  {status: 400} )
   }
-
-  
 
 }
