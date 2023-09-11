@@ -55,3 +55,41 @@ export async function POST(req: Request) {
     )
   }
 }
+
+ export async function DELETE(req :Request ) {
+  
+  try{
+    const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+; // Get the campaignId from the query parameter
+
+  const { searchParams } = new URL(req.url)
+
+  const campaignIdParam = searchParams.get('campaingId')
+
+
+  const campaignId = parseInt(campaignIdParam)
+
+  const creators = await CreatorsService.getCreatorsByCampaignId(campaignId)
+
+
+  await db.creator.deleteMany({
+  
+  })
+
+  console.log(session.user.id)
+
+  return NextResponse.json({success: 'creators deleted'})
+
+
+  } catch (err: any){
+    console.log(err)
+    return NextResponse.json({err: err.message}, {status: 500})
+  }
+
+  
+  
+ }
