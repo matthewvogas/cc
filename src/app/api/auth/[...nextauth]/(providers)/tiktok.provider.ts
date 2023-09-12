@@ -102,7 +102,7 @@ export default function Tiktok<P extends TiktokProfile>(
       },
     },
     async profile(profile) {
-      console.log('EL PROFILE WTFFFF', profile)
+      console.log('EL PROFILE WTFFFF', profile)//??????
       return {
         id: profile.open_id,
         name: profile.display_name,

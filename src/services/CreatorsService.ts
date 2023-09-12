@@ -93,8 +93,6 @@ export class CreatorsService {
     return creators
   }
 
-
-
   static async deleteCreatorById(creatorId: number, userId: string){
     try {
       await db.creator.delete({
@@ -122,7 +120,6 @@ export class CreatorsService {
         throw new Error('Campaign Not Found!')
       }
 
-      
     } catch (error: any) {
       throw new Error(`Failed to fetch creators by campaign ID: ${error.message}`)
     }
