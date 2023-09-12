@@ -9,6 +9,7 @@ import { UserService } from '@/services/UsersService'
 import ClientCard from '@/components/cards/agency/clients/clientCard'
 import { getServerSession } from 'next-auth'
 import Stats from '@/components/stats/stats'
+import CampaignCardIfluencer from '@/components/cards/influencer/campaignCardInfluencer'
 
 export const dynamic = 'force-dynamic'
 
@@ -51,21 +52,43 @@ export default async function Home() {
     },
   ]
 
-  return (
-    <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
-      <TitleDashboard title={'welcome,'} user={session?.user!} />
-      <CampaignCard
-        campaignsFallback={campaigns}
-        clientsFallback={clients}
-      />
-      <ClientCard clientsFallback={clients} campaignsFallback={campaigns} />
-      <Stats
-        campaignsFallback={campaigns}
-        clientsFallback={clients}
-        stats={stats}
-        userPositionId={getUser}
-        frome={'dashboard'}
-      />
-    </div>
-  )
-}
+  if(session?.user.role === 'AGENCY'){
+    return (
+      <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
+        <TitleDashboard title={'welcome,'} user={session?.user!} />
+        <CampaignCard
+          campaignsFallback={campaigns}
+          clientsFallback={clients}
+        />
+        <ClientCard clientsFallback={clients} campaignsFallback={campaigns} />
+        <Stats
+          campaignsFallback={campaigns}
+          clientsFallback={clients}
+          stats={stats}
+          userPositionId={getUser}
+          frome={'dashboard'}
+        />
+      </div>
+    )
+  } else if (session?.user.role === 'CREATOR'){
+    return (
+      <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
+        <TitleDashboard title={'Welcome,'} user={session?.user!} />
+        <CampaignCardIfluencer
+          campaignsFallback={campaigns}
+          clientsFallback={clients}
+        />
+        <ClientCard clientsFallback={clients} campaignsFallback={campaigns} />
+        <Stats
+          campaignsFallback={campaigns}
+          clientsFallback={clients}
+          stats={stats}
+          userPositionId={getUser}
+          frome={'dashboard'}
+        />
+
+        
+      </div>
+
+    )
+  }}

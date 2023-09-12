@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { CreatorsService } from '@/services/CreatorsService'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 export async function GET(req: NextRequest) {
   try {
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
   }
 }
 
- export async function DELETE(req :Request ) {
+ export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   
   try{
     const session = await getServerSession(authOptions)
@@ -64,23 +65,28 @@ export async function POST(req: Request) {
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-; // Get the campaignId from the query parameter
+; 
 
-  const { searchParams } = new URL(req.url)
-
-  const campaignIdParam = searchParams.get('campaingId')
+  const { campaignId } = req.query
 
 
-  const campaignId = parseInt(campaignIdParam)
-
-  const creators = await CreatorsService.getCreatorsByCampaignId(campaignId)
+  if (!campaignId) {
+    return res.status(400).json({ error: 'CampaignId is missing from the route parameters' });
+  }
+  
+  // const campaign = await CreatorsService.findByCampaignId(parseInt(campaignId))
 
 
   await db.creator.deleteMany({
-  
-  })
+    where: {
+      campaigns: {
+        some: {
+          id: parseInt(campaignId),
+        },
+      },
+    },
+  });
 
-  console.log(session.user.id)
 
   return NextResponse.json({success: 'creators deleted'})
 
