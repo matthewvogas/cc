@@ -10,6 +10,8 @@ import ClientCard from '@/components/cards/agency/clients/clientCard'
 import { getServerSession } from 'next-auth'
 import Stats from '@/components/stats/stats'
 import CampaignCardIfluencer from '@/components/cards/influencer/campaignCardInfluencer'
+import AgenciesCard from '@/components/cards/agency/creators/agenciesCard'
+
 
 export const dynamic = 'force-dynamic'
 
@@ -54,7 +56,7 @@ export default async function Home() {
 
   if(session?.user.role === 'AGENCY'){
     return (
-      <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
+      <div className='justify-left flex h-full w-full flex-col gap-4 bg-white'>
         <TitleDashboard title={'welcome,'} user={session?.user!} />
         <CampaignCard
           campaignsFallback={campaigns}
@@ -72,23 +74,26 @@ export default async function Home() {
     )
   } else if (session?.user.role === 'CREATOR'){
     return (
-      <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
+      <div >
+        <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
         <TitleDashboard title={'Welcome,'} user={session?.user!} />
         <CampaignCardIfluencer
           campaignsFallback={campaigns}
           clientsFallback={clients}
         />
-        <ClientCard clientsFallback={clients} campaignsFallback={campaigns} />
-        <Stats
-          campaignsFallback={campaigns}
-          clientsFallback={clients}
-          stats={stats}
-          userPositionId={getUser}
-          frome={'dashboard'}
-        />
-
-        
+        <AgenciesCard clientsFallback={clients} campaignsFallback={campaigns} />  
+        </div>
+        <div className='bg-beigeFirst'>
+          <Stats
+            campaignsFallback={campaigns}
+            clientsFallback={clients}
+            stats={stats}
+            userPositionId={getUser}
+            frome={'dashboard'}
+          />
+        </div>
       </div>
+
 
     )
   }}
