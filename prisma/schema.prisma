@@ -42,6 +42,7 @@ enum UserRole {
   AGENCY
   CREATOR
   CLIENT
+  TESTER
 }
 
 model User {
