@@ -47,9 +47,6 @@ enum UserRole {
 
 model User {
   id            String     @id @default(cuid())
-  idFacebook    String?
-  idTiktok      String?
-  idInstagram   String?
   name          String?
   password      String?
   email         String?    @unique
