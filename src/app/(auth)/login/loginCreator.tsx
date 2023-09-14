@@ -13,7 +13,7 @@ export default function LoginCreator() {
     <div className='flex flex-col items-center justify-center  gap-4'>
       <button
         disabled={loading}
-        onClick={() => signIn('tiktok', { callbackUrl: '/connectionsuccess' })}
+        onClick={() => signIn('tiktok', { callbackUrl: '/onboarding/succes-creator' })}
         type='submit'
         className='h-14 w-full rounded-full bg-loginButtons text-black'>
         {loading ? (
@@ -29,7 +29,7 @@ export default function LoginCreator() {
       <button
         disabled={loading}
         onClick={() =>
-          signIn('instagram', { callbackUrl: '/connectionsuccess' })
+          signIn('instagram', { callbackUrl: '/onboarding/succes-creator' })
         }
         type='submit'
         className='h-14 w-full rounded-full bg-loginButtons text-black'>

@@ -44,7 +44,7 @@ function EmailsInput({ emails, setEmails, required }: Props) {
 
   return (
     <>
-      <div className='w-full overflow-x-auto rounded-xl border border-gra y-300 bg-gray-50 pl-2 py-2 pr-2 text-sm text-gray-900 flex gap-2 bg-transparent outline-none'>
+      <div className='w-full overflow-x-auto rounded-xl border  bg-gray-50 pl-2 py-2 pr-2 text-sm text-gray-900 flex gap-2 bg-transparent outline-none'>
         {emails?.map((email, index) => (
           <div
             className='flex items-center gap-1 rounded-full bg-gray-200 px-2 py-1'
@@ -67,7 +67,7 @@ function EmailsInput({ emails, setEmails, required }: Props) {
           onKeyDown={handleKeyDown}
           type='text'
           className='flex items-center bg-transparent px-2 py-1 outline-none'
-          placeholder='sophia@codecoco.co'
+          placeholder='luismontero@codecoco.co'
           required={required ? true : false}
         />
       </div>
