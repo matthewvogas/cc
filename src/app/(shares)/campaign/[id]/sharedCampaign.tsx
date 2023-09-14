@@ -155,12 +155,12 @@ export function SharedCampaign({
           </div>
         </div> */}
 
-
         <PostsByPlatform
           campaign={campaign}
           id={campaign.id!}
           shared={true}
           creators={creators}
+          session={undefined}
         />
       </div>
     </div>

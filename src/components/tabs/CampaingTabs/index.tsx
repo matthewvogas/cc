@@ -9,15 +9,15 @@ import PostCard from '@/components/cards/agency/posts/postCard'
 import TopPost from '@/components/cards/agency/posts/topPost'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { Posts } from '@/types/posts/PostByCampaignRes'
-import { SetStateAction, useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useMemo, useState } from 'react'
 import Stats from '@/components/stats/stats'
 import { Story } from '@prisma/client'
 import { ptMono } from '@/app/fonts'
 
 type StatsItem = {
-  section: string;
-  data: { title: any; description: string }[];
-};
+  section: string
+  data: { title: any; description: string }[]
+}
 
 export default function CampaingTabs({
   campaign,
@@ -71,65 +71,69 @@ export default function CampaingTabs({
     selectedCampaign: selectedCampaign,
   }
 
-  const statsTest: StatsItem[] = [
-    {
-      section: 'private',
-      data: [
-        { title: campaign.posts?.length, description: 'brand posts' },
-      { title: creators.length, description: 'creators' },
-        { title:  8492, description: 'likes' },
-        { title: 12 + '%', description: 'engament rate' },
-        { title: '17,395,43' , description: 'views' },
-        { title: '12,412,20' , description: 'reach' },
-        { title: '359,009' , description: 'comments' },
-      ],
-    },
-    {
-      section: 'public',
-      data: [
-        { title: 'hello', description: 'creators' },
-        { title: 'hello', description: 'campaigns' },
-        { title: 'hello', description: 'campaigns' },
-        // { title: totalViews, description: 'views' },
-        // { title: totalPlays, description: 'views' },
-      ],
-    },
-  ]
+  const [stats, setStats] = useState<StatsItem[]>([])
 
-  const statsNormal: StatsItem[] = [
-    {
-      section: 'private',
-      data: [
-        { title: campaign.posts?.length, description: 'brand posts' },
-        { title: creators.length, description: 'creators' },
-        // { title:  8492, description: 'likes' },
-        // { title: 12 + '%', description: 'engament rate' },
-        // { title: '17,395,43' , description: 'views' },
-        // { title: '12,412,20' , description: 'reach' },
-        // { title: '359,009' , description: 'comments' },
-      ],
-    },
-    {
-      section: 'public',
-      data: [
-        { title: 'hello', description: 'creators' },
-        { title: 'hello', description: 'campaigns' },
-        { title: 'hello', description: 'campaigns' },
-        // { title: totalViews, description: 'views' },
-        // { title: totalPlays, description: 'views' },
-      ],
-    },
-  ]
+  const statsTest = useMemo(() => {
+    return [
+      {
+        section: 'private',
+        data: [
+          { title: campaign?.posts?.length, description: 'brand posts' },
+          { title: creators.length, description: 'creators' },
+          { title: 8492, description: 'likes' },
+          { title: 12 + '%', description: 'engament rate' },
+          { title: '17,395,43', description: 'views' },
+          { title: '12,412,20', description: 'reach' },
+          { title: '359,009', description: 'comments' },
+        ],
+      },
+      {
+        section: 'public',
+        data: [
+          { title: 'hello', description: 'creators' },
+          { title: 'hello', description: 'campaigns' },
+          { title: 'hello', description: 'campaigns' },
+          // { title: totalViews, description: 'views' },
+          // { title: totalPlays, description: 'views' },
+        ],
+      },
+    ];
+  }, [campaign?.posts?.length, creators.length]); 
 
-  const [stats, setStats] = useState<StatsItem[]>([]);
-
+  const statsNormal = useMemo(() => {
+    return [
+      {
+        section: 'private',
+        data: [
+          { title: campaign?.posts?.length, description: 'brand posts' },
+          { title: creators.length, description: 'creators' },
+          // { title:  8492, description: 'likes' },
+          // { title: 12 + '%', description: 'engament rate' },
+          // { title: '17,395,43' , description: 'views' },
+          // { title: '12,412,20' , description: 'reach' },
+          // { title: '359,009' , description: 'comments' },
+        ],
+      },
+      {
+        section: 'public',
+        data: [
+          { title: 'hello', description: 'creators' },
+          { title: 'hello', description: 'campaigns' },
+          { title: 'hello', description: 'campaigns' },
+          // { title: totalViews, description: 'views' },
+          // { title: totalPlays, description: 'views' },
+        ],
+      },
+    ];
+  }, [campaign?.posts?.length, creators.length]);
+  
   useEffect(() => {
     if (session.user.role === 'TESTER') {
-      setStats(statsTest);
+      setStats(statsTest)
     } else {
-      setStats(statsNormal);
+      setStats(statsNormal)
     }
-  }, [session.user.id]);
+  }, [session.user.role, statsNormal, statsTest])
 
   return (
     <>
@@ -225,7 +229,6 @@ export default function CampaingTabs({
                 <section className={openTab === 1 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
                     <div className='mb-12'>
-
                       {/* funcion ternaria qye pregunte si es test */}
 
                       <Stats
@@ -235,7 +238,6 @@ export default function CampaingTabs({
                         frome={'campaign'}
                         userPositionId={0}
                       />
-
                     </div>
 
                     <PostsByPlatform
