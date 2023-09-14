@@ -11,6 +11,7 @@ import Link from 'next/link'
 import img from '/public/assets/creatorRegister/exampleImage.jpg'
 
 type Props = {
+  user: any
   campaignsFallback: (Campaign & {
     _count: {
       posts: number
@@ -22,7 +23,9 @@ type Props = {
 export default function CampaignCardIfluencer({
   campaignsFallback,
   clientsFallback,
+  user,
 }: Props) {
+  const x = 'g'
   const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
   const postData = campaigns
@@ -50,33 +53,32 @@ export default function CampaignCardIfluencer({
                   className={`object-cover`}
                   src={imageCover}
                   alt={card.name}
-                  style={{ width: '250px', height: '310px' }} />
+                  style={{ width: '250px', height: '310px' }}
+                />
                 <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
                   <div className='max-w-[200px] overflow-clip'>
                     <h5 className='truncate font-medium text-base'>
                       {card.name}
                     </h5>
-                    <div className='flex justify-center'>
+                    <div className='flex justify-center items-center flex-row'>
                       <div className='flex mt-10 mb-10 justify-center mask mask-circle mr-8 h-50 w-50'>
-                      <Image
-                      priority
-                      className={`h-12 w-12`}
-                      width={150}
-                      src={img}
-                      alt='background'
-                    />
+                        <Image
+                          priority
+                          className={`h-12 w-12`}
+                          width={150}
+                          src={img}
+                          alt='background'
+                        />
                       </div>
-                      <div>
-                        <span>hola</span>
+                      <div className='-ml-5'>
+                        <span>with {user.name}</span>
                       </div>
                     </div>
                   </div>
-                  <div className='max-w-[50px]'>
-                  </div>
+                  <div className='max-w-[50px]'></div>
                 </div>
                 <hr className='h-px bg-gray-200'></hr>
-                <div
-                  className={`flex px-6 py-[14px] ${ptMono.className}`}>
+                <div className={`flex px-6 py-[14px] ${ptMono.className}`}>
                   <div className='flex justify-center items-center space-x-20'>
                     <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
                       {card?._count?.posts || 0} {`posts`}
@@ -92,10 +94,9 @@ export default function CampaignCardIfluencer({
                       <path
                         strokeLinecap='round'
                         strokeLinejoin='round'
-                        d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3' />
+                        d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
+                      />
                     </svg>
-
-
                   </div>
                 </div>
               </Link>

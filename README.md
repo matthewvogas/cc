@@ -1,13 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-
 ## Requirements
 
 - [Node.js](https://nodejs.org/en)
 - [PostgreSQL](https://www.postgresql.org/)
 
 ## Instalation
-
 
 git clone https://gitlab.com/go-labs/codecoco.git
 cd codecoco
@@ -27,6 +25,13 @@ For migrations on dev run:
 npx prisma migrate reset
 npx prisma migrate dev
 
+```
+
+To update the database when changes are made:
+
+```bash
+npx prisma db push
+npx prisma migrate dev && npx prisma migrate reset
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
