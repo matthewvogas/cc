@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('AGENCY', 'CREATOR', 'CLIENT', 'TESTER');
+
+-- CreateEnum
 CREATE TYPE "CreatorStatus" AS ENUM ('SIGNEDUP', 'INVITE', 'REJECTED');
 
 -- CreateTable
@@ -33,11 +36,15 @@ CREATE TABLE "sessions" (
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
+    "idFacebook" TEXT,
+    "idTiktok" TEXT,
+    "idInstagram" TEXT,
     "name" TEXT,
     "password" TEXT,
     "email" TEXT,
     "email_verified" TIMESTAMP(3),
     "image" TEXT,
+    "role" "UserRole" NOT NULL DEFAULT 'AGENCY',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -132,6 +139,20 @@ CREATE TABLE "posts" (
 );
 
 -- CreateTable
+CREATE TABLE "stories" (
+    "id" SERIAL NOT NULL,
+    "uuid" TEXT,
+    "user_id" TEXT NOT NULL,
+    "campaign_id" INTEGER,
+    "creator_id" INTEGER,
+    "image_url" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "stories_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_CreatorToUser" (
     "A" INTEGER NOT NULL,
     "B" TEXT NOT NULL
@@ -180,6 +201,9 @@ CREATE UNIQUE INDEX "tags_name_key" ON "tags"("name");
 CREATE UNIQUE INDEX "posts_shortcode_platform_key" ON "posts"("shortcode", "platform");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "stories_image_url_campaign_id_key" ON "stories"("image_url", "campaign_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_CreatorToUser_AB_unique" ON "_CreatorToUser"("A", "B");
 
 -- CreateIndex
@@ -226,6 +250,15 @@ ALTER TABLE "posts" ADD CONSTRAINT "posts_campaign_id_fkey" FOREIGN KEY ("campai
 
 -- AddForeignKey
 ALTER TABLE "posts" ADD CONSTRAINT "posts_creator_id_fkey" FOREIGN KEY ("creator_id") REFERENCES "creators"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "stories" ADD CONSTRAINT "stories_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "stories" ADD CONSTRAINT "stories_campaign_id_fkey" FOREIGN KEY ("campaign_id") REFERENCES "campaigns"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "stories" ADD CONSTRAINT "stories_creator_id_fkey" FOREIGN KEY ("creator_id") REFERENCES "creators"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CreatorToUser" ADD CONSTRAINT "_CreatorToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "creators"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -29,6 +29,7 @@ export class CampaignsService {
     return campaigns
   }
 
+  
   static async findManyByClient(
     client: number,
     limit?: number,
@@ -55,6 +56,9 @@ export class CampaignsService {
 
     return campaigns
   }
+  //Id creator 
+  // findMany
+
 
   static async findUnique(id: number) {
     const campaign = await db.campaign.findUnique({

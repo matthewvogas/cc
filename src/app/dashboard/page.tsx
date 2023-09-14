@@ -20,6 +20,7 @@ export default async function Home() {
   const getUser = await UserService.findPositionById(session!.user.id)
 
   const campaigns = await CampaignsService.findMany(session!.user.id)
+  
   const clients = await ClientsService.findMany(session!.user.id)
   const creators = await CreatorsService.findMany(session!.user.id)
   const allPosts = await PostsService.findAllPostsFromUser(session!.user.id)
@@ -53,14 +54,11 @@ export default async function Home() {
     },
   ]
 
-  if(session?.user.role === 'AGENCY'){
+  if (session?.user.role === 'AGENCY') {
     return (
       <div className='justify-left flex h-full w-full flex-col gap-4 bg-white'>
         <TitleDashboard title={'welcome,'} user={session?.user!} />
-        <CampaignCard
-          campaignsFallback={campaigns}
-          clientsFallback={clients}
-        />
+        <CampaignCard campaignsFallback={campaigns} clientsFallback={clients} />
         <ClientCard clientsFallback={clients} campaignsFallback={campaigns} />
         <Stats
           campaignsFallback={campaigns}
@@ -71,16 +69,20 @@ export default async function Home() {
         />
       </div>
     )
-  } else if (session?.user.role === 'CREATOR'){
+  } else if (session?.user.role === 'CREATOR') {
     return (
-      <div >
+      <div>
         <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
-        <TitleDashboard title={'Welcome,'} user={session?.user!} />
-        <CampaignCardIfluencer
-          campaignsFallback={campaigns}
-          clientsFallback={clients}
-        />
-        <AgenciesCard clientsFallback={clients} campaignsFallback={campaigns} />  
+          <TitleDashboard title={'Welcome,'} user={session?.user!} />
+          <CampaignCardIfluencer
+            user={session?.user!}
+            campaignsFallback={campaigns}
+            clientsFallback={clients}
+          />
+          <AgenciesCard
+            clientsFallback={clients}
+            campaignsFallback={campaigns}
+          />
         </div>
         <div className='bg-beigeFirst'>
           <Stats
@@ -93,14 +95,11 @@ export default async function Home() {
         </div>
       </div>
     )
-  } else if (session?.user.role === 'TESTER'){
+  } else if (session?.user.role === 'TESTER') {
     return (
       <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
         <TitleDashboard title={'Welcome,'} user={session?.user!} />
-        <CampaignCard
-          campaignsFallback={campaigns}
-          clientsFallback={clients}
-        />
+        <CampaignCard campaignsFallback={campaigns} clientsFallback={clients} />
         <ClientCard clientsFallback={clients} campaignsFallback={campaigns} />
         <Stats
           campaignsFallback={campaigns}
