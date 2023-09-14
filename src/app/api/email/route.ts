@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const welcomeEmail = await EmailService.sendEmail({
-      subject: 'Welcome',
+      subject: 'Welcome to Codecoco',
       to,
       html: render(
         WelcomeEmail({

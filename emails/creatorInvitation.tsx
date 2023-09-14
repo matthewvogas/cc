@@ -26,7 +26,6 @@ interface YelpRecentLoginEmailProps {
 
 export const YelpRecentLoginEmail = ({
   baseURL,
-  agencyName = 'With Rosalind',
   loginDate = new Date('September 7, 2022, 10:58 am'),
 }: YelpRecentLoginEmailProps) => {
   baseURL ||= 'http://localhost:3000'
@@ -79,12 +78,12 @@ export const YelpRecentLoginEmail = ({
                     textAlign: 'center',
                     color: '#fff',
                   }}>
-                  {agencyName} has invited you to connect on Codecoco
+                  You have been invited to connect on Codecoco
                 </Heading>
 
                 <Row style={{ ...boxInfos, paddingTop: '0' }}>
                   <Column style={containerButton} colSpan={2}>
-                    <a href='' style={button}>
+                    <a href='https://dev.codecoco.co/login' style={button}>
                       connect now
                     </a>
                   </Column>
@@ -105,8 +104,8 @@ export const YelpRecentLoginEmail = ({
                     color: '#000',
                     marginBottom: '40px',
                   }}>
-                  Codecoco will collect your campaign stats for {agencyName} so
-                  you don’t have to!
+                  Codecoco will collect your campaign stats for so
+                  you don’t have to share them to with screenshots!
                 </Heading>
                 {featuresList.map((feature, index) => (
                   <div
@@ -154,7 +153,7 @@ export const YelpRecentLoginEmail = ({
                     textAlign: 'center',
                     color: '#000',
                   }}>
-                  Connecting does not allow Codecoco or {agencyName} to login,
+                  Connecting does not allow Codecoco or the Agency to login,
                   post, or manage on your behalf.
                 </Heading>
                 <p
@@ -181,7 +180,7 @@ export const YelpRecentLoginEmail = ({
                     backgroundColor: '#DFF2E8',
                     marginBottom: '20px',
                   }}>
-                  connect {agencyName} now 🥥
+                  connect now 🥥
                 </a>
               </Column>
               <Column style={containerButton} colSpan={2}>
