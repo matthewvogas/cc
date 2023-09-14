@@ -4,9 +4,6 @@ import logo from 'public/assets/register/codecoco.png'
 import { Navigation } from './activeNavigation'
 import { SingOutButton, SingInButton } from '../auth/AuthButtons'
 
-// Fonts
-
-// Arrays
 const links = [
   {
     href: '/dashboard',
@@ -24,9 +21,11 @@ const links = [
     href: '/dashboard/creators',
     name: 'Creators',
   },
+  {
+    href: '/privacy',
+    name: 'Privacy Policy',
+  },
 ]
-
-// Show Arrays
 
 export default function Sidebar() {
   return (

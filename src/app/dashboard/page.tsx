@@ -1,17 +1,16 @@
+import CampaignCardIfluencer from '@/components/cards/influencer/campaignCardInfluencer'
 import CampaignCard from '@/components/cards/agency/campaigns/campaignCard'
+import AgenciesCard from '@/components/cards/agency/creators/agenciesCard'
+import ClientCard from '@/components/cards/agency/clients/clientCard'
+import TitleDashboard from '@/components/labels/titleDashboard'
 import { CampaignsService } from '@/services/CampaignsService'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import { CreatorsService } from '@/services/CreatorsService'
 import { ClientsService } from '@/services/ClientsServices'
-import TitleDashboard from '@/components/labels/titleDashboard'
 import { PostsService } from '@/services/PostsSerivce'
 import { UserService } from '@/services/UsersService'
-import ClientCard from '@/components/cards/agency/clients/clientCard'
 import { getServerSession } from 'next-auth'
 import Stats from '@/components/stats/stats'
-import CampaignCardIfluencer from '@/components/cards/influencer/campaignCardInfluencer'
-import AgenciesCard from '@/components/cards/agency/creators/agenciesCard'
-
 
 export const dynamic = 'force-dynamic'
 
@@ -93,7 +92,24 @@ export default async function Home() {
           />
         </div>
       </div>
-
-
     )
-  }}
+  } else if (session?.user.role === 'TESTER'){
+    return (
+      <div className='justify-left flex h-full w-full flex-col  gap-4 bg-white'>
+        <TitleDashboard title={'Welcome,'} user={session?.user!} />
+        <CampaignCard
+          campaignsFallback={campaigns}
+          clientsFallback={clients}
+        />
+        <ClientCard clientsFallback={clients} campaignsFallback={campaigns} />
+        <Stats
+          campaignsFallback={campaigns}
+          clientsFallback={clients}
+          stats={stats}
+          userPositionId={getUser}
+          frome={'dashboard'}
+        />
+      </div>
+    )
+  }
+}
