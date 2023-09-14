@@ -57,45 +57,44 @@ export async function POST(req: Request) {
   }
 }
 
- export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+//  export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   
-  try{
-    const session = await getServerSession(authOptions)
+//   try{
+//     const session = await getServerSession(authOptions)
 
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-; 
+//   if (!session) {
+//     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+//   }
 
-  const { campaignId } = req.query
+//   const { campaignId } = req.query
 
 
-  if (!campaignId) {
-    return res.status(400).json({ error: 'CampaignId is missing from the route parameters' });
-  }
+//   if (!campaignId) {
+//     return res.status(400).json({ error: 'CampaignId is missing from the route parameters' });
+//   }
   
-  // const campaign = await CreatorsService.findByCampaignId(parseInt(campaignId))
+//   // const campaign = await CreatorsService.findByCampaignId(parseInt(campaignId))
 
 
-  // await db.creator.deleteMany({
-  //   where: {
-  //     campaigns: {
-  //       some: {
-  //         id: parseInt(campaignId),
-  //       },
-  //     },
-  //   },
-  // });
+//   // await db.creator.deleteMany({
+//   //   where: {
+//   //     campaigns: {
+//   //       some: {
+//   //         id: parseInt(campaignId),
+//   //       },
+//   //     },
+//   //   },
+//   // });
 
 
-  return NextResponse.json({success: 'creators deleted'})
+//   return NextResponse.json({success: 'creators deleted'})
 
 
-  } catch (err: any){
-    console.log(err)
-    return NextResponse.json({err: err.message}, {status: 500})
-  }
+//   } catch (err: any){
+//     console.log(err)
+//     return NextResponse.json({err: err.message}, {status: 500})
+//   }
 
   
   
- }
+//  }
