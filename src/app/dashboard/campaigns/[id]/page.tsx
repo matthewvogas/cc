@@ -1,11 +1,12 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { CampaignsService } from '@/services/CampaignsService'
-import { ptMono } from '@/app/fonts'
-import CampaingsTabs from '@/components/tabs/CampaingTabs'
-import TitlePage from '@/components/labels/titlePage'
-import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CreatorsService } from '@/services/CreatorsService'
-import { PostsService } from '@/services/PostsSerivce'
+import CampaingsTabs from '@/components/tabs/CampaingTabs'
 import { StoriesService } from '@/services/StoriesService'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import TitlePage from '@/components/labels/titlePage'
+import { PostsService } from '@/services/PostsSerivce'
+import { getServerSession } from 'next-auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,6 +21,7 @@ export default async function CampaignPage({
     const creators = await CreatorsService.findByCampaignId(id)
     const posts = await PostsService.findMany(id)
     const stories = await StoriesService.findByCampaign(id)
+    const session = await getServerSession(authOptions)
 
     return (
       <div className='overflow-clip'>
@@ -41,6 +43,7 @@ export default async function CampaignPage({
             creators={creators}
             posts={posts}
             stories={stories}
+            session={session}
           />
         </div>
       </div>

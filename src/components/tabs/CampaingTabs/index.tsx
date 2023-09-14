@@ -1,29 +1,36 @@
 'use client'
 
-import { ptMono } from '@/app/fonts'
-import TopPost from '@/components/cards/agency/posts/topPost'
-import PostCard from '@/components/cards/agency/posts/postCard'
-import { SetStateAction, useState } from 'react'
-import CreatorRow from '@/components/cards/agency/creators/creatorCard'
-import SettingsTab from '@/components/tabs/ClientTabs/settingsTab'
-import TabsToShare from '@/components/tabs/CampaingTabs/tabsToShare'
-import { Posts } from '@/types/posts/PostByCampaignRes'
-import FilterCreators from '@/components/filters/filtersCreators'
-import { CampaignRes } from '@/types/campaign/campaignRes'
-import Stats from '@/components/stats/stats'
 import PostsByPlatform from '@/components/tabs/CampaingTabs/postsByPlatform'
+import CreatorRow from '@/components/cards/agency/creators/creatorCard'
+import TabsToShare from '@/components/tabs/CampaingTabs/tabsToShare'
+import SettingsTab from '@/components/tabs/ClientTabs/settingsTab'
+import FilterCreators from '@/components/filters/filtersCreators'
+import PostCard from '@/components/cards/agency/posts/postCard'
+import TopPost from '@/components/cards/agency/posts/topPost'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import { Posts } from '@/types/posts/PostByCampaignRes'
+import { SetStateAction, useEffect, useState } from 'react'
+import Stats from '@/components/stats/stats'
 import { Story } from '@prisma/client'
+import { ptMono } from '@/app/fonts'
+
+type StatsItem = {
+  section: string;
+  data: { title: any; description: string }[];
+};
 
 export default function CampaingTabs({
   campaign,
   creators,
   posts,
   stories,
+  session,
 }: {
   campaign: CampaignRes
   creators: any
   posts: Posts[]
   stories: Story[]
+  session: any
 }) {
   const [openTab, setOpenTab] = useState(1)
   const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
@@ -64,17 +71,17 @@ export default function CampaingTabs({
     selectedCampaign: selectedCampaign,
   }
 
-  const stats = [
+  const statsTest: StatsItem[] = [
     {
       section: 'private',
       data: [
         { title: campaign.posts?.length, description: 'brand posts' },
-        { title: creators.length, description: 'creators' },
-        // { title:  getLikes(), description: 'likes' },
-        // { title: 0 + '%', description: 'engament rate' },
-        // { title: 0, description: 'views' },
-        // { title: 0, description: 'reach' },
-        // { title: 0, description: 'comments' },
+      { title: creators.length, description: 'creators' },
+        { title:  8492, description: 'likes' },
+        { title: 12 + '%', description: 'engament rate' },
+        { title: '17,395,43' , description: 'views' },
+        { title: '12,412,20' , description: 'reach' },
+        { title: '359,009' , description: 'comments' },
       ],
     },
     {
@@ -88,6 +95,41 @@ export default function CampaingTabs({
       ],
     },
   ]
+
+  const statsNormal: StatsItem[] = [
+    {
+      section: 'private',
+      data: [
+        { title: campaign.posts?.length, description: 'brand posts' },
+        { title: creators.length, description: 'creators' },
+        // { title:  8492, description: 'likes' },
+        // { title: 12 + '%', description: 'engament rate' },
+        // { title: '17,395,43' , description: 'views' },
+        // { title: '12,412,20' , description: 'reach' },
+        // { title: '359,009' , description: 'comments' },
+      ],
+    },
+    {
+      section: 'public',
+      data: [
+        { title: 'hello', description: 'creators' },
+        { title: 'hello', description: 'campaigns' },
+        { title: 'hello', description: 'campaigns' },
+        // { title: totalViews, description: 'views' },
+        // { title: totalPlays, description: 'views' },
+      ],
+    },
+  ]
+
+  const [stats, setStats] = useState<StatsItem[]>([]);
+
+  useEffect(() => {
+    if (session.user.role === 'TESTER') {
+      setStats(statsTest);
+    } else {
+      setStats(statsNormal);
+    }
+  }, [session.user.id]);
 
   return (
     <>
@@ -183,6 +225,9 @@ export default function CampaingTabs({
                 <section className={openTab === 1 ? 'block' : 'hidden'}>
                   <div className='pt-6'>
                     <div className='mb-12'>
+
+                      {/* funcion ternaria qye pregunte si es test */}
+
                       <Stats
                         campaignsFallback={[]}
                         clientsFallback={undefined}
@@ -190,6 +235,7 @@ export default function CampaingTabs({
                         frome={'campaign'}
                         userPositionId={0}
                       />
+
                     </div>
 
                     <PostsByPlatform
@@ -197,6 +243,7 @@ export default function CampaingTabs({
                       campaign={campaign}
                       creators={creators}
                       shared={false}
+                      session={session}
                     />
                   </div>
                 </section>

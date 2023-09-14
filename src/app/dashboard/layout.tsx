@@ -1,9 +1,9 @@
+import SidebarCreators from '@/components/dashboards/influencer/sidebarCreators'
 import { SingInButton, SingOutButton } from '@/components/auth/AuthButtons'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import AuthProvider from '@/providers/AuthProvider'
 import Sidebar from '@/components/menus/sidebar'
 import { getServerSession } from 'next-auth'
-import SidebarCreators from '@/components/dashboards/influencer/sidebarCreators'
 
 export default async function AppLayout({
   children,
@@ -31,6 +31,15 @@ export default async function AppLayout({
           <SingInButton />
           <SingOutButton />
       </AuthProvider>
+    )
+  } else if (session?.user.role === 'TESTER') {
+    return (
+      <AuthProvider>
+      <div className='flex'>
+        <Sidebar />
+        <main className='flex-1 w-full  overflow-hidden'>{children}</main>
+      </div>
+    </AuthProvider>
     )
   }
 }

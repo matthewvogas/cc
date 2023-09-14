@@ -14,18 +14,21 @@ import { FiRotateCw } from 'react-icons/fi'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
+import PostCardTest from '@/components/cards/test/posts/postCard'
 
 type Props = {
   readonly id: number
   readonly campaign: CampaignRes
   readonly creators: any[]
   readonly shared: boolean
+  readonly session: any
 }
 export default function PostsByPlatform({
   id,
   campaign,
   creators,
   shared,
+  session,
 }: Props) {
   const [filterPosts, setFilterPosts] = React.useState('hidden')
   const [tags, setTags] = useState<string[]>([])
@@ -186,9 +189,18 @@ export default function PostsByPlatform({
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {filteredPosts!.map((post: any, index: any) => (
+                  {/* funcion ternaria para preguntar por test user */}
+
+                  {
+                  session.user.role == 'TESTER' ? 
+                  filteredPosts!.map((post: any, index: any) => (
+                    <PostCardTest key={index} post={post} />
+                  )) :
+                  filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
-                  ))}
+                  ))
+                  }
+
                   {campaign?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
@@ -268,9 +280,16 @@ export default function PostsByPlatform({
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {filteredPosts!.map((post: any, index: any) => (
+                   {/* funcion ternaria para preguntar por test user */}
+                   {
+                  session.user.role == 'TESTER' ? 
+                  filteredPosts!.map((post: any, index: any) => (
+                    <PostCardTest key={index} post={post} />
+                  )) :
+                  filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
-                  ))}
+                  ))
+                  }
                   {campaign?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
@@ -354,9 +373,15 @@ export default function PostsByPlatform({
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {filteredPosts!.map((post: any, index: any) => (
+                {
+                  session.user.role == 'TESTER' ? 
+                  filteredPosts!.map((post: any, index: any) => (
+                    <PostCardTest key={index} post={post} />
+                  )) :
+                  filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
-                  ))}
+                  ))
+                  }
                   {campaign?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
