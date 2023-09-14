@@ -4,7 +4,7 @@ import { inter, ptMono } from '@/app/fonts'
 import React, { useState } from 'react'
 import Link from 'next/link'
 
-export function CreatorStatus() {
+export function CreatorStatus(state: any) {
   const [isOpen, setIsOpen] = React.useState(false)
 
   const [email, setEmail] = useState('')
