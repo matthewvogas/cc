@@ -41,7 +41,6 @@ CREATE TABLE "users" (
     "email" TEXT,
     "email_verified" TIMESTAMP(3),
     "image" TEXT,
-    "role" "UserRole" NOT NULL DEFAULT 'AGENCY',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
