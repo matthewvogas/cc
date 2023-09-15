@@ -36,6 +36,9 @@ CREATE TABLE "sessions" (
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
+    "idFacebook" TEXT,
+    "idTiktok" TEXT,
+    "idInstagram" TEXT,
     "name" TEXT,
     "password" TEXT,
     "email" TEXT,
