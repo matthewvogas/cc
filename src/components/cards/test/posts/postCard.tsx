@@ -95,6 +95,22 @@ export default function PostCardTest({ post }: { post: Post }) {
           <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
             Likes: 10k
           </span>
+          {
+            post.creator?.username === "withrosalind" ? (
+              <div>
+                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+                  Views: 423k
+                </span>
+                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+                  Saves: 4k
+                </span>
+                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+                  Shares: 2k
+                </span>
+              </div>
+            ) : 
+              null
+          }         
         </div>
         <div className='dropdown-end dropdown cursor-pointer '>
           <div className='flex justify-end outline-none'>
