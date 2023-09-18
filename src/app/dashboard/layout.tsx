@@ -25,21 +25,20 @@ export default async function AppLayout({
     return (
       <AuthProvider>
         <div className='flex'>
-          <SidebarCreators/>
+          <SidebarCreators />
           <main className='flex-1 w-full  overflow-hidden'>{children}</main>
         </div>
-          <SingInButton />
-          <SingOutButton />
+        <SingInButton />
       </AuthProvider>
     )
   } else if (session?.user.role === 'TESTER') {
     return (
       <AuthProvider>
-      <div className='flex'>
-        <Sidebar />
-        <main className='flex-1 w-full  overflow-hidden'>{children}</main>
-      </div>
-    </AuthProvider>
+        <div className='flex'>
+          <Sidebar />
+          <main className='flex-1 w-full  overflow-hidden'>{children}</main>
+        </div>
+      </AuthProvider>
     )
   }
 }

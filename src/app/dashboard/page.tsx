@@ -11,6 +11,7 @@ import { PostsService } from '@/services/PostsSerivce'
 import { UserService } from '@/services/UsersService'
 import { getServerSession } from 'next-auth'
 import Stats from '@/components/stats/stats'
+import StatsInfluencer from '@/components/stats/statsInfluencer'
 
 export const dynamic = 'force-dynamic'
 
@@ -85,7 +86,7 @@ export default async function Home() {
           />
         </div>
         <div className='bg-beigeFirst'>
-          <Stats
+          <StatsInfluencer
             campaignsFallback={campaigns}
             clientsFallback={clients}
             stats={stats}
