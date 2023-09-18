@@ -24,7 +24,7 @@ export default function ActionalTitle({
   return (
     <div className='w-full mt-9 mb-8 flex content-center justify-between align-middle px-12'>
       <h3
-        className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
+        className={`self-center text-[18px] leading-[1.75rem] font-semibold mt-10 text-gray-800`}>
         {title}
       </h3>
       <div className={`flex items-center justify-between`}>
@@ -68,7 +68,7 @@ export default function ActionalTitle({
 
           <Link
             href={`/dashboard/${frome}`}
-            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 mt-10 rounded-full text-black text-lg`}>
             {frome != 'stats' ? 'view all' : 'go to reports'}
           </Link>
         </div>
