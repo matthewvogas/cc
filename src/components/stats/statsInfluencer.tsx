@@ -20,7 +20,7 @@ type Props = {
   userPositionId: number
 }
 
-export default function Stats({
+export default function StatsInfluencer({
   campaignsFallback,
   clientsFallback,
   stats,
@@ -33,9 +33,7 @@ export default function Stats({
 
   const gridContainerStyle = {
     display: 'flex',
-    gridTemplateRows: 'repeat(2, auto)',
-    gridAutoFlow: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-evenly',
   }
 
   const titleStatStyle = 'text-2xl font-medium'
@@ -43,14 +41,10 @@ export default function Stats({
   const statStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    borderRight: '1px solid black',
-    // borderColor: '#E6E6E3',
-    // paddingRight: '56px',
-    // marginRight: '56px',
-    // paddingBottom: '20px',
-    border: '1px solid black',
+    alignItems: 'center',
+    padding: '20px',
     margin: '5px',
+    borderRadius: '10px',
     background: 'white',
   }
 
@@ -91,7 +85,7 @@ export default function Stats({
                   ...statStyle,
                   ...(index > 1 && { borderRight: 'none', marginRight: '0px' }),
                 }}>
-                <h4 className={`${titleStatStyle}`}>{stat.title}</h4>
+                <h4 className={`${titleStatStyle} m-1`}>{stat.title}</h4>
                 <p className={`${descriptionStatStyle} ${ptMono.className}`}>
                   {stat.description}
                 </p>
