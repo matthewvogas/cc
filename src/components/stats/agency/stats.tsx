@@ -1,8 +1,8 @@
 'use client'
 
 import imageCover from 'public/assets/register/campaignCover.jpg'
+import ActionalTitle from '@/components/labels/actionalTitle'
 import useCampaigns from '@/hooks/useCampaigns'
-import ActionalTitle from '../labels/actionalTitle'
 import { Campaign } from '@prisma/client'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'

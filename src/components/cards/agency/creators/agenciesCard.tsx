@@ -2,8 +2,8 @@
 
 import imageCover from 'public/assets/register/TopPost.jpg'
 import useClients from '@/hooks/useClients'
-import { inter, ptMono } from '@/app/fonts'
 import ActionalTitle from '../../../labels/actionalTitle'
+import { inter, ptMono } from '@/app/fonts'
 import { FiUsers } from 'react-icons/fi'
 import { Client } from '@prisma/client'
 import Image from 'next/image'
@@ -24,7 +24,7 @@ export default function AgenciesCard({
       {' '}
       <ActionalTitle
         title={'Agencies you are connected with'}
-        frome={'agencies'}//add agencies
+        frome={'agencies'}
         campaigns={campaignsFallback}
         clients={clientsFallback}
         userPositionId={0}
@@ -56,7 +56,7 @@ export default function AgenciesCard({
             <div className='border border-gray-200 w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
               <FiUsers style={{ width: '24px' }} />
               <p
-                className={` text-center text-base ${ptMono.className}`}>{`Looks like the party hasn't started yet. Create a new client to get the night started `}</p>
+                className={` text-center text-base ${ptMono.className}`}>{`Looks like the party hasn't started yet. Connect with a Agency Now.`}</p>
             </div>
             <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
               <p

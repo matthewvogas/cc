@@ -2,16 +2,18 @@ import CampaignCardIfluencer from '@/components/cards/influencer/campaignCardInf
 import CampaignCard from '@/components/cards/agency/campaigns/campaignCard'
 import AgenciesCard from '@/components/cards/agency/creators/agenciesCard'
 import ClientCard from '@/components/cards/agency/clients/clientCard'
+import PostCardTest from '@/components/cards/test/posts/postCard'
 import TitleDashboard from '@/components/labels/titleDashboard'
 import { CampaignsService } from '@/services/CampaignsService'
+import StatsCreator from '@/components/stats/influencer/stats'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import { CreatorsService } from '@/services/CreatorsService'
 import { ClientsService } from '@/services/ClientsServices'
 import { PostsService } from '@/services/PostsSerivce'
 import { UserService } from '@/services/UsersService'
+import Stats from '@/components/stats/agency/stats'
 import { getServerSession } from 'next-auth'
-import Stats from '@/components/stats/stats'
-import StatsInfluencer from '@/components/stats/statsInfluencer'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
@@ -86,13 +88,47 @@ export default async function Home() {
           />
         </div>
         <div className='bg-beigeFirst'>
-          <StatsInfluencer
+          <StatsCreator
             campaignsFallback={campaigns}
             clientsFallback={clients}
             stats={stats}
             userPositionId={getUser}
             frome={'dashboard'}
           />
+        </div>
+
+        <div>
+        <div className='w-full mt-9 pt-8 mb-8 flex content-center justify-between align-middle px-12'>
+      <h3
+        className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
+        a look at your top performing posts
+      </h3>
+      <div className={`flex items-center justify-between`}>
+        <div className={`flex`}>  
+
+          <Link
+            href={`/dashboard/g}`}
+            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+          view portafolio
+          </Link>
+          <Link
+            href={`/dashboard/g}`}
+            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+              share this view
+          </Link>
+
+        </div>
+      </div>
+    </div>
+        </div>
+          <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+            {
+              campaigns[0]?.posts?.map((post: any, index: any) => (
+                <PostCardTest key={index} post={post} />
+              )) 
+            }
+          </div>
+        <div>
         </div>
       </div>
     )

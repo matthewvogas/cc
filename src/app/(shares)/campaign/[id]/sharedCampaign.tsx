@@ -1,16 +1,15 @@
 'use client'
 
-import React from 'react'
-import { useEffect, useState } from 'react'
-import { Posts } from '@/types/posts/PostByCampaignRes'
-import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
-import Stats from '@/components/stats/stats'
-import avatar from 'public/assets/register/avatar.jpg'
-import Image from 'next/image'
-import { ptMono } from '@/app/fonts'
-import { FaUserAlt, FaClone } from 'react-icons/fa'
 import PostsByPlatform from '@/components/tabs/CampaingTabs/postsByPlatform'
+import { CampaignRes } from '@/types/campaign/campaignRes'
+import { Posts } from '@/types/posts/PostByCampaignRes'
+import avatar from 'public/assets/register/avatar.jpg'
+import { FaUserAlt, FaClone } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
+import { ptMono } from '@/app/fonts'
+import Image from 'next/image'
+import React from 'react'
 
 export function SharedCampaign({
   user,

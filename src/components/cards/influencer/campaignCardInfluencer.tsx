@@ -1,5 +1,6 @@
 'use client'
 
+import img from '/public/assets/creatorRegister/exampleImage.jpg'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import ActionalTitle from '@/components/labels/actionalTitle'
 import useCampaigns from '@/hooks/useCampaigns'
@@ -8,7 +9,6 @@ import { Campaign } from '@prisma/client'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
-import img from '/public/assets/creatorRegister/exampleImage.jpg'
 
 type Props = {
   user: any
@@ -25,7 +25,6 @@ export default function CampaignCardIfluencer({
   clientsFallback,
   user,
 }: Props) {
-  const x = 'g'
   const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
   const postData = campaigns
@@ -34,7 +33,7 @@ export default function CampaignCardIfluencer({
     <>
       <ActionalTitle
         title={'Your campaigns'}
-        frome={'campaigns'}
+        frome={'campaignsInfluencer'}
         campaigns={campaignsFallback}
         clients={clientsFallback}
         userPositionId={0}

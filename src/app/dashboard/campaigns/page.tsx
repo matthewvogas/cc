@@ -1,5 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import CampaignsDashBoard from '@/components/dashboards/agency/CampaignsDashBoard'
+import CampaignsDashBoardInfluencer from '@/components/dashboards/influencer/CampaignsDashBoard'
 import { CampaignsService } from '@/services/CampaignsService'
 import { ClientsService } from '@/services/ClientsServices'
 import { CreatorsService } from '@/services/CreatorsService'
@@ -17,10 +18,24 @@ export default async function CampaignPage() {
   //const creators = await CreatorsService.findMany(session!.user.id)
 
   return (
-    <CampaignsDashBoard
-      campaignsFallback={campaigns}
-      clientsFallback={clients}
-      // creatorsFallback={creators}
-    />
+    <div>
+      { session!.user.role == 'CREATOR' ?
+      (
+        <CampaignsDashBoardInfluencer
+          campaignsFallback={campaigns}
+          clientsFallback={clients}
+          // creatorsFallback={creators}
+        />
+      )
+      :
+      (
+        <CampaignsDashBoard
+        campaignsFallback={campaigns}
+        clientsFallback={clients}
+        // creatorsFallback={creators}/>
+        />
+      )
+      }
+    </div>
   )
 }
