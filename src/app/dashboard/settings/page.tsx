@@ -1,4 +1,5 @@
 'use client'
+import TwoTabsComponent from '@/components/settings/Twotabs'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 
@@ -45,44 +46,12 @@ function Tabs({ tabs }: TabsProps) {
 }
 
 export default function Settings() {
-  const accountTabs: TabItem[] = [
-    {
-      label: 'Account Tab 1',
-      content: (
-        <div>
-          {/* Contenido de la primera pestaña en "Account Settings" */}
-          Contenido de la primera pestaña en "Account Settings".
-        </div>
-      ),
-    },
-    {
-      label: 'Account Tab 2',
-      content: (
-        <div>
-          {/* Contenido de la segunda pestaña en "Account Settings" */}
-          Contenido de la segunda pestaña en "Account Settings".
-        </div>
-      ),
-    },
-  ]
   const tabs: TabItem[] = [
     {
       label: 'Account Settings',
       content: (
-        <div className='flex space-x-10'>
-          <div className='flex flex-col ml-10 start-1 '>
-            {/* Tab components */}
-            <button className='bg-greenCTA p-4 px-8 mb-8 rounded-lg'>
-              Profile settings
-            </button>
-
-            <button className='bg-greenCTA p-4 px-8 mb-8 rounded-lg'>
-              Notifications
-            </button>
-          </div>
-          <div className='flex'>
-            <div>EXAMPLE TEXT</div>
-          </div>
+        <div>
+          <TwoTabsComponent />
         </div>
       ),
     },
