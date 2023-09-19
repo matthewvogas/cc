@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import { inter } from '@/app/fonts'
 
-export default function inputSearchValue(props: {
+export default function InputSearchValue(props: {
   type: string
   creators: any
   creatorsSelecteds: any
@@ -12,8 +12,7 @@ export default function inputSearchValue(props: {
   setTags: any
   handleDialog: any
 }) {
-  const [searchValue, setSearchValue] = React.useState('')
-
+  
   const handleClick = (creator: any) => {
     props.setCreatorsSelecteds((prevSelectedIds: any) => {
       if (prevSelectedIds.includes(creator.id)) {
@@ -25,6 +24,8 @@ export default function inputSearchValue(props: {
       }
     })
   }
+
+  const [searchValue, setSearchValue] = useState('');
 
   const searchedCreators = props.creators?.filter(
     (creatorKey: { username: string }) =>
