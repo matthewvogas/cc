@@ -26,13 +26,13 @@ const links = [
     name: 'portfolio',
   },
   {
-    href: '/dashboard/youraccount',
-    name: 'your account'
+    href: '/dashboard/settings',
+    name: 'your account',
   },
   {
     href: '/dashboard/policies',
-    name: 'policies'
-  }
+    name: 'policies',
+  },
 ]
 
 // Show Arrays
