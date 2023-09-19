@@ -1,13 +1,13 @@
-import NextAuth from 'next-auth/next'
-import type { NextAuthOptions, Profile, TokenSet } from 'next-auth'
+import type { Awaitable, NextAuthOptions, Profile, TokenSet } from 'next-auth'
+import InstagramProvider from './(providers)/instagram.provider'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import TiktokProvider from './(providers)/tiktok.provider'
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
-import InstagramProvider from './(providers)/instagram.provider'
-import TiktokProvider from './(providers)/tiktok.provider'
-import db from '@/lib/db'
+import NextAuth from 'next-auth/next'
 import { compare } from 'bcrypt'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import db from '@/lib/db'
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -106,7 +106,7 @@ export const authOptions: NextAuthOptions = {
         id: dbUser.id,
         name: dbUser.name,
         email: dbUser.email,
-        role: dbUser.role,
+        role: dbUser.role || 'AGENCY',
         picture: dbUser.image,
       }
     },
@@ -151,3 +151,15 @@ export const authOptions: NextAuthOptions = {
 
 const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
+/* jwt: (
+  // TODO: remove in `@auth/core` in favor of `trigger: "signUp"`
+  params: {
+    token: JWT
+    user: User | AdapterUser
+    account: A | null
+    profile?: P
+    trigger?: "signIn" | "signUp" | "update"
+    isNewUser?: boolean
+    session?: any
+  }
+) => Awaitable<JWT> */

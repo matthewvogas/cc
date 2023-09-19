@@ -59,17 +59,16 @@ export default function Settings() {
       label: 'Portfolio',
       content: (
         <div>
-          {/* Contenido de la pestaña "Portfolio" */}
-          Contenido de la pestaña "Portfolio".
+          {`Contenido de la pestaña "Portfolio"`}
+          
         </div>
       ),
     },
     {
       label: 'Connections',
       content: (
-        <div>
-          {/* Contenido de la pestaña "Connections" */}
-          Contenido de la pestaña "Connections".
+        <div>          
+          {`Contenido de la pestaña "Portfolio"`}
         </div>
       ),
     },
@@ -77,8 +76,7 @@ export default function Settings() {
       label: 'Subscription',
       content: (
         <div>
-          {/* Contenido de la pestaña "Subscription" */}
-          Contenido de la pestaña "Subscription".
+          {`Contenido de la pestaña "Subscription"`}
         </div>
       ),
     },
