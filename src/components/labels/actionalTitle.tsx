@@ -71,16 +71,18 @@ export default function ActionalTitle({
             <SharePortafolio userPositionId={userPositionId} stats={stats} />
           ) : null}
 
-          <Link
-            href={`/dashboard/${frome}`}
-            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
-            {frome == 'stats' ? 'go to reports' : ''}
-            {frome == 'campaigns' ? 'view all' : ''}
-            {frome == 'campaignsInfluencer' ? 'view all' : ''}
-            {frome === 'statsCreators' ? 'view portafolio' : ''}
-            {frome === 'agencies' ? 'view all' : ''}
-            {frome === 'clients' ? 'view all' : ''}
-          </Link>
+          {frome == 'stats' ? null : (
+            <Link
+              href={`/dashboard/${frome}`}
+              className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+              {frome == 'stats' ? 'go to reports' : ''}
+              {frome == 'campaigns' ? 'view all' : ''}
+              {frome == 'campaignsInfluencer' ? 'view all' : ''}
+              {frome === 'statsCreators' ? 'view portafolio' : ''}
+              {frome === 'agencies' ? 'view all' : ''}
+              {frome === 'clients' ? 'view all' : ''}
+            </Link>
+          )}
         </div>
       </div>
     </div>
