@@ -114,7 +114,7 @@ export default function CampaignsDashBoard({
         setSort={setSort}
       />
 
-      <div className='flex justify-between items-end px-12 '>
+      <div className='flex justify-between items-center px-12 '>
         <div className='flex gap-6'>
           <div className=''>
             <div>

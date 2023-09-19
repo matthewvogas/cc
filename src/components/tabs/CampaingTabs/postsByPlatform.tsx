@@ -127,7 +127,7 @@ export default function PostsByPlatform({
                       setFilterPosts={setFilterPosts}
                     />
 
-                    {/* <button
+                    <button
                       type='button'
                       onClick={() => {
                         activeButton != 'topPerforming'
@@ -140,7 +140,7 @@ export default function PostsByPlatform({
                           : 'bg-[#EBF6F6]'
                       } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                       top performing 🥥
-                    </button> */}
+                    </button>
                   </div>
 
                   {shared != true && (

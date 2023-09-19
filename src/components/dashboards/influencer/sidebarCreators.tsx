@@ -30,7 +30,7 @@ const links = [
     name: 'your account',
   },
   {
-    href: '/dashboard/policies',
+    href: '/privacy',
     name: 'policies',
   },
 ]

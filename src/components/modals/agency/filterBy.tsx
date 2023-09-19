@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import { inter } from '@/app/fonts'
 
-export default function FilterBy(props: {
+export default function inputSearchValue(props: {
   type: string
   creators: any
   creatorsSelecteds: any
   setCreatorsSelecteds: any
-  tags: string[]
-  setTags: React.Dispatch<React.SetStateAction<string[]>>
+  tags: any
+  setTags: any
   handleDialog: any
 }) {
   const [searchValue, setSearchValue] = React.useState('')
@@ -26,7 +26,7 @@ export default function FilterBy(props: {
     })
   }
 
-  const searchedCreators = props.creators.filter(
+  const searchedCreators = props.creators?.filter(
     (creatorKey: { username: string }) =>
       creatorKey.username.toLowerCase().includes(searchValue.toLowerCase()),
   )
@@ -97,6 +97,23 @@ export default function FilterBy(props: {
                 }}
                 className='rounded-full bg-green-100 px-6 py-2 '>
                 filter hashtags
+              </button>
+            </div>
+          </div>
+        )
+      case 'campaign':
+        return (
+          <div>
+            <TagsInput tags={props.tags} setTags={props.setTags} />
+            <hr className='my-8 h-px border-0 bg-gray-200'></hr>
+
+            <div className='text-right'>
+              <button
+                onClick={() => {
+                  props.handleDialog(false)
+                }}
+                className='rounded-full bg-green-100 px-6 py-2 '>
+                filter campaigns
               </button>
             </div>
           </div>

@@ -30,6 +30,30 @@ const campaigns = (title: string, clientsFallback: any) => {
   )
 }
 
+const agencies = (title: string, clientsFallback: any) => {
+  return (
+    <div
+      style={{
+        background:
+          'linear-gradient(180deg, rgba(226, 222, 212, 0.75) 0%, rgba(226, 222, 212, 0.00) 65%)',
+      }}
+      className=' w-full pt-20 relative z-30 '>
+      <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
+        <div className='w-full'>
+          <div>
+            <div>
+              <h3
+                className={`pb-8 align-middle text-2xl font-semibold text-gray-800 `}>
+                {title}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const singleCampaign = (
   title: string,
   client: any,
@@ -193,6 +217,8 @@ export default function TitlePage(props: {
         return singleCampaign(title, client, active, setActive)
       case 'campaigns':
         return campaigns(title, clientsFallback)
+      case 'agencies':
+        return agencies(title, clientsFallback)
       default:
         break
     }
