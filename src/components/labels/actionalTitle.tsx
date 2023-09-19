@@ -23,13 +23,13 @@ export default function ActionalTitle({
   clients,
 }: Props) {
   return (
-    <div className='w-full mt-9 pt-8 mb-8 flex content-center justify-between align-middle px-12'>
+    <div className='w-full pt-8 mb-8 flex content-center justify-between align-middle px-12'>
       <h3
-        className={`self-center text-[18px] leading-[1.75rem] font-semibold mt-10 text-gray-800`}>
+        className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
         {title}
       </h3>
       <div className={`flex items-center justify-between`}>
-        <div className={`flex`}>
+        <div className={`flex items-baseline`}>
           {frome == 'stats' ? (
             <ShareStat userPositionId={userPositionId} stats={stats} />
           ) : null}
@@ -79,6 +79,7 @@ export default function ActionalTitle({
             {frome == 'campaignsInfluencer' ? 'view all' : ''}
             {frome === 'statsCreators' ? 'view portafolio' : ''}
             {frome === 'agencies' ? 'view all' : ''}
+            {frome === 'clients' ? 'view all' : ''}
           </Link>
         </div>
       </div>

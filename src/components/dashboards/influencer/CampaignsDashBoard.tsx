@@ -17,6 +17,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+import angleDown from 'public/assets/register/angle-down.svg'
+import FilterCampaignsContainer from '@/components/filters/filterCampaignsContainer'
+
 export default function CampaignsDashBoardInfluencer({
   clientsFallback,
   campaignsFallback,
@@ -63,6 +66,8 @@ export default function CampaignsDashBoardInfluencer({
   }
 
   const [sort, setSort] = React.useState('')
+
+  const [show, setShow] = React.useState('hidden')
 
   const [clientFilterSelected, setClientFilterSelected] = useState<number[]>([])
   const [clientNameFilterSelected, setClientNametFilterSelected] = useState('')
@@ -115,75 +120,77 @@ export default function CampaignsDashBoardInfluencer({
         setSort={setSort}
       />
 
-      <div className='flex justify-between items-end px-12 '>
-        <div className='flex gap-6'>
-          <div className=''>
-            <div>
-              <div className='dropdown'>
-                {/* <Search
-                  inputSearchValue={inputSearchValue}
-                  setInputSearchValue={setInputSearchValue}
-                /> */}
+      <div className='flex justify-between items-center px-12 w-full'>
+        <div className='w-full'>
+          <div className='flex gap-4'>
+            
+            <button
+              type='button'
+              onClick={() => {
+                show == 'hidden' ? setShow('block') : setShow('hidden')
+              }}
+              className={` flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap`}>
+              filters
+              <Image
+                src={angleDown}
+                className={`ml-8 w-[22px] h-[22px]`}
+                alt=''
+              />
+            </button>
 
-                {/* filters */}
-                <div
-                  tabIndex={0}
-                  className={`dropdown-content rounded-box mt-2 w-auto border-2 border-gray-100 bg-white ${ptMono.className}`}>
-                  <div className='p-6'>
-                    <div className='gap-2 flex flex-col'>
-                      <span className='text-xs italic'>last clients</span>
-                      {filteredClients
-                        .slice(0, 3)
-                        .map((client: Client, index: any) => (
-                          <button
-                            onClick={() => {
-                              setClientFilterSelected([client.id])
-                              setClientNametFilterSelected(String(client.name))
-                            }}
-                            className='w-full py-2 px-4 border border-gray-100 rounded-lg hover:bg-gray-100'
-                            value={client.id}
-                            key={index}>
-                            {client.name}
-                          </button>
-                        ))}
-                    </div>
-                  </div>
-                </div>
+            <button
+              type='button'
+              onClick={() => {}}
+              className={`bg-[#D9F0F1] text-xm whitespace-nowrap text-base md:text-base items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+              top performing 🥥
+            </button>
 
-              </div>
-            </div>
-            <div className='mt-4'>
-              {clientFilterSelected.length != 0 ? (
-                <div
-                  className={`w-fit border flex flex-col rounded-full bg-white px-8 py-2`}>
-                  <div className='flex gap-2'>
-                    <label className={`${ptMono.className} mr-4`}>
-                      {clientNameFilterSelected}
-                    </label>
-                    <button onClick={() => setClientFilterSelected([])}>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='h-4 w-4'>
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          d='M6 18L18 6M6 6l12 12'
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-            </div>
+            <button
+              type='button'
+              onClick={() => {}}
+              className={`px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium whitespace-nowrap bg-beigeFirst`}>
+              latest
+            </button>
+
           </div>
 
-          {/* by tag */}
+          <FilterCampaignsContainer
+            show={show}
+            campaignsFallback={campaignsFallback}
+            clientsFallback={clientsFallback}
+          />
+        </div>
+        <div className='mt-4'>
+          {clientFilterSelected.length != 0 ? (
+            <div
+              className={`w-fit border flex flex-col rounded-full bg-white px-8 py-2`}>
+              <div className='flex gap-2'>
+                <label className={`${ptMono.className} mr-4`}>
+                  {clientNameFilterSelected}
+                </label>
+                <button onClick={() => setClientFilterSelected([])}>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-4 w-4'>
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M6 18L18 6M6 6l12 12'
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          ) : null}
+        </div>
 
-          {/* <div>
+        {/* by tag */}
+
+        {/* <div>
                   <p className='font-medium text-base mb-2'>by tag/category</p>
                   <div className='dropdown'>
                     <label
@@ -205,71 +212,70 @@ export default function CampaignsDashBoardInfluencer({
                     </div>
                   </div>
                 </div> */}
-        </div>
       </div>
 
       <div className='flex flex-col bg-white pt-12'>
         <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
-        {filteredCampaigns.length > 0 ? (
-          filteredCampaigns.map((card: any, index: any) => {
-            return (
-              <Link
-                href={`/dashboard/campaigns/${card.id}`}
-                key={index}
-                className={`bg-beigeTransparent border min-w-[250px]`}>
-                <Image
-                  className={`object-cover`}
-                  src={imageCover}
-                  alt={card.name}
-                  style={{ width: '250px', height: '310px' }}
-                />
-                <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
-                  <div className='max-w-[200px] overflow-clip'>
-                    <h5 className='truncate font-medium text-base'>
-                      {card.name}
-                    </h5>
-                    <div className='flex justify-center items-center flex-row'>
-                      <div className='flex mt-10 mb-10 justify-center mask mask-circle mr-8 h-50 w-50'>
-                        <Image
-                          priority
-                          className={`h-12 w-12`}
-                          width={150}
-                          src={img}
-                          alt='background'
-                        />
-                      </div>
-                      <div className='-ml-5'>
-                        <span>with Rosalind</span>
+          {filteredCampaigns.length > 0 ? (
+            filteredCampaigns.map((card: any, index: any) => {
+              return (
+                <Link
+                  href={`/dashboard/campaigns/${card.id}`}
+                  key={index}
+                  className={`bg-beigeTransparent border min-w-[250px]`}>
+                  <Image
+                    className={`object-cover`}
+                    src={imageCover}
+                    alt={card.name}
+                    style={{ width: '250px', height: '310px' }}
+                  />
+                  <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
+                    <div className='max-w-[200px] overflow-clip'>
+                      <h5 className='truncate font-medium text-base'>
+                        {card.name}
+                      </h5>
+                      <div className='flex justify-center items-center flex-row'>
+                        <div className='flex mt-10 mb-10 justify-center mask mask-circle mr-8 h-50 w-50'>
+                          <Image
+                            priority
+                            className={`h-12 w-12`}
+                            width={150}
+                            src={img}
+                            alt='background'
+                          />
+                        </div>
+                        <div className='-ml-5'>
+                          <span>with Rosalind</span>
+                        </div>
                       </div>
                     </div>
+                    <div className='max-w-[50px]'></div>
                   </div>
-                  <div className='max-w-[50px]'></div>
-                </div>
-                <hr className='h-px bg-gray-200'></hr>
-                <div className={`flex px-6 py-[14px] ${ptMono.className}`}>
-                  <div className='flex justify-center items-center space-x-20'>
-                    <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
-                      {card?._count?.posts || 0} {`posts`}
-                    </h4>
+                  <hr className='h-px bg-gray-200'></hr>
+                  <div className={`flex px-6 py-[14px] ${ptMono.className}`}>
+                    <div className='flex justify-center items-center space-x-20'>
+                      <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                        {card?._count?.posts || 0} {`posts`}
+                      </h4>
 
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth='1.5'
-                      stroke='currentColor'
-                      className='h-5 w-5'>
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
-                      />
-                    </svg>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth='1.5'
+                        stroke='currentColor'
+                        className='h-5 w-5'>
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
+                        />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            )
-          })
+                </Link>
+              )
+            })
           ) : (
             <div
               className={`bg-transparent border min-w-[250px] opacity-40 ${ptMono.className}`}>

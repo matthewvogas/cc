@@ -30,7 +30,7 @@ export default function AgenciesCard({
         userPositionId={0}
         stats={undefined}
       />{' '}
-      <div className='flex overflow-x-auto gap-4 md:px-12'>
+      <div className='flex overflow-x-auto gap-4 md:px-12 mb-12'>
         {clients.length > 0 ? (
           clients.map((card: Client, index: any) => (
             <Link

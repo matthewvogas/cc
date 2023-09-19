@@ -98,22 +98,22 @@ export default async function Home() {
         </div>
 
         <div>
-        <div className='w-full mt-9 pt-8 mb-8 flex content-center justify-between align-middle px-12'>
+        <div className='w-full mt-9 pt-8 mb-8 flex justify-between items-center px-12'>
       <h3
         className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
         a look at your top performing posts
       </h3>
       <div className={`flex items-center justify-between`}>
-        <div className={`flex`}>  
+        <div className={`flex items-baseline`}>  
 
           <Link
             href={`/dashboard/g}`}
-            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+            className={`items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
           view portafolio
           </Link>
           <Link
             href={`/dashboard/g}`}
-            className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+            className={`items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
               share this view
           </Link>
 

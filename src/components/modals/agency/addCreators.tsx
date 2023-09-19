@@ -53,9 +53,7 @@ export default function AddCreators({
             className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
             <Dialog.Title className=' text-lg font-medium mb-8 text-center mt-12'>
               add creators
-              <p className='text-sm  font-normal px-4 py-2 border border-rose-200 bg-rose-50 mt-4'>
-                this feature is under construction
-              </p>
+             
             </Dialog.Title>
             <Tab.Group>
               <Tab.List
