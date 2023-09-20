@@ -88,14 +88,14 @@ export default function AgenciesDashBoard({ clientsFallback }: any) {
               <Link
                 href={`/dashboard/clients/${client.id || 1}`}
                 key={index}
-                className='h-80 min-w-[320px] w-80 border-gray-100 relative'>
+                className='h-80 min-w-[320px] w-80 border-gray-100 relative '>
                 <Image
                   priority
-                  className={`h-64 object-cover`}
+                  className={` object-cover`}
                   src={client.image || imageCover}
                   alt={client.name}
                 />
-                <div className='h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
+                <div className='h-auto border border-gray-200 px-2 py-4 pl-4'>
                   <p className={`text-lg font-medium text-gray-800`}>
                     {client.name}
                   </p>

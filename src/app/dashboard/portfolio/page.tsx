@@ -3,6 +3,7 @@ import { CampaignsService } from '@/services/CampaignsService'
 import { ClientsService } from '@/services/ClientsServices'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { getServerSession } from 'next-auth'
+import PortfolioTabs from './PortfolioTabs'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,17 +15,5 @@ export default async function CampaignPage() {
   const clients = await ClientsService.findMany(session!.user.id)
   //const creators = await CreatorsService.findMany(session!.user.id)
 
-  return (
-    <div>
-      { session!.user.role == 'CREATOR' ?
-      (
-        <p>portfolio page</p>
-      )
-      :
-      (
-        null
-      )
-      }
-    </div>
-  )
+  return <div>{session!.user.role == 'CREATOR' ? <PortfolioTabs /> : null}</div>
 }
