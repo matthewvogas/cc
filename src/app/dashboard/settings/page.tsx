@@ -2,6 +2,64 @@
 import TwoTabsComponent from '@/components/settings/Twotabs'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
+import Connections from '@/components/settings/Connections'
+
+export default function Settings() {
+  const tabs: TabItem[] = [
+    {
+      label: 'My social data',
+      content: <div>{`My social Data`}</div>,
+    },
+    {
+      label: 'Account Settings',
+      content: (
+        <div>
+          <TwoTabsComponent />
+        </div>
+      ),
+    },
+    {
+      label: 'Portfolio',
+      content: <div>{`Coming soon...`}</div>,
+    },
+    {
+      label: 'Connections',
+      content: (
+        <div>
+          <Connections></Connections>
+        </div>
+      ),
+    },
+    {
+      label: 'Subscription',
+      content: <div>{`Contenido de la pestaña "Subscription"`}</div>,
+    },
+  ]
+
+  return (
+    <div>
+      <div
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(226, 222, 212, 0.75) 0%, rgba(226, 222, 212, 0.00) 65%)',
+        }}
+        className='w-full pt-20 relative z-30'>
+        <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
+          <div className='w-full'>
+            <div>
+              <div>
+                <h3 className='pb-8 align-middle text-2xl font-semibold text-gray-800'>
+                  Your account
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Tabs tabs={tabs} />
+      </div>
+    </div>
+  )
+}
 
 type TabItem = {
   label: string
@@ -29,7 +87,7 @@ function Tabs({ tabs }: TabsProps) {
               className={({ selected }) =>
                 `relative p-2${
                   selected
-                    ? 'text-brown border-b-2 border-gray-700'
+                    ? 'text-brown border-b-2 border-gray-700 outline-none'
                     : 'text-brown'
                 } inline-block`
               }
@@ -41,66 +99,6 @@ function Tabs({ tabs }: TabsProps) {
       </Tab.Group>
       <div className='divider -mt-3' />
       <div className='p-4'>{tabs[activeTab].content}</div>
-    </div>
-  )
-}
-
-export default function Settings() {
-  const tabs: TabItem[] = [
-    {
-      label: 'Account Settings',
-      content: (
-        <div>
-          <TwoTabsComponent />
-        </div>
-      ),
-    },
-    {
-      label: 'Portfolio',
-      content: (
-        <div>
-          {`Contenido de la pestaña "Portfolio"`}
-          
-        </div>
-      ),
-    },
-    {
-      label: 'Connections',
-      content: (
-        <div>          
-          {`Contenido de la pestaña "Portfolio"`}
-        </div>
-      ),
-    },
-    {
-      label: 'Subscription',
-      content: (
-        <div>
-          {`Contenido de la pestaña "Subscription"`}
-        </div>
-      ),
-    },
-  ]
-
-  return (
-    <div
-      style={{
-        background:
-          'linear-gradient(180deg, rgba(226, 222, 212, 0.75) 0%, rgba(226, 222, 212, 0.00) 65%)',
-      }}
-      className='w-full pt-20 relative z-30'>
-      <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
-        <div className='w-full'>
-          <div>
-            <div>
-              <h3 className='pb-8 align-middle text-2xl font-semibold text-gray-800'>
-                Your account
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-      <Tabs tabs={tabs} />
     </div>
   )
 }
