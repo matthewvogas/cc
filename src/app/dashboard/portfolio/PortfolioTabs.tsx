@@ -89,7 +89,7 @@ function Tabs({ tabs }: TabsProps) {
           ))}
         </Tab.List>
       </Tab.Group>
-      <div className='p-4 px-12'>{tabs[activeTab].content}</div>
+      <div className=''>{tabs[activeTab].content}</div>
     </div>
   )
 }

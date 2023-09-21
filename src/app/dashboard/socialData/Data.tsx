@@ -22,7 +22,6 @@ interface TabsProps {
 }
 
 function Tabs({ tabs }: TabsProps) {
-  
   const [activeTab, setActiveTab] = useState<number>(0)
 
   const handleTabClick = (index: number) => {

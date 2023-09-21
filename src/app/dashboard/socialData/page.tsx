@@ -7,7 +7,7 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import TitlePage from '@/components/labels/titlePage'
 import { PostsService } from '@/services/PostsSerivce'
 import { getServerSession } from 'next-auth'
-import SocialData from './Lol'
+import SocialData from './Data'
 import { Session } from 'inspector'
 import { parse } from 'path'
 
