@@ -40,9 +40,9 @@ export default async function Home() {
         { title: campaigns.length, description: 'campaigns' },
         { title: allPosts.length, description: 'posts' },
         // { title: engagementRate + '%', description: 'engagement rate' },
-        // { title: totalViews, description: 'views' },
-        // { title: totalReach, description: 'reach' },
-        // { title: totalComments, description: 'comments' },
+        { title: totalViews, description: 'views' },
+        { title: totalReach, description: 'reach' },
+        { title: totalComments, description: 'comments' },
         { title: creators.length, description: 'creators' },
       ],
     },
@@ -98,38 +98,33 @@ export default async function Home() {
         </div>
 
         <div>
-        <div className='w-full mt-9 pt-8 mb-8 flex justify-between items-center px-12'>
-      <h3
-        className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
-        a look at your top performing posts
-      </h3>
-      <div className={`flex items-center justify-between`}>
-        <div className={`flex items-baseline`}>  
-
-          <Link
-            href={`/dashboard/g}`}
-            className={`items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
-          view portafolio
-          </Link>
-          <Link
-            href={`/dashboard/g}`}
-            className={`items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
-              share this view
-          </Link>
-
-        </div>
-      </div>
-    </div>
-        </div>
-          <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-            {
-              campaigns[0]?.posts?.map((post: any, index: any) => (
-                <PostCardTest key={index} post={post} />
-              )) 
-            }
+          <div className='w-full mt-9 pt-8 mb-8 flex justify-between items-center px-12'>
+            <h3
+              className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
+              a look at your top performing posts
+            </h3>
+            <div className={`flex items-center justify-between`}>
+              <div className={`flex items-baseline`}>
+                <Link
+                  href={`/dashboard/g}`}
+                  className={`items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+                  view portafolio
+                </Link>
+                <Link
+                  href={`/dashboard/g}`}
+                  className={`items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>
+                  share this view
+                </Link>
+              </div>
+            </div>
           </div>
-        <div>
         </div>
+        <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+          {campaigns[0]?.posts?.map((post: any, index: any) => (
+            <PostCardTest key={index} post={post} />
+          ))}
+        </div>
+        <div></div>
       </div>
     )
   } else if (session?.user.role === 'TESTER') {

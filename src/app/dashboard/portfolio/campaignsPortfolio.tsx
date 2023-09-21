@@ -1,8 +1,26 @@
-import React from 'react'
+import Stats from '@/components/stats/agency/stats'
+import React, { useMemo, useState } from 'react'
+import CardPortfolio from './cardPortfolio'
 import Image from 'next/image'
-import img from 'public/assets/register/campaignCover.jpg'
 
 export default function CampaignsPortfolio() {
+  const stats = [
+    {
+      section: 'private',
+      data: [
+        { title: 'clients.length', description: 'clients' },
+        { title: 'clients.length', description: 'clients' },
+        { title: 'clients.length', description: 'clients' },
+        { title: 'clients.length', description: 'clients' },
+        { title: 'clients.length', description: 'clients' },
+      ],
+    },
+    {
+      section: 'public',
+      data: [{ title: 'creators.length', description: 'creators' }],
+    },
+  ]
+
   return (
     <div>
       <section>
@@ -11,17 +29,26 @@ export default function CampaignsPortfolio() {
           <button className='border px-10 py-2 rounded-full'>edit</button>
         </div>
 
-        <div className='flex flex-col mt-3'>
-          <Image
-            src={img}
-            alt='Descripción de la imagen'
-            width={300}
-            height={200}
+        <div className='flex flex-row gap-10 justify-evenly mt-10'>
+          <CardPortfolio />
+          <CardPortfolio />
+          <CardPortfolio />
+          <CardPortfolio />
+        </div>
+      </section>
+
+      <section className='mt-20 bg-sidebarBackground'>
+        <div className='p-10 flex justify-end'>
+          <button className='border px-10 py-2 rounded-full '>edit</button>
+        </div>
+        <div>
+          <Stats
+            campaignsFallback={[]}
+            clientsFallback={undefined}
+            stats={stats}
+            frome={''}
+            userPositionId={0}
           />
-          <div className='bg-sidebarBackground'>
-            <img src='' alt='' />
-            <span className='font-semibold '>with Rosalind</span>
-          </div>
         </div>
       </section>
     </div>
