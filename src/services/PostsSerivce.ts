@@ -93,4 +93,19 @@ export class PostsService {
 
     return engagementRate * (await PostsService.findAllPosts()).length
   }
+
+  static async findByUser(userId: string, limit?: number, offset?: number) {
+    const posts = await db.post.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        creator: true,
+      },
+    })
+
+    return posts as Posts[]
+  }
+
 }
+

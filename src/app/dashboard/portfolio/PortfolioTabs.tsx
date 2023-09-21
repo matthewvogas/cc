@@ -41,7 +41,7 @@ export default function PortfolioTabs() {
             <div>
               <div className=''>
                 <h1 className='pb-8 align-middle text-2xl font-semibold text-white'>
-                  Your name's Portfolio
+                  {`Your name's Portfolio`}
                 </h1>
               </div>
             </div>
