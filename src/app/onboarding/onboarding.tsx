@@ -9,6 +9,8 @@ import signup5 from 'public/assets/register/flowSignUp/signup5.jpg'
 import { Pagination } from 'swiper/modules'
 import { ptMono } from '@/app/fonts'
 import { RegisterNextButton } from './registerNextButton'
+import agency from 'public/assets/register/likeagency.jpg'
+import creator from 'public/assets/register/likecreator.jpg'
 
 import { getServerSession } from 'next-auth'
 export const dynamic = 'force-dynamic'
@@ -70,13 +72,67 @@ export default function Onboarding({ session }: Props) {
               allowTouchMove={false}
               className='h-full w-full'>
               <SwiperSlide>
+                <div className=' flex flex-col items-start justify-start gap-4 bg-[#F9F8F6] h-full px-10 py-20 text-black'>
+                  <h1
+                    className={`${ptMono.className} text-2xl text-left opacity-80`}>
+                    welcome {user}!, how are you plannig to use Codecoco 🥥
+                  </h1>
+                  <p className='mb-6 text-sm font-normal opacity-70 text-center'>
+                    {`It is very important since the experience changes depending on your decision.`}
+                  </p>
+
+                  <div className={` flex  h-full gap-4 ${ptMono.className}`}>
+                    <div className='border-2 hover:bg-beigeSelected w-full rounded-xl hover:border-2  hover:border-beigeBorder'>
+                      <Image
+                        className={`w-full object-cover rounded-t-xl`}
+                        style={{ width: '', height: '120px' }}
+                        src={agency}
+                        alt={''}
+                      />
+
+                      <div className='px-8 py-8'>
+                        <p className='text-lg font-medium'>Like Agency</p>
+                        <p className='text-sm font-light opacity-75'>
+                          Create Campaigns, collect data from creators and
+                          manage clients
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className='border-2 hover:bg-beigeSelected w-full rounded-xl hover:border-2  hover:border-beigeBorder'>
+                      <Image
+                        className={`w-full object-cover rounded-t-xl`}
+                        style={{ width: '', height: '120px' }}
+                        src={creator}
+                        alt={''}
+                      />
+
+                      <div className='px-8 py-8'>
+                        <p className='text-lg font-medium'>Like Creator</p>
+                        <p className='text-sm font-light opacity-75'>
+                          Partner with agencies and view the campaigns you are
+                          in
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                <RegisterNextButton
+                  onClickCapture={() => {
+                    handlePositionSlide()
+                  }}
+                  className={`mt-auto self-end  rounded-lg bg-[#E2DED4] px-8 py-2  ${ptMono.className}`}>
+                  next
+                </RegisterNextButton>
+                </div>
+              </SwiperSlide>
+
+              <SwiperSlide>
                 <div className=' flex flex-col content-start items-start justify-start gap-4 bg-[#F9F8F6] px-10 py-20 text-black'>
                   <h1 className={`${ptMono.className} text-2xl opacity-80`}>
-                    welcome {user}!, 🥥
+                    {user}, 🥥
                   </h1>
                   <p className='mb-6 text-sm font-medium'>
-                    {`Let’s get your account set up right. What best describes your
-              work?`}
+                    {`Let’s get your account set up right. What best describes your work?`}
                   </p>
 
                   <div
