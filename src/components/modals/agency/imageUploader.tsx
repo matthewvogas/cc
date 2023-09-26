@@ -16,10 +16,17 @@ const ImageUploader = ({ campaignFallback, setIsOpen }: Props) => {
   const [isHovered, setIsHovered] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [fetchError, setFetchError] = useState<string | null>(null)
+  const MAX_IMAGE_COUNT = 50
 
   const handleImageChange = (files: FileList | null) => {
     if (files) {
-      setSelectedImages(Array.from(files))
+      const newImages = Array.from(files)
+      if (newImages.length + selectedImages.length > MAX_IMAGE_COUNT) {
+        setFetchError(`You can upload a maximum of ${MAX_IMAGE_COUNT} images.`)
+      } else {
+        setSelectedImages([...selectedImages, ...newImages])
+        setFetchError(null)
+      }
     }
   }
 
@@ -32,19 +39,14 @@ const ImageUploader = ({ campaignFallback, setIsOpen }: Props) => {
       return
     }
 
-    // if(selectedImages.some(image => image.size > 5000000)){
-    //   setFetchError('Please select images smaller than 1MB')
-    //   return
-    // }
-
     const form = e.target as HTMLFormElement
     const formData = new FormData()
     selectedImages.forEach(image => {
       formData.append('images', image)
     })
 
-    if(formData.getAll('images').length === 0){
-      setFetchError('Please select at least one image XDDD')
+    if (formData.getAll('images').length === 0) {
+      setFetchError('Please select at least one image')
       setIsUploading(false)
       return
     }
