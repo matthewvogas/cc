@@ -1,15 +1,13 @@
 'use client'
 import TwoTabsComponent from '@/components/settings/Twotabs'
+import Connections from '@/components/settings/Connections'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
-import Connections from '@/components/settings/Connections'
+import CreatorsPortfolio from '@/components/settings/CreatorsPortfolio'
+import Subscription from '@/components/settings/Subscription'
 
 export default function Settings() {
   const tabs: TabItem[] = [
-    {
-      label: 'My social data',
-      content: <div>{`My social Data`}</div>,
-    },
     {
       label: 'Account Settings',
       content: (
@@ -20,27 +18,33 @@ export default function Settings() {
     },
     {
       label: 'Portfolio',
-      content: <div>{`Coming soon...`}</div>,
+      content: (
+        <div>
+          <CreatorsPortfolio />
+        </div>
+      ),
     },
     {
       label: 'Connections',
       content: (
         <div>
-          <Connections/>
+          <Connections />
         </div>
       ),
     },
     {
       label: 'Subscription',
-      content: <div>{`Contenido de la pestaña "Subscription"`}</div>,
+      content: (
+        <div>
+          <Subscription />
+        </div>
+      ),
     },
   ]
 
   return (
     <div>
-      <div
-        
-        className='w-full pt-20 relative z-30'>
+      <div className='w-full pt-20 relative z-30'>
         <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
           <div className='w-full'>
             <div>
@@ -83,9 +87,7 @@ function Tabs({ tabs }: TabsProps) {
               key={index}
               className={({ selected }) =>
                 `relative p-2${
-                  selected
-                    ? 'text-brown  outline-none'
-                    : 'text-brown'
+                  selected ? 'text-brown  outline-none' : 'text-brown'
                 } inline-block`
               }
               onClick={() => handleTabClick(index)}>
