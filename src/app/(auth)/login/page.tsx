@@ -7,7 +7,7 @@ import logo from 'public/assets/register/LogoSVG.svg'
 import { Sen } from 'next/font/google'
 import Link from 'next/link'
 import { Tab } from '@headlessui/react'
-import { LoginAgency } from './loginAgency'
+import { Login } from './login'
 import LoginCreator from './loginCreator'
 
 function classNames(...classes: any[]) {
@@ -32,40 +32,7 @@ export default function LoginPage() {
         </div>
 
         <div className='w-full max-w-md px-2 sm:px-0'>
-          <Tab.Group>
-            <Tab.List className='flex space-x-1 rounded-full bg-pink-100 bg-opacity-10 p-1'>
-              <Tab
-                className={({ selected }) =>
-                  classNames(
-                    'w-full rounded-full py-2.5  bg-opacity-25 placeholder-white text-white',
-                    selected
-                      ? 'bg-white shadow'
-                      : 'text-red-100  hover:text-white',
-                  )
-                }>
-                Agency
-              </Tab>
-              <Tab
-                className={({ selected }) =>
-                  classNames(
-                    'w-full rounded-full py-2.5  bg-opacity-25 placeholder-white text-white',
-                    selected
-                      ? 'bg-white shadow'
-                      : 'text-red-100  hover:text-white',
-                  )
-                }>
-                Creator
-              </Tab>
-            </Tab.List>
-            <Tab.Panels className='py-16'>
-              <Tab.Panel>
-                <LoginAgency />
-              </Tab.Panel>
-              <Tab.Panel>
-                <LoginCreator />
-              </Tab.Panel>
-            </Tab.Panels>
-          </Tab.Group>
+          <Login />
         </div>
       </div>
     </section>

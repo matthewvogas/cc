@@ -1,48 +1,38 @@
 'use client'
 
+import { useRouter, useSearchParams } from 'next/navigation'
 import Spinner from '@/components/loading/spinner'
 import { signIn } from 'next-auth/react'
-import Image from 'next/image'
-import InstagramIcon from 'public/assets/register/InstagramRegister.svg'
-import TikTokIcon from 'public/assets/register/TikTokRegister.svg'
-import { useRouter, useSearchParams } from 'next/navigation'
-import React from 'react'
 import { ptMono } from '@/app/fonts'
-import Instagram from 'next-auth/providers/instagram'
+import React from 'react'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import LoginCreator from './loginCreator'
 
-export const LoginAgency = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    getValues,
-  } = useForm()
-  // const searchParams = useSearchParams()
-  // const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
-  // const callbackError = searchParams.get('error')
-  //   ? 'Invalid email or password.'
-  //   : null
-  // const [email, setEmail] = React.useState('')
-  // const [password, setPassword] = React.useState('')
-  // const [loading, setLoading] = React.useState(false)
+export const Login = () => {
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+  const callbackError = searchParams.get('error')
+    ? 'Invalid email or password.'
+    : null
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
 
-  // const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   setLoading(true)
-  //   await signIn('credentials', {
-  //     email,
-  //     password,
-  //     callbackUrl,
-  //   })
-  //   setLoading(false)
-  // }
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
+    await signIn('credentials', {
+      email,
+      password,
+      callbackUrl,
+    })
+    setLoading(false)
+  }
 
   return (
     <div
-      className={`flex w-full flex-col items-center justify-center  gap-4 ${ptMono.className}`}>
-      {/* <form
+      className={`flex w-full flex-col items-center justify-center gap-2 ${ptMono.className}`}>
+      <form
         onSubmit={handleLogin}
         className={`flex w-full flex-col items-center  justify-center ${ptMono.className}`}>
         <label htmlFor='email' />
@@ -83,7 +73,7 @@ export const LoginAgency = () => {
             <span>{callbackError}</span>
           </div>
         )}
-        <div className='flex w-full flex-col items-center justify-center  gap-3'>
+        <div className='flex w-full flex-col items-center justify-center gap-3'>
           <button
             disabled={loading}
             type='submit'
@@ -95,7 +85,14 @@ export const LoginAgency = () => {
             )}
           </button>
         </div>
-      </form> */}
+
+        {/* <div className='divider'> or </div>
+
+        <div className='w-full max-w-md px-2 sm:px-0 mb-6'>
+          <LoginCreator />
+        </div> */}
+      </form>
+
       {/* <div className='flex w-full gap-5 flex-col'>
         <button
           onClick={async () => await signIn('instagram')}
@@ -124,7 +121,7 @@ export const LoginAgency = () => {
       </div> */}
       <hr className='my-7 h-px w-full rounded-r-full bg-white opacity-50' />
 
-      <div className='flex w-full justify-between px-4'>
+      <div className='flex w-full justify-center px-4'>
         <Link href='/signup' className='text-lg '>
           create a new account
         </Link>
