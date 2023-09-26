@@ -90,16 +90,6 @@ export default function ActionalTitle({
             <SharePortafolio userPositionId={userPositionId} stats={stats} />
           ) : null}
 
-          {/* solo para parche */}
-
-          {
-            frome == 'statsCreators' ? null : (
-              <div>
-              <button onClick={handleOAuthRedirect}>Iniciar sesión con TikTok</button>
-            </div>
-            )
-          }
-
           {frome == 'stats' ? null : (
             <Link
               href={`/dashboard/${frome}`}
