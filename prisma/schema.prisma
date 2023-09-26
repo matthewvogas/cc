@@ -118,8 +118,8 @@ model SocialConnection {
   platform SocialPlatform
   token    String?
   refreshToken String?
-  longToken String?
-
+  longToken String?  
+  
   creators  Creator[]
 }
 model VerificationToken {
