@@ -1,9 +1,10 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import CampaignsDashBoard from '@/components/dashboards/agency/CampaignsDashBoard'
 import CampaignsDashBoardInfluencer from '@/components/dashboards/influencer/CampaignsDashBoard'
+import CampaignsDashBoard from '@/components/dashboards/agency/CampaignsDashBoard'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { ConnectionService } from '@/services/ConnectionService'
 import { CampaignsService } from '@/services/CampaignsService'
-import { ClientsService } from '@/services/ClientsServices'
 import { CreatorsService } from '@/services/CreatorsService'
+import { ClientsService } from '@/services/ClientsServices'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { getServerSession } from 'next-auth'
 
@@ -15,15 +16,17 @@ export default async function CampaignPage() {
     session!.user.id,
   )) as CampaignRes
   const clients = await ClientsService.findMany(session!.user.id)
-  //const creators = await CreatorsService.findMany(session!.user.id)
+  
+  const connections = await ConnectionService.findManyByUserId(
+    String(session?.user.id),
+  )
 
   return (
     <div>
       { session!.user.role == 'CREATOR' ?
       (
         <CampaignsDashBoardInfluencer
-          campaignsFallback={campaigns}
-          clientsFallback={clients}
+          campaignsFallback={connections}
           // creatorsFallback={creators}
         />
       )
