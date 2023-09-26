@@ -4,6 +4,7 @@ import AddClients from '../modals/agency/addClients'
 import ShareStat from '../modals/agency/shareStats'
 import Link from 'next/link'
 import SharePortafolio from '../modals/influencer/sharePortafolio'
+import React, { useEffect } from 'react';
 
 type Props = {
   userPositionId: any
@@ -22,6 +23,24 @@ export default function ActionalTitle({
   campaigns,
   clients,
 }: Props) {
+
+
+  const handleOAuthRedirect = async () => {
+    try {
+      const response = await fetch(`/api/oauth/connect/tiktokcb`, {
+        method: 'GET',
+      });
+
+      if (response.status === 302) {
+      } else {
+        console.error('Error al redirigir a la página de autorización');
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud', error);
+    }
+  };
+
+
   return (
     <div className='w-full pt-8 mb-8 flex content-center justify-between align-middle px-12'>
       <h3
@@ -70,6 +89,16 @@ export default function ActionalTitle({
           {frome == 'statsCreators' ? (
             <SharePortafolio userPositionId={userPositionId} stats={stats} />
           ) : null}
+
+          {/* solo para parche */}
+
+          {
+            frome == 'statsCreators' ? null : (
+              <div>
+              <button onClick={handleOAuthRedirect}>Iniciar sesión con TikTok</button>
+            </div>
+            )
+          }
 
           {frome == 'stats' ? null : (
             <Link

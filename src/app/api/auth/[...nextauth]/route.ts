@@ -112,9 +112,6 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ user, account, profile, credentials, email }) {
       if (account?.provider === 'tiktok' || account?.provider === 'instagram') {
-        console.log('EL PROFILE XDD', profile)
-        console.log('EL ACCOUNT XDD', account)
-        console.log('EL USER XDD', user)
         await db.creator.upsert({
           where: {
             username_platform: {

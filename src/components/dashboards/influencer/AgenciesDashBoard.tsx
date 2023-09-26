@@ -1,27 +1,22 @@
 'use client'
 
 import imageCover from 'public/assets/register/TopPost.jpg'
-import AddClients from '@/components/modals/agency/addClients'
-import useClients from '@/hooks/useClients'
-import { inter, ptMono } from '@/app/fonts'
 import SearchByTag from '../../inputs/searchByTag'
 import TitlePage from '../../labels/titlePage'
-import { useState } from 'react'
+import { inter, ptMono } from '@/app/fonts'
 import Search from '../../inputs/search'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function AgenciesDashBoard({ clientsFallback }: any) {
-  const { clients, areClientsLoading, clientsError, refreshClients } =
-    useClients(clientsFallback)
-
+export default function AgenciesDashBoard({ agenciesConnections }: any) {
   const [tagSelected, setSearchTags] = useState('')
   const [sort, setSort] = React.useState('')
   const [inputSearchValue, setInputSearchValue] = useState('')
 
-  const filteredClients = clients.filter((client: any) => {
-    const clientNameMatches = client.name
+  const filteredAgencies = agenciesConnections.filter((agency: any) => {
+    const agencyNameMatches = agency.user1.name
       .toLowerCase()
       .includes(inputSearchValue.toLowerCase())
     const tagFilterIsActive = !tagSelected ? false : true
@@ -30,26 +25,25 @@ export default function AgenciesDashBoard({ clientsFallback }: any) {
     if (!tagSearchIsActive && !tagFilterIsActive) {
       return true
     } else if (tagFilterIsActive && tagSearchIsActive) {
-      const tagsMatch = client.tags.some(
+      const tagsMatch = agency.tags.some(
         (tag: { name: string }) => tag.name === tagSelected,
       )
-      return clientNameMatches && tagsMatch
+      return agencyNameMatches && tagsMatch
     } else if (tagFilterIsActive) {
-      return client.tags.some(
+      return agency.tags.some(
         (tag: { name: string }) => tag.name === tagSelected,
       )
     } else if (tagSearchIsActive) {
-      return clientNameMatches
+      return agencyNameMatches
     }
   })
-
   return (
     <>
       <TitlePage
         title={'Agencies'}
         moduleText={'agencies'}
         client={''}
-        clientsFallback={clients}
+        clientsFallback={null}
         campaignsFallback={null}
         setSort={setSort}
       />
@@ -69,7 +63,7 @@ export default function AgenciesDashBoard({ clientsFallback }: any) {
               <SearchByTag
                 setSearchTags={setSearchTags}
                 tagSelected={tagSelected}
-                searchTags={clients}
+                searchTags={agenciesConnections}
               />
             </div>
           </div>
@@ -83,21 +77,21 @@ export default function AgenciesDashBoard({ clientsFallback }: any) {
           </button>
         </div>
         <div className='mt-12 flex gap-4 md:px-12 flex-wrap'>
-          {filteredClients.length > 0 ? (
-            filteredClients.map((client: any, index: any) => (
+          {filteredAgencies.length > 0 ? (
+            filteredAgencies.map((agency: any, index: any) => (
               <Link
-                href={`/dashboard/clients/${client.id || 1}`}
+                href={`/dashboard/agencies/${agency.id || 1}`}
                 key={index}
                 className='h-80 min-w-[320px] w-80 border-gray-100 relative '>
                 <Image
                   priority
                   className={` object-cover`}
-                  src={client.image || imageCover}
-                  alt={client.name}
+                  src={agency.image || imageCover}
+                  alt={agency.user1.name}
                 />
                 <div className='h-auto border border-gray-200 px-2 py-4 pl-4'>
                   <p className={`text-lg font-medium text-gray-800`}>
-                    {client.name}
+                    {agency.user1.name}
                   </p>
                 </div>
               </Link>

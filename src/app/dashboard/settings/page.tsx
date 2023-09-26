@@ -26,7 +26,7 @@ export default function Settings() {
       label: 'Connections',
       content: (
         <div>
-          <Connections></Connections>
+          <Connections/>
         </div>
       ),
     },
@@ -39,10 +39,7 @@ export default function Settings() {
   return (
     <div>
       <div
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(226, 222, 212, 0.75) 0%, rgba(226, 222, 212, 0.00) 65%)',
-        }}
+        
         className='w-full pt-20 relative z-30'>
         <div className='mx-auto mb-8 w-full justify-between px-4 md:px-12'>
           <div className='w-full'>
@@ -80,14 +77,14 @@ function Tabs({ tabs }: TabsProps) {
   return (
     <div className='w-full'>
       <Tab.Group>
-        <Tab.List className='flex p-1 space-x-16 ml-16'>
+        <Tab.List className='flex p-1 space-x-16 ml-16 py-6'>
           {tabs.map((tab, index) => (
             <Tab
               key={index}
               className={({ selected }) =>
                 `relative p-2${
                   selected
-                    ? 'text-brown border-b-2 border-gray-700 outline-none'
+                    ? 'text-brown  outline-none'
                     : 'text-brown'
                 } inline-block`
               }
@@ -98,7 +95,7 @@ function Tabs({ tabs }: TabsProps) {
         </Tab.List>
       </Tab.Group>
       <div className='divider -mt-3' />
-      <div className='p-4'>{tabs[activeTab].content}</div>
+      <div className='px-12'>{tabs[activeTab].content}</div>
     </div>
   )
 }
