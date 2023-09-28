@@ -258,12 +258,11 @@ export default function CampaingTabs({
                       followerCountFilter={followerCountFilter}
                       setFollowerCountFilter={setFollowerCountFilter}
                       followerCountFilterSecond={followerCountFilterSecond}
-                      setFollowerCountFilterSecond={
-                        setFollowerCountFilterSecond
-                      }
+                      setFollowerCountFilterSecond={setFollowerCountFilterSecond}
                       selectedCampaign={selectedCampaign}
-                      setSelectedCampaign={setSelectedCampaign}
-                    />
+                      setSelectedCampaign={setSelectedCampaign} 
+                      userCreators={null}
+                      />
                   </div>
                   <div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-white'>
                     {/* active social filter */}
@@ -369,8 +368,9 @@ export default function CampaingTabs({
                     campaigns={campaign}
                     clients={[]}
                     search={''}
-                    creatorsFilter={filters}
-                  />
+                    creatorsFilter={filters} 
+                    connections={null}                  
+                    />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>

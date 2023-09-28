@@ -10,6 +10,7 @@ export function CreatorStatus(state: any) {
   const [email, setEmail] = useState('')
   const [enviadoStatus, setEnviadoStatus] = useState('bg-transparent')
   const [enviado, setEnviado] = useState('')
+  const [inviteStatus, setInviteStatus] = useState('invite') // Agregar estado de invitación
 
   const handleChange = (event: any) => {
     setEmail(event.target.value)
@@ -31,6 +32,7 @@ export function CreatorStatus(state: any) {
         setTimeout(() => {
           setIsOpen(false)
           setEnviadoStatus('bg-transparent')
+          setInviteStatus('invited') // Actualizar el estado de invitación
         }, 2000)
       } else {
         console.error('Error en la solicitud:', response.statusText)
@@ -46,8 +48,9 @@ export function CreatorStatus(state: any) {
       <div className='flex justify-start gap-2'>
         <button
           onClick={() => setIsOpen(true)}
-          className={`bg-active flex gap-3 rounded-full px-8 py-3 text-sm text-black`}>
-          invite
+          className={`bg-${inviteStatus} flex gap-3 rounded-full px-8 py-3 text-sm text-black`}>
+          {inviteStatus === 'invite' ? 'invite' : 'invited'}{' '}
+          {/* Mostrar "invite" o "invited" según el estado */}
         </button>
       </div>
 
@@ -68,10 +71,10 @@ export function CreatorStatus(state: any) {
                   <div className='px-12'>
                     <label className='text-xs text-black opacity-50' htmlFor=''>
                       Invite your creators to connect with your campaign{' '}
-                      <span className='font-bold'> like creators</span> below so their stats can be
-                      tracked. This gets you a more accurate look at your
-                      campaign success and saves both of you hours of collecting
-                      stats!{' '}
+                      <span className='font-bold'> like creators</span> below so
+                      their stats can be tracked. This gets you a more accurate
+                      look at your campaign success and saves both of you hours
+                      of collecting stats!{' '}
                       <Link className='underline' href={'/privacy'}>
                         Learn more about privacy and security.
                       </Link>

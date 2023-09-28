@@ -13,7 +13,7 @@ export class ConnectionService {
   static async findManyByUserId(userId1: string) {
     const connections = await db.connection.findMany({
       where: {
-        userId2: userId1,
+        userId1: userId1,
       },
       include: {
         user1: {

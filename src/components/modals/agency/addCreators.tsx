@@ -7,24 +7,40 @@ import { inter, ptMono } from '@/app/fonts'
 import { useState } from 'react'
 import Link from 'next/link'
 import React from 'react'
+import Search from '@/components/inputs/search'
 
 type Props = {
-  campaignsFallback: CampaignRes
-  clientsFallback: any
-  text: string
-  icon: any
+  userCreators: any
 }
 
-export default function AddCreators({
-  campaignsFallback,
-  clientsFallback,
-  text,
-  icon,
-}: Props) {
+export default function AddCreators({ userCreators }: Props) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [linkToShareInvite, setLinkToShareInvite] = useState<string[]>([])
   const [emails, setEmails] = useState<string[]>([])
+  const [inputSearchValue, setInputSearchValue] = useState('')
+  const [creatorSelected, setCreatorSelected] = useState('')
+  const filteredCreators = userCreators.filter((creator: any) => {
+    const creatorNameMatches = creator.name
+      .toLowerCase()
+      .includes(inputSearchValue.toLowerCase())
+    return creatorNameMatches
+  })
 
+  const sendInvite = async () => {
+    try {
+      const res = await fetch('/api/invite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          creatorId: creatorSelected,
+        }),
+      })
+
+      if (res.status === 200) console.log(res.status)
+    } catch (error: any) {}
+  }
   return (
     <>
       <button
@@ -34,8 +50,7 @@ export default function AddCreators({
         <label
           tabIndex={0}
           className={`bg-[#E9F7F0] flex bg-text-lg align-center items-center border-rose-100 py-2.5 px-9 text-back font-medium h-full rounded-full cursor-pointer`}>
-          {text}
-          {icon}
+          Add creators
         </label>
       </button>
 
@@ -53,7 +68,6 @@ export default function AddCreators({
             className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
             <Dialog.Title className=' text-lg font-medium mb-8 text-center mt-12'>
               add creators
-             
             </Dialog.Title>
             <Tab.Group>
               <Tab.List
@@ -89,12 +103,40 @@ export default function AddCreators({
                       className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
                       Search for a creator
                     </p>
-                    <input
+                    {/* <input
                       type='text'
                       id='default-input'
                       placeholder='search Codecoco database'
                       className={`w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 focus:outline-0 ${ptMono.className}`}
-                    />
+                    /> */}
+                    <div className='dropdown'>
+                      <Search
+                        inputSearchValue={inputSearchValue}
+                        setInputSearchValue={setInputSearchValue}
+                      />
+
+                      <p>{creatorSelected}</p>
+                      <div
+                        tabIndex={0}
+                        className={`dropdown-content rounded-box mt-2 w-auto border-2 border-gray-100 bg-white ${ptMono.className}`}>
+                        <div className='p-6'>
+                          <div className='gap-2 flex flex-col'>
+                            <span className='text-xs italic'>last clients</span>
+                            {filteredCreators
+                              .slice(0, 1)
+                              .map((creator: any, index: any) => (
+                                <button
+                                  key={index}
+                                  onClick={() => {
+                                    setCreatorSelected(creator.id)
+                                  }}>
+                                  {creator.name}
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <div className='flex items-center mt-6'>
                       <div className='w-full h-[1px] bg-gray-300'></div>
@@ -142,33 +184,10 @@ export default function AddCreators({
                       </div>
                     </div>
 
-                    {/* <div className='flex gap-5'>
-                  <div className=' mt-4'>
-                    <label className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
-                      Facebook Handle
-                    </label>
-                    <input
-                      type='text'
-                      id='default-input'
-                      placeholder='#example'
-                      className=' mt-2 w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-                    />
-                  </div>
-                  <div className=' mt-4'>
-                    <label className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
-                      Pinterest Handle
-                    </label>
-                    <input
-                      type='text'
-                      id='default-input'
-                      placeholder='#example'
-                      className=' mt-2 w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-                    />
-                  </div>
-                </div> */}
-
                     <div className='mt-6 text-right'>
-                      <button className='rounded-full bg-active px-8 py-2 '>
+                      <button
+                        onClick={sendInvite}
+                        className='rounded-full bg-active px-8 py-2 '>
                         add
                       </button>
                     </div>

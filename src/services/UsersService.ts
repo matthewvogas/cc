@@ -14,4 +14,19 @@ export class UserService {
 
     return position
   }
+
+  static async findManyCreators() {
+    const users = await db.user.findMany(
+      {
+        where: {
+          role: 'CREATOR'
+        }
+      }
+    )
+
+
+    return users
+  }
+
+
 }
