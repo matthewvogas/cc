@@ -1,3 +1,4 @@
+import { UserRole } from '@prisma/client'
 import db from '@/lib/db'
 
 export class UserService {
@@ -29,4 +30,37 @@ export class UserService {
   }
 
 
+  static async findUnique(id: string) {
+    const user = await db.user.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return user
+  }
+
+  static async updateRole(id: string, role: UserRole) {
+    const updatedUser = await db.user.update({
+      where: {
+        id,
+      },
+      data: {
+        role: role
+      }
+    })
+
+    return updatedUser
+  }
+
+  static async delete(id: string) {
+    const deletedUser = await db.user.delete({
+      where: {
+        id,
+      },
+    })
+
+    return deletedUser
+  }
+  
 }

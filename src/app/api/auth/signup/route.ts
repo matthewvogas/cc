@@ -1,5 +1,6 @@
 import db from '@/lib/db'
 import { signUpSchema } from '@/schemas/signUp.schema'
+import { UserRole } from '@prisma/client'
 import { hash } from 'bcrypt'
 import { NextResponse } from 'next/server'
 
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ errors: zodErrors }, { status: 400 })
     }
 
-    const { usernameOrEmail, password, name } = result.data
+    const { usernameOrEmail, password, name, role } = result.data
     const hashed = await hash(password, 12)
 
     const userExists = await db.user.findUnique({
@@ -37,6 +38,7 @@ export async function POST(req: Request) {
         email: usernameOrEmail,
         name,
         password: hashed,
+        role: role as UserRole
       },
     })
 
