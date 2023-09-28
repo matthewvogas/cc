@@ -121,9 +121,12 @@ export const Login = () => {
       </div> */}
       <hr className='my-7 h-px w-full rounded-r-full bg-white opacity-50' />
 
-      <div className='flex w-full justify-center px-4'>
-        <Link href='/signup' className='text-lg '>
-          create a new account
+      <div className='flex w-full flex-col gap-4 justify-center px-4'>
+        <Link href='/signup/agency' className='text-lg '>
+          create a new account like Agency
+        </Link>
+        <Link href='/signup/creator' className='text-lg '>
+          create a new account like Creator
         </Link>
         {/* <Link href='/signup' className='text-lg'>
     reset your password

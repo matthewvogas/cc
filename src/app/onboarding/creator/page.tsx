@@ -17,24 +17,19 @@ import SuccesfullyCreatorConnectionImage from 'public/assets/creatorRegister/Suc
 import InstagramLogo from 'public/assets/register/InstagramRegister.svg'
 import InstagramLogoBlack from 'public/assets/creatorRegister/InstagramLogoBlack.svg'
 
-// Importación de estilos de Swiper
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import './swiper.css'
-import { Inter_Tight } from 'next/font/google'
 
-// Componente principal RegisterPage
 export default function RegisterPage() {
-  // Hooks de estado para el manejo de valores
+
   const [initialValue, setInitialValue] = useState('')
   const [displayMenu, setDiaplayMenu] = useState(0)
   const [instagramConection, setInstagramConectionText] = useState(false)
   const [tiktokConection, setTiktokConectionText] = useState(false)
 
-  // Función para manejar la visualización de los elementos en el menu
   function handleDisplayStuff() {
-    const display = document.querySelector('.displayMenu')
     const step1 = document.querySelector('.steps-1')
     const step2 = document.querySelector('.steps-2')
     const step3 = document.querySelector('.steps-3')
@@ -113,24 +108,6 @@ export default function RegisterPage() {
   // Función para manejar los cambios en los campos de entrada
   function handleInputChange(event: any) {
     const input = event.target
-
-    const nameInput = document.getElementById('nameInput') as HTMLInputElement
-    const emailInput = document.getElementById('emailInput') as HTMLInputElement
-    const nextButton = document.getElementById('nextButton')
-
-    const name = nameInput ? nameInput.value.trim() : ''
-    const email = emailInput ? emailInput.value.trim() : ''
-
-    // Verificar si tanto el nombre como el correo electrónico son válidos
-    if (name !== '' && validateEmail(email)) {
-      if (nextButton) {
-        nextButton?.classList.remove('hidden')
-      }
-    } else {
-      if (nextButton) {
-        nextButton?.classList.add('hidden')
-      }
-    }
 
     const smallText = input.nextElementSibling?.querySelector('.small-text')
 
@@ -252,7 +229,6 @@ export default function RegisterPage() {
     'tracking stats',
     'creating a portfolio of my work',
     'identifying my top performing content',
-    'reaching new brands',
     'working with better agencies',
     'getting stats to my agency',
   ]
@@ -287,7 +263,6 @@ export default function RegisterPage() {
     })
   }
 
-  // Componente RegisterPage devuelto por el componente principal
   return (
     <div className='relative flex h-screen w-screen items-center justify-center'>
       {/* Imagen de fondo */}
@@ -390,24 +365,6 @@ export default function RegisterPage() {
                           </div>
                         </div>
                       </div>
-
-                      <div className='relative'>
-                        <input
-                          id='emailInput'
-                          type='text'
-                          className={`rounded-full bg-[#F8F7F4] py-4 pl-6 text-black outline-none w-full ${ptMono.className}`}
-                          onInput={handleInputChange}
-                          onChange={handleEmailChange}
-                        />
-                        <div
-                          className={`${initialValue} top-4  absolute left-6 pointer-events-none flex items-center`}>
-                          <div
-                            className={`small-text opacity-90 ${initialValue}`}>
-                            <span className='text-base'>email</span>{' '}
-                          </div>
-                        </div>
-                      </div>
-
                       <div className='relative'>
                         <input
                           id='emailInput'
@@ -430,7 +387,7 @@ export default function RegisterPage() {
                       onClickCapture={() => {
                         handleDisplayStuff()
                       }}
-                      className={`mt-auto self-end rounded-lg bg-[#E2DED4] px-8 py-2 hidden ${ptMono.className}`}>
+                      className={`mt-auto self-end rounded-lg bg-[#E2DED4] px-8 py-2  ${ptMono.className}`}>
                       next
                     </RegisterNextButton>
                   </div>
@@ -560,9 +517,11 @@ export default function RegisterPage() {
                     className={`flex w-full flex-col gap-4 justify-between h-full pb-12 `}>
                     <div className='flex w-full flex-col gap-4  items-start text-left'>
                       <div className='flex gap-4'>
-                        <button
+                        <Link
                           onClick={hanledInstagramConection}
-                          className={`${ptMono.className} bg-[#859991] py-3 text-white mb-6 pl-5 pr-8 rounded-lg flex items-center gap-2`}>
+                          className={`${ptMono.className} bg-[#859991] py-3 text-white mb-6 pl-5 pr-8 rounded-lg flex items-center gap-2`}
+                          target='_blank'
+                          href={'/api/oauth/connect/facebook'}>
                           <Image
                             src={InstagramLogo}
                             className='opacity-60 instagram w-[30px]'
@@ -573,13 +532,14 @@ export default function RegisterPage() {
                             className='opacity-60 hidden instagramBlack w-[30px]'
                             alt=''
                           />
-                          {instagramConection == false
-                            ? 'Connect to Instagram'
-                            : 'Connection successful 🍸'}
-                        </button>
-                        <button
+                          Connect to Instagram
+                         
+                        </Link>
+                        <Link
                           onClick={hanledTikTokConection}
-                          className={`${ptMono.className} bg-[#859991] py-3 text-white mb-6 pl-5 pr-8 rounded-lg flex items-center gap-2`}>
+                          className={`${ptMono.className} bg-[#859991] py-3 text-white mb-6 pl-5 pr-8 rounded-lg flex items-center gap-2`}
+                          target='_blank'
+                          href={'/api/oauth/connect/tiktok'}>
                           <Image
                             src={InstagramLogo}
                             className='opacity-60 instagram w-[30px]'
@@ -590,10 +550,8 @@ export default function RegisterPage() {
                             className='opacity-60 hidden instagramBlack w-[30px]'
                             alt=''
                           />
-                          {tiktokConection == false
-                            ? 'Connect to Tiktok'
-                            : 'Connection successful 🍸'}
-                        </button>
+                          Connect to Tiktok
+                        </Link>
                       </div>
 
                       <p className='text-xs font-light italic'>
@@ -652,14 +610,15 @@ export default function RegisterPage() {
                         </button>
                       ))}
                     </div>
-                    <RegisterNextButton
+                    <Link
+                      href={'/dashboard'}
                       id='nextButton5'
                       onClickCapture={() => {
                         captureInformation()
                       }}
                       className={`mt-auto self-end rounded-lg bg-[#E2DED4] px-8 py-2  ${ptMono.className}`}>
                       done!
-                    </RegisterNextButton>
+                    </Link>
                   </div>
                 </div>
               </SwiperSlide>

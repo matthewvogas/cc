@@ -22,6 +22,7 @@ export const RegisterForm = () => {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       usernameOrEmail: initialEmail,
+      role: 'CREATOR',
     },
   })
 
@@ -58,7 +59,7 @@ export const RegisterForm = () => {
       await signIn('credentials', {
         email: data.usernameOrEmail,
         password: data.password,
-        callbackUrl: '/onboarding',
+        callbackUrl: '/onboarding/creator',
       })
     } catch (err) {
       console.log(err)

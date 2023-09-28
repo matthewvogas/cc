@@ -32,12 +32,12 @@ export default function Header({ frome }: Props) {
             alt=''
           />
           <div className='gap-7 hidden lg:flex'>
-            <button className='flex items-center gap-2 text-base font-medium'>
+            <Link className='flex items-center gap-2 text-base font-medium' href={'/signup/agency'}>
               For Agencies
-            </button>
-            <button className='flex items-center gap-2 text-base font-medium'>
+            </Link>
+            <Link className='flex items-center gap-2 text-base font-medium' href={'/signup/creator'}>
               For Creators
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -59,7 +59,7 @@ export default function Header({ frome }: Props) {
             <span className='hidden lg:inline'>Login 🥥</span>
           </Link>
           <Link
-            href='/signup'
+            href='/signup/agency'
             className={`${
               frome === 'signup'
                 ? 'hidden'

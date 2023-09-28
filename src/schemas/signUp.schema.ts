@@ -9,6 +9,11 @@ export const signUpSchema = z
       })
       .min(3, 'Username/Email must be at least 3 characters')
       .max(255),
+    role: z
+      .string({
+        required_error: 'role is defined per dafault',
+      })
+    ,
     name: z
       .string({
         required_error: 'Name is required',
