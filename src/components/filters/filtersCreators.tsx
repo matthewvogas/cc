@@ -24,6 +24,7 @@ type Props = {
   setFollowerCountFilterSecond: any
   selectedCampaign: any
   setSelectedCampaign: any
+  userCreators: any
 }
 
 export default function FilterCreators({
@@ -36,6 +37,7 @@ export default function FilterCreators({
   setFollowerCountFilterSecond,
   selectedCampaign,
   setSelectedCampaign,
+  userCreators,
 }: Props) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [emails, setEmails] = useState<string[]>([])
@@ -205,12 +207,7 @@ export default function FilterCreators({
           </div>
         </div>
         <div>
-          <AddCreators
-            campaignsFallback={campaigns}
-            clientsFallback={undefined}
-            text={'add a creator'}
-            icon={undefined}
-          />
+          <AddCreators userCreators={userCreators}/>
         </div>
       </div>
     </>

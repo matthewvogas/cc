@@ -1,7 +1,10 @@
 'use client'
 
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
-import { PostHashtagStatus, type ChipStateName } from '../posts/postHashtagStatus'
+import {
+  PostHashtagStatus,
+  type ChipStateName,
+} from '../posts/postHashtagStatus'
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import ViewCreator from '@/components/modals/agency/viewCreator'
 import avatar from 'public/assets/register/avatar.jpg'
@@ -20,7 +23,8 @@ const thTable = 'bg-white text-sm normal-case'
 
 type Props = {
   comeFrom: string
-  creators: CreatorsByCampaignRes[]
+  connections: any
+  creators: any
   campaigns: any
   clients: any
   search: string
@@ -30,6 +34,7 @@ type Props = {
 
 export default function CreatorRow({
   comeFrom,
+  connections,
   creators,
   campaigns,
   clients,
@@ -85,31 +90,33 @@ export default function CreatorRow({
     }
   })
 
-  const filteredCreators = creators.filter((creator: CreatorsByCampaignRes) => {
-    // console.log(creator)
+  const filteredCreators = connections.filter(
+    (creator: CreatorsByCampaignRes) => {
+      // console.log(creator)
 
-    if (creator.followersCount === undefined) {
-      return false
-    }
+      if (creator.followersCount === undefined) {
+        return false
+      }
 
-    if (
-      creatorsFilter.socialActiveFilter.length > 0 &&
-      !creatorsFilter.socialActiveFilter.includes(creator.platform)
-    ) {
-      return false
-    }
+      if (
+        creatorsFilter.socialActiveFilter.length > 0 &&
+        !creatorsFilter.socialActiveFilter.includes(creator.platform)
+      ) {
+        return false
+      }
 
-    if (
-      (creatorsFilter.followerCountFilter > 0 &&
-        creator.followersCount < creatorsFilter.followerCountFilter) ||
-      (creatorsFilter.followerCountFilterSecond > 0 &&
-        creator.followersCount > creatorsFilter.followerCountFilterSecond)
-    ) {
-      return false
-    }
+      if (
+        (creatorsFilter.followerCountFilter > 0 &&
+          creator.followersCount < creatorsFilter.followerCountFilter) ||
+        (creatorsFilter.followerCountFilterSecond > 0 &&
+          creator.followersCount > creatorsFilter.followerCountFilterSecond)
+      ) {
+        return false
+      }
 
-    return true
-  })
+      return true
+    },
+  )
 
   return (
     <>
@@ -142,7 +149,7 @@ export default function CreatorRow({
             </tr>
           </thead>
           <tbody>
-            {filteredCreators.map((creator, index) => (
+            {connections.map((creator: any, index: number) => (
               <tr key={index} className={`text-sm ${ptMono.className} `}>
                 {comeFrom === 'campigns' && (
                   <>
@@ -160,10 +167,10 @@ export default function CreatorRow({
                             />
                           </div>
                         </div>
-                        <div>
+                        <div> 
                           <div className='font-bold'>{creator.name}</div>
                           <div className='text-sm opacity-50'>
-                            {creator.username}
+                            {creator.user2.name}
                           </div>
                         </div>
                       </div>
@@ -214,7 +221,10 @@ export default function CreatorRow({
                               add to campaign 🥥
                             </div>
                             <div className='collapse-content'>
-                              <div className={`${isOpen ? 'hidden' : ''} relative z-30`}>
+                              <div
+                                className={`${
+                                  isOpen ? 'hidden' : ''
+                                } relative z-30`}>
                                 <Search
                                   inputSearchValue={inputSearchValue}
                                   setInputSearchValue={setInputSearchValue}

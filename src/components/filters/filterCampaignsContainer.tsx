@@ -12,12 +12,15 @@ import Search from '../inputs/search'
 
 type Props = {
   show: any
-  campaignsFallback: any,
+  campaignsFallback: any
   clientsFallback: any
 }
 
-export default function FilterCampaignsContainer({ show, campaignsFallback, clientsFallback }: Props) {
-
+export default function FilterCampaignsContainer({
+  show,
+  campaignsFallback,
+  clientsFallback,
+}: Props) {
   const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
   const { clients, areClientsLoading, clientsError, refreshClients } =
@@ -56,7 +59,8 @@ export default function FilterCampaignsContainer({ show, campaignsFallback, clie
 
   return (
     <>
-      <div className={`w-full flex gap-4 py-6 bg-[#F3F0EC] rounded-xl mt-4 px-8 ${show}`}>
+      <div
+        className={`w-full flex gap-4 py-6 bg-[#F3F0EC] rounded-xl mt-4 px-8 ${show}`}>
         <div>
           <p className='font-medium text-base mb-2'>by client</p>
           <div className='dropdown'>

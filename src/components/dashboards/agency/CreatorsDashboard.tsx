@@ -18,15 +18,16 @@ import FilterCreators from '../../filters/filtersCreators'
 import CreatorRow from '../../cards/agency/creators/creatorCard'
 
 export default function CreatorsDashBoard({
-  creatorsFallback,
+  connectionsFallback,
   campaignsFallback,
+  creatorsFallback,
+  userCreatorsFallback,
 }: {
-  creatorsFallback: CreatorsByCampaignRes
+  connectionsFallback: any
   campaignsFallback: CampaignRes
+  creatorsFallback: any
+  userCreatorsFallback: any
 }) {
-  const { creators, areCreatorsLoading, creatorsError, refreshCreators } =
-    useCreators(creatorsFallback)
-
   const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
 
@@ -79,6 +80,7 @@ export default function CreatorsDashBoard({
           setFollowerCountFilterSecond={setFollowerCountFilterSecond}
           selectedCampaign={selectedCampaign}
           setSelectedCampaign={setSelectedCampaign}
+          userCreators={userCreatorsFallback}
         />
 
         {/* active social filter */}
@@ -169,11 +171,12 @@ export default function CreatorsDashBoard({
         ) : null}
         <CreatorRow
           comeFrom={'campigns'}
-          creators={creators}
+          connections={connectionsFallback}
           clients={[]}
           search={''}
           creatorsFilter={filters}
           campaigns={campaignsFallback}
+          creators={creatorsFallback}
         />
       </div>
     </>
