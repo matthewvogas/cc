@@ -19,13 +19,12 @@ export default function AddCreators({ userCreators }: Props) {
   const [emails, setEmails] = useState<string[]>([])
   const [inputSearchValue, setInputSearchValue] = useState('')
   const [creatorSelected, setCreatorSelected] = useState('')
-  
-  // const filteredCreators = userCreators.filter((creator: any) => {
-  //   const creatorNameMatches = creator.name
-  //     .toLowerCase()
-  //     .includes(inputSearchValue.toLowerCase())
-  //   return creatorNameMatches
-  // })
+  const filteredCreators = userCreators.filter((creator: any) => {
+    const creatorNameMatches = creator.name
+      .toLowerCase()
+      .includes(inputSearchValue.toLowerCase())
+    return creatorNameMatches
+  })
 
   const sendInvite = async () => {
     try {
@@ -123,7 +122,7 @@ export default function AddCreators({ userCreators }: Props) {
                         <div className='p-6'>
                           <div className='gap-2 flex flex-col'>
                             <span className='text-xs italic'>last clients</span>
-                            {/* {filteredCreators
+                            {filteredCreators
                               .slice(0, 1)
                               .map((creator: any, index: any) => (
                                 <button
@@ -133,7 +132,7 @@ export default function AddCreators({ userCreators }: Props) {
                                   }}>
                                   {creator.name}
                                 </button>
-                              ))} */}
+                              ))}
                           </div>
                         </div>
                       </div>
