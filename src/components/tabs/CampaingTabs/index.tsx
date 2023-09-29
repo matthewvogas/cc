@@ -97,8 +97,8 @@ export default function CampaingTabs({
           // { title: totalPlays, description: 'views' },
         ],
       },
-    ];
-  }, [campaign?.posts?.length, creators.length]); 
+    ]
+  }, [campaign?.posts?.length, creators.length])
 
   const statsNormal = useMemo(() => {
     return [
@@ -124,9 +124,9 @@ export default function CampaingTabs({
           // { title: totalPlays, description: 'views' },
         ],
       },
-    ];
-  }, [campaign?.posts?.length, creators.length]);
-  
+    ]
+  }, [campaign?.posts?.length, creators.length])
+
   useEffect(() => {
     if (session.user.role === 'TESTER') {
       setStats(statsTest)
@@ -258,11 +258,14 @@ export default function CampaingTabs({
                       followerCountFilter={followerCountFilter}
                       setFollowerCountFilter={setFollowerCountFilter}
                       followerCountFilterSecond={followerCountFilterSecond}
-                      setFollowerCountFilterSecond={setFollowerCountFilterSecond}
+                      setFollowerCountFilterSecond={
+                        setFollowerCountFilterSecond
+                      }
                       selectedCampaign={selectedCampaign}
-                      setSelectedCampaign={setSelectedCampaign} 
+                      setSelectedCampaign={setSelectedCampaign}
                       userCreators={null}
-                      />
+                      session={session}
+                    />
                   </div>
                   <div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-white'>
                     {/* active social filter */}
@@ -368,9 +371,9 @@ export default function CampaingTabs({
                     campaigns={campaign}
                     clients={[]}
                     search={''}
-                    creatorsFilter={filters} 
-                    connections={null}                  
-                    />
+                    creatorsFilter={filters}
+                    connections={null}
+                  />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <div className='pt-6'>

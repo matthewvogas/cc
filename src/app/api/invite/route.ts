@@ -9,11 +9,11 @@ export async function POST(req: Request) {
 try {
     const session = await getServerSession(authOptions)
 
-    const { creatorId } = await req.json()
+    const { agencyId, creatorId } = await req.json()
 
     const invite = await db.invite.create({
     data: {
-        senderId: session!.user!.id,
+        senderId: agencyId,
         receiverId: creatorId,
         status: 'PENDING'
     },

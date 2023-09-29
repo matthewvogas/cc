@@ -239,7 +239,6 @@ export default function Onboarding({ session }: Props) {
             </Swiper>
           </div>
         </section>
-
         <div className='my-7 h-px w-full rounded-r-full bg-white opacity-50'></div>
       </div>
     </div>

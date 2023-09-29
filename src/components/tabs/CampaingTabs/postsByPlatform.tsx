@@ -194,7 +194,7 @@ export default function PostsByPlatform({
                   {session?.user?.role == 'TESTER'
                     ? filteredPosts!.map((post: any, index: any) => (
                         <PostCardTest key={index} post={post} />
-                      ))
+                      ))  
                     : filteredPosts!.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
