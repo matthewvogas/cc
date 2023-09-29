@@ -24,11 +24,19 @@ export class UserService {
         }
       }
     )
-
-
     return users
   }
 
+  static async findManyAgencies() {
+    const users = await db.user.findMany(
+      {
+        where: {
+          role: 'AGENCY'
+        }
+      }
+    )
+    return users
+  }
 
   static async findUnique(id: string) {
     const user = await db.user.findUnique({

@@ -11,9 +11,10 @@ import Search from '@/components/inputs/search'
 
 type Props = {
   userCreators: any
+  session: any
 }
 
-export default function AddCreators({ userCreators }: Props) {
+export default function AddCreators({ userCreators, session }: Props) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [linkToShareInvite, setLinkToShareInvite] = useState<string[]>([])
   const [emails, setEmails] = useState<string[]>([])
@@ -34,6 +35,7 @@ export default function AddCreators({ userCreators }: Props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          agencyId: session?.user?.id,
           creatorId: creatorSelected,
         }),
       })

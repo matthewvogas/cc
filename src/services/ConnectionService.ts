@@ -10,10 +10,10 @@ export class ConnectionService {
     return connection
   }
 
-  static async findManyByUserId(userId1: string) {
+  static async findManyByUserId(UserId: string) {
     const connections = await db.connection.findMany({
       where: {
-        userId1: userId1,
+        userId2: UserId,
       },
       include: {
         user1: {
@@ -32,6 +32,30 @@ export class ConnectionService {
 
     return connections
   }
+
+  static async findManyByUserIdFromCreator(UserId: string) {
+    const connections = await db.connection.findMany({
+      where: {
+        userId1: UserId,
+      },
+      include: {
+        user1: {
+          include: {
+            socialConnections: true,
+          },
+        },
+        user2: {
+          include: {
+            campaigns: true,
+            socialConnections: true,
+          },
+        },
+      },
+    })
+
+    return connections
+  }
+
 
   static async findManyTokensByUserId(userId1: string) {
     const connections = await db.connection.findMany({

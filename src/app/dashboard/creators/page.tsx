@@ -33,6 +33,7 @@ export default async function Creators() {
       creatorsFallback={creators}
       campaignsFallback={campaigns}
       userCreatorsFallback={UserCreators}
+      session={session}
     />
   )
 }

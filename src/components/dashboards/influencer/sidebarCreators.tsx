@@ -22,6 +22,10 @@ const links = [
     name: 'agencies',
   },
   {
+    href: '/dashboard/invitations',
+    name: 'invitations',
+  },
+  {
     href: '/dashboard/portfolio',
     name: 'portfolio',
   },

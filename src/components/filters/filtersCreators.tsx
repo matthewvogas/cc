@@ -25,6 +25,7 @@ type Props = {
   selectedCampaign: any
   setSelectedCampaign: any
   userCreators: any
+  session: any
 }
 
 export default function FilterCreators({
@@ -38,6 +39,7 @@ export default function FilterCreators({
   selectedCampaign,
   setSelectedCampaign,
   userCreators,
+  session,
 }: Props) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [emails, setEmails] = useState<string[]>([])
@@ -207,7 +209,7 @@ export default function FilterCreators({
           </div>
         </div>
         <div>
-          <AddCreators userCreators={userCreators}/>
+          <AddCreators userCreators={userCreators} session={session} />
         </div>
       </div>
     </>

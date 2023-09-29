@@ -22,11 +22,13 @@ export default function CreatorsDashBoard({
   campaignsFallback,
   creatorsFallback,
   userCreatorsFallback,
+  session,
 }: {
   connectionsFallback: any
   campaignsFallback: CampaignRes
   creatorsFallback: any
   userCreatorsFallback: any
+  session: any
 }) {
   const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
@@ -81,6 +83,7 @@ export default function CreatorsDashBoard({
           selectedCampaign={selectedCampaign}
           setSelectedCampaign={setSelectedCampaign}
           userCreators={userCreatorsFallback}
+          session={session}
         />
 
         {/* active social filter */}

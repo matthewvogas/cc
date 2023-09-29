@@ -19,14 +19,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-
 export default function CampaignsDashBoardInfluencer({
   campaignsFallback,
 }: {
   campaignsFallback: any
 }) {
-
-
   const [title, setTitle] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
@@ -41,7 +38,6 @@ export default function CampaignsDashBoardInfluencer({
   const [clientNameFilterSelected, setClientNametFilterSelected] = useState('')
   const [inputSearchValue, setInputSearchValue] = useState('')
   const [tagSelected, setSearchTags] = useState('')
-
 
   // const filteredCampaigns = campaignsFallback.filter((campaign: any) => {
   //   if (clientFilterSelected.length == 0) {
@@ -69,7 +65,6 @@ export default function CampaignsDashBoardInfluencer({
       <div className='flex justify-between items-center px-12 w-full'>
         <div className='w-full'>
           <div className='flex gap-4'>
-            
             <button
               type='button'
               onClick={() => {
@@ -97,7 +92,6 @@ export default function CampaignsDashBoardInfluencer({
               className={`px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium whitespace-nowrap bg-beigeFirst`}>
               latest
             </button>
-
           </div>
 
           <FilterCampaignsContainer
@@ -133,31 +127,6 @@ export default function CampaignsDashBoardInfluencer({
             </div>
           ) : null}
         </div>
-
-        {/* by tag */}
-
-        {/* <div>
-                  <p className='font-medium text-base mb-2'>by tag/category</p>
-                  <div className='dropdown'>
-                    <label
-                      tabIndex={0}
-                      className={`flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap`}>
-                      Search
-                      <FiChevronDown style={{ marginLeft: '42px' }} />
-                    </label>
-                    <div
-                      tabIndex={0}
-                      className={`dropdown-content rounded-box mt-2 w-auto border-2 border-gray-100 bg-white ${ptMono.className}`}>
-                      <div className='p-6'>
-                        <SearchByTag
-                          setSearchTags={setSearchTags}
-                          tagSelected={tagSelected}
-                          searchTags={clients}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
       </div>
 
       <div className='flex flex-col bg-white pt-12'>
@@ -178,7 +147,7 @@ export default function CampaignsDashBoardInfluencer({
                   <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
                     <div className='max-w-[200px] overflow-clip'>
                       <h5 className='truncate font-medium text-base'>
-                        campaigns 
+                        campaigns
                         {/* on it */}
                       </h5>
                       <div className='flex justify-center items-center flex-row'>
@@ -260,8 +229,6 @@ export default function CampaignsDashBoardInfluencer({
           <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
       </div>
-
-    
     </>
   )
 }
