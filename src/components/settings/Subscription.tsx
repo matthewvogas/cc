@@ -17,7 +17,7 @@ function CustomTabs({ tabs }: Props) {
 
   return (
     <div className='flex flex-row mt-10'>
-      <div className='flex flex-col text-start ml-12 w-56 rounded-lg font-semibold'>
+      <div className='flex gap-3 flex-col text-start w-56 rounded-lg font-semibold'>
         {tabs.map((tab, index) => (
           <div
             key={index}
@@ -31,7 +31,7 @@ function CustomTabs({ tabs }: Props) {
           </div>
         ))}
       </div>
-      <div className='p-4 ml-10 -mt-8 w-full mr-20'>
+      <div className='ml-10 w-full mr-20'>
         {tabs[activeTab].content}
       </div>
     </div>
@@ -44,7 +44,7 @@ export default function Subscription() {
       label: 'Your plan',
       content: (
         <div>
-          <div className='bg-background rounded-lg bg-opacity-20 mr-20'>
+          <div className='bg-background rounded-lg bg-opacity-20 mr-20 w-full'>
             <div className='flex flex-row space-x-96 p-10 content-center justify-between items-center'>
               <h1 className='font-semibold text-xl'>Profile Settings</h1>
               <button className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50'>
@@ -204,7 +204,7 @@ export default function Subscription() {
       label: 'Payment Methods',
       content: (
         <div>
-          <div className='bg-background rounded-lg bg-opacity-20 mr-20'>
+          <div className='bg-background rounded-lg bg-opacity-20 mr-20 w-full'>
             <div className='flex flex-row space-x-96 p-10 content-center justify-between items-center'>
               <h1 className='font-semibold text-xl'>Payment Methods</h1>
               <button className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50'>

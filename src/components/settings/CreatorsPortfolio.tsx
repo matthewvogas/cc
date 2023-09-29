@@ -14,7 +14,7 @@ export default function CreatorsPortfolio() {
     return (
       <div>
         <div className={`mt-7 w-full justify-start`}>
-          <form className='p-4 px-12 '>
+          <form className=''>
             <div className='flex flex-col gap-6 mt-4'>
               <div className='flex w-full gap-5 '>
                 <div className='flex flex-col gap-8 w-2/3'>

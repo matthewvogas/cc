@@ -33,10 +33,6 @@ const links = [
     href: '/privacy',
     name: 'policies',
   },
-  {
-    href: '/dashboard/socialData',
-    name: 'my social data',
-  },
 ]
 
 // Show Arrays

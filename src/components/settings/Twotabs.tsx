@@ -14,8 +14,8 @@ function CustomTabs({ tabs }: Props) {
   }
 
   return (
-    <div className='flex flex-row mt-10'>
-      <div className='flex flex-col text-start ml-12 w-56 rounded-lg font-semibold'>
+    <div className='flex flex-row mt-12'>
+      <div className='flex gap-3 flex-col text-start w-56 rounded-lg font-semibold'>
         {tabs.map((tab, index) => (
           <div
             key={index}
@@ -29,7 +29,7 @@ function CustomTabs({ tabs }: Props) {
           </div>
         ))}
       </div>
-      <div className='p-4 ml-10 -mt-8 w-full mr-20'>
+      <div className=' ml-10 w-full'>
         {tabs[activeTab].content}
       </div>
     </div>
@@ -38,11 +38,11 @@ function CustomTabs({ tabs }: Props) {
 
 export default function Settings() {
   const tabs = [
-    {
+      {
       label: 'Profile Settings',
       content: (
-        <div>
-          <div className='bg-background rounded-lg bg-opacity-20 mr-20'>
+        <div className='mb-12'>
+          <div className='bg-background rounded-lg bg-opacity-20'>
             <div className='flex flex-row space-x-96 p-10 content-center justify-between items-center'>
               <h1 className='font-semibold text-xl'>Profile Settings</h1>
               <button className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50'>
@@ -139,7 +139,7 @@ export default function Settings() {
               </div>
             </div>
           </div>
-          <div className='bg-[#F5F5F5] flex flex-row mr-20 mt-10 justify-between items-center rounded-lg'>
+          <div className='bg-[#F5F5F5] flex flex-row mt-10 justify-between items-center rounded-lg w-full'>
             <div className='flex flex-col p-10'>
               <span className='font-bold text-lg'>Deactivate your account</span>
               <span>Delete your Codecoco account and all data.</span>
@@ -156,7 +156,7 @@ export default function Settings() {
     {
       label: 'Notifications',
       content: (
-        <div className='bg-background rounded-lg bg-opacity-20 mr-20'>
+        <div className='bg-background rounded-lg bg-opacity-20 mb-12'>
           <div className='flex flex-row space-x-96 p-10 content-center justify-between items-center'>
             <h1 className='font-semibold text-xl '>Notifications</h1>
             <button className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50'>

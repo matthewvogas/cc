@@ -7,40 +7,44 @@ import { authOptions } from '../auth/[...nextauth]/route'
 import TiktokService from '@/lib/TiktokService'
 
 export async function POST(req: NextRequest) {
+  
+  const userId = '17841453065983739'
+  const token =
+    'EAARmBjC6nrUBOZCdyWVLjH0YWUZCjkjqfR5nUq3U65P9yG9FzMZBlc7zEYeQ7hKBhY3OdMf7LlrZBZCX7e5c6IKZBR3goc4YRiZBZB15ArzW99IAtjAEiYyxUhcTcmi9NqGoUapsSXm6TKho9IT4xf6OZBqAGpYvdQj5aOyoc5vn9XDDTUdkrIUdZBIz7djBRjDKoM'
 
-  // Recibir data de o API de collect info de facebook
+  const data = await fetch(
+    `https://graph.facebook.com/v18.0/${userId}/media?fields=caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(impressions,saved,shares,likes,comments, plays)&access_token=${token}&limit=2`,
+  ).then(res => res.json())
 
-  // const data = {
-  // }
+  const permalinks: string[] = data.data.map((item: any) => item.permalink)
 
-  // const permalinks: string[] = data.data.map((item: any) => item.permalink)
+  const posts = permalinks
 
-  // const permalinksString: string = permalinks.join(', ')
-
-  // console.log(permalinksString)
 
   const session = await getServerSession(authOptions)
-  const { posts, campaignId } = (await req.json()) as {
-    posts: string[]
-    campaignId: string
-  }
 
   let postSaved: Array<string> = []
   let postError: Array<string> = []
   let postSkipped: Array<string> = []
-  // console.log(urls)
 
   for (const url of posts) {
+
+    console.log('CONTENIDO')
+    console.log(data)
+    console.log('CONTENIDO END')
+
     console.log('Processing url: ' + url.trim())
+
     if (!url) {
       console.log('ERROR No url')
-      postError.push(url.trim())
+      // postError.push(url.trim())
       continue
     }
 
     if (url.includes('instagram')) {
       const shortcode = await InstagramService.getShortcode(url.trim())
       const oembed = await InstagramService.getPostInfo(shortcode)
+
 
       if (!oembed) {
         console.log('ERROR No Oembed')
@@ -95,18 +99,8 @@ export async function POST(req: NextRequest) {
               id: session!.user.id,
             },
           },
-          campaigns: {
-            connect: {
-              id: +campaignId,
-            },
-          },
         },
         update: {
-          campaigns: {
-            connect: {
-              id: +campaignId,
-            },
-          },
           users: {
             connect: {
               id: session!.user.id,
@@ -175,18 +169,21 @@ export async function POST(req: NextRequest) {
         create: {
           shortcode: shortcode,
           platform: 'instagram',
-          campaignId: +campaignId,
+          // campaignId: +campaignId,
           userId: session!.user.id,
           creatorId: creator.id,
           imageUrl: thumbnail_url,
           permalink: `https://www.instagram.com/p/${shortcode}/`,
+          caption: 'j',
         },
         update: {
           imageUrl: thumbnail_url,
-          campaignId: +campaignId,
+          // campaignId: +campaignId,
           userId: session!.user.id,
           creatorId: creator.id,
           permalink: `https://www.instagram.com/p/${shortcode}/`,
+          caption: `https://www.instagram.com/p/${shortcode}/`,
+
         },
       })
 
@@ -224,11 +221,7 @@ export async function POST(req: NextRequest) {
           name: oembed?.author_name,
           username: oembed?.author_unique_id!,
           platform: 'tiktok',
-          campaigns: {
-            connect: {
-              id: +campaignId,
-            },
-          },
+
           users: {
             connect: {
               id: session!.user.id,
@@ -237,11 +230,7 @@ export async function POST(req: NextRequest) {
         },
         update: {
           name: oembed?.author_name!,
-          campaigns: {
-            connect: {
-              id: +campaignId,
-            },
-          },
+
           users: {
             connect: {
               id: session!.user.id,
@@ -290,7 +279,7 @@ export async function POST(req: NextRequest) {
           create: {
             platform: 'tiktok',
             uuid: oembed.embed_product_id!,
-            campaignId: +campaignId,
+            // campaignId: +campaignId,
             userId: session!.user.id,
             permalink: `https://www.tiktok.com/@${oembed?.author_unique_id}/video/${oembed.embed_product_id!}`,
             creatorId: creator.id,
@@ -309,7 +298,7 @@ export async function POST(req: NextRequest) {
           },
           update: {
             uuid: oembed.embed_product_id!,
-            campaignId: +campaignId,
+            // campaignId: +campaignId,
             userId: session!.user.id,
             permalink: `https://www.tiktok.com/@${oembed?.author_unique_id}/video/${oembed.embed_product_id}`,
             creatorId: creator.id,

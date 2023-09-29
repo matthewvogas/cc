@@ -1,12 +1,12 @@
 'use client'
+import PostCard from '@/components/cards/test/posts/postCard'
+import { Posts } from '@/types/posts/PostByCampaignRes'
 import { Post } from '@/types/campaign/campaignRes'
 import InstagramData from './instagramData'
 import { Tab } from '@headlessui/react'
 import React, { useState } from 'react'
 import SocialCard from './socialCard'
 import { ptMono } from '@/app/fonts'
-import { Posts } from '@/types/posts/PostByCampaignRes'
-import PostCard from '@/components/cards/test/posts/postCard'
 
 type Props = {
   posts: any
