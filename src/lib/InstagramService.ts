@@ -121,7 +121,7 @@ export default class InstagramService {
           likesCount += value.value ?? 0
         }
         if (insight.name === 'impressions') {
-          impressionsCount += value.value ?? 0
+          impressionsCount += value.value
         }
         if (insight.name === 'reach') {
           reachCount += value.value ?? 0

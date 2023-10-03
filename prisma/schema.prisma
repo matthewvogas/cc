@@ -46,43 +46,57 @@ enum UserRole {
 }
 
 model User {
-  id            String     @id @default(cuid())
-  idFacebook    String?
-  idTiktok      String?
-  idInstagram   String?
-  name          String?
-  password      String?
-  email         String?    @unique
-  emailVerified DateTime?  @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  clients       Client[]
-  campaigns     Campaign[]
-  creators      Creator[]
-  posts         Post[]
-  stories       Story[]
-  role          UserRole?   @default(AGENCY)
+  id                String             @id @default(cuid())
+  idFacebook        String?
+  idTiktok          String?
+  idInstagram       String?
+  name              String?
+  password          String?
+  email             String?            @unique
+  emailVerified     DateTime?          @map("email_verified")
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  clients           Client[]
+  campaigns         Campaign[]
+  creators          Creator[]
+  posts             Post[]
+  stories           Story[]
+  role              UserRole?          @default(AGENCY)
   socialConnections SocialConnection[]
 
-  sentInvitations Invite[] @relation("SentInvitations")
-  receivedInvitations Invite[] @relation("ReceivedInvitations")
-  initiatedConnections Connection[] @relation("InitiatedConnections")
-  receivedConnections Connection[] @relation("ReceivedConnections")
+  sentInvitations      Invite[]         @relation("SentInvitations")
+  receivedInvitations  Invite[]         @relation("ReceivedInvitations")
+  initiatedConnections Connection[]     @relation("InitiatedConnections")
+  receivedConnections  Connection[]     @relation("ReceivedConnections")
+  instagramPages       instagramPages[] @relation("userIdInstagramPage")
 
   @@map("users")
 }
 
+model instagramPages {
+  id     String @id @default(cuid())
+  userId String
+
+  username            String
+  name                String
+  profile_picture_url String
+  followers_count     String
+  accountId           String
+  tokenId             String
+
+  user User @relation("userIdInstagramPage", fields: [userId], references: [id])
+}
 
 model Invite {
-  id          String      @id @default(cuid())
-  senderId    String
-  receiverId  String
-  status      InviteStatus
-  createdAt   DateTime    @default(now())
+  id         String       @id @default(cuid())
+  senderId   String
+  receiverId String
+  status     InviteStatus
+  createdAt  DateTime     @default(now())
 
-  sender      User        @relation("SentInvitations", fields: [senderId], references: [id])
-  receiver    User        @relation("ReceivedInvitations", fields: [receiverId], references: [id])
+  sender   User @relation("SentInvitations", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedInvitations", fields: [receiverId], references: [id])
 
   @@map("invites")
 }
@@ -94,13 +108,13 @@ enum InviteStatus {
 }
 
 model Connection {
-  id          String      @id @default(cuid())
-  userId1     String
-  userId2     String
-  createdAt   DateTime    @default(now())
+  id        String   @id @default(cuid())
+  userId1   String
+  userId2   String
+  createdAt DateTime @default(now())
 
-  user1       User        @relation("InitiatedConnections", fields: [userId1], references: [id])
-  user2       User        @relation("ReceivedConnections", fields: [userId2], references: [id])
+  user1 User @relation("InitiatedConnections", fields: [userId1], references: [id])
+  user2 User @relation("ReceivedConnections", fields: [userId2], references: [id])
 
   @@map("connections")
 }
@@ -111,17 +125,19 @@ enum SocialPlatform {
   INSTAGRAM
   PINTEREST
 }
+
 model SocialConnection {
-  id       String      @id @default(cuid())
-  user     User        @relation(fields: [userId], references: [id])
-  userId   String
-  platform SocialPlatform
-  token    String?
+  id           String         @id @default(cuid())
+  user         User           @relation(fields: [userId], references: [id])
+  userId       String
+  platform     SocialPlatform
+  token        String?
   refreshToken String?
-  longToken String?  
-  
-  creators  Creator[]
+  longToken    String?
+
+  creators Creator[]
 }
+
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -132,23 +148,23 @@ model VerificationToken {
 }
 
 model Creator {
-  id             Int            @id @default(autoincrement())
-  name           String?
-  uuid           String?
-  imageUrl       String?        @map("image_url")
-  status         CreatorStatus?
-  username       String
-  platform       String
-  campaigns      Campaign[]
-  clients        Client[]
-  posts          Post[]
-  stories        Story[]
-  users          User[]
-  followersCount Int?           @map("followers_count")
-  accessToken    String?        @map("access_token")
-  refreshToken   String?        @map("refresh_token")
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id                Int                @id @default(autoincrement())
+  name              String?
+  uuid              String?
+  imageUrl          String?            @map("image_url")
+  status            CreatorStatus?
+  username          String
+  platform          String
+  campaigns         Campaign[]
+  clients           Client[]
+  posts             Post[]
+  stories           Story[]
+  users             User[]
+  followersCount    Int?               @map("followers_count")
+  accessToken       String?            @map("access_token")
+  refreshToken      String?            @map("refresh_token")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
   socialConnections SocialConnection[]
 
   @@unique([username, platform])
