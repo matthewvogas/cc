@@ -18,12 +18,8 @@ const links = [
     name: 'campaigns',
   },
   {
-    href: '/dashboard/agencies',
-    name: 'agencies',
-  },
-  {
     href: '/dashboard/invitations',
-    name: 'invitations',
+    name: 'agencies',
   },
   {
     href: '/dashboard/portfolio',
@@ -37,10 +33,7 @@ const links = [
     href: '/privacy',
     name: 'policies',
   },
-  {
-    href: '/dashboard/socialData',
-    name: 'my social data',
-  },
+
 ]
 
 // Show Arrays

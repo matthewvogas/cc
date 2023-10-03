@@ -95,15 +95,6 @@ export default function AgenciesDashBoard({
 
   return (
     <>
-      <TitlePage
-        title={'Agencies'}
-        moduleText={'agencies'}
-        client={''}
-        clientsFallback={null}
-        campaignsFallback={null}
-        setSort={setSort}
-      />
-
       <div className='flex flex-col bg-white'>
         <div className='flex px-12 gap-3 items-start justify-between overflow-x-auto mt-8'>
           <div className=' flex gap-3'>

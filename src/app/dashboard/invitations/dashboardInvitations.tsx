@@ -5,13 +5,16 @@ import { Tab } from '@headlessui/react'
 import Connections from '@/components/settings/Connections'
 import backgroundImage from 'public/assets/creatorRegister/Rectangle66.jpg'
 import Image from 'next/image'
+import AgenciesDashBoard from '@/components/dashboards/influencer/AgenciesDashBoard'
 
 type Props = {
   invites: any
   session: any
+  agenciesConnections: any
+  agency: any
 }
 
-export default function PortfolioTabs({ invites, session }: Props) {
+export default function PortfolioTabs({ invites, session, agenciesConnections, agency }: Props) {
   const [creadorId, setCreadorId] = useState('')
   const [inviteId, setInviteId] = useState('')
   const [status, setStatus] = useState('')
@@ -57,7 +60,11 @@ export default function PortfolioTabs({ invites, session }: Props) {
   const tabs: TabItem[] = [
     {
       label: 'Accepted',
-      content: <div></div>,
+      content: (
+        <div>
+          <AgenciesDashBoard agenciesConnections={agenciesConnections} agency={agency} session={session.user.id} />
+        </div>
+      ),
     },
     {
       label: 'Pending',

@@ -64,7 +64,7 @@ export default function Collect({ posts, instagramPages }: Props) {
         setErrorPage('')
       }
 
-      const res = await fetch('/api/collect', {
+      const res = await fetch('/api/collectPosts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,10 +104,6 @@ export default function Collect({ posts, instagramPages }: Props) {
 
   const tabs: TabItem[] = [
     {
-      label: 'All posts',
-      content: <div></div>,
-    },
-    {
       label: 'Instagram ',
       content: (
         <div className='mt-8'>
@@ -136,7 +132,7 @@ export default function Collect({ posts, instagramPages }: Props) {
               <button onClickCapture={handlePages}>
                 <label
                   htmlFor='my-modal-3'
-                  className={`${ptMono.className} rounded-lg bg-[#D3F0E2] px-8 py-2`}>
+                  className={`${ptMono.className} rounded-full cursor-pointer border px-8 py-4`}>
                   {'collect'}
                 </label>
               </button>
@@ -189,10 +185,10 @@ export default function Collect({ posts, instagramPages }: Props) {
                     <hr className=' h-px bg-gray-200 my-8'></hr>
 
                     <div className='text-right'>
-                      <button onClickCapture={handleLinksSubmit}>
+                      <button className='cursor-pointer' onClickCapture={handleLinksSubmit}>
                         <label
                           htmlFor='my-modal-3'
-                          className={`${ptMono.className} rounded-xl bg-[#D3F0E2] px-8 py-3`}>
+                          className={`${ptMono.className} cursor-pointer rounded-xl bg-[#D3F0E2] px-8 py-3`}>
                           {'collect'}
                         </label>
                       </button>
