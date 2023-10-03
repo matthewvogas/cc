@@ -14,8 +14,6 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { RegisterNextButton } from '@/app/onboarding/agency/registerNextButton'
 import email from 'next-auth/providers/email'
 import { Pagination } from 'swiper/modules'
-import { ToastContainer, toast } from 'react-toastify'
-
 import slideiamahe from 'public/assets/register/flowSignUp/signup5.jpg'
 
 import 'swiper/css'
@@ -23,7 +21,6 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Session } from 'inspector'
 import { any } from 'zod'
-import { Toast } from 'react-toastify/dist/components'
 
 // import './swiper.css'
 type Props = {
@@ -48,7 +45,6 @@ export default function AgenciesDashBoard({
   const [sort, setSort] = React.useState('')
   const [inputSearchValue, setInputSearchValue] = useState('')
   const [agenciesSelected, setAgenciesSelected] = useState<User>()
-  const notify = () => toast('YOOOOUUU')
 
   const filteredAgenciesSearch = agency?.filter((creator: any) => {
     const AgenciesNameMatches = creator.name
@@ -241,9 +237,16 @@ export default function AgenciesDashBoard({
                           <p>{agenciesSelected?.name}</p>
                           <div className='divider '></div>
                           <div>
+                            {/* {socialConnection == null ? (
+
                             <button className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
                               Connect to Instagram
                             </button>
+
+                            ) :
+                            (
+                              already connected
+                            )} */}
                           </div>
                         </div>
                       </div>
