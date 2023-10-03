@@ -3,17 +3,16 @@ import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import db from '@/lib/db'
 
-export async function POST(req: Request) {
+export async function POST(req: Request, res: Response) {
+  console.log('ENTRANDOOOOOOOOOOOO')
+
   try {
-    const session = await getServerSession(authOptions)
+    const { userId1, userId2 } = await req.json()
 
-    const { agencyId, creatorId } = await req.json()
-
-    const invite = await db.invite.create({
+    const invite = await db.connection.create({
       data: {
-        senderId: agencyId,
-        receiverId: creatorId,
-        status: 'PENDING',
+        userId1: userId1,
+        userId2: userId2,
       },
     })
 

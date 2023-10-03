@@ -11,9 +11,10 @@ import Link from 'next/link'
 import React from 'react'
 import { Dialog } from '@headlessui/react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { RegisterNextButton } from '@/app/onboarding/registerNextButton'
+import { RegisterNextButton } from '@/app/onboarding/agency/registerNextButton'
 import email from 'next-auth/providers/email'
 import { Pagination } from 'swiper/modules'
+import { ToastContainer, toast } from 'react-toastify'
 
 import slideiamahe from 'public/assets/register/flowSignUp/signup5.jpg'
 
@@ -22,6 +23,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Session } from 'inspector'
 import { any } from 'zod'
+import { Toast } from 'react-toastify/dist/components'
 
 // import './swiper.css'
 type Props = {
@@ -46,6 +48,7 @@ export default function AgenciesDashBoard({
   const [sort, setSort] = React.useState('')
   const [inputSearchValue, setInputSearchValue] = useState('')
   const [agenciesSelected, setAgenciesSelected] = useState<User>()
+  const notify = () => toast('YOOOOUUU')
 
   const filteredAgenciesSearch = agency?.filter((creator: any) => {
     const AgenciesNameMatches = creator.name
@@ -139,7 +142,7 @@ export default function AgenciesDashBoard({
                   ✕
                 </label>
 
-                <div className='w-auto h-[580px]  flex flex-col items-center bg-headerMenu'>
+                <div className='w-auto h-[580px] flex flex-col items-center bg-headerMenu'>
                   <div className='flex flex-col items-center mt-10 w-80 '>
                     <span className=' text-2xl'>🥥</span>
                     <h2 className='text-2xl font-bold'>Get connected</h2>
@@ -165,7 +168,7 @@ export default function AgenciesDashBoard({
 
                 <Swiper
                   pagination={{
-                    type: 'progressbar',
+                    type: 'fraction',
                   }}
                   slidesPerView={1}
                   modules={[Pagination]}
@@ -176,22 +179,29 @@ export default function AgenciesDashBoard({
                   <SwiperSlide style={{ borderRadius: '10px' }}>
                     <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
                       <div className=''>
-                        <span>Let's find you a new agency</span>
+                        <span>{`Let's find you a new agency`}</span>
                         <div className='mt-4'>
                           <div className='dropdown'>
-                            <Search
-                              inputSearchValue={inputSearchValue}
-                              setInputSearchValue={setInputSearchValue}
-                            />
+                            <div className='flex items-center gap-5'>
+                              <Search
+                                inputSearchValue={inputSearchValue}
+                                setInputSearchValue={setInputSearchValue}
+                              />
+                              <p className='bg-[#F1EFEA] rounded-full p-3 px-5'>
+                                {agenciesSelected?.name}
+                              </p>
+                            </div>
+
                             <div
                               className={` mt-4   bg-white ${ptMono.className}`}>
                               <div className=''>
                                 <div className='gap-2'>
-                                  <p>{agenciesSelected?.id}</p>
+                                  {/* <p>{agenciesSelected?.id}</p> */}
                                   {filteredAgenciesSearch
-                                    .slice(0, 1)
+                                    .slice(0, 2)
                                     .map((agency: any, index: any) => (
                                       <button
+                                        className='mr-10 hover:bg-[#F1EFEA] rounded-lg p-3'
                                         key={index}
                                         onClick={() => {
                                           setAgenciesSelected(agency)
@@ -214,8 +224,33 @@ export default function AgenciesDashBoard({
                       </div>
 
                       <RegisterNextButton
+                        onClickCapture={() => {}}
+                        className={`w-1/5 self-center rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
+                        next
+                      </RegisterNextButton>
+                    </div>
+                  </SwiperSlide>
+
+                  <SwiperSlide style={{ borderRadius: '10px' }}>
+                    <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
+                      <div>
+                        <div>
+                          <h2 className='font-bold text-lg'>
+                            {`We're connecting you to`}
+                          </h2>
+                          <p>{agenciesSelected?.name}</p>
+                          <div className='divider '></div>
+                          <div>
+                            <button className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
+                              Connect to Instagram
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <RegisterNextButton
                         onClickCapture={() => {
-                          sendInvite()
+                          // handlePositionSlide()
                         }}
                         className={`w-1/5 self-center rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
                         next
@@ -228,20 +263,51 @@ export default function AgenciesDashBoard({
                       <div>
                         <div>
                           <h2 className='font-bold text-lg'>
-                            We're connecting you to
+                            {`We're connecting you to`}
                           </h2>
                           <p>{agenciesSelected?.name}</p>
-                          <div className='divider'></div>
+                          <div className='divider '></div>
+                          <div>
+                            <button className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
+                              Connect to Tiktok
+                            </button>
+                          </div>
                         </div>
                       </div>
 
                       <RegisterNextButton
                         onClickCapture={() => {
                           // handlePositionSlide()
+                          sendInvite()
                         }}
                         className={`w-1/5 self-center rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
-                        next
+                        Send Invite!
                       </RegisterNextButton>
+                    </div>
+                  </SwiperSlide>
+
+                  <SwiperSlide style={{ borderRadius: '10px' }}>
+                    <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
+                      <div>
+                        <div>
+                          <h2 className='font-bold text-lg'>
+                            {`With that done, we will let {agenciesSelected?.name}
+                            's know 🥂`}
+                          </h2>
+                          <p>
+                            {`From now on, you don’t need to follow up about
+                            posting or send stats. <br />
+                            ${agenciesSelected?.name}'s will be able to see
+                            automatically. Isn’t that nice?`}
+                          </p>
+                        </div>
+                      </div>
+
+                      <label
+                        htmlFor='my-modal-3'
+                        className={`w-1/5 self-center rounded-full bg-[#F1EFEA] px-2 py-4 text-black text-center ${ptMono.className} `}>
+                        Done
+                      </label>
                     </div>
                   </SwiperSlide>
                 </Swiper>

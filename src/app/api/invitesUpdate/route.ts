@@ -1,19 +1,20 @@
+import db from '@/lib/db'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
-import db from '@/lib/db'
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions)
+    const { inviteId, status } = await req.json()
 
-    const { agencyId, creatorId } = await req.json()
+    console.log(inviteId) 
 
-    const invite = await db.invite.create({
+    const invite = await db.invite.update({
+      where: {
+        id: inviteId,
+      },
       data: {
-        senderId: agencyId,
-        receiverId: creatorId,
-        status: 'PENDING',
+        status: status,
       },
     })
 

@@ -25,6 +25,10 @@ const links = [
     href: '/privacy',
     name: 'Privacy Policy',
   },
+  {
+    href: '/dashboard/invitations',
+    name: 'Invitations',
+  },
 ]
 
 export default function Sidebar() {
