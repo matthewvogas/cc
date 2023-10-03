@@ -1,6 +1,6 @@
 import EmailsInput from '@/components/inputs/email'
 import { Dialog, Tab } from '@headlessui/react'
-import { inter, ptMono } from '@/app/fonts'
+import { inter } from '@/app/fonts'
 import React, { useState } from 'react'
 import Link from 'next/link'
 

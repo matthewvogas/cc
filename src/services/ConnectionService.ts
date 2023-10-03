@@ -56,7 +56,6 @@ export class ConnectionService {
     return connections
   }
 
-
   static async findManyTokensByUserId(userId1: string) {
     const connections = await db.connection.findMany({
       where: {
@@ -66,4 +65,12 @@ export class ConnectionService {
 
     return connections
   }
+}
+
+async function getAcceptedConnections() {
+  const acceptedConnections = await db.connection.findMany({
+    where: {},
+  })
+
+  return acceptedConnections
 }
