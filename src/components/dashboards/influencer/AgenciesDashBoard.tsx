@@ -27,6 +27,7 @@ type Props = {
   agenciesConnections: any
   agency: any
   session: any
+  instagramConnection: any
 }
 
 interface User {
@@ -39,6 +40,7 @@ export default function AgenciesDashBoard({
   agenciesConnections,
   agency,
   session,
+  instagramConnection,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [tagSelected, setSearchTags] = useState('')
@@ -154,9 +156,7 @@ export default function AgenciesDashBoard({
                 </div>
 
                 <Swiper
-                  pagination={{
-                    type: 'fraction',
-                  }}
+                  pagination={{ type: 'custom' }}
                   slidesPerView={1}
                   modules={[Pagination]}
                   allowTouchMove={false}
@@ -228,16 +228,17 @@ export default function AgenciesDashBoard({
                           <p>{agenciesSelected?.name}</p>
                           <div className='divider '></div>
                           <div>
-                            {/* {socialConnection == null ? (
-
-                            <button className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
-                              Connect to Instagram
-                            </button>
-
-                            ) :
-                            (
-                              already connected
-                            )} */}
+                            {instagramConnection == null ? (
+                              <a
+                                href='/api/oauth/connect/facebook'
+                                className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
+                                Connect to Instagram
+                              </a>
+                            ) : (
+                              <label className='bg-[#859991] p-5 px-20 text-white rounded-lg'>
+                                Already Connected
+                              </label>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -285,14 +286,14 @@ export default function AgenciesDashBoard({
                       <div>
                         <div>
                           <h2 className='font-bold text-lg'>
-                            {`With that done, we will let {agenciesSelected?.name}
-                            's know 🥂`}
+                            With that done, we will let {agenciesSelected?.name}
+                            &rsquo;s know 🥂
                           </h2>
                           <p>
-                            {`From now on, you don’t need to follow up about
+                            From now on, you don&rsquo;t need to follow up about
                             posting or send stats. <br />
-                            ${agenciesSelected?.name}'s will be able to see
-                            automatically. Isn’t that nice?`}
+                            {agenciesSelected?.name}&rsquo;s will be able to see
+                            automatically. Isn&rsquo;t that nice?
                           </p>
                         </div>
                       </div>

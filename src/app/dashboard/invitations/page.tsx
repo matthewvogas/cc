@@ -25,6 +25,7 @@ export default async function Invites() {
   return (
     <div>
       <PortfolioTabs
+        instagramConnection={InstagramConnection}
         invites={invites}
         session={session}
         agenciesConnections={connections}

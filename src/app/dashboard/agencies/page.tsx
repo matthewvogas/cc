@@ -21,7 +21,7 @@ export default async function AgenciesPage() {
   const InstagramConnection = await SocialConnectionService.findInstagramToken(
     String(session?.user.id),
   )
-  
+
   // esto retorna el token null, verificar si es null entonces mostrar el boton, si esta el token entonces mostrar que ya esta conectado
 
   const agencies = await UserService.findManyAgencies()
@@ -33,6 +33,7 @@ export default async function AgenciesPage() {
           agenciesConnections={connections}
           agency={agencies}
           session={session?.user?.id}
+          instagramConnection={InstagramConnection}
         />
       ) : (
         <p>Para acceder a esta seccion necesitas ser un creador - 404</p>
