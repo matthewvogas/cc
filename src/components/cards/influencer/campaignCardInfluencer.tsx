@@ -23,7 +23,7 @@ export default function CampaignCardIfluencer({
 }: Props) {
   const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
-  const postData = campaignsFallback[0].user1.campaigns
+  const postData = campaignsFallback[0]?.user1?.campaigns
 
   return (
     <>
@@ -37,8 +37,8 @@ export default function CampaignCardIfluencer({
       />
 
       <div className='bg-white flex overflow-x-auto gap-4 md:px-12'>
-        {postData.length > 0 ? (
-          postData.map((card: any, index: any) => {
+        {postData?.length > 0 ? (
+          postData?.map((card: any, index: any) => {
             return (
               <Link
                 href={`/dashboard/campaigns/${card.id}`}
