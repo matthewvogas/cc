@@ -12,9 +12,16 @@ type Props = {
   session: any
   agenciesConnections: any
   agency: any
+  instagramConnection: any
 }
 
-export default function PortfolioTabs({ invites, session, agenciesConnections, agency }: Props) {
+export default function PortfolioTabs({
+  invites,
+  session,
+  agenciesConnections,
+  agency,
+  instagramConnection,
+}: Props) {
   const [creadorId, setCreadorId] = useState('')
   const [inviteId, setInviteId] = useState('')
   const [status, setStatus] = useState('')
@@ -62,7 +69,12 @@ export default function PortfolioTabs({ invites, session, agenciesConnections, a
       label: 'Accepted',
       content: (
         <div>
-          <AgenciesDashBoard agenciesConnections={agenciesConnections} agency={agency} session={session.user.id} />
+          <AgenciesDashBoard
+            instagramConnection={instagramConnection}
+            agenciesConnections={agenciesConnections}
+            agency={agency}
+            session={session.user.id}
+          />
         </div>
       ),
     },

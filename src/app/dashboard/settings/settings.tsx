@@ -10,9 +10,14 @@ import { Tab } from '@headlessui/react'
 type Props = {
   posts: any
   instagramPages: any
+  InstagramConnection: any
 }
 
-export default function Settings({ posts, instagramPages }: Props) {
+export default function Settings({
+  posts,
+  instagramPages,
+  InstagramConnection,
+}: Props) {
   const tabs: TabItem[] = [
     {
       label: 'My data',
@@ -42,7 +47,7 @@ export default function Settings({ posts, instagramPages }: Props) {
       label: 'Connections',
       content: (
         <div>
-          <Connections />
+          <Connections InstagramConnection={InstagramConnection} />
         </div>
       ),
     },
@@ -70,7 +75,7 @@ export default function Settings({ posts, instagramPages }: Props) {
             </div>
           </div>
         </div>
-          <Tabs tabs={tabs} />
+        <Tabs tabs={tabs} />
       </div>
     </div>
   )
