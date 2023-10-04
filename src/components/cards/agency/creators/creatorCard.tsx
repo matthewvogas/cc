@@ -90,7 +90,7 @@ export default function CreatorRow({
     }
   })
 
-  const filteredCreators = connections.filter(
+  const filteredCreators = connections?.filter(
     (creator: CreatorsByCampaignRes) => {
       // console.log(creator)
 
@@ -149,7 +149,7 @@ export default function CreatorRow({
             </tr>
           </thead>
           <tbody>
-            {connections.map((creator: any, index: number) => (
+            {connections?.map((creator: any, index: number) => (
               <tr key={index} className={`text-sm ${ptMono.className} `}>
                 {comeFrom === 'campigns' && (
                   <>

@@ -87,7 +87,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
               <Link
                 href={`/dashboard/clients/${client.id || 1}`}
                 key={index}
-                className='h-80 min-w-[320px] w-80 border-gray-100 relative'>
+                className='h-80 min-w-[320px] mb-24 w-80 border-gray-100 relative'>
                 <Image
                   priority
                   className={`h-64 object-cover`}

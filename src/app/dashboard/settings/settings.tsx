@@ -8,22 +8,19 @@ import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 
 type Props = {
+  session: any
   posts: any
   instagramPages: any
-  InstagramConnection: any
+  instgramToken: any
 }
 
-export default function Settings({
-  posts,
-  instagramPages,
-  InstagramConnection,
-}: Props) {
+export default function Settings({ session, posts, instagramPages, instgramToken }: Props) {
   const tabs: TabItem[] = [
     {
       label: 'My data',
       content: (
         <div>
-          <Collect posts={posts} instagramPages={instagramPages} />
+          <Collect session={session} posts={posts} instagramPages={instagramPages} instgramToken={instgramToken} />
         </div>
       ),
     },

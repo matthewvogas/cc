@@ -8,8 +8,10 @@ import { instagramPages } from '@prisma/client'
 import Image from 'next/image'
 
 type Props = {
+  session: any
   posts: any
   instagramPages: any
+  instgramToken: any
 }
 
 type TabItem = {
@@ -51,7 +53,7 @@ function Tabs({ tabs }: TabsProps) {
   )
 }
 
-export default function Collect({ posts, instagramPages }: Props) {
+export default function Collect({ session, posts, instagramPages, instgramToken }: Props) {
   const [instagramPage, setInstagramPage] = useState('')
   const [errorPage, setErrorPage] = useState('')
 
@@ -71,6 +73,8 @@ export default function Collect({ posts, instagramPages }: Props) {
         },
         body: JSON.stringify({
           instagramPage: instagramPage,
+          instgramToken: instgramToken,
+          sessionId: session.user.id,
         }),
       })
 

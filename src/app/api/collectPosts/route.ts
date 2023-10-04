@@ -6,18 +6,16 @@ import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { InstagramPagesService } from '@/services/InstagramPagesService'
 
 export async function POST(req: NextRequest) {
+
+
   const session = await getServerSession(authOptions)
-  
-  const { instagramPage } = await req.json()
 
-  const page = await InstagramPagesService.findUnique(instagramPage) 
+  const { sessionId, instagramPage, instgramToken } = await req.json()
 
-  console.log('Page: ',instagramPage, page)
-
-  const token = await SocialConnectionService.findInstagramToken(session!.user.id)
+  const page = await InstagramPagesService.findUnique(instagramPage)
 
   const posts = await fetch(
-    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(engagement,comments,likes,impressions,reach,saved,shares,plays)&access_token=${token}&limit=2`,
+    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(engagement,comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}&limit=3`,
   ).then(res => res.json())
 
   interface PostData {
@@ -44,7 +42,11 @@ export async function POST(req: NextRequest) {
     video_views: number
   }
 
-  const postDataArray = extractPostData(posts.data)
+  const postDataArray = Array.isArray(posts.data)
+    ? extractPostData(posts.data)
+    : []
+
+  console.log(postDataArray)
 
   function extractPostData(data: any[]): PostData[] {
     const postArray: PostData[] = []
@@ -94,9 +96,10 @@ export async function POST(req: NextRequest) {
     return postArray
   }
 
-
-
   for (const post of postDataArray) {
+    console.log('------------------')
+    console.log(page[0].username)
+    console.log('------------------')
 
     const creator = await db.creator.upsert({
       where: {
@@ -109,22 +112,24 @@ export async function POST(req: NextRequest) {
         followersCount: parseInt(page[0].followers_count),
         username: page[0].username,
         platform: 'instagram',
+        uuid: page[0].id,
         users: {
           connect: {
-            id: session!.user.id,
+            id: sessionId,
           },
         },
       },
       update: {
         followersCount: parseInt(page[0].followers_count),
+        uuid: page[0].id,
         users: {
           connect: {
-            id: session!.user.id,
+            id: sessionId,
           },
         },
       },
-    }) 
-   
+    })
+
     const postToSave = await db.post.upsert({
       where: {
         shortcode_platform: {
@@ -133,16 +138,15 @@ export async function POST(req: NextRequest) {
         },
       },
       create: {
-
         platform: 'instagram',
         permalink: post.permalink,
         shortcode: post.shortcode,
         imageUrl: post.thumbnail_url || post.media_url,
 
         // data
-        creatorId:creator.id,
+        creatorId: creator.id,
         caption: post.caption,
-        userId: session!.user.id,
+        userId: sessionId,
 
         // insighst
         engagementCount: post.engagement,
@@ -161,9 +165,9 @@ export async function POST(req: NextRequest) {
         imageUrl: post.thumbnail_url || post.media_url,
 
         // data
-        creatorId:creator.id,
+        creatorId: creator.id,
         caption: String(post.caption),
-        userId: session!.user.id,
+        userId: sessionId,
 
         // insighst
         engagementCount: post.engagement,
