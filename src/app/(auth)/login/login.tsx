@@ -94,11 +94,11 @@ export const Login = () => {
       </form>
 
       <div className='flex w-full gap-5 flex-col'>
-        <button
+        {/* <button
           onClick={async () => await signIn('instagram')}
           className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:opacity-80  '>
           <p>Log in with instagram</p>
-        </button>
+        </button> */}
         {/* <button
           onClick={async () => await signIn('tiktok')}
           className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
