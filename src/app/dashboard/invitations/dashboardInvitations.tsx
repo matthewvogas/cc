@@ -22,6 +22,7 @@ type Props = {
   creators: any
   campaigns: any
   connections: any
+  creatorInvites: any
 }
 
 export default function PortfolioTabs({
@@ -36,6 +37,7 @@ export default function PortfolioTabs({
   creators,
   campaigns,
   connections,
+  creatorInvites,
 }: Props) {
   const [creadorId, setCreadorId] = useState('')
   const [inviteId, setInviteId] = useState('')
@@ -60,14 +62,15 @@ export default function PortfolioTabs({
         }),
       })
 
-      if (res.status === 200) setLoading(false); console.log(res.status)
+      if (res.status === 200) setLoading(false)
+      console.log(res.status)
     } catch (error: any) {}
   }
 
   const handleChangeInviteStatus = async () => {
     try {
-    setLoading(true)
-    setdone(true)
+      setLoading(true)
+      setdone(true)
 
       const res = await fetch('/api/invitesUpdate', {
         method: 'POST',
@@ -79,8 +82,7 @@ export default function PortfolioTabs({
           status: status,
         }),
       })
-      if (res.status === 200) 
-      setLoading(false);
+      if (res.status === 200) setLoading(false)
       console.log(res.status)
     } catch (error) {}
   }
@@ -131,8 +133,14 @@ export default function PortfolioTabs({
               key={invite.id}
               className='border rounded-lg p-4 m-2 bg-white shadow-md flex justify-between items-center'>
               <div className='font-semibold'>
-                {invite.receiver.name} sent you an invitation
-                <div className='font-light'>Status: {done ? 'DONE' : 'PENDING'}</div>
+                {session.user.role === 'AGENCY' ? (
+                  <p> {invite.receiver.name} sent you an invitation </p>
+                ) : (
+                  <p> {invite.sender.name} sent you an invitation </p>
+                )}
+                <div className='font-light'>
+                  Status: {done ? 'DONE' : 'PENDING'}
+                </div>
               </div>
               <div className='mt-4'>
                 <button

@@ -117,7 +117,7 @@ export default function Collect({
 
   const tabs: TabItem[] = [
     {
-      label: 'Instagram ',
+      label: 'Instagram',
       content: (
         <div className='mt-8'>
           <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>

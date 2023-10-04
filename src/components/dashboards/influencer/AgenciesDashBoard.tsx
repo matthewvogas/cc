@@ -23,7 +23,7 @@ import { Session } from 'inspector'
 import { any } from 'zod'
 
 // import './swiper.css'
-type Props = {
+type Props = {  
   agenciesConnections: any
   agency: any
   session: any
@@ -145,7 +145,9 @@ export default function AgenciesDashBoard({
                     </label>
                     <label
                       htmlFor=''
-                      className={`bg-white px-9 py-5 rounded-full ${SecondStep == true ? '' : 'bg-opacity-40'}`}>
+                      className={`bg-white px-9 py-5 rounded-full ${
+                        SecondStep == true ? '' : 'bg-opacity-40'
+                      }`}>
                       2. Connect Instagram
                     </label>
                     {/* <label
