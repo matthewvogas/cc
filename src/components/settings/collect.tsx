@@ -168,7 +168,7 @@ export default function Collect({
                   <div className={`w-full justify-start `}>
                     <p className={` pb-6 text-xs text-[#7F7F7F] mt-2`}>
                       You can upload the content of your accounts one account at
-                      a time
+                      a time, reload the page if you don't see new pages
                     </p>
 
                     <div className='flex flex-col justify-start items-start gap-4'>
