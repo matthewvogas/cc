@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest, res: NextResponse) {
 
   const FACEBOOK_GRAPH_VERSION = process.env.FACEBOOK_GRAPH_VERSION
-  const redirectURL = 'http://localhost:3000/api/oauth/connect/facebookcb/'
+  const redirectURL = 'https://dev.codecoco.co/api/oauth/connect/facebookcb/'
   const client_id = process.env.FACEBOOK_CLIENT_ID;
   const response_type = 'code';
 

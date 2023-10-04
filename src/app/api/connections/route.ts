@@ -47,7 +47,7 @@ export async function POST(req: Request, res: Response) {
     console.log('TOKEN:', instgramToken)
 
     for (const instagramPage of instagramPages!) {
-      const res = await fetch('http://localhost:3000/api/collectPosts', {
+      const res = await fetch('https://dev.codecoco.co/api/collectPosts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

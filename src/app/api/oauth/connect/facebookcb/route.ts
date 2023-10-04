@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
   const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
-  const redirect_uri = 'http://localhost:3000/api/oauth/connect/facebookcb/'
+  const redirect_uri = 'https://dev.codecoco.co/api/oauth/connect/facebookcb/'
 
   const facebookResponse = await fetch(
     `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${FACEBOOK_CLIENT_ID}&redirect_uri=${redirect_uri}&client_secret=${FACEBOOK_CLIENT_SECRET}&code=${code}`,
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     `https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_VERSION}/oauth/access_token?grant_type=fb_exchange_token&client_id=${FACEBOOK_CLIENT_ID}&client_secret=${FACEBOOK_CLIENT_SECRET}&fb_exchange_token=${facebookResponse.access_token}`,
   ).then(res => res.json())
 
-  const succes = 'http://localhost:3000/'
+  const succes = 'https://dev.codecoco.co/'
 
   const session = await getServerSession(authOptions)
 
