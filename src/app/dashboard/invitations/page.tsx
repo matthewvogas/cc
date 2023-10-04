@@ -1,4 +1,4 @@
-import { getPendingInvitationsbyUserId } from '@/services/InviteServices'
+import { InviteService } from '@/services/InviteServices'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import PortfolioTabs from './dashboardInvitations'
 import { getServerSession } from 'next-auth'
@@ -6,16 +6,19 @@ import { ConnectionService } from '@/services/ConnectionService'
 import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { UserService } from '@/services/UsersService'
 import { ClientsService } from '@/services/ClientsServices'
-import { CreatorsService } from '@/services/CreatorsService'
-import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CampaignsService } from '@/services/CampaignsService'
 
 export default async function Invites() {
-  
   const session = await getServerSession(authOptions)
 
-  const invites = await getPendingInvitationsbyUserId(session!.user!.id)
+  const invites = await InviteService.getPendingInvitationsbyUserId(
+    session!.user!.id,
+  )
+  const creatorInvites = await InviteService.getPendingInvitationsbyCreatorId(
+    session!.user!.id,
+  )
+
   const connections = await ConnectionService.findManyByUserId(
     String(session?.user.id),
   )
@@ -27,7 +30,9 @@ export default async function Invites() {
 
   const user = await UserService.findUnique(String(session?.user.id))
 
-  const userCreators = await ConnectionService.findManyByUserIdFromAgency(String(session?.user.id))
+  const userCreators = await ConnectionService.findManyByUserIdFromAgency(
+    String(session?.user.id),
+  )
 
   const creators = await UserService.findManyCreators()
 
@@ -37,19 +42,41 @@ export default async function Invites() {
 
   return (
     <div>
-      <PortfolioTabs
-        instagramConnection={InstagramConnection}
-        invites={invites}
-        session={session}
-        agenciesConnections={userCreators}
-        agency={agencies}
-        clients={clients}
-        user={user}
-        userCreators={userCreators}
-        creators={creators}
-        campaigns={campaigns}
-        connections={connections}
-      />
+      {session?.user?.role === 'AGENCY' ? (
+        <PortfolioTabs
+          instagramConnection={InstagramConnection}
+          invites={invites}
+          session={session}
+          agenciesConnections={userCreators}
+          agency={agencies}
+          clients={clients}
+          user={user}
+          userCreators={userCreators}
+          creators={creators}
+          campaigns={campaigns}
+          connections={connections}
+          creatorInvites={creatorInvites}
+        />
+      ) : null}
+      {session?.user?.role === 'CREATOR' ? (
+        <PortfolioTabs
+          instagramConnection={InstagramConnection}
+          invites={creatorInvites}
+          session={session}
+          agenciesConnections={userCreators}
+          agency={agencies}
+          clients={clients}
+          user={user}
+          userCreators={userCreators}
+          creators={creators}
+          campaigns={campaigns}
+          connections={connections}
+          creatorInvites={creatorInvites}
+        />
+      ) : null}
     </div>
   )
+}
+function getPendingInvitationsbyCreatorId(id: string) {
+  throw new Error('Function not implemented.')
 }

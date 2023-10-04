@@ -33,17 +33,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const newSocialConnection = await db.socialConnection.create({
       data: {
         userId: userId,
-        platform: 'INSTAGRAM', 
-        token: longToken.access_token, 
-        refreshToken: null, 
-        longToken: null, 
+        platform: 'INSTAGRAM',
+        token: longToken.access_token,
+        refreshToken: null,
+        longToken: null,
       },
     })
 
     console.log('Succes:', newSocialConnection)
   } catch (error) {
     console.error('Error:', error)
-  } 
+  }
 
   return NextResponse.redirect(succes, { status: 302 })
 }
