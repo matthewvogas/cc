@@ -12,9 +12,9 @@ export default async function Page() {
   const instagramPages = await InstagramPagesService.findByUserId(
     session!.user?.id,
   )
-  const InstagramConnection = await SocialConnectionService.findInstagramToken(
+  const instagramConnection = await SocialConnectionService.findInstagram(
     String(session?.user.id),
   )
 
-  return <Settings session={session} posts={posts} instagramPages={instagramPages} instgramToken={instgramToken} />
+  return <Settings session={session} posts={posts} instagramPages={instagramPages} instgramToken={instgramToken} instagramConnection={instagramConnection}/>
 }

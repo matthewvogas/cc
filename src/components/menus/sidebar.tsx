@@ -18,16 +18,16 @@ const links = [
     name: 'Campaigns',
   },
   {
-    href: '/dashboard/creators',
+    href: '/dashboard/invitations',
     name: 'Creators',
   },
+  // {
+  //   href: '/dashboard/creators',
+  //   name: 'Creators',
+  // },
   {
     href: '/privacy',
     name: 'Privacy Policy',
-  },
-  {
-    href: '/dashboard/invitations',
-    name: 'Invitations',
   },
 ]
 

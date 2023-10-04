@@ -12,11 +12,7 @@ import Link from 'next/link'
 
 type Props = {
   user: any
-  campaignsFallback: (Campaign & {
-    _count: {
-      posts: number
-    }
-  })[]
+  campaignsFallback: any
   clientsFallback: any
 }
 
@@ -27,7 +23,7 @@ export default function CampaignCardIfluencer({
 }: Props) {
   const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
-  const postData = campaigns
+  const postData = campaignsFallback[0].user1.campaigns
 
   return (
     <>
@@ -56,11 +52,11 @@ export default function CampaignCardIfluencer({
                 />
                 <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
                   <div className='max-w-[200px] overflow-clip'>
-                    <h5 className='truncate font-medium text-base'>
+                    {/* <h5 className='truncate font-medium text-base'>
                       {card.name}
-                    </h5>
+                    </h5> */}
                     <div className='flex justify-center items-center flex-row'>
-                      <div className='flex mt-10 mb-10 justify-center mask mask-circle mr-8 h-50 w-50'>
+                      <div className='flex  justify-center mask mask-circle mr-8 h-50 w-50'>
                         <Image
                           priority
                           className={`h-12 w-12`}
@@ -70,7 +66,7 @@ export default function CampaignCardIfluencer({
                         />
                       </div>
                       <div className='-ml-5'>
-                        <span>with {user.name}</span>
+                        <span>{card.name}</span>
                       </div>
                     </div>
                   </div>
@@ -79,9 +75,9 @@ export default function CampaignCardIfluencer({
                 <hr className='h-px bg-gray-200'></hr>
                 <div className={`flex px-6 py-[14px] ${ptMono.className}`}>
                   <div className='flex justify-center items-center space-x-20'>
-                    <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                    {/* <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
                       {card?._count?.posts || 0} {`posts`}
-                    </h4>
+                    </h4> */}
 
                     <svg
                       xmlns='http://www.w3.org/2000/svg'

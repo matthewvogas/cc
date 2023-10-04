@@ -1,16 +1,13 @@
+import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import db from '@/lib/db'
-import { SocialConnectionService } from '@/services/SocialConnectionService'
 
 export async function POST(req: Request, res: Response) {
-  const session = await getServerSession(authOptions)
-
   try {
-    const { userId1, userId2 } = await req.json()
+    const { userId1, userId2, id } = await req.json()
 
-    // Busca un registro basado en userId1 y userId2
     const connection = await db.connection.findFirst({
       where: {
         userId1: userId1,
@@ -19,7 +16,6 @@ export async function POST(req: Request, res: Response) {
     })
 
     if (connection) {
-      // Si el registro existe, actualiza sus propiedades
       const updatedConnection = await db.connection.update({
         where: {
           id: connection.id,
@@ -32,7 +28,6 @@ export async function POST(req: Request, res: Response) {
 
       console.log('Registro actualizado:', updatedConnection)
     } else {
-
       const newConnection = await db.connection.create({
         data: {
           userId1: userId1,
@@ -40,7 +35,6 @@ export async function POST(req: Request, res: Response) {
         },
       })
 
-      // El registro ha sido creado
       console.log('Nuevo registro creado:', newConnection)
     }
 

@@ -21,10 +21,10 @@ const links = [
     href: '/dashboard/invitations',
     name: 'agencies',
   },
-  {
-    href: '/dashboard/portfolio',
-    name: 'portfolio',
-  },
+  // {
+  //   href: '/dashboard/portfolio',
+  //   name: 'portfolio',
+  // },
   {
     href: '/dashboard/settings',
     name: 'your account',

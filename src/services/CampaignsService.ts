@@ -28,7 +28,6 @@ export class CampaignsService {
 
     return campaigns
   }
-
   
   static async findManyByClient(
     client: number,

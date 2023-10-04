@@ -6,6 +6,9 @@ import Connections from '@/components/settings/Connections'
 import backgroundImage from 'public/assets/creatorRegister/Rectangle66.jpg'
 import Image from 'next/image'
 import AgenciesDashBoard from '@/components/dashboards/influencer/AgenciesDashBoard'
+import ClientsDashBoard from '@/components/dashboards/agency/ClientsDashBoard'
+import CreatorsDashBoard from '@/components/dashboards/agency/CreatorsDashboard'
+import Spinner from '@/components/loading/spinner'
 
 type Props = {
   invites: any
@@ -13,6 +16,12 @@ type Props = {
   agenciesConnections: any
   agency: any
   instagramConnection: any
+  clients: any
+  user: any
+  userCreators: any
+  creators: any
+  campaigns: any
+  connections: any
 }
 
 export default function PortfolioTabs({
@@ -21,13 +30,23 @@ export default function PortfolioTabs({
   agenciesConnections,
   agency,
   instagramConnection,
+  clients,
+  user,
+  userCreators,
+  creators,
+  campaigns,
+  connections,
 }: Props) {
   const [creadorId, setCreadorId] = useState('')
   const [inviteId, setInviteId] = useState('')
-  const [status, setStatus] = useState('')
+  const [status, setStatus] = useState('Accept')
+
+  const [loading, setLoading] = React.useState(false)
+  const [done, setdone] = React.useState(false)
 
   const handleAcceptInvite = async () => {
-    console.log(creadorId)
+    setLoading(true)
+    setdone(true)
 
     try {
       const res = await fetch('/api/connections', {
@@ -41,12 +60,15 @@ export default function PortfolioTabs({
         }),
       })
 
-      if (res.status === 200) console.log(res.status)
+      if (res.status === 200) setLoading(false); console.log(res.status)
     } catch (error: any) {}
   }
 
   const handleChangeInviteStatus = async () => {
     try {
+    setLoading(true)
+    setdone(true)
+
       const res = await fetch('/api/invitesUpdate', {
         method: 'POST',
         headers: {
@@ -57,24 +79,46 @@ export default function PortfolioTabs({
           status: status,
         }),
       })
-      if (res.status === 200) console.log(res.status)
+      if (res.status === 200) 
+      setLoading(false);
+      console.log(res.status)
     } catch (error) {}
   }
 
   const pendingInvitations = invites?.filter(
     (invite: any) => invite.status === 'PENDING',
   )
+
+  const uniqueInvitations = pendingInvitations.filter(
+    (invite: any, index: any, self: any) =>
+      index ===
+      self.findIndex(
+        (t: any) =>
+          t.userId1 === invite.userId1 && t.userId2 === invite.userId2,
+      ),
+  )
+
   const tabs: TabItem[] = [
     {
       label: 'Accepted',
       content: (
         <div>
-          <AgenciesDashBoard
-            instagramConnection={instagramConnection}
-            agenciesConnections={agenciesConnections}
-            agency={agency}
-            session={session.user.id}
-          />
+          {user.role == 'CREATOR' ? (
+            <AgenciesDashBoard
+              instagramConnection={instagramConnection}
+              agenciesConnections={connections}
+              agency={agency}
+              session={session.user.id}
+            />
+          ) : (
+            <CreatorsDashBoard
+              connectionsFallback={agenciesConnections}
+              campaignsFallback={campaigns}
+              creatorsFallback={creators}
+              userCreatorsFallback={userCreators}
+              session={session}
+            />
+          )}
         </div>
       ),
     },
@@ -82,13 +126,13 @@ export default function PortfolioTabs({
       label: 'Pending',
       content: (
         <div>
-          {pendingInvitations.map((invite: any) => (
+          {uniqueInvitations.map((invite: any) => (
             <div
               key={invite.id}
               className='border rounded-lg p-4 m-2 bg-white shadow-md flex justify-between items-center'>
               <div className='font-semibold'>
-                {invite.receiver.name} {inviteId} sent you an invitation
-                <div className='font-light'>Status: {invite.status}</div>
+                {invite.receiver.name} sent you an invitation
+                <div className='font-light'>Status: {done ? 'DONE' : 'PENDING'}</div>
               </div>
               <div className='mt-4'>
                 <button
@@ -101,19 +145,23 @@ export default function PortfolioTabs({
                   className='border text-black font-bold py-2 px-4 rounded mr-4'>
                   Decline
                 </button>
-                <button
-                  onClick={async () => {
-                    handleAcceptInvite()
-                    await handleChangeInviteStatus()
-                  }}
-                  onMouseOver={() => {
-                    setCreadorId(invite.receiver.id)
-                    setInviteId(invite.id)
-                    setStatus('ACCEPTED')
-                  }}
-                  className='border text-black font-bold py-2 px-4 rounded'>
-                  Accept
-                </button>
+                {loading ? (
+                  <Spinner width='w-4' height='h-4' border='border-2' />
+                ) : (
+                  <button
+                    onClick={async () => {
+                      handleAcceptInvite()
+                      await handleChangeInviteStatus()
+                    }}
+                    onMouseOver={() => {
+                      setCreadorId(invite.receiver.id)
+                      setInviteId(invite.id)
+                      setStatus('ACCEPTED')
+                    }}
+                    className='border text-black font-bold py-2 px-4 rounded'>
+                    Accept
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -136,7 +184,7 @@ export default function PortfolioTabs({
             <div>
               <div className=''>
                 <h1 className='pb-8 align-middle text-2xl font-semibold text-white'>
-                  {`Creator's you're connected with`}
+                  {`You're connected with`}
                 </h1>
               </div>
             </div>

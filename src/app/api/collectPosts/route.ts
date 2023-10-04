@@ -6,10 +6,6 @@ import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { InstagramPagesService } from '@/services/InstagramPagesService'
 
 export async function POST(req: NextRequest) {
-
-
-  const session = await getServerSession(authOptions)
-
   const { sessionId, instagramPage, instgramToken } = await req.json()
 
   const page = await InstagramPagesService.findUnique(instagramPage)
@@ -97,10 +93,6 @@ export async function POST(req: NextRequest) {
   }
 
   for (const post of postDataArray) {
-    console.log('------------------')
-    console.log(page[0].username)
-    console.log('------------------')
-
     const creator = await db.creator.upsert({
       where: {
         username_platform: {

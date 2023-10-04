@@ -54,7 +54,7 @@ export default function CampaignsDashBoardInfluencer({
   return (
     <>
       <TitlePage
-        title={'Your campaigns'}
+        title={'Your associated campaigns'}
         moduleText={'campaigns'}
         client={''}
         clientsFallback={null}
@@ -64,7 +64,8 @@ export default function CampaignsDashBoardInfluencer({
 
       <div className='flex justify-between items-center px-12 w-full'>
         <div className='w-full'>
-          <div className='flex gap-4'>
+          
+          {/* <div className='flex gap-4'>
             <button
               type='button'
               onClick={() => {
@@ -92,13 +93,13 @@ export default function CampaignsDashBoardInfluencer({
               className={`px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium whitespace-nowrap bg-beigeFirst`}>
               latest
             </button>
-          </div>
+          </div> */}
 
-          <FilterCampaignsContainer
+          {/* <FilterCampaignsContainer
             show={show}
             campaignsFallback={campaignsFallback}
             clientsFallback={null}
-          />
+          /> */}
         </div>
         <div className='mt-4'>
           {clientFilterSelected.length != 0 ? (
@@ -132,7 +133,7 @@ export default function CampaignsDashBoardInfluencer({
       <div className='flex flex-col bg-white pt-12'>
         <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
           {campaignsFallback.length > 0 ? (
-            campaignsFallback.map((card: any, index: any) => {
+            campaignsFallback[0].user1.campaigns.map((card: any, index: any) => {
               return (
                 <Link
                   href={`/dashboard/campaigns/${card.id}`}
@@ -146,12 +147,11 @@ export default function CampaignsDashBoardInfluencer({
                   />
                   <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
                     <div className='max-w-[200px] overflow-clip'>
-                      <h5 className='truncate font-medium text-base'>
-                        campaigns
-                        {/* on it */}
-                      </h5>
+                      {/* <h5 className='truncate font-medium text-base'>
+                      
+                      </h5> */}
                       <div className='flex justify-center items-center flex-row'>
-                        <div className='flex mt-10 mb-10 justify-center mask mask-circle mr-8 h-50 w-50'>
+                        <div className='flex  justify-center mask mask-circle mr-8 h-50 w-50'>
                           <Image
                             priority
                             className={`h-12 w-12`}
@@ -161,7 +161,7 @@ export default function CampaignsDashBoardInfluencer({
                           />
                         </div>
                         <div className='-ml-5'>
-                          <span>{card.user1.name}</span>
+                          <span>{card.name}</span>
                         </div>
                       </div>
                     </div>
@@ -170,9 +170,9 @@ export default function CampaignsDashBoardInfluencer({
                   <hr className='h-px bg-gray-200'></hr>
                   <div className={`flex px-6 py-[14px] ${ptMono.className}`}>
                     <div className='flex justify-center items-center space-x-20'>
-                      <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
+                      {/* <h4 className=' self-baseline rounded-full bg-white px-4 py-3 text-base'>
                         {card?._count?.posts || 0} {`posts`}
-                      </h4>
+                      </h4> */}
 
                       <svg
                         xmlns='http://www.w3.org/2000/svg'

@@ -1,9 +1,6 @@
 import AgenciesDashBoard from '@/components/dashboards/influencer/AgenciesDashBoard'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { CampaignsService } from '@/services/CampaignsService'
-import { CreatorsService } from '@/services/CreatorsService'
-import { ClientsService } from '@/services/ClientsServices'
-import { CampaignRes } from '@/types/campaign/campaignRes'
+
 import { getServerSession } from 'next-auth'
 import { ConnectionService } from '@/services/ConnectionService'
 import { UserService } from '@/services/UsersService'
@@ -11,18 +8,17 @@ import { SocialConnectionService } from '@/services/SocialConnectionService'
 
 export const dynamic = 'force-dynamic'
 
-export default async function AgenciesPage() {
+export default async function page() {
+
   const session = await getServerSession(authOptions)
 
-  const connections = await ConnectionService.findManyByUserId(
-    String(session?.user.id),
+  const connections = await ConnectionService.findManyByUserIdFromCreator(
+    String(session?.user.id)
   )
 
   const InstagramConnection = await SocialConnectionService.findInstagramToken(
-    String(session?.user.id),
+    String(session?.user.id)
   )
-
-  // esto retorna el token null, verificar si es null entonces mostrar el boton, si esta el token entonces mostrar que ya esta conectado
 
   const agencies = await UserService.findManyAgencies()
 

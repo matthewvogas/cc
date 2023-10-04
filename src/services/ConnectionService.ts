@@ -18,6 +18,7 @@ export class ConnectionService {
       include: {
         user1: {
           include: {
+            campaigns: true,
             socialConnections: true,
           },
         },
@@ -34,6 +35,29 @@ export class ConnectionService {
   }
 
   static async findManyByUserIdFromCreator(UserId: string) {
+    const connections = await db.connection.findMany({
+      where: {
+        userId2: UserId,
+      },
+      include: {
+        user1: {
+          include: {
+            campaigns: true,
+            socialConnections: true,
+          },
+        },
+        user2: {
+          include: {
+            campaigns: true,
+            socialConnections: true,
+          },
+        },
+      },
+    })
+
+    return connections
+  }
+  static async findManyByUserIdFromAgency(UserId: string) {
     const connections = await db.connection.findMany({
       where: {
         userId1: UserId,

@@ -46,12 +46,11 @@ export function CreatorStatus(state: any) {
   return (
     <>
       <div className='flex justify-start gap-2'>
-        <button
-          onClick={() => setIsOpen(true)}
-          className={`bg-${inviteStatus} flex gap-3 rounded-full px-8 py-3 text-sm text-black`}>
-          {inviteStatus === 'invite' ? 'invite' : 'invited'}{' '}
+        <label
+          className={`bg-${inviteStatus}  flex gap-3 rounded-full  py-3 text-sm text-black`}>
+          {inviteStatus === 'invite' ? 'connected' : 'invited'}{' '}
           {/* Mostrar "invite" o "invited" según el estado */}
-        </button>
+        </label>
       </div>
 
       <Dialog

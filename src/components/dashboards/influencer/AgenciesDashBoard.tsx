@@ -46,6 +46,7 @@ export default function AgenciesDashBoard({
   const [tagSelected, setSearchTags] = useState('')
   const [sort, setSort] = React.useState('')
   const [inputSearchValue, setInputSearchValue] = useState('')
+  const [SecondStep, setSecondStep] = useState(false)
   const [agenciesSelected, setAgenciesSelected] = useState<User>()
 
   const filteredAgenciesSearch = agency?.filter((creator: any) => {
@@ -144,14 +145,14 @@ export default function AgenciesDashBoard({
                     </label>
                     <label
                       htmlFor=''
-                      className='bg-white px-9 py-5 rounded-full bg-opacity-40'>
+                      className={`bg-white px-9 py-5 rounded-full ${SecondStep == true ? '' : 'bg-opacity-40'}`}>
                       2. Connect Instagram
                     </label>
-                    <label
+                    {/* <label
                       htmlFor=''
                       className='bg-white px-9 py-5 rounded-full bg-opacity-40 '>
                       3. Connect TikTok
-                    </label>
+                    </label> */}
                   </div>
                 </div>
 
@@ -211,8 +212,10 @@ export default function AgenciesDashBoard({
                       </div>
 
                       <RegisterNextButton
-                        onClickCapture={() => {}}
-                        className={`w-1/5 self-center rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
+                        onClickCapture={() => {
+                          setSecondStep(true)
+                        }}
+                        className={`w-1/5 self-end  rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
                         next
                       </RegisterNextButton>
                     </div>
@@ -222,11 +225,9 @@ export default function AgenciesDashBoard({
                     <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
                       <div>
                         <div>
-                          <h2 className='font-bold text-lg'>
-                            {`We're connecting you to`}
+                          <h2 className='font-bold text-lg mb-12'>
+                            {`We're connecting you to`} {agenciesSelected?.name}
                           </h2>
-                          <p>{agenciesSelected?.name}</p>
-                          <div className='divider '></div>
                           <div>
                             {instagramConnection == null ? (
                               <a
@@ -246,14 +247,15 @@ export default function AgenciesDashBoard({
                       <RegisterNextButton
                         onClickCapture={() => {
                           // handlePositionSlide()
+                          sendInvite()
                         }}
-                        className={`w-1/5 self-center rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
+                        className={`w-1/5 self-end rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
                         next
                       </RegisterNextButton>
                     </div>
                   </SwiperSlide>
 
-                  <SwiperSlide style={{ borderRadius: '10px' }}>
+                  {/* <SwiperSlide style={{ borderRadius: '10px' }}>
                     <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
                       <div>
                         <div>
@@ -261,7 +263,6 @@ export default function AgenciesDashBoard({
                             {`We're connecting you to`}
                           </h2>
                           <p>{agenciesSelected?.name}</p>
-                          <div className='divider '></div>
                           <div>
                             <button className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
                               Connect to Tiktok
@@ -279,7 +280,7 @@ export default function AgenciesDashBoard({
                         Send Invite!
                       </RegisterNextButton>
                     </div>
-                  </SwiperSlide>
+                  </SwiperSlide> */}
 
                   <SwiperSlide style={{ borderRadius: '10px' }}>
                     <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
@@ -289,7 +290,7 @@ export default function AgenciesDashBoard({
                             With that done, we will let {agenciesSelected?.name}
                             &rsquo;s know 🥂
                           </h2>
-                          <p>
+                          <p className='pt-4'>
                             From now on, you don&rsquo;t need to follow up about
                             posting or send stats. <br />
                             {agenciesSelected?.name}&rsquo;s will be able to see
@@ -300,7 +301,7 @@ export default function AgenciesDashBoard({
 
                       <label
                         htmlFor='my-modal-3'
-                        className={`w-1/5 self-center rounded-full bg-[#F1EFEA] px-2 py-4 text-black text-center ${ptMono.className} `}>
+                        className={`w-1/5 self-end rounded-full bg-[#F1EFEA] px-2 py-4 text-black text-center ${ptMono.className} `}>
                         Done
                       </label>
                     </div>
@@ -311,8 +312,8 @@ export default function AgenciesDashBoard({
           </div>
         </div>
         <div className='mt-12 flex gap-4 md:px-12 flex-wrap'>
-          {filteredAgencies.length > 0 ? (
-            filteredAgencies.map((agency: any, index: any) => (
+          {agenciesConnections.length > 0 ? (
+            agenciesConnections.map((agency: any, index: any) => (
               <Link
                 href={`/dashboard/agencies/${agency.id || 1}`}
                 key={index}
@@ -334,7 +335,7 @@ export default function AgenciesDashBoard({
             <div className='min-h-[250px] min-w-[250px] opacity-40  '>
               <div className='border border-gray-200 w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
                 <p className={` text-center text-base ${ptMono.className}`}>
-                  Create as many clients as you want and associate them to your
+                  Create as many agencies as you want and associate them to your
                   campaigns
                 </p>
               </div>

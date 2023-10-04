@@ -21,12 +21,14 @@ export default async function CampaignPage() {
     String(session?.user.id),
   )
 
+  const campaignsWithCreator = await ConnectionService.findManyByUserIdFromCreator(String(session?.user.id))
+
   return (
     <div>
       { session!.user.role == 'CREATOR' ?
       (
         <CampaignsDashBoardInfluencer
-          campaignsFallback={connections}
+          campaignsFallback={campaignsWithCreator}
           // creatorsFallback={creators}
         />
       )

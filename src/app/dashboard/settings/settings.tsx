@@ -12,9 +12,10 @@ type Props = {
   posts: any
   instagramPages: any
   instgramToken: any
+  instagramConnection: any
 }
 
-export default function Settings({ session, posts, instagramPages, instgramToken }: Props) {
+export default function Settings({ session, posts, instagramPages, instgramToken, instagramConnection }: Props) {
   const tabs: TabItem[] = [
     {
       label: 'My data',
@@ -24,38 +25,38 @@ export default function Settings({ session, posts, instagramPages, instgramToken
         </div>
       ),
     },
-    {
-      label: 'Account Settings',
-      content: (
-        <div>
-          <TwoTabsComponent />
-        </div>
-      ),
-    },
-    {
-      label: 'Portfolio',
-      content: (
-        <div>
-          <CreatorsPortfolio />
-        </div>
-      ),
-    },
+    // {
+    //   label: 'Account Settings',
+    //   content: (
+    //     <div>
+    //       <TwoTabsComponent />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   label: 'Portfolio',
+    //   content: (
+    //     <div>
+    //       <CreatorsPortfolio />
+    //     </div>
+    //   ),
+    // },
     {
       label: 'Connections',
       content: (
         <div>
-          <Connections InstagramConnection={InstagramConnection} />
+          <Connections InstagramConnection={instagramConnection} />
         </div>
       ),
     },
-    {
-      label: 'Subscription',
-      content: (
-        <div>
-          <Subscription />
-        </div>
-      ),
-    },
+    // {
+    //   label: 'Subscription',
+    //   content: (
+    //     <div>
+    //       <Subscription />
+    //     </div>
+    //   ),
+    // },
   ]
 
   return (

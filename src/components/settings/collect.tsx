@@ -6,6 +6,7 @@ import { ptMono } from '@/app/fonts'
 import Link from 'next/link'
 import { instagramPages } from '@prisma/client'
 import Image from 'next/image'
+import Spinner from '../loading/spinner'
 
 type Props = {
   session: any
@@ -53,7 +54,13 @@ function Tabs({ tabs }: TabsProps) {
   )
 }
 
-export default function Collect({ session, posts, instagramPages, instgramToken }: Props) {
+export default function Collect({
+  session,
+  posts,
+  instagramPages,
+  instgramToken,
+}: Props) {
+  const [loading, setLoading] = React.useState(false)
   const [instagramPage, setInstagramPage] = useState('')
   const [errorPage, setErrorPage] = useState('')
 
@@ -88,6 +95,7 @@ export default function Collect({ session, posts, instagramPages, instgramToken 
   }
 
   const handlePages = async () => {
+    setLoading(true)
     try {
       const res = await fetch('/api/pageList', {
         method: 'POST',
@@ -98,6 +106,7 @@ export default function Collect({ session, posts, instagramPages, instgramToken 
       })
 
       if (res.ok) {
+        setLoading(false)
       } else {
         console.log(200)
       }
@@ -119,10 +128,10 @@ export default function Collect({ session, posts, instagramPages, instgramToken 
         </div>
       ),
     },
-    {
-      label: 'Tiktok',
-      content: <div>{/* <InstagramData /> */}</div>,
-    },
+    // {
+    //   label: 'Tiktok',
+    //   content: <div>{/* <InstagramData /> */}</div>,
+    // },
   ]
 
   return (
@@ -153,7 +162,7 @@ export default function Collect({ session, posts, instagramPages, instgramToken 
 
                 <div className='px-10 py-8'>
                   <h3 className='text-xl font-bold'>
-                    Connect your Instagram Page to Codecoco
+                    Connect your Instagram Pages
                   </h3>
 
                   <div className={`w-full justify-start `}>
@@ -163,33 +172,39 @@ export default function Collect({ session, posts, instagramPages, instgramToken 
                     </p>
 
                     <div className='flex flex-col justify-start items-start gap-4'>
-                      {instagramPages.map(
-                        (page: instagramPages, index: number) => (
-                          <button
-                            onClick={() => {
-                              setInstagramPage(page.id)
-                            }}
-                            key={index}
-                            className={`${
-                              instagramPage == page.id ? 'bg-beigeFirst' : ''
-                            } flex gap-2 justify-center items-center pl-2 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-beigeFirst`}>
-                            <img
-                              width={40}
-                              height={40}
-                              src={page.profile_picture_url}
-                              alt={''}
-                              className='rounded-full border'
-                            />
-                            <p>{page.name}</p>
-                          </button>
-                        ),
+                      {loading ? (
+                        <Spinner width='w-4' height='h-4' border='border-2' />
+                      ) : (
+                        instagramPages.map(
+                          (page: instagramPages, index: number) => (
+                            <button
+                              onClick={() => {
+                                setInstagramPage(page.id)
+                              }}
+                              key={index}
+                              className={`${
+                                instagramPage == page.id ? 'bg-beigeFirst' : ''
+                              } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-beigeFirst`}>
+                              {/* <Image
+                                width={40}
+                                height={40}
+                                src={page.profile_picture_url}
+                                alt={''}
+                                className='rounded-full border'
+                              /> */}
+                              <p>{page.name}</p>
+                            </button>
+                          ),
+                        )
                       )}
                     </div>
 
                     <hr className=' h-px bg-gray-200 my-8'></hr>
 
                     <div className='text-right'>
-                      <button className='cursor-pointer' onClickCapture={handleLinksSubmit}>
+                      <button
+                        className='cursor-pointer'
+                        onClickCapture={handleLinksSubmit}>
                         <label
                           htmlFor='my-modal-3'
                           className={`${ptMono.className} cursor-pointer rounded-xl bg-[#D3F0E2] px-8 py-3`}>

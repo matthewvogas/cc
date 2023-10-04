@@ -87,10 +87,11 @@ export default function ActionalTitle({
           ) : null}
 
           {frome == 'statsCreators' ? (
-            <SharePortafolio userPositionId={userPositionId} stats={stats} />
+            // <SharePortafolio userPositionId={userPositionId} stats={stats} />
+            null
           ) : null}
 
-          {frome == 'stats' ? null : (
+          {frome == 'stats' || 'statsCreators' ? null : (
             <Link
               href={`/dashboard/${frome}`}
               className={`flex items-center bg-transparent border border-black mx-2 px-9 py-3 rounded-full text-black text-lg`}>

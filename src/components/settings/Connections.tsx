@@ -5,6 +5,19 @@ type Props = {
 }
 
 export default function Connections({ InstagramConnection }: Props) {
+  
+  const handleDelete = async () => {
+    const res = await fetch('/api/socialConnections', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: InstagramConnection.id
+      }),
+    })
+  }
+
   return (
     <div className='bg-[#FBFAF9]'>
       <div className='flex justify-between items-center text-sm font-medium px-8 py-8'>
@@ -17,44 +30,27 @@ export default function Connections({ InstagramConnection }: Props) {
         <div>
           <div className='flex mb-4'>Instagram</div>
           <div className='flex gap-4 '>
-            <p className='bg-[#F5F3F0] text-xs px-8 py-3 rounded-full font-normal'>
-              @milkbar.co
-            </p>
             {InstagramConnection == null ? (
               <a
                 target='_blank'
-                href='/api/oauth/connect/tiktok'
+                href='/api/oauth/connect/facebook'
                 className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
                 connect
               </a>
             ) : (
-              <label className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
-                connected
-              </label>
+              <div className='flex gap-4'>
+                <label className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
+                  connected
+                </label>
+                <button
+                  onClick={
+                    handleDelete
+                  }
+                  className='underline flex text-sm items-center'>
+                  Disconnected -
+                </button>
+              </div>
             )}
-            <p className='underline text-xs px-8 py-3 rounded-full opacity-20'>
-              disconnect
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <div className='flex mb-4'>Tiktok</div>
-          <div className='flex gap-4 '>
-            <p className='bg-[#F5F3F0] text-xs px-8 py-3 rounded-full font-normal'>
-              @milkbar.co
-            </p>
-
-            <a
-              target='_blank'
-              href='/api/oauth/connect/tiktok'
-              className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
-              connect
-            </a>
-
-            <p className='underline text-xs px-8 py-3 rounded-full opacity-20'>
-              disconnect
-            </p>
           </div>
         </div>
       </div>

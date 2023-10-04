@@ -10,14 +10,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function AgenciesCard({
-  clientsFallback,
+  agencies,
   campaignsFallback,
 }: {
-  clientsFallback: Client[]
+  agencies: any
   campaignsFallback: any
 }) {
-  const { clients, refreshClients, areClientsLoading, clientsError } =
-    useClients(clientsFallback)
 
   return (
     <>
@@ -26,27 +24,27 @@ export default function AgenciesCard({
         title={'Agencies you are connected with'}
         frome={'agencies'}
         campaigns={campaignsFallback}
-        clients={clientsFallback}
+        clients={agencies}
         userPositionId={0}
         stats={undefined}
       />{' '}
       <div className='flex overflow-x-auto gap-4 md:px-12 mb-12'>
-        {clients.length > 0 ? (
-          clients.map((card: Client, index: any) => (
+        {agencies.length > 0 ? (
+          agencies.map((agency: any, index: any) => (
             <Link
-              href={`/dashboard/clients/${card.id || 1}`}
+              href={`/dashboard/clients/${agency.id || 1}`}
               key={index}
               className='min-h-[250px] min-w-[250px]  '>
               <Image
                 priority
                 className={`h-64 object-cover`}
                 src={imageCover}
-                alt={card?.name || 'card'}
+                alt={agency.user1.name|| 'card'}
               />
               <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                 <p
                   className={`text-lg font-medium text-gray-800 ${inter.className}`}>
-                  {card.name}
+                  {agency.user1.name}
                 </p>
               </div>
             </Link>

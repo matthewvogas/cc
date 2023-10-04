@@ -14,6 +14,7 @@ import { UserService } from '@/services/UsersService'
 import Stats from '@/components/stats/agency/stats'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
+import { ConnectionService } from '@/services/ConnectionService'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,6 +32,12 @@ export default async function Home() {
   const totalReach = await PostsService.findReachFromAllPosts()
   const totalComments = await PostsService.findCommentsFromAllPosts()
   const engagementRate = await PostsService.findEngagementRateFromAllPosts()
+
+  const campaignsWithCreator = await ConnectionService.findManyByUserIdFromCreator(String(session?.user.id))
+
+  const connections = await ConnectionService.findManyByUserIdFromCreator(
+    String(session?.user.id)
+  )
 
   const stats = [
     {
@@ -79,25 +86,25 @@ export default async function Home() {
           <TitleDashboard title={'Welcome,'} user={session?.user!} />
           <CampaignCardIfluencer
             user={session?.user!}
-            campaignsFallback={campaigns}
+            campaignsFallback={campaignsWithCreator}
             clientsFallback={clients}
           />
           <AgenciesCard
-            clientsFallback={clients}
+            agencies={connections}
             campaignsFallback={campaigns}
           />
         </div>
         <div className='bg-beigeFirst'>
           <StatsCreator
-            campaignsFallback={campaigns}
-            clientsFallback={clients}
+            campaignsFallback={campaignsWithCreator}
+            agencies={connections}
             stats={stats}
             userPositionId={getUser}
             frome={'dashboard'}
           />
         </div>
 
-        <div>
+        {/* <div>
           <div className='w-full mt-9 pt-8 mb-8 flex justify-between items-center px-12'>
             <h3
               className={`self-center text-[18px] leading-[1.75rem] font-semibold text-gray-800`}>
@@ -118,13 +125,12 @@ export default async function Home() {
               </div>
             </div>
           </div>
-        </div>
-        <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+        </div> */}
+        {/* <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
           {campaigns[0]?.posts?.map((post: any, index: any) => (
             <PostCardTest key={index} post={post} />
           ))}
-        </div>
-        <div></div>
+        </div> */}
       </div>
     )
   } else if (session?.user.role === 'TESTER') {

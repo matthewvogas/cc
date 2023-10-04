@@ -38,8 +38,6 @@ export async function POST(req: NextRequest) {
       (accountData: any) => accountData.instagram_business_account,
     )
 
-  console.log(instagramBusinessAccounts)
-
   for (const page of instagramBusinessAccounts) {
 
     const pages = await db.instagramPages.upsert({

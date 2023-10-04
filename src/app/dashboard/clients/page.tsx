@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic'
 export default async function clients() {
   const session = await getServerSession(authOptions)
   const clients = await ClientsService.findMany(session!.user.id)
+  
 
   return <ClientsDashBoard clientsFallback={clients} />
 }

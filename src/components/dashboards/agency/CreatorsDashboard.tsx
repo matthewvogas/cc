@@ -16,6 +16,7 @@ import Link from 'next/link'
 import React from 'react'
 import FilterCreators from '../../filters/filtersCreators'
 import CreatorRow from '../../cards/agency/creators/creatorCard'
+import AddCreators from '@/components/modals/agency/addCreators'
 
 export default function CreatorsDashBoard({
   connectionsFallback,
@@ -62,17 +63,8 @@ export default function CreatorsDashBoard({
 
   return (
     <>
-      <TitlePage
-        title={'Creators'}
-        moduleText={'creators'}
-        client={''}
-        clientsFallback={null}
-        campaignsFallback={null}
-        setSort={null}
-      />
-
       <div className='flex h-full w-full flex-col gap-4 bg-white'>
-        <FilterCreators
+        {/* <FilterCreators
           campaigns={campaigns}
           socialActiveFilter={socialActiveFilter}
           setSocialActiveFilter={setSocialActiveFilter}
@@ -84,9 +76,11 @@ export default function CreatorsDashBoard({
           setSelectedCampaign={setSelectedCampaign}
           userCreators={userCreatorsFallback}
           session={session}
-        />
+        /> */}
+        <div className='flex justify-end mt-6 px-12'>
+          <AddCreators userCreators={creatorsFallback} session={session} />
+        </div>
 
-        {/* active social filter */}
         <div className='flex justify-start w-full gap-4 px-12'>
           {socialActiveFilter?.map((social: any, index: number) => (
             <div
@@ -179,7 +173,7 @@ export default function CreatorsDashBoard({
           search={''}
           creatorsFilter={filters}
           campaigns={campaignsFallback}
-          creators={creatorsFallback}
+          creators={userCreatorsFallback}
         />
       </div>
     </>

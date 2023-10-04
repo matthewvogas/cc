@@ -21,8 +21,8 @@ export default function AddCreators({ userCreators, session }: Props) {
   const [inputSearchValue, setInputSearchValue] = useState('')
   const [creatorSelected, setCreatorSelected] = useState('')
   const filteredCreators = userCreators.filter((creator: any) => {
-    const creatorNameMatches = creator.name
-      .toLowerCase()
+    const creatorNameMatches = creator?.name
+      ?.toLowerCase()
       .includes(inputSearchValue.toLowerCase())
     return creatorNameMatches
   })
@@ -42,6 +42,8 @@ export default function AddCreators({ userCreators, session }: Props) {
 
       if (res.status === 200) console.log(res.status)
     } catch (error: any) {}
+
+    setIsOpen(false)
   }
   return (
     <>
@@ -117,13 +119,15 @@ export default function AddCreators({ userCreators, session }: Props) {
                         setInputSearchValue={setInputSearchValue}
                       />
 
-                      <p>{creatorSelected}</p>
+
                       <div
                         tabIndex={0}
                         className={`dropdown-content rounded-box mt-2 w-auto border-2 border-gray-100 bg-white ${ptMono.className}`}>
                         <div className='p-6'>
                           <div className='gap-2 flex flex-col'>
-                            <span className='text-xs italic'>last clients</span>
+                            <span className='text-xs italic'>
+                              last creators
+                            </span>
                             {filteredCreators
                               .slice(0, 1)
                               .map((creator: any, index: any) => (
@@ -131,6 +135,7 @@ export default function AddCreators({ userCreators, session }: Props) {
                                   key={index}
                                   onClick={() => {
                                     setCreatorSelected(creator.id)
+                                    setInputSearchValue(creator.name)
                                   }}>
                                   {creator.name}
                                 </button>
@@ -140,26 +145,26 @@ export default function AddCreators({ userCreators, session }: Props) {
                       </div>
                     </div>
 
-                    <div className='flex items-center mt-6'>
+                    {/* <div className='flex items-center mt-6'>
                       <div className='w-full h-[1px] bg-gray-300'></div>
                       <p className='px-4'>or</p>
                       <div className='w-full h-[1px] bg-gray-300'></div>
-                    </div>
+                    </div> */}
 
-                    <p
+                    {/* <p
                       className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
                       Creator name
-                    </p>
-                    <div className='flex gap-2'>
+                    </p> */}
+                    {/* <div className='flex gap-2'>
                       <input
                         type='text'
                         id='default-input'
                         placeholder='name'
                         className={`w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 focus:outline-0 ${ptMono.className}`}
                       />
-                    </div>
+                    </div> */}
 
-                    <div className='flex gap-5'>
+                    {/* <div className='flex gap-5'>
                       <div className=' mt-4'>
                         <label
                           className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
@@ -184,13 +189,13 @@ export default function AddCreators({ userCreators, session }: Props) {
                           className=' mt-2 w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 outline-0'
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className='mt-6 text-right'>
                       <button
                         onClick={sendInvite}
                         className='rounded-full bg-active px-8 py-2 '>
-                        add
+                        Send
                       </button>
                     </div>
                     <hr className='my-8 h-px border-0 bg-gray-200'></hr>

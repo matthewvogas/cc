@@ -20,8 +20,8 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
   const [sort, setSort] = React.useState('')
   const [inputSearchValue, setInputSearchValue] = useState('')
 
-  const filteredClients = clients.filter((client: any) => {
-    const clientNameMatches = client.name
+  const filteredClients = clients?.filter((client: any) => {
+    const clientNameMatches = client?.name
       .toLowerCase()
       .includes(inputSearchValue.toLowerCase())
     const tagFilterIsActive = !tagSelected ? false : true
@@ -30,7 +30,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
     if (!tagSearchIsActive && !tagFilterIsActive) {
       return true
     } else if (tagFilterIsActive && tagSearchIsActive) {
-      const tagsMatch = client.tags.some(
+      const tagsMatch = client?.tags.some(
         (tag: { name: string }) => tag.name === tagSelected,
       )
       return clientNameMatches && tagsMatch
@@ -82,8 +82,8 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
           />
         </div>
         <div className='mt-12 flex gap-4 md:px-12 flex-wrap'>
-          {filteredClients.length > 0 ? (
-            filteredClients.map((client: any, index: any) => (
+          {filteredClients?.length > 0 ? (
+            filteredClients?.map((client: any, index: any) => (
               <Link
                 href={`/dashboard/clients/${client.id || 1}`}
                 key={index}
@@ -91,12 +91,12 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
                 <Image
                   priority
                   className={`h-64 object-cover`}
-                  src={client.image || imageCover}
-                  alt={client.name}
+                  src={client?.image || imageCover}
+                  alt={client?.name}
                 />
                 <div className='h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                   <p className={`text-lg font-medium text-gray-800`}>
-                    {client.name}
+                    {client?.name}
                   </p>
                 </div>
               </Link>

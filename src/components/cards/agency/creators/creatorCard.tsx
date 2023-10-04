@@ -41,7 +41,7 @@ export default function CreatorRow({
   search,
   searchByTag,
   creatorsFilter,
-}: Props) {
+}: Props) {  
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
   const [tags, setTags] = useState<string[]>([])
@@ -91,7 +91,7 @@ export default function CreatorRow({
   })
 
   const filteredCreators = connections?.filter(
-    (creator: CreatorsByCampaignRes) => {
+    (creator: any) => {
       // console.log(creator)
 
       if (creator.followersCount === undefined) {
