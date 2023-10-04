@@ -93,14 +93,13 @@ export const Login = () => {
         </div> */}
       </form>
 
-      {/* <div className='flex w-full gap-5 flex-col'>
+      <div className='flex w-full gap-5 flex-col'>
         <button
           onClick={async () => await signIn('instagram')}
-          className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:text-black hover:opacity-80  '>
-          <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
+          className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:opacity-80  '>
           <p>Log in with instagram</p>
         </button>
-        <button
+        {/* <button
           onClick={async () => await signIn('tiktok')}
           className=' flex h-14 w-full items-center justify-center rounded-full border border-white hover:text-black hover:opacity-80  '>
           <Image className={`mr-4 w-8`} src={TikTokIcon} alt={''} />
@@ -117,8 +116,8 @@ export const Login = () => {
           className=' flex h-14 w-full items-center justify-center gap-3 rounded-full border border-white hover:text-black hover:opacity-80  '>
           <Image className={`mr-4 w-8`} src={InstagramIcon} alt={''} />
           <p>Log in with github</p>
-        </button>
-      </div> */}
+        </button> */}
+      </div>
       <hr className='my-7 h-px w-full rounded-r-full bg-white opacity-50' />
 
       <div className='flex w-full flex-col gap-4 justify-center px-4'>
