@@ -209,7 +209,7 @@ export default function FilterCreators({
           </div>
         </div>
         <div>
-          <AddCreators userCreators={userCreators} session={session} />
+          {/* <AddCreators userCreators={userCreators} session={session} /> */}
         </div>
       </div>
     </>

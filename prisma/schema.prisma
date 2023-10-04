@@ -85,6 +85,7 @@ model instagramPages {
   accountId           String
   tokenId             String
 
+  socialConnection SocialConnection[]
   user User @relation("userIdInstagramPage", fields: [userId], references: [id])
 }
 
@@ -134,6 +135,7 @@ model SocialConnection {
   token        String?
   refreshToken String?
   longToken    String?
+  instagramPages    instagramPages[]
 
   creators Creator[]
 }
