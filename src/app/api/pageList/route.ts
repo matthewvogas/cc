@@ -8,8 +8,9 @@ import { SocialConnectionService } from '@/services/SocialConnectionService'
 
 export async function POST(req: NextRequest) {
   
-  const session = await getServerSession(authOptions)
-  const token = await SocialConnectionService.findInstagramToken(session!.user.id)
+  const { userId } = await req.json()  
+
+  const token = await SocialConnectionService.findInstagramToken(userId)
 
   interface InstagramBusinessAccount {
     username: string
@@ -33,12 +34,19 @@ export async function POST(req: NextRequest) {
     `https://graph.facebook.com/v18.0/me/?fields=accounts{instagram_business_account{username,name,profile_picture_url,followers_count,id}}&access_token=${token}`,
   ).then(res => res.json())
 
-  const instagramBusinessAccounts: InstagramBusinessAccount[] =
-    jsonData.accounts.data.map(
-      (accountData: any) => accountData.instagram_business_account,
-    )
+  const validAccounts = jsonData.accounts.data.filter((accountData: any) => 
+    accountData && 
+    accountData.instagram_business_account &&
+    accountData.instagram_business_account.id
+  );
+  
+  const instagramBusinessAccounts: InstagramBusinessAccount[] = validAccounts.map(
+    (accountData: any) => accountData.instagram_business_account
+  );
 
   for (const page of instagramBusinessAccounts) {
+
+    console.log(instagramBusinessAccounts)
 
     const pages = await db.instagramPages.upsert({
       where: {
@@ -46,7 +54,7 @@ export async function POST(req: NextRequest) {
       },
       create: {
         id: page.id,
-        userId: session!.user!.id,
+        userId: userId,
         username: page.username,
         name: page.name,
         profile_picture_url: page.profile_picture_url,
@@ -55,7 +63,7 @@ export async function POST(req: NextRequest) {
         tokenId: ''
       },
       update: {
-        userId: session?.user.id,
+        userId: userId,
         username: page.username,
         name: page.name,
         profile_picture_url: page.profile_picture_url,

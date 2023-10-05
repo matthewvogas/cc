@@ -94,27 +94,6 @@ export default function Collect({
     }
   }
 
-  const handlePages = async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/pageList', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-      })
-
-      if (res.ok) {
-        setLoading(false)
-      } else {
-        console.log(200)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   const tabs: TabItem[] = [
     {
       label: 'Instagram',
@@ -142,13 +121,11 @@ export default function Collect({
           <div>
             <div className='flex'>
               <p className='mr-4'>{errorPage}</p>
-              <button onClickCapture={handlePages}>
-                <label
-                  htmlFor='my-modal-3'
-                  className={`${ptMono.className} rounded-full cursor-pointer border px-8 py-4`}>
-                  {'collect'}
-                </label>
-              </button>
+              <label
+                htmlFor='my-modal-3'
+                className={`${ptMono.className} rounded-full cursor-pointer border px-8 py-4`}>
+                {'collect'}
+              </label>
             </div>
 
             <input type='checkbox' id='my-modal-3' className='  modal-toggle' />
@@ -162,7 +139,7 @@ export default function Collect({
 
                 <div className='px-10 py-8'>
                   <h3 className='text-xl font-bold'>
-                    Connect your Instagram Pages
+                    Connect your commercial pages
                   </h3>
 
                   <div className={`w-full justify-start `}>

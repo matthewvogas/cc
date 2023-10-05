@@ -41,6 +41,27 @@ export async function GET(req: NextRequest, res: NextResponse) {
       },
     })
 
+    try {
+      const res = await fetch('http://localhost:3000/api/pageList', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId
+        }),
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        console.log('Data received:', data)
+      } else {
+        console.log('Error status:', res.status)
+      }
+    } catch (error) {
+      console.error('Fetch error:', error)
+    }
+
     console.log('Succes:', newSocialConnection)
   } catch (error) {
     console.error('Error:', error)
