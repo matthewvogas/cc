@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
   const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
-  const redirect_uri = 'https://dev.codecoco.co/api/oauth/connect/facebookcb' 
+  const redirect_uri = 'https://dev.codecoco.co/api/oauth/connect/facebookcb/' 
 
   const facebookResponse = await fetch(
     `https://graph.facebook.com/v17.0/oauth/access_token?client_id=${FACEBOOK_CLIENT_ID}&redirect_uri=${redirect_uri}&client_secret=${FACEBOOK_CLIENT_SECRET}&code=${code}`,
