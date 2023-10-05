@@ -65,6 +65,7 @@ export default function Collect({
   const [errorPage, setErrorPage] = useState('')
 
   const handleLinksSubmit = async () => {
+    setLoading(true)
     try {
       if (instagramPage === '') {
         console.log('sin paginas')
@@ -85,7 +86,8 @@ export default function Collect({
         }),
       })
 
-      if (res.ok) {
+      if (res.ok == true) {
+        setLoading(false)
       } else {
         console.log(200)
       }
@@ -100,6 +102,9 @@ export default function Collect({
       content: (
         <div className='mt-8'>
           <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+            {loading ? (
+              <Spinner width='w-4' height='h-4' border='border-2' />
+            ) : null}
             {posts?.map((post: any, index: any) => (
               <PostCard key={index} post={post} />
             ))}

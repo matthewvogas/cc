@@ -187,7 +187,6 @@ export async function POST(req: NextRequest) {
       console.log('-----------------------------')
     }
 
-    console.log(showPost, postToSave)
   }
 
   return NextResponse.json('ok')
