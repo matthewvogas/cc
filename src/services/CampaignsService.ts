@@ -1,7 +1,5 @@
 import db from '@/lib/db'
 
-//Service that the constructor get a session id
-
 export class CampaignsService {
   static async findMany(userId: string, limit?: number, offset?: number) {
     const campaigns = await db.campaign.findMany({
@@ -28,7 +26,7 @@ export class CampaignsService {
 
     return campaigns
   }
-  
+
   static async findManyByClient(
     client: number,
     limit?: number,
@@ -55,9 +53,6 @@ export class CampaignsService {
 
     return campaigns
   }
-  //Id creator 
-  // findMany
-
 
   static async findUnique(id: number) {
     const campaign = await db.campaign.findUnique({

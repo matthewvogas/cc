@@ -7,23 +7,22 @@ import Image from 'next/image'
 
 export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
   const router = useRouter()
-  const [name, setName] = useState(campaign.name)
+  const [campaignName, setCampaignName] = useState(campaign.name)
+  const [clientName, setClientName] = useState('') // Nuevo estado para el nombre del cliente
   const [description, setDescription] = useState(campaign.description)
   const [fetchError, setFetchError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleEdit = async (e: any) => {
-    e.preventDefault()
+  const handleEdit = async () => {
     try {
-      const res = await fetch('/api/campaigns', {
+      const res = await fetch(`/api/campaigns/${campaign.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name,
-          description,
-          id: campaign.id,
+          name: campaignName,
+          description: description,
         }),
       })
 
@@ -35,10 +34,18 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
 
   return (
     <div className={`mt-7 w-full justify-start`}>
-      <h5 className={`mb-2 text-xl font-medium px-12 ${inter.className}`}>
-        Campaign settings
-      </h5>
-
+      <div className='flex flex-row justify-between'>
+        <h5 className={`mb-2 text-xl font-medium px ml-12 ${inter.className}`}>
+          Campaign settings
+        </h5>
+        <button
+          className='mr-20 bg-[#D9F0F1] px-10 py-2 rounded-full'
+          onClick={() => {
+            handleEdit()
+          }}>
+          Update Information
+        </button>
+      </div>
       <div className='divider '></div>
 
       <form onSubmit={handleEdit} className='p-4 px-12 '>
@@ -48,19 +55,8 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
               <div className=''>
                 <label className={`text-sm`}>Campaign name</label>
                 <input
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  type='text'
-                  id='default-input'
-                  placeholder='Campaign Name'
-                  className={`mt-2 w-full rounded-lg border border-gray-300  p-3.5 px-6 text-base text-gray-900 focus:outline-0`}
-                />
-              </div>
-              <div className=''>
-                <label className={`text-sm`}>Client</label>
-                <input
-                  value={name}
-                  onChange={e => setName(e.target.value)}
+                  value={campaignName}
+                  onChange={e => setCampaignName(e.target.value)}
                   type='text'
                   id='default-input'
                   placeholder='Campaign Name'
@@ -106,26 +102,7 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
             </div>
           </div>
         </div>
-
-        {/*
-        <p className={`text-xm pb-2 pt-6 `}>add a cover image</p>
-        <div className='flex justify-between'>
-          <div>
-            <input
-              type='file'
-              id='default-input'
-              placeholder='#example'
-              className=' mt-2 w-full rounded-full border border-gray-300 bg-gray-50 p-2 px-6 text-sm text-gray-900 focus:outline-0'
-            />
-          </div>
-        </div> */}
       </form>
-
-      {/* <button
-        type='submit'
-        className='mr-6 w-72 rounded-full bg-green-200 px-8 py-2'>
-        save changes
-      </button> */}
     </div>
   )
 }

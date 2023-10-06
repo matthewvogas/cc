@@ -23,7 +23,7 @@ import { Session } from 'inspector'
 import { any } from 'zod'
 
 // import './swiper.css'
-type Props = {  
+type Props = {
   agenciesConnections: any
   agency: any
   session: any
