@@ -7,8 +7,8 @@ import { Tab } from '@headlessui/react'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import { useState } from 'react'
 import TitleSingleClient from '@/components/labels/titleSingleClient'
-import { useRouter } from 'next/router'
 import coverImage from 'public/assets/campaigns/coverImage.png'
+import { useRouter } from 'next/navigation'
 
 export default function ClientTabs({
   client,
@@ -18,11 +18,29 @@ export default function ClientTabs({
   campaigns: any
 }) {
   const [activeSocial, setActiveTab] = useState('Campaigns')
-
-  const [name, setName] = useState('campaign.name')
+  const router = useRouter()
+  const [name, setName] = useState(client.name)
   const [description, setDescription] = useState('campaign.description')
   const [fetchError, setFetchError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const handleUpdate = async () => {
+    try {
+      const res = await fetch(`/api/clients/${client.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+        }),
+      })
+
+      if (res.status === 200) router.refresh()
+    } catch (error: any) {
+      setFetchError(error?.message)
+    }
+  }
 
   return (
     <>
@@ -107,11 +125,21 @@ export default function ClientTabs({
 
             <Tab.Panel>
               <div className={`mt-7 w-full justify-start`}>
+                <div className='flex w-full justify-end px-14'>
+                  <button
+                    className='bg-[#D9F0F1] px-10 py-2 rounded-full'
+                    onClick={() => {
+                      handleUpdate()
+                    }}>
+                    Update Information
+                  </button>
+                </div>
                 <form className='p-4 px-12 '>
                   <div className='flex flex-col gap-6 mt-4'>
                     <div className='flex w-full gap-5 '>
                       <div className='flex flex-col gap-8 w-2/3'>
                         <div>
+                          <div></div>
                           <label className={`text-sm`}>Client name</label>
                           <input
                             value={name}
@@ -144,26 +172,9 @@ export default function ClientTabs({
                       <div className='w-2/3 flex gap-6 flex-col'></div>
                     </div>
                   </div>
-
-                  {/* <p className={`text-xm pb-2 pt-6 `}>add a cover image</p>
-                  <div className='flex justify-between'>
-                    <div>
-                      <input
-                        type='file'
-                        id='default-input'
-                        placeholder='#example'
-                        className=' mt-2 w-full rounded-full border border-gray-300 bg-gray-50 p-2 px-6 text-sm text-gray-900 focus:outline-0'
-                      />
-                    </div>
-                  </div> */}
-                </form>
-
-                {/* <button
-                  type='submit'
-                  className='mr-6 w-72 rounded-full bg-green-200 px-8 py-2'>
-                  save changes
-                </button> */}
+              </form>
               </div>
+              
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

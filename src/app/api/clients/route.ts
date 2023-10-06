@@ -8,9 +8,6 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions)
 
-    // if (!session)
-    //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-
     const clients = await ClientsService.findMany(session!.user.id)
     return NextResponse.json(clients)
   } catch (err) {
@@ -24,11 +21,9 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
-    // if (!session)
-    //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+
     const { name, email, tags } = await req.json()
 
-    // Check if the tags already exist in the database
     const existingTags = await db.tag.findMany({
       where: {
         name: {
@@ -37,7 +32,6 @@ export async function POST(req: Request) {
       },
     })
 
-    // Create any new tags that don't already exist
     const existingTagNames = existingTags.map(tag => tag.name)
     const newTags = tags.filter(
       (tag: string) => !existingTagNames.includes(tag),
@@ -46,7 +40,6 @@ export async function POST(req: Request) {
       data: newTags.map((tag: any) => ({ name: tag })),
     })
 
-    // Create the new client and associate the tags with it
     const client = await db.client.create({
       data: {
         userId: session!.user.id,
@@ -57,26 +50,6 @@ export async function POST(req: Request) {
         },
       },
     })
-
-    // Create the new client and associate the tags with it
-    // const client = await db.client.create({
-    //   data: {
-    //     userId: session!.user.id,
-    //     name,
-    //     email,
-    //     tags: {
-    //       create: [
-    //         {
-    //           tag: {
-    //             create: {
-    //               name: 'test',
-    //             }
-    //           }
-    //         }
-    //       ]
-    //     }
-    //   },
-    // })
 
     return NextResponse.json({ success: true })
   } catch (err: any) {
@@ -89,32 +62,24 @@ export async function POST(req: Request) {
     )
   }
 }
+export async function DELETE(req: Request) {
+  const session = await getServerSession(authOptions)
 
-
-export async function DELETE(req: Request){
-  try{
-
-    const session = await getServerSession(authOptions)
-
-    if(!session){
-      return NextResponse.json({error: "Unauthorized"}, {status: 401})
-    }
-    
+  try {
     await db.client.deleteMany({
-      where:{
-        userId: session!.user.id,
+      where: {
+        userId: session?.user.id,
       },
     })
 
-    return NextResponse.json({success: 'All clients deleted'})
-
-  } catch (err: any){
-   console.log(err)
-
-   return NextResponse.json(
-    {error: err.message},
-    {
-      status: 500,
-    })
+    return NextResponse.json({ success: 'All clients deleted' })
+  } catch (err: any) {
+    console.error('Error deleting all clients:', err)
+    return NextResponse.json(
+      { error: 'An error occurred while deleting all clients' },
+      {
+        status: 500,
+      },
+    )
   }
 }

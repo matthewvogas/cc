@@ -36,3 +36,48 @@ export async function DELETE(
     })
   }
 }
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  const { name, description } = await req.json()
+
+  try {
+    if (!name || !description) {
+      return NextResponse.json(
+        { error: 'Incomplete fields' },
+        {
+          status: 400,
+        },
+      )
+    }
+    const updatedCampaign = await db.campaign.update({
+      where: {
+        id: +params.id,
+      },
+      data: {
+        name: name,
+        description: description,
+      },
+    })
+
+    if (!updatedCampaign) {
+      return NextResponse.json(
+        { error: 'Campaign not found' },
+        {
+          status: 404,
+        },
+      )
+    }
+
+    return NextResponse.json({ success: 'Campaign Updated succesfully' })
+  } catch (err: any) {
+    return NextResponse.json(
+      { error: err.message },
+      {
+        status: 500,
+      },
+    )
+  }
+}
