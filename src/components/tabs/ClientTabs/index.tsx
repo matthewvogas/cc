@@ -172,9 +172,8 @@ export default function ClientTabs({
                       <div className='w-2/3 flex gap-6 flex-col'></div>
                     </div>
                   </div>
-              </form>
+                </form>
               </div>
-              
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

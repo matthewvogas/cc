@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import img from '/public/assets/creatorRegister/exampleImage.jpg'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
 import { ptMono } from '@/app/fonts'
 type Props = {
   tabs: any[]
+  session: any
+  user: any
 }
 
 function CustomTabs({ tabs }: Props) {
   const [activeTab, setActiveTab] = useState(0)
-
   const handleTabClick = (index: React.SetStateAction<number>) => {
     setActiveTab(index)
   }
@@ -36,7 +39,39 @@ function CustomTabs({ tabs }: Props) {
   )
 }
 
-export default function Settings() {
+export default function Settings({ session, user }: Props) {
+  const [name, setName] = useState(session.user.name)
+  const [email, setEmail] = useState(session.user.email)
+  const router = useRouter()
+  const [fetchError, setFetchError] = useState('')
+
+  const handleUpdate = async () => {
+    try {
+      const res = await fetch(`/api/user/${session.user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (res.status === 200) {
+        const updatedUserRes = await fetch(`/api/user/${session.user.id}`)
+        const updatedUser = await updatedUserRes.json()
+        setName(updatedUser.name)
+        setEmail(updatedUser.email)
+      } else {
+        setFetchError(data.error || 'An error occurred')
+      }
+    } catch (error: any) {
+      setFetchError(error?.message)
+    }
+  }
   const tabs = [
     {
       label: 'Profile Settings',
@@ -45,7 +80,11 @@ export default function Settings() {
           <div className='bg-background rounded-lg bg-opacity-20 mr-20'>
             <div className='flex flex-row space-x-96 p-10 content-center justify-between items-center'>
               <h1 className='font-semibold text-xl'>Profile Settings</h1>
-              <button className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50'>
+              <button
+                className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50'
+                onClick={() => {
+                  handleUpdate()
+                }}>
                 save
               </button>
             </div>
@@ -69,31 +108,31 @@ export default function Settings() {
               </div>
               <div className='flex flex-col gap-4 mt-10 '>
                 <input
+                  value={name}
+                  onChange={e => setName(e.target.value)}
                   type='text'
                   placeholder='Name'
                   className={`${ptMono.className} text-black placeholder-black rounded-full py-6 pl-8 bg-background px-96 bg-opacity-40 outline-none`}
                 />
                 <input
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   type='text'
-                  placeholder='Email'
+                  placeholder='Email - Username'
                   className={`${ptMono.className} text-black placeholder-black rounded-full py-6 pl-8 bg-background px-96 bg-opacity-40 outline-none`}
                 />
-                <input
-                  type='text'
-                  placeholder='Username'
-                  className={`${ptMono.className} text-black placeholder-black rounded-full py-6 pl-8 bg-background px-96 bg-opacity-40 outline-none`}
-                />
+
                 <div className='flex flex-col gap-4 dropdown'>
                   <label tabIndex={0} className='text-[#99A09D] ml-2'>
                     Password-Info
                   </label>
                   <input
-                    type='text'
+                    type='password'
                     placeholder='Current password'
                     className={`${ptMono.className} text-black placeholder-black rounded-full py-6 pl-8 bg-background px-96 bg-opacity-40 outline-none`}
                   />
                   <input
-                    type='text'
+                    type='password'
                     placeholder='New password'
                     className={`${ptMono.className} text-black placeholder-black rounded-full py-6 pl-8 bg-background px-96 bg-opacity-40 outline-none`}
                   />
@@ -223,7 +262,7 @@ export default function Settings() {
 
   return (
     <div>
-      <CustomTabs tabs={tabs} />
+      <CustomTabs tabs={tabs} session={session} user={user} />
     </div>
   )
 }
