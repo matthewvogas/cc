@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     `https://graph.facebook.com/v18.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${FACEBOOK_CLIENT_ID}&client_secret=${FACEBOOK_CLIENT_SECRET}&fb_exchange_token=${facebookResponse.access_token}`,
   ).then(res => res.json())
 
-  const succes = 'https://dev.codecoco.co/'
+  const succes = `${domain}/dashboard/settings/`
 
   const session = await getServerSession(authOptions)
 

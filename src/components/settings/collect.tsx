@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { instagramPages } from '@prisma/client'
 import Image from 'next/image'
 import Spinner from '../loading/spinner'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   session: any
@@ -64,6 +65,8 @@ export default function Collect({
   const [instagramPage, setInstagramPage] = useState('')
   const [errorPage, setErrorPage] = useState('')
 
+  const router = useRouter();
+
   const handleLinksSubmit = async () => {
     setLoading(true)
     try {
@@ -88,6 +91,7 @@ export default function Collect({
 
       if (res.ok == true) {
         setLoading(false)
+        router.refresh();
       } else {
         console.log(200)
       }
@@ -144,7 +148,7 @@ export default function Collect({
 
                 <div className='px-10 py-8'>
                   <h3 className='text-xl font-bold'>
-                    Connect your commercial pages
+                    Connect your Facebook pages associate with Instagram
                   </h3>
 
                   <div className={`w-full justify-start `}>

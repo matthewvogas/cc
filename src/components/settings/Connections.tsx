@@ -1,11 +1,15 @@
 import React from 'react'
 import Spinner from '../loading/spinner'
+import { useRouter } from 'next/navigation';
 
 type Props = {
   InstagramConnection: any
 }
 
 export default function Connections({ InstagramConnection }: Props) {
+
+  const router = useRouter();
+
   const [loading, setLoading] = React.useState(false)
 
   const handleDelete = async () => {
@@ -20,36 +24,8 @@ export default function Connections({ InstagramConnection }: Props) {
       }),
     })
     if (res.ok) {
+      router.refresh()
       setLoading(false)
-    }
-  }
-  const handleAccept = async () => {
-    setLoading(true)
-
-    // Abre una nueva pestaña o ventana
-    const oauthWindow = window.open('/api/oauth/connect/facebook', '_blank')
-
-    try {
-      const res = await fetch('/api/oauth/connect/facebook', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: InstagramConnection.id,
-        }),
-      })
-
-      if (res.ok) {
-        setLoading(false)
-        window.location.reload()
-        // Puedes cerrar la ventana después de obtener una respuesta exitosa si lo deseas
-        // oauthWindow.close();
-      } else {
-        throw new Error('La solicitud no se completó con éxito.')
-      }
-    } catch (error) {
-      console.error(error)
     }
   }
 
@@ -66,11 +42,11 @@ export default function Connections({ InstagramConnection }: Props) {
           <div className='flex mb-4'>Instagram</div>
           <div className='flex gap-4 '>
             {InstagramConnection == null ? (
-              <button
-                onClick={handleAccept}
+              <a
+                href={`/api/oauth/connect/facebook`}
                 className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
                 connect
-              </button>
+              </a>
             ) : (
               <div className='flex gap-4'>
                 <label className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
