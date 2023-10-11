@@ -5,9 +5,6 @@ import { Navigation } from '@/components/menus/activeNavigation'
 import { SingOutButton, SingInButton } from '@/components/auth/AuthButtons'
 import img from '/public/assets/creatorRegister/exampleImage.jpg'
 
-// Fonts
-
-// Arrays
 const links = [
   {
     href: '/dashboard',

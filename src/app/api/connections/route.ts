@@ -4,8 +4,35 @@ import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import db from '@/lib/db'
 
-export async function POST(req: Request, res: Response) {
+export async function GET(req: Request, res: Response) {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  }
+
   try {
+    const connections = await db.connection.findMany({})
+
+    return NextResponse.json(connections)
+  } catch (err: any) {
+    return NextResponse.json(
+      { error: err.message },
+      {
+        status: 500,
+      },
+    )
+  }
+}
+
+export async function POST(req: Request, res: Response) {
+  const session = await getServerSession(authOptions)
+
+  try {
+    if (!session) {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    }
+
     const { userId1, userId2, id } = await req.json()
 
     const connection = await db.connection.findFirst({
@@ -63,6 +90,45 @@ export async function POST(req: Request, res: Response) {
     return NextResponse.json({ success: true, connection })
   } catch (err: any) {
     console.log(err)
+    return NextResponse.json(
+      { error: err.message },
+      {
+        status: 500,
+      },
+    )
+  }
+}
+
+export async function DELETE(req: Request, res: Response) {
+  const session = await getServerSession(authOptions)
+
+  const { userId1, userId2 } = await req.json()
+
+  if (!session) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  }
+
+  try {
+    const connection = await db.connection.findFirst({
+      where: {
+        userId1: userId1,
+        userId2: userId2,
+      },
+    })
+
+    if (connection) {
+      const delteConnection = await db.connection.delete({
+        where: {
+          id: connection.id,
+        },
+      })
+      
+      return NextResponse.json({ success: true, delteConnection })
+    }
+
+    return NextResponse.json({ success: true, connection })
+
+  } catch (err: any) {
     return NextResponse.json(
       { error: err.message },
       {

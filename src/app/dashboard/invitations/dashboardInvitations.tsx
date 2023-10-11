@@ -9,6 +9,7 @@ import AgenciesDashBoard from '@/components/dashboards/influencer/AgenciesDashBo
 import ClientsDashBoard from '@/components/dashboards/agency/ClientsDashBoard'
 import CreatorsDashBoard from '@/components/dashboards/agency/CreatorsDashboard'
 import Spinner from '@/components/loading/spinner'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   invites: any
@@ -46,6 +47,8 @@ export default function PortfolioTabs({
   const [loading, setLoading] = React.useState(false)
   const [done, setdone] = React.useState(false)
 
+  const router = useRouter();
+  
   const handleAcceptInvite = async () => {
     setLoading(true)
     setdone(true)
@@ -62,7 +65,7 @@ export default function PortfolioTabs({
         }),
       })
 
-      if (res.status === 200) setLoading(false)
+      if (res.status === 200) router.refresh()
       console.log(res.status)
     } catch (error: any) {}
   }
@@ -82,7 +85,7 @@ export default function PortfolioTabs({
           status: status,
         }),
       })
-      if (res.status === 200) setLoading(false)
+      if (res.status === 200) router.refresh()
       console.log(res.status)
     } catch (error) {}
   }
