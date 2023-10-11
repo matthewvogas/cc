@@ -105,7 +105,7 @@ export default function Collect({
       label: 'Instagram',
       content: (
         <div className='mt-8'>
-          <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+          <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48'>
             {loading ? (
               <Spinner width='w-4' height='h-4' border='border-2' />
             ) : null}
