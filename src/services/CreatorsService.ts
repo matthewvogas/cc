@@ -93,40 +93,50 @@ export class CreatorsService {
     return creators
   }
 
-  static async deleteCreatorById(creatorId: number, userId: string){
+  static async deleteCreatorById(creatorId: number, userId: string) {
     try {
       await db.creator.delete({
         where: {
           id: creatorId,
         },
       })
-    }catch(error){
+    } catch (error) {
       console.log(error)
     }
   }
 
-  static async getCreatorsByCampaignId(campaignId: number){
-    try{
+  static async getCreatorsByCampaignId(campaignId: number) {
+    try {
       const campaign = await db.campaign.findUnique({
         where: {
           id: campaignId,
-        }, 
+        },
         include: {
           creators: true,
         },
       })
 
-      if(campaign){
+      if (campaign) {
         throw new Error('Campaign Not Found!')
       }
-
     } catch (error: any) {
-      throw new Error(`Failed to fetch creators by campaign ID: ${error.message}`)
+      throw new Error(
+        `Failed to fetch creators by campaign ID: ${error.message}`,
+      )
+    }
+  }
+
+  static async findById(creatorId: number) {
+    try {
+      const creator = await db.creator.findUnique({
+        where: {
+          id: creatorId,
+        },
+      })
+      return creator
+    } catch (error) {
+      console.error('Error fetching creator by ID:', error)
+      throw error
     }
   }
 }
-
-
-
-
-
