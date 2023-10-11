@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -25,6 +26,28 @@ export default function PostCard({ post }: { post: Post }) {
     '</body> </html>'
 
   const [isOpen, setIsOpen] = useState(false)
+
+  const router = useRouter()
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/posts/${post.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete post')
+      } else {
+        router.refresh()
+      }
+
+    } catch (error) {
+      console.error('Error deleting post:', error)
+    }
+  }
 
   return (
     <div
@@ -162,6 +185,13 @@ export default function PostCard({ post }: { post: Post }) {
               onClick={() => setIsOpen(true)}
               className='text-back m-2 inline-block rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
               use this post
+            </button>
+            <button
+              onClick={() => {
+                handleDelete()
+              }}
+              className='text-back m-2 inline-block rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
+              remove post
             </button>
             <Link
               href={post.permalink || ''}

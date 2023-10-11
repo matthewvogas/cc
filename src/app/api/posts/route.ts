@@ -54,7 +54,6 @@ export async function POST(req: Request) {
         platform: platform,
       },
     })
-
   } catch (err: any) {
     console.log(err)
     return NextResponse.json(
@@ -65,3 +64,4 @@ export async function POST(req: Request) {
     )
   }
 }
+
