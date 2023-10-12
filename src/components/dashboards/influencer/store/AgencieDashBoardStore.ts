@@ -1,3 +1,4 @@
+import InputSearchValue from '@/components/modals/agency/filterBy'
 import { create } from 'zustand'
 
 interface User {
@@ -12,6 +13,12 @@ interface AgenciesDashboard {
 
   tagSelected: string
   setSearchTags: (tagSelected: string) => void
+
+  inputSearchValue: string
+  setInputSearchValue: (inputSearchValue: string) => void
+
+  SecondStep: boolean
+  setSecondStep: (SecondStep: boolean) => void
 }
 
 export const useAgenciesDashboard = create<AgenciesDashboard>(set => ({
@@ -20,4 +27,10 @@ export const useAgenciesDashboard = create<AgenciesDashboard>(set => ({
 
   tagSelected: '',
   setSearchTags: tagSelected => set({ tagSelected }),
+
+  inputSearchValue: '',
+  setInputSearchValue: inputSearchValue => set({ inputSearchValue }),
+
+  SecondStep: false,
+  setSecondStep: SecondStep => set({ SecondStep }),
 }))

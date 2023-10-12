@@ -43,21 +43,17 @@ export default function AgenciesDashBoard({
   session,
   instagramConnection,
 }: Props) {
-  // START ZUSTANd
-  // const [agenciesSelected, setAgenciesSelected] = useState<User>()
-  // const [tagSelected, setSearchTags] = useState('')
   
-  const { agenciesSelected, setAgenciesSelected, tagSelected, setSearchTags } =
-    useAgenciesDashboard()
-
-  //--
-
-  // END ZUSTANd
-
-  const [isOpen, setIsOpen] = useState(false)
-  const [sort, setSort] = React.useState('')
-  const [inputSearchValue, setInputSearchValue] = useState('')
-  const [SecondStep, setSecondStep] = useState(false)
+  const {
+    agenciesSelected,
+    setAgenciesSelected,
+    tagSelected,
+    setSearchTags,
+    inputSearchValue,
+    setInputSearchValue,
+    SecondStep,
+    setSecondStep,
+  } = useAgenciesDashboard()
 
   const filteredAgenciesSearch = agency?.filter((creator: any) => {
     const AgenciesNameMatches = creator.name
