@@ -40,33 +40,50 @@ export default function PortfolioTabs({
   connections,
   creatorInvites,
 }: Props) {
-  const [creadorId, setCreadorId] = useState('')
+  const [other, setOther] = useState('')
   const [inviteId, setInviteId] = useState('')
   const [status, setStatus] = useState('Accept')
 
   const [loading, setLoading] = React.useState(false)
   const [done, setdone] = React.useState(false)
 
-  const router = useRouter();
-  
+  const router = useRouter()
+
   const handleAcceptInvite = async () => {
     setLoading(true)
     setdone(true)
 
     try {
-      const res = await fetch('/api/connections', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId1: session?.user?.id,
-          userId2: creadorId,
-        }),
-      })
+      if (session.user.role === 'AGENCY') {
+        const res = await fetch('/api/connections', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId1: session?.user?.id,
+            userId2: other,
+          }),
+        })
 
-      if (res.status === 200) router.refresh()
-      console.log(res.status)
+        if (res.status === 200) router.refresh()
+        console.log(res.status)
+
+      } else {
+        const res = await fetch('/api/connections', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId1: other,
+            userId2: session?.user?.id,
+          }),
+        })
+
+        if (res.status === 200) router.refresh()
+        console.log(res.status)
+      }
     } catch (error: any) {}
   }
 
@@ -165,7 +182,11 @@ export default function PortfolioTabs({
                       await handleChangeInviteStatus()
                     }}
                     onMouseOver={() => {
-                      setCreadorId(invite.receiver.id)
+                      {
+                        session.user.role === 'AGENCY'
+                          ? setOther(invite.receiver.id)
+                          : setOther(invite.sender.id)
+                      }
                       setInviteId(invite.id)
                       setStatus('ACCEPTED')
                     }}

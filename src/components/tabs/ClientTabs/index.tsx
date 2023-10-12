@@ -42,6 +42,19 @@ export default function ClientTabs({
     }
   }
 
+  const handleRemove = async () => {
+    try {
+      const res = await fetch(`/api/clients/${client.id}`, {
+        method: 'DELETE',
+      })
+
+      if (res.status === 200)
+        router.push('/dashboard/clients'), router.refresh()
+    } catch (error: any) {
+      setFetchError(error?.message)
+    }
+  }
+
   return (
     <>
       <TitleSingleClient client={client} />
@@ -126,13 +139,50 @@ export default function ClientTabs({
             <Tab.Panel>
               <div className={`mt-7 w-full justify-start`}>
                 <div className='flex w-full justify-end px-14'>
-                  <button
-                    className='bg-[#D9F0F1] px-10 py-2 rounded-full'
-                    onClick={() => {
-                      handleUpdate()
-                    }}>
-                    Update Information
-                  </button>
+                  <div className='flex gap-4'>
+                    <button
+                      className='bg-[#D9F0F1] px-10 py-3 rounded-full'
+                      onClick={() => {
+                        handleUpdate()
+                      }}>
+                      Update Information
+                    </button>
+                    <label
+                      htmlFor='my-modal-4'
+                      className='flex items-center cursor-pointer bg-[#f1e2df] px-10 h-full rounded-full hover:bg-[#f8ddd8]'>
+                      remove connection
+                    </label>
+                    <input
+                      type='checkbox'
+                      id='my-modal-4'
+                      className='  modal-toggle'
+                    />
+                    <div className='modal '>
+                      <div className='modal-box relative border max-w-[456px] flex flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
+                        <label
+                          htmlFor='my-modal-4'
+                          className='absolute right-4 top-2 cursor-pointer text-lg text-black'>
+                          ✕
+                        </label>
+
+                        <div className='px-10 py-8'>
+                          <h3 className='text-xl font-bold mb-2'>Important</h3>
+                          <p className='mb-4'>
+                            By deleting this client, it will be disassociated
+                            from the associated campaigns; you will not be able
+                            to reverse this action.
+                          </p>
+                          <button
+                            onClick={() => {
+                              handleRemove()
+                            }}
+                            className='bg-[#ffdede] flex  hover:bg-[#ffcbcb] text-sm align-center items-center  px-4  py-3  rounded-full'>
+                            remove client
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <form className='p-4 px-12 '>
                   <div className='flex flex-col gap-6 mt-4'>
