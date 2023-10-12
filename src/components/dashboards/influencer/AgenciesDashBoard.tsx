@@ -21,7 +21,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Session } from 'inspector'
 import { any } from 'zod'
-import { useRouter } from 'next/navigation'
+import { useAgenciesDashboard } from './store/AgencieDashBoardStore'
 
 // import './swiper.css'
 type Props = {
@@ -43,12 +43,17 @@ export default function AgenciesDashBoard({
   session,
   instagramConnection,
 }: Props) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [tagSelected, setSearchTags] = useState('')
-  const [sort, setSort] = React.useState('')
-  const [inputSearchValue, setInputSearchValue] = useState('')
-  const [SecondStep, setSecondStep] = useState(false)
-  const [agenciesSelected, setAgenciesSelected] = useState<User>()
+  
+  const {
+    agenciesSelected,
+    setAgenciesSelected,
+    tagSelected,
+    setSearchTags,
+    inputSearchValue,
+    setInputSearchValue,
+    SecondStep,
+    setSecondStep,
+  } = useAgenciesDashboard()
 
   const filteredAgenciesSearch = agency?.filter((creator: any) => {
     const AgenciesNameMatches = creator.name
