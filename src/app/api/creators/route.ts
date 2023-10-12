@@ -56,45 +56,37 @@ export async function POST(req: Request) {
     )
   }
 }
-
-//  export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
-  
-//   try{
+// export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+//   try {
 //     const session = await getServerSession(authOptions)
 
-//   if (!session) {
-//     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-//   }
+//     if (!session) {
+//       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+//     }
 
-//   const { campaignId } = req.query
+//     const { creatorId } = req.query
 
+//     if (!creatorId) {
+//       return res
+//         .status(400)
+//         .json({ error: 'CreatorId is missing from the route parameters' })
+//     }
 
-//   if (!campaignId) {
-//     return res.status(400).json({ error: 'CampaignId is missing from the route parameters' });
-//   }
-  
-//   // const campaign = await CreatorsService.findByCampaignId(parseInt(campaignId))
+//     // Verificar si el creador existe antes de intentar eliminarlo
+//     const creator = await CreatorsService.findById(creatorId)
+//     if (!creator) {
+//       return res.status(404).json({ error: 'Creator not found' })
+//     }
 
+//     await db.creator.delete({
+//       where: {
+//         id: parseInt(creatorId),
+//       },
+//     })
 
-//   // await db.creator.deleteMany({
-//   //   where: {
-//   //     campaigns: {
-//   //       some: {
-//   //         id: parseInt(campaignId),
-//   //       },
-//   //     },
-//   //   },
-//   // });
-
-
-//   return NextResponse.json({success: 'creators deleted'})
-
-
-//   } catch (err: any){
+//     return NextResponse.json({ success: 'creator deleted' })
+//   } catch (err: any) {
 //     console.log(err)
-//     return NextResponse.json({err: err.message}, {status: 500})
+//     return NextResponse.json({ err: err.message }, { status: 500 })
 //   }
-
-  
-  
-//  }
+// }

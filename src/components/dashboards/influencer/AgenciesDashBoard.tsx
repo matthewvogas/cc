@@ -85,6 +85,8 @@ export default function AgenciesDashBoard({
     }
   })
 
+  const router = useRouter()
+
   const sendInvite = async () => {
     try {
       const res = await fetch('/api/invite', {
@@ -98,8 +100,28 @@ export default function AgenciesDashBoard({
         }),
       })
 
-      if (res.status === 200) console.log(res.status)
+      if (res.status === 200) router.refresh()
     } catch (error: any) {}
+  }
+
+  const handleRemoveConnection = async (agencyId: string) => {
+    try {
+      const res = await fetch('http://localhost:3000/api/connections', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId1: agencyId,
+          userId2: session,
+        }),
+      })
+
+      if (res.status === 200)
+        router.push('/dashboard/invitations'), router.refresh()
+    } catch (error: any) {
+      console.log('hi')
+    }
   }
 
   return (
@@ -322,8 +344,7 @@ export default function AgenciesDashBoard({
         <div className='mt-12 flex gap-4 md:px-12 flex-wrap'>
           {agenciesConnections.length > 0 ? (
             agenciesConnections.map((agency: any, index: any) => (
-              <Link
-                href={`/dashboard/agencies/${agency.id || 1}`}
+              <div
                 key={index}
                 className='h-80 min-w-[320px] mb-24 w-80 border-gray-100 relative '>
                 <Image
@@ -332,19 +353,57 @@ export default function AgenciesDashBoard({
                   src={agency.image || imageCover}
                   alt={agency.user1.name}
                 />
-                <div className='h-auto border border-gray-200 px-2 py-4 pl-4'>
+                <div className='h-auto border border-gray-200 px-5 py-4 pl-4 flex justify-between items-baseline'>
                   <p className={`text-lg font-medium text-gray-800`}>
                     {agency.user1.name}
                   </p>
+                  <label
+                    htmlFor='my-modal-4'
+                    className='text-sm  text-gray-400 hover:text-black'>
+                    remove connection
+                  </label>
+                  <input
+                    type='checkbox'
+                    id='my-modal-4'
+                    className='  modal-toggle'
+                  />
+                  <div className='modal '>
+                    <div className='modal-box relative border max-w-[456px] flex flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
+                      <label
+                        htmlFor='my-modal-4'
+                        className='absolute right-4 top-2 cursor-pointer text-lg text-black'>
+                        ✕
+                      </label>
+
+                      <div className='px-10 py-8'>
+                        <h3 className='text-xl font-bold mb-2'>Important</h3>
+                        <p className='mb-4'>
+                          Make sure you want to remove the connection with{' '}
+                          {agency.user1.name}. This will cause{' '}
+                          {agency.user1.name} will no longer be able to access
+                          your new data, but will still be able to see
+                          information you already submitted before you deleted
+                          the connection. Additionally, you will no longer be
+                          able to see the campaigns where you are associated with this agency.
+                        </p>
+                        <button
+                          onClick={() => {
+                            handleRemoveConnection(agency.user1.id)
+                          }}
+                          className='bg-[#ffdede] flex  hover:bg-[#ffcbcb] text-sm align-center items-center  px-4  py-3  rounded-full'>
+                          Remove Connection
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </Link>
+              </div>
             ))
           ) : (
             <div className='min-h-[250px] min-w-[250px] opacity-40  '>
               <div className='border border-gray-200 w-[250px] h-[310px] gap-3 flex flex-col justify-center items-center p-12'>
                 <p className={` text-center text-base ${ptMono.className}`}>
-                  Create as many agencies as you want and associate them to your
-                  campaigns
+                  Associate with agenies now
                 </p>
               </div>
               <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>

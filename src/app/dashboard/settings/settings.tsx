@@ -6,8 +6,10 @@ import Connections from '@/components/settings/Connections'
 import Collect from '@/components/settings/collect'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
+import { User } from '@prisma/client'
 
 type Props = {
+  user: User | null
   session: any
   posts: any
   instagramPages: any
@@ -15,24 +17,36 @@ type Props = {
   instagramConnection: any
 }
 
-export default function Settings({ session, posts, instagramPages, instgramToken, instagramConnection }: Props) {
+export default function Settings({
+  user,
+  session,
+  posts,
+  instagramPages,
+  instgramToken,
+  instagramConnection,
+}: Props) {
   const tabs: TabItem[] = [
     {
       label: 'My data',
       content: (
         <div>
-          <Collect session={session} posts={posts} instagramPages={instagramPages} instgramToken={instgramToken} />
+          <Collect
+            session={session}
+            posts={posts}
+            instagramPages={instagramPages}
+            instgramToken={instgramToken}
+          />
         </div>
       ),
     },
-    // {
-    //   label: 'Account Settings',
-    //   content: (
-    //     <div>
-    //       <TwoTabsComponent />
-    //     </div>
-    //   ),
-    // },
+    {
+      label: 'Account Settings',
+      content: (
+        <div>
+          <TwoTabsComponent tabs={[]} session={session} user={user} />
+        </div>
+      ),
+    },
     // {
     //   label: 'Portfolio',
     //   content: (

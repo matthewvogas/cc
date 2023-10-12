@@ -32,19 +32,65 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
     }
   }
 
+  const handleRemove = async () => {
+    try {
+      const res = await fetch(`/api/campaigns/${campaign.id}`, {
+        method: 'DELETE',
+      })
+
+      if (res.status === 200)
+        router.push('/dashboard/campaigns'), router.refresh()
+    } catch (error: any) {
+      setFetchError(error?.message)
+    }
+  }
+
   return (
     <div className={`mt-7 w-full justify-start`}>
       <div className='flex flex-row justify-between'>
-        <h5 className={`mb-2 text-xl font-medium px ml-12 ${inter.className}`}>
+        <h5
+          className={`mb-2 text-xl font-medium py-2 ml-12 ${inter.className}`}>
           Campaign settings
         </h5>
-        <button
-          className='mr-20 bg-[#D9F0F1] px-10 py-2 rounded-full'
-          onClick={() => {
-            handleEdit()
-          }}>
-          Update Information
-        </button>
+        <div className='px-14 flex gap-4'>
+          <button
+            className=' bg-[#D9F0F1] px-10 h-full rounded-full hover:bg-[#caf0f1]'
+            onClick={() => {
+              handleEdit()
+            }}>
+            update Information
+          </button>
+          <label
+            htmlFor='my-modal-4'
+            className='flex items-center cursor-pointer bg-[#f1e2df] px-10 h-full rounded-full hover:bg-[#f8ddd8]'>
+            remove connection
+          </label>
+          <input type='checkbox' id='my-modal-4' className='  modal-toggle' />
+          <div className='modal '>
+            <div className='modal-box relative border max-w-[456px] flex flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
+              <label
+                htmlFor='my-modal-4'
+                className='absolute right-4 top-2 cursor-pointer text-lg text-black'>
+                ✕
+              </label>
+
+              <div className='px-10 py-8'>
+                <h3 className='text-xl font-bold mb-2'>Important</h3>
+                <p className='mb-4'>
+                  Deleting this campaign will delete all associated posts and
+                  you will not be able to recover it again.
+                </p>
+                <button
+                  onClick={() => {
+                    handleRemove()
+                  }}
+                  className='bg-[#ffdede] flex  hover:bg-[#ffcbcb] text-sm align-center items-center  px-4  py-3  rounded-full'>
+                  remove campaign
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className='divider '></div>
 
