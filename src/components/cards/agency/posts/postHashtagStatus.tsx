@@ -9,6 +9,7 @@ import UseThisPost from './useThisPost'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePostStore } from './store/postsStore'
 
 export type ChipStateName = 'INFO' | 'PENDING' | 'NOT'
 export type ChipState = {
@@ -87,7 +88,7 @@ export const chipStateMap: { [key in ChipStateName]: ChipState } = {
 }
 
 export const PostHashtagStatus = ({ state }: { state: ChipStateName }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, setIsOpen } = usePostStore()
 
   //const post = undefined
 

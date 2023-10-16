@@ -6,14 +6,14 @@ import Spinner from '../../../loading/spinner'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import React from 'react'
+import { usePostStore } from './store/postsStore'
 
 type Props = {
   post?: Post
 }
 
 export default function UseThisPost({ post }: Props) {
-  const [codeToCopy, setcodeToCopy] = React.useState('')
-  const [loading, setLoading] = React.useState(false)
+  const { codeToCopy, setCodeToCopy, loading, setLoading } = usePostStore()
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
@@ -152,12 +152,12 @@ export default function UseThisPost({ post }: Props) {
             <h5 className='mb-2 text-lg font-medium'>Embed on your site</h5>
             <div className='mb-4 flex gap-2'>
               <button
-                onClick={() => setcodeToCopy(iframe)}
+                onClick={() => setCodeToCopy(iframe)}
                 className='rounded-full border border-transparent px-6 py-2 text-sm hover:border hover:border-[#E2DED4]'>
                 iframe
               </button>
               <button
-                onClick={() => setcodeToCopy(html)}
+                onClick={() => setCodeToCopy(html)}
                 className='rounded-full border border-transparent px-6 py-2 text-sm hover:border hover:border-[#E2DED4]'>
                 HTML & CSS
               </button>
