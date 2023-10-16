@@ -3,16 +3,18 @@ import Spinner from '../loading/spinner'
 import { useRouter } from 'next/navigation';
 
 type Props = {
+  session: any
   InstagramConnection: any
 }
 
-export default function Connections({ InstagramConnection }: Props) {
+export default function Connections({ session, InstagramConnection }: Props) {
 
   const router = useRouter();
 
   const [loading, setLoading] = React.useState(false)
 
   const handleDelete = async () => {
+
     setLoading(true)
     const res = await fetch('/api/socialConnections', {
       method: 'DELETE',
@@ -27,6 +29,22 @@ export default function Connections({ InstagramConnection }: Props) {
       router.refresh()
       setLoading(false)
     }
+
+    const resPages = await fetch('/api/pageList', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: session.user.id,
+      }),
+    })
+    if (resPages.ok) {
+      router.refresh()
+      setLoading(false)
+    }
+
+
   }
 
   return (

@@ -65,7 +65,7 @@ export default function Collect({
   const [instagramPage, setInstagramPage] = useState('')
   const [errorPage, setErrorPage] = useState('')
 
-  const router = useRouter();
+  const router = useRouter()
 
   const handleLinksSubmit = async () => {
     setLoading(true)
@@ -91,7 +91,7 @@ export default function Collect({
 
       if (res.ok == true) {
         setLoading(false)
-        router.refresh();
+        router.refresh()
       } else {
         console.log(200)
       }
@@ -148,46 +148,60 @@ export default function Collect({
 
                 <div className='px-10 py-8'>
                   <h3 className='text-xl font-bold'>
-                    Connect your Facebook pages associate with Instagram
+                    Connect your Instagram pages associate with Facebook
                   </h3>
 
                   <div className={`w-full justify-start `}>
                     <p className={` pb-6 text-xs text-[#7F7F7F] mt-2`}>
                       You can upload the content of your accounts one account at
-                      a time, reload the page if you don&apos;t see new pages
+                      a time, reload the page if you don&apos;t see new pages.{' '}
+                      <br />
+                      <span className='font-semibold'>
+                        {' '}
+                        If the page has less than 100 followers. It will not
+                        appear on the list.
+                      </span>
                     </p>
 
                     <div className='flex flex-col justify-start items-start gap-4'>
                       {loading ? (
                         <Spinner width='w-4' height='h-4' border='border-2' />
-                      ) : (
+                      ) : instagramPages.length > 0 ? (
                         instagramPages.map(
-                          (page: instagramPages, index: number) => (
-                            <button
-                              onClick={() => {
-                                setInstagramPage(page.id)
-                              }}
-                              key={index}
-                              className={`${
-                                instagramPage == page.id ? 'bg-beigeFirst' : ''
-                              } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-beigeFirst`}>
-                              {/* <Image
-                                width={40}
-                                height={40}
-                                src={page.profile_picture_url}
-                                alt={''}
-                                className='rounded-full border'
-                              /> */}
-                              <p>{page.name}</p>
-                            </button>
-                          ),
+                          (page: instagramPages, index: number) =>
+                            parseInt(page.followers_count) > 100 && (
+                              <button
+                                onClick={() => {
+                                  setInstagramPage(page.id)
+                                }}
+                                key={index}
+                                className={`${
+                                  instagramPage == page.id
+                                    ? 'bg-beigeFirst'
+                                    : ''
+                                } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-beigeFirst`}>
+                                <p>
+                                  @{page.username} - {page.followers_count}{' '}
+                                  Followers
+                                </p>
+                              </button>
+                            ),
                         )
+                      ) : (
+                        <div>
+                          <p className='font-normal text-sm text-gray-600'>
+                            There are no pages available, connect your pages
+                            within the Connections section
+                          </p>
+                        </div>
                       )}
                     </div>
 
                     <hr className=' h-px bg-gray-200 my-8'></hr>
 
                     <div className='text-right'>
+                      {instagramPages.length > 0 ? (
+                        <div>
                       <button
                         className='cursor-pointer'
                         onClickCapture={handleLinksSubmit}>
@@ -197,6 +211,16 @@ export default function Collect({
                           {'collect'}
                         </label>
                       </button>
+
+                        </div>
+                      ) : (
+                        <button
+                        disabled
+                        className='cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl border-gray-200 bg-[#e9e9e9] px-8 py-3'
+                        onClickCapture={handleLinksSubmit}>
+                          {'collect'}
+                      </button>
+                      )}
                       <input
                         id='my-input'
                         type='text'

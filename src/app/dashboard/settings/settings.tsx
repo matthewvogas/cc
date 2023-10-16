@@ -39,14 +39,14 @@ export default function Settings({
         </div>
       ),
     },
-    {
-      label: 'Account Settings',
-      content: (
-        <div>
-          <TwoTabsComponent tabs={[]} session={session} user={user} />
-        </div>
-      ),
-    },
+    // {
+    //   label: 'Account Settings',
+    //   content: (
+    //     <div>
+    //       <TwoTabsComponent tabs={[]} session={session} user={user} />
+    //     </div>
+    //   ),
+    // },
     // {
     //   label: 'Portfolio',
     //   content: (
@@ -59,7 +59,7 @@ export default function Settings({
       label: 'Connections',
       content: (
         <div>
-          <Connections InstagramConnection={instagramConnection} />
+          <Connections session={session} InstagramConnection={instagramConnection} />
         </div>
       ),
     },

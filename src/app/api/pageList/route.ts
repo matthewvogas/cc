@@ -13,10 +13,10 @@ export async function POST(req: NextRequest) {
   const token = await SocialConnectionService.findInstagramToken(userId)
 
   interface InstagramBusinessAccount {
-    username: string
-    name: string
+    username: string | ''
+    name: string | ''
     profile_picture_url: string
-    followers_count: number
+    followers_count: number | 0
     id: string
   }
 
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
         id: page.id,
         userId: userId,
         username: page.username,
-        name: page.name,
+        name: page?.name || '',
         profile_picture_url: page.profile_picture_url,
         followers_count: String(page.followers_count),
         accountId: page.id,
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
       update: {
         userId: userId,
         username: page.username,
-        name: page.name,
+        name: page?.name || '',
         profile_picture_url: page.profile_picture_url,
         followers_count: String(page.followers_count),
         accountId: page.id,
@@ -77,5 +77,26 @@ export async function POST(req: NextRequest) {
     
   }
 
-  return NextResponse.json('ok')
+  return NextResponse.json({pages: instagramBusinessAccounts})
+}
+
+export async function DELETE(req: NextRequest) {
+
+  const { userId } = await req.json()  
+
+  const pages = await db.instagramPages.findMany({
+    where: {
+      userId: userId
+    }
+  });
+  
+  for(let page of pages) {
+    await db.instagramPages.delete({
+      where: {
+        id: page.id
+      }
+    });
+  }
+
+  return NextResponse.json({SUCCES: pages})
 }
