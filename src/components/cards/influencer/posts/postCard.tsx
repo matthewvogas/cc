@@ -11,6 +11,7 @@ import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { usePostStore } from '../../agency/posts/store/postsStore'
 
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -25,7 +26,7 @@ export default function PostCard({ post }: { post: Post }) {
     '" height="200" width="300"></iframe>' +
     '</body> </html>'
 
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, setIsOpen } = usePostStore()
 
   const router = useRouter()
 
@@ -43,7 +44,6 @@ export default function PostCard({ post }: { post: Post }) {
       } else {
         router.refresh()
       }
-
     } catch (error) {
       console.error('Error deleting post:', error)
     }

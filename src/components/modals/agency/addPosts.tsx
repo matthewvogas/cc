@@ -24,7 +24,6 @@ export default function AddNewPosts({
   text,
   icon,
 }: Props) {
-  
   const { clients, areClientsLoading, clientsError, refreshClients } =
     useClients(clientsFallback)
 

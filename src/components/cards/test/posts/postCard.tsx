@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePostStore } from '../../agency/posts/store/postsStore'
 
 export default function PostCardTest({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -23,7 +24,7 @@ export default function PostCardTest({ post }: { post: Post }) {
     '" height="200" width="300"></iframe>' +
     '</body> </html>'
 
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, setIsOpen } = usePostStore()
 
   return (
     <div
@@ -81,7 +82,7 @@ export default function PostCardTest({ post }: { post: Post }) {
               d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
             />
           </svg>
-          {post.creator?.followersCount || '' } followers
+          {post.creator?.followersCount || ''} followers
         </span>
         <div className='flex-grow border-t border-gray-200 pb-2'></div>
       </div>
@@ -95,22 +96,19 @@ export default function PostCardTest({ post }: { post: Post }) {
           <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
             Likes: 10k
           </span>
-          {
-            post.creator?.username === "withrosalind" ? (
-              <div>
-                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-                  Views: 423k
-                </span>
-                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-                  Saves: 4k
-                </span>
-                <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-                  Shares: 2k
-                </span>
-              </div>
-            ) : 
-              null
-          }         
+          {post.creator?.username === 'withrosalind' ? (
+            <div>
+              <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+                Views: 423k
+              </span>
+              <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+                Saves: 4k
+              </span>
+              <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+                Shares: 2k
+              </span>
+            </div>
+          ) : null}
         </div>
         <div className='dropdown-end dropdown cursor-pointer '>
           <div className='flex justify-end outline-none'>

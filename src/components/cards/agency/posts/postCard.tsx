@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePostStore } from './store/postsStore'
 
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
@@ -24,7 +25,7 @@ export default function PostCard({ post }: { post: Post }) {
     '" height="200" width="300"></iframe>' +
     '</body> </html>'
 
-  const [isOpen, setIsOpen] = useState(false)
+  const { isOpen, setIsOpen } = usePostStore()
 
   return (
     <div

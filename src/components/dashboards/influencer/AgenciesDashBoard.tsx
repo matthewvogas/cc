@@ -5,17 +5,12 @@ import SearchByTag from '../../inputs/searchByTag'
 import TitlePage from '../../labels/titlePage'
 import { inter, ptMono } from '@/app/fonts'
 import Search from '../../inputs/search'
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { Dialog } from '@headlessui/react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { RegisterNextButton } from '@/app/onboarding/agency/registerNextButton'
-import email from 'next-auth/providers/email'
 import { Pagination } from 'swiper/modules'
-import slideiamahe from 'public/assets/register/flowSignUp/signup5.jpg'
-
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
@@ -32,19 +27,12 @@ type Props = {
   instagramConnection: any
 }
 
-interface User {
-  id: any
-  role: any
-  name: any
-}
-
 export default function AgenciesDashBoard({
   agenciesConnections,
   agency,
   session,
   instagramConnection,
 }: Props) {
-  
   const {
     agenciesSelected,
     setAgenciesSelected,
