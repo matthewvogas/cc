@@ -47,6 +47,15 @@ export class UserService {
 
     return user
   }
+  static async findUniqueByEmail(email: string) {
+    const user = await db.user.findUnique({
+      where: {
+        email,
+      },
+    })
+
+    return user
+  }
 
   static async updateRole(id: string, role: UserRole) {
     const updatedUser = await db.user.update({

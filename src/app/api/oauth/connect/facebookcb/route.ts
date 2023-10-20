@@ -7,12 +7,24 @@ export async function GET(req: NextRequest, res: NextResponse) {
   // callback and longToken from FB
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')
+  const id = searchParams.get('id')
 
   const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
   const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
   const domain = process.env.NEXTAUTH_URL
-  const redirect_uri = `${domain}/api/oauth/connect/facebookcb`
+  const redirect_uri = `${domain}/api/oauth/connect/facebookcb?id=${id}`
 
+  let userId = ''
+  const session = await getServerSession(authOptions)
+
+
+  if (session?.user.id == null || undefined && id != null || "" || undefined) {
+    userId = String(id)
+  } else {
+    userId = session!.user.id
+  }
+
+  
   const facebookResponse = await fetch(
     `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${FACEBOOK_CLIENT_ID}&redirect_uri=${redirect_uri}&client_secret=${FACEBOOK_CLIENT_SECRET}&code=${code}`,
   ).then(res => res.json())
@@ -23,14 +35,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const succes = `${domain}/dashboard/settings/`
 
-  const session = await getServerSession(authOptions)
-
   try {
-    const userId = session?.user.id
-    if (!userId) {
-      throw new Error('Where is the ID?')
-    }
-
     const newSocialConnection = await db.socialConnection.create({
       data: {
         userId: userId,
@@ -48,7 +53,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: userId
+          userId: userId,
         }),
       })
 

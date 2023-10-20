@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest, res: NextResponse) {
+
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get('id')
+
   const domain = process.env.NEXTAUTH_URL
   const FACEBOOK_GRAPH_VERSION = process.env.FACEBOOK_GRAPH_VERSION
-  const redirectURL = `${domain}/api/oauth/connect/facebookcb`
+  const redirectURL = `${domain}/api/oauth/connect/facebookcb?id=${id}`
   const client_id = process.env.FACEBOOK_CLIENT_ID
   const response_type = 'code'
 
