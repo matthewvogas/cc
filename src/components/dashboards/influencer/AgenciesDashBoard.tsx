@@ -16,8 +16,8 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Session } from 'inspector'
 import { any } from 'zod'
-import { useAgenciesDashboard } from './store/AgencieDashBoardStore'
 import { useRouter } from 'next/navigation'
+import { useAgenciesDashboard } from './store/AgencyDashBoardStore'
 
 // import './swiper.css'
 type Props = {
