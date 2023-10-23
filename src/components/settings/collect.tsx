@@ -177,9 +177,9 @@ export default function Collect({
                                 key={index}
                                 className={`${
                                   instagramPage == page.id
-                                    ? 'bg-beigeFirst'
+                                    ? 'bg-[#997e5a] border-[#997e5a] text-white'
                                     : ''
-                                } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-beigeFirst`}>
+                                } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-[#997e5a] hover:text-white`}>
                                 <p>
                                   @{page.username} - {page.followers_count}{' '}
                                   Followers
