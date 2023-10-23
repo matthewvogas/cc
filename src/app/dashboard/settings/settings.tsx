@@ -4,7 +4,7 @@ import Subscription from '@/components/settings/Subscription'
 import TwoTabsComponent from '@/components/settings/Twotabs'
 import Connections from '@/components/settings/Connections'
 import Collect from '@/components/settings/collect'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { User } from '@prisma/client'
 
@@ -47,14 +47,14 @@ export default function Settings({
     //     </div>
     //   ),
     // },
-    // {
-    //   label: 'Portfolio',
-    //   content: (
-    //     <div>
-    //       <CreatorsPortfolio />
-    //     </div>
-    //   ),
-    // },
+    {
+      label: 'Portfolio',
+      content: (
+        <div>
+          <CreatorsPortfolio />
+        </div>
+      ),
+    },
     {
       label: 'Connections',
       content: (
@@ -63,14 +63,14 @@ export default function Settings({
         </div>
       ),
     },
-    // {
-    //   label: 'Subscription',
-    //   content: (
-    //     <div>
-    //       <Subscription />
-    //     </div>
-    //   ),
-    // },
+    {
+      label: 'Subscription',
+      content: (
+        <div>
+          <Subscription />
+        </div>
+      ),
+    },
   ]
 
   return (

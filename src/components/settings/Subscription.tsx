@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import CheckboxGreen from 'public/assets/register/falseCheckboxGreen.svg'
 import Checkbox from 'public/assets/register/falseCheckbox.svg'
 import Banner from 'public/assets/register/BannerPlans.jpg'
 import Radio from 'public/assets/register/falseRadio.svg'
 import Image from 'next/image'
 import { ptMono } from '@/app/fonts'
+import { useSubscriptionStore } from './store/subscriptionStore'
+import { checkout } from './checkout'
+import { get } from 'http'
+import { loadStripe } from '@stripe/stripe-js'
 type Props = {
   tabs: any[]
 }
@@ -39,6 +43,50 @@ function CustomTabs({ tabs }: Props) {
 }
 
 export default function Subscription() {
+  const { yesPlan, setYesPlan, absolutelyPlan, setAbsolutelyPlan } =
+    useSubscriptionStore()
+  const [endSub, setEndSub] = useState()
+
+  useEffect(() => {
+    console.log('hola')
+    async function getSubscription() {
+      const response = await fetch('/api/subscriptions')
+
+      if (!response.ok) {
+        throw new Error('Failed to get subscription')
+      }
+      const data = await response.json()
+      setEndSub(data.subscription.currentPeriodEnd)
+    }
+    getSubscription()
+  }, [])
+  const date = new Date(endSub!)
+  const handleYesPayment = async () => {
+    if (yesPlan) {
+      await checkout({
+        lineItems: [
+          {
+            price: yesPlan,
+            quantity: 1,
+          },
+        ],
+      })
+    }
+  }
+  const handleAbsolutelyPayment = async () => {
+    console.log(`hola ${absolutelyPlan}`)
+    if (absolutelyPlan) {
+      await checkout({
+        lineItems: [
+          {
+            price: absolutelyPlan,
+            quantity: 1,
+          },
+        ],
+      })
+    }
+  }
+
   const tabs = [
     {
       label: 'Your plan',
@@ -64,8 +112,8 @@ export default function Subscription() {
             <div className='divider -mt-5'></div>
             <div className='p-10'>
               <span className='font-semibold'>
-                You’ll be charged $14.99 on September 11th on the Visa ending in
-                6495.
+                You’ll be charged $14.99 on {date.toLocaleDateString()} on the
+                Visa ending in 6495.
               </span>
               <div className='flex flex-row gap-10 mt-5'>
                 <a href='/' className='underline'>
@@ -102,7 +150,15 @@ export default function Subscription() {
                 <div className='flex flex-col gap-2'>
                   <div className='flex justify-between rounded-lg bg-white px-5 py-4'>
                     <div className='flex gap-4'>
-                      <Image className={``} src={Radio} alt={''} />
+                      <input
+                        type='radio'
+                        name='Yes Subscription'
+                        id=''
+                        onChange={() =>
+                          setYesPlan('price_1O2IiuDud2nVdnbnGMG7CnlC')
+                        }
+                      />
+
                       <div>
                         <p className='text-sm font-medium'>$8.99/month</p>
                         <p className='text-xs opacity-50'>billed monthly</p>
@@ -113,7 +169,16 @@ export default function Subscription() {
 
                   <div className='flex justify-between rounded-lg bg-white px-5 py-4'>
                     <div className='flex gap-4'>
-                      <Image className={``} src={Radio} alt={''} />
+                      <input
+                        type='radio'
+                        name='Yes Subscription'
+                        id=''
+                        defaultChecked
+                        onChange={() =>
+                          setYesPlan('price_1O2KKTDud2nVdnbnF0aAHFFy')
+                        }
+                      />
+
                       <div>
                         <p className='text-sm font-medium'>$6/month</p>
                         <p className='text-xs opacity-50'>
@@ -121,9 +186,9 @@ export default function Subscription() {
                         </p>
                       </div>
                     </div>
-                    <p className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                    <button className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
                       save 30%
-                    </p>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -134,7 +199,9 @@ export default function Subscription() {
               </p>
 
               <div className='mt-8 flex flex-col gap-2'></div>
-              <button className='mt-6 w-full rounded-full bg-active p-4 pl-6 text-center text-base font-medium lowercase text-black '>
+              <button
+                className='mt-6 w-full rounded-full bg-active p-4 pl-6 text-center text-base font-medium lowercase text-black '
+                onClick={() => handleYesPayment()}>
                 {' '}
                 Save 30% with annual
               </button>
@@ -159,7 +226,14 @@ export default function Subscription() {
                 <div className='flex flex-col gap-2'>
                   <div className='flex justify-between rounded-lg bg-white px-5 py-4'>
                     <div className='flex gap-4'>
-                      <Image className={``} src={Radio} alt={''} />
+                      <input
+                        type='radio'
+                        name='Absolutely Subscription'
+                        id=''
+                        onChange={() =>
+                          setAbsolutelyPlan('price_1O2KfYDud2nVdnbnKmlxr9ov')
+                        }
+                      />
                       <div>
                         <p className='text-sm font-medium'>$14.99/month</p>
                         <p className='text-xs opacity-50'>billed monthly</p>
@@ -170,7 +244,16 @@ export default function Subscription() {
 
                   <div className='flex justify-between rounded-lg bg-white px-5 py-4'>
                     <div className='flex gap-4'>
-                      <Image className={``} src={Radio} alt={''} />
+                      <input
+                        type='radio'
+                        name='Absolutely Subscription'
+                        id=''
+                        defaultChecked
+                        onChange={() =>
+                          setAbsolutelyPlan('price_1O2KhqDud2nVdnbnn0pVhFKG')
+                        }
+                      />
+
                       <div>
                         <p className='text-sm font-medium'>$11/month</p>
                         <p className='text-xs opacity-50'>
@@ -178,9 +261,10 @@ export default function Subscription() {
                         </p>
                       </div>
                     </div>
-                    <p className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                    <button className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                      {''}
                       save 30%
-                    </p>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -191,7 +275,9 @@ export default function Subscription() {
               </div>
 
               <div className='divider'></div>
-              <button className='mt-3 w-full rounded-full bg-active p-4 pl-6 text-center text-base font-medium lowercase text-black '>
+              <button
+                className='mt-3 w-full rounded-full bg-active p-4 pl-6 text-center text-base font-medium lowercase text-black '
+                onClick={() => handleAbsolutelyPayment()}>
                 {' '}
                 Save 30% with annual
               </button>

@@ -71,7 +71,30 @@ model User {
   receivedConnections  Connection[]     @relation("ReceivedConnections")
   instagramPages       instagramPages[] @relation("userIdInstagramPage")
 
+  suscription Suscriptions[] @relation("userId")
+
   @@map("users")
+}
+
+model Suscriptions {
+  id                  String @id @default(cuid())
+  userId              String @map("user_id") 
+  user                User   @relation("userId", fields: [userId], references: [id]) 
+  payment_method      payment_methods
+
+  customerId          String @unique 
+  subscriptionId      String? @unique 
+  priceId             String? @unique 
+  currentPeriodEnd    DateTime? @unique
+   
+
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+}
+
+enum payment_methods {
+  STRIPE
+  PAYPAL
 }
 
 model instagramPages {
@@ -86,7 +109,7 @@ model instagramPages {
   tokenId             String
 
   socialConnection SocialConnection[]
-  user User @relation("userIdInstagramPage", fields: [userId], references: [id])
+  user             User               @relation("userIdInstagramPage", fields: [userId], references: [id])
 }
 
 model Invite {
@@ -128,14 +151,14 @@ enum SocialPlatform {
 }
 
 model SocialConnection {
-  id           String         @id @default(cuid())
-  user         User           @relation(fields: [userId], references: [id])
-  userId       String
-  platform     SocialPlatform
-  token        String?
-  refreshToken String?
-  longToken    String?
-  instagramPages    instagramPages[]
+  id             String           @id @default(cuid())
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  platform       SocialPlatform
+  token          String?
+  refreshToken   String?
+  longToken      String?
+  instagramPages instagramPages[]
 
   creators Creator[]
 }
