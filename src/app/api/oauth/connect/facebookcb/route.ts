@@ -43,7 +43,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     })
 
     try {
-      const res = await fetch('http://localhost:3000/api/pageList', {
+      const res = await fetch(`${domain}/api/pageList`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
