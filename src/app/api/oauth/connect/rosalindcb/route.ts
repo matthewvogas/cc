@@ -47,7 +47,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     })
 
     try {
-      const res = await fetch(`${domain}/api/pageList`, {
+      const res = await fetch(`${domain}/api/pagesRosalind`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
