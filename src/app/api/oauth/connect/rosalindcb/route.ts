@@ -4,22 +4,27 @@ import { getServerSession } from 'next-auth'
 import db from '@/lib/db'
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  // callback and longToken from FB
+
+  
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')
   const id = searchParams.get('id')
-
+  
   const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
   const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
   const domain = process.env.NEXTAUTH_URL
-  const redirect_uri = `${domain}/api/oauth/connect/facebookcb?id=${id}`
-
+  const redirect_uri = `${domain}/api/oauth/connect/rosalindcb?id=${id}`
+  
+  
   let userId = ''
   const session = await getServerSession(authOptions)
-
-
+  
+  if (session?.user.id == null || undefined && id != null || "" || undefined) {
+    userId = String(id)
+  } else {
     userId = session!.user.id
-
+  }
+  
   
   const facebookResponse = await fetch(
     `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${FACEBOOK_CLIENT_ID}&redirect_uri=${redirect_uri}&client_secret=${FACEBOOK_CLIENT_SECRET}&code=${code}`,
@@ -29,7 +34,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     `https://graph.facebook.com/v18.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${FACEBOOK_CLIENT_ID}&client_secret=${FACEBOOK_CLIENT_SECRET}&fb_exchange_token=${facebookResponse.access_token}`,
   ).then(res => res.json())
 
-  const succes = `${domain}/dashboard/settings/`
+  const succes = `https://withrosalind.com/network`
 
   try {
     const newSocialConnection = await db.socialConnection.create({
