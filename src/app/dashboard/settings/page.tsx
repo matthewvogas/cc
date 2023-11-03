@@ -39,6 +39,10 @@ export default async function Page() {
     String(session?.user.id),
   )
 
+  const tiktokConnection = await SocialConnectionService.findTikTokToken(
+    String(session?.user.id),
+  )
+
   return (
     <Settings
       user={user}
@@ -47,6 +51,7 @@ export default async function Page() {
       instagramPages={instagramPages}
       instgramToken={instgramToken}
       instagramConnection={instagramConnection}
+      tiktokConnection={tiktokConnection}
     />
   )
 }

@@ -6,9 +6,10 @@ type Props = {
   session: any
   InstagramConnection: any
   instgramToken: any
+  tiktokConnection: any
 }
 
-export default function Connections({ session, InstagramConnection, instgramToken }: Props) {
+export default function Connections({ session, InstagramConnection, instgramToken, tiktokConnection }: Props) {
 
   const router = useRouter();
 
@@ -87,7 +88,7 @@ export default function Connections({ session, InstagramConnection, instgramToke
         <div>
           <div className='flex mb-4'>TikTok</div>
           <div className='flex gap-4 '>
-            {instgramToken == null ? (
+            {tiktokConnection == null ? (
               <a
                 href={`/api/oauth/connect/tiktok`}
                 className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
@@ -96,7 +97,7 @@ export default function Connections({ session, InstagramConnection, instgramToke
             ) : (
               <div className='flex gap-4'>
                 <label className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
-                  Connected with token {instgramToken}
+                  Connected with token {tiktokConnection}
                 </label>
                 {loading ? (
                   <Spinner width='w-4' height='h-4' border='border-2' />

@@ -36,7 +36,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const newSocialConnection = await db.socialConnection.create({
       data: {
         userId: userId,
-        platform: 'INSTAGRAM',
+        platform: 'TIKTOK',
         token: tiktokResponse.access_token,
         refreshToken: null,
         longToken: null,
