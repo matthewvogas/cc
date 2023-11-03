@@ -59,7 +59,7 @@ export default function Settings({
       label: 'Connections',
       content: (
         <div>
-          <Connections session={session} InstagramConnection={instagramConnection} />
+          <Connections session={session} InstagramConnection={instagramConnection} instgramToken={instgramToken}/>
         </div>
       ),
     },

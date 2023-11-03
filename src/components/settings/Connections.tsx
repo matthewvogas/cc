@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 type Props = {
   session: any
   InstagramConnection: any
+  instgramToken: any
 }
 
-export default function Connections({ session, InstagramConnection }: Props) {
+export default function Connections({ session, InstagramConnection, instgramToken }: Props) {
 
   const router = useRouter();
 
@@ -86,16 +87,16 @@ export default function Connections({ session, InstagramConnection }: Props) {
         <div>
           <div className='flex mb-4'>TikTok</div>
           <div className='flex gap-4 '>
-            {/* {InstagramConnection == null ? ( */}
+            {instgramToken == null ? (
               <a
                 href={`/api/oauth/connect/tiktok`}
                 className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
                 connect
               </a>
-            {/* ) : ( */}
-              {/* <div className='flex gap-4'>
+            ) : (
+              <div className='flex gap-4'>
                 <label className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
-                  Connected
+                  Connected with token {instgramToken}
                 </label>
                 {loading ? (
                   <Spinner width='w-4' height='h-4' border='border-2' />
@@ -106,8 +107,8 @@ export default function Connections({ session, InstagramConnection }: Props) {
                     Disconnect
                   </button>
                 )}
-              </div> */}
-            {/* )} */}
+              </div>
+            )}
           </div>
         </div>
       </div>
