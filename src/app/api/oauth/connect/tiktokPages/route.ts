@@ -7,6 +7,8 @@ export async function POST(req: NextRequest) {
 
   const token = await SocialConnectionService.findTikTokToken(userId)
 
+  return NextResponse.json({ pages: 'page' })
+
   interface TiktokBusinessAccount {
     username: string | ''
     name: string | ''
@@ -17,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   async function getUserInfo(accessToken: any): Promise<any> {
     const url =
-      'https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username,follower_count'
+      'https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username,bio_description,profile_deep_link,is_verified,follower_count,video_count,likes_count'
     const response = await fetch(url, {
       method: 'GET',
       headers: {
