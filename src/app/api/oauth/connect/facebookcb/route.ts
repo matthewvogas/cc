@@ -4,15 +4,13 @@ import { getServerSession } from 'next-auth'
 import db from '@/lib/db'
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  // callback and longToken from FB
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')
-  const id = searchParams.get('id')
 
   const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
   const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
   const domain = process.env.NEXTAUTH_URL
-  const redirect_uri = `${domain}/api/oauth/connect/facebookcb?id=${id}`
+  const redirect_uri = `${domain}/api/oauth/connect/facebookcb`
 
   let userId = ''
   const session = await getServerSession(authOptions)
