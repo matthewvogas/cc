@@ -40,8 +40,10 @@ export default function ClientCard({
               <Image
                 priority
                 className={`h-64 object-cover`}
-                src={imageCover}
+                src={card.imageUrl || imageCover}
                 alt={card?.name || 'card'}
+                width={250}
+                height={310}
               />
               <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                 <p

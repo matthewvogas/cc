@@ -1,8 +1,10 @@
+import imageCompression from 'browser-image-compression'
 import TagsInput from '@/components/inputs/tag'
 import useClients from '@/hooks/useClients'
 import { Dialog } from '@headlessui/react'
 import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
+import { set } from 'zod'
 
 type Props = {
   campaignsFallback: any
@@ -25,19 +27,38 @@ export default function AddClients({
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const originalFile = e.target.files[0]
+      const options = {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      }
+      try {
+        const compressedFile = await imageCompression(originalFile, options)
+        setSelectedFile(compressedFile)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
 
   const handleCreate = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     try {
+      const formData = new FormData()
+      formData.append('name', name)
+      formData.append('tags', JSON.stringify(tags))
+      if (selectedFile) {
+        formData.append('image', selectedFile)
+      }
+
       const res = await fetch('/api/clients', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          tags,
-        }),
+        body: formData,
       })
 
       if (res.status === 200) refreshClients()
@@ -94,6 +115,12 @@ export default function AddClients({
                 </div>
 
                 <hr className='my-2 h-px border-0 bg-gray-200' />
+
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleFileChange}
+                />
 
                 {fetchError && (
                   <div className='alert alert-error shadow-lg'>

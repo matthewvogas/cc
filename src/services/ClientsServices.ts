@@ -48,17 +48,15 @@ export class ClientsService {
     return client
   }
 
-
-  static async deleteClientById(clientId: number){
-    try{
+  static async deleteClientById(clientId: number) {
+    try {
       await db.client.delete({
         where: {
           id: clientId,
         },
-      });
-    } catch(error){
+      })
+    } catch (error) {
       console.log(error)
     }
-    
   }
 }

@@ -46,9 +46,11 @@ export default function CampaignCard({
               className={`bg-beigeTransparent border min-w-[250px]`}>
               <Image
                 className={`object-cover`}
-                src={imageCover}
+                src={card.imageUrl || imageCover}
                 alt={card.name}
                 style={{ width: '250px', height: '310px' }}
+                width={250}
+                height={310}
               />
               <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
                 <div className='max-w-[200px] overflow-clip'>

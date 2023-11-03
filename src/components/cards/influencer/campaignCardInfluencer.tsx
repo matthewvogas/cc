@@ -9,6 +9,7 @@ import { Campaign } from '@prisma/client'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 type Props = {
   user: any
@@ -24,6 +25,30 @@ export default function CampaignCardIfluencer({
   const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
     useCampaigns(campaignsFallback)
   const postData = campaignsFallback[0]?.user1?.campaigns
+  const [profileImage, setProfileImage] = useState('')
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      try {
+        const response = await fetch('/api/user/images/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        if (!response.ok) {
+          throw new Error('Error al cargar la imagen del perfil')
+        }
+        const data = await response.json()
+        console.log(data.image)
+        setProfileImage(data.image)
+      } catch (error) {
+        console.error('Error al cargar la imagen del perfil:', error)
+      }
+    }
+
+    fetchProfileImage()
+  }, [])
 
   return (
     <>
@@ -46,9 +71,11 @@ export default function CampaignCardIfluencer({
                 className={`bg-beigeTransparent border min-w-[250px]`}>
                 <Image
                   className={`object-cover`}
-                  src={imageCover}
+                  src={card.imageUrl || imageCover}
                   alt={card.name}
                   style={{ width: '250px', height: '310px' }}
+                  width={250}
+                  height={310}
                 />
                 <div className='mb-4 flex max-w-[250px] justify-between gap-4 px-6 pt-4'>
                   <div className='max-w-[200px] overflow-clip'>
@@ -63,6 +90,7 @@ export default function CampaignCardIfluencer({
                           width={150}
                           src={img}
                           alt='background'
+                          height={150}
                         />
                       </div>
                       <div className='-ml-5'>

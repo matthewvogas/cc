@@ -53,28 +53,28 @@ export async function POST(req: NextRequest) {
     // )
 
     let count = 0
-    for(const image of images) {
+    for (const image of images) {
       const name = image.name.split('.')[0]
       const buffer = Buffer.from(await image.arrayBuffer())
-        const resized = await sharp(buffer).webp({ quality: 50 }).toBuffer()
-        const blob = new Blob([resized], { type: 'image/webp' })
+      const resized = await sharp(buffer).webp({ quality: 50 }).toBuffer()
+      const blob = new Blob([resized], { type: 'image/webp' })
 
-        const url = await S3Service.uploadObject(
-          blob,
-          name,
-          'instagram',
-          'stories',
-        )
+      const url = await S3Service.uploadObject(
+        blob,
+        name,
+        'instagram',
+        'stories',
+      )
 
-        console.log(url)
-        console.log(`Image ${count+1} of ${images.length} uploaded`)
-        count++
+      console.log(url)
+      console.log(`Image ${count + 1} of ${images.length} uploaded`)
+      count++
 
-        await db.story.upsert({
-          where: { imageUrl_campaignId: { imageUrl: url!, campaignId: +id } },
-          create: { imageUrl: url!, campaignId: +id, userId: session!.user.id },
-          update: { imageUrl: url!, campaignId: +id },
-        })
+      await db.story.upsert({
+        where: { imageUrl_campaignId: { imageUrl: url!, campaignId: +id } },
+        create: { imageUrl: url!, campaignId: +id, userId: session!.user.id },
+        update: { imageUrl: url!, campaignId: +id },
+      })
     }
 
     return NextResponse.json({ success: true })

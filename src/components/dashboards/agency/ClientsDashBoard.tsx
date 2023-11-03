@@ -6,7 +6,7 @@ import useClients from '@/hooks/useClients'
 import { inter, ptMono } from '@/app/fonts'
 import SearchByTag from '../../inputs/searchByTag'
 import TitlePage from '../../labels/titlePage'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Search from '../../inputs/search'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -42,6 +42,29 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
       return clientNameMatches
     }
   })
+
+  async function fetchClients() {
+    const response = await fetch('/api/clients')
+    const data = await response.json()
+
+    if (response.status !== 200) {
+      throw new Error(data.error)
+    }
+
+    return data
+  }
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await fetchClients()
+      } catch (error) {
+        console.error('Error fetching clients:', error)
+      }
+    }
+
+    loadData()
+  }, [])
 
   return (
     <>
@@ -91,8 +114,10 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
                 <Image
                   priority
                   className={`h-64 object-cover`}
-                  src={client?.image || imageCover}
+                  src={client?.imageUrl || imageCover}
                   alt={client?.name}
+                  width={320}
+                  height={180}
                 />
                 <div className='h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                   <p className={`text-lg font-medium text-gray-800`}>

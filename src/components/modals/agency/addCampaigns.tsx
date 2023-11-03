@@ -5,6 +5,7 @@ import useClients from '@/hooks/useClients'
 import { Dialog } from '@headlessui/react'
 import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
+import imageCompression from 'browser-image-compression'
 
 type Props = {
   campaignsFallback: CampaignRes
@@ -31,22 +32,44 @@ export default function AddCampaign({
   const [hashtag, setHashtag] = useState('')
   const [clientId, setClientId] = useState<string | null>(null)
   const [fetchError, setFetchError] = useState<string | null>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const originalFile = e.target.files[0]
+      const options = {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      }
+      try {
+        const compressedFile = await imageCompression(originalFile, options)
+        setSelectedFile(compressedFile)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
 
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const formData = new FormData()
+
+    formData.append('title', title)
+    formData.append('name', name)
+    formData.append('description', description)
+    formData.append('clientId', clientId!)
+    formData.append('hashtag', hashtag)
+
+    if (selectedFile) {
+      formData.append('image', selectedFile)
+    }
+
     try {
       const res = await fetch('/api/campaigns', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          name,
-          description,
-          clientId,
-          hashtag,
-        }),
+        body: formData,
       })
 
       if (res.status === 200) refreshCampaigns()
@@ -138,6 +161,7 @@ export default function AddCampaign({
                 placeholder='A brief description about your campaign'
               />
 
+              <input type='file' accept='image/*' onChange={handleFileChange} />
               <hr className='my-8 h-px border-0 bg-gray-200' />
 
               {fetchError && (
