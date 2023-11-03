@@ -1,8 +1,10 @@
 import db from '@/lib/db'
 import { getServerSession } from 'next-auth'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { ClientsService } from '@/services/ClientsServices'
+import S3Service from '@/lib/S3Service'
+import sharp from 'sharp'
 
 export async function GET() {
   try {
@@ -18,11 +20,32 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
 
-    const { name, email, tags } = await req.json()
+    if (!session) {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    }
+
+    const formData = await req.formData()
+    const name = formData.get('name') as string
+    const tags = JSON.parse(formData.get('tags') as string)
+    const image = formData.get('image') as Blob
+
+    const buffer = Buffer.from(await image.arrayBuffer())
+    const resized = await sharp(buffer).webp({ quality: 80 }).toBuffer()
+    const blob = new Blob([resized], { type: 'image/webp' })
+
+    const UploadedImageUrl = await S3Service.uploadObject(
+      blob,
+      name,
+      'clients',
+      'images',
+    )
+    if (!UploadedImageUrl) {
+      throw new Error('Failed to upload image to S3')
+    }
 
     const existingTags = await db.tag.findMany({
       where: {
@@ -44,10 +67,10 @@ export async function POST(req: Request) {
       data: {
         userId: session!.user.id,
         name,
-        email,
         tags: {
           connect: tags.map((tag: any) => ({ name: tag })),
         },
+        imageUrl: UploadedImageUrl,
       },
     })
 
@@ -62,6 +85,7 @@ export async function POST(req: Request) {
     )
   }
 }
+
 export async function DELETE(req: Request) {
   const session = await getServerSession(authOptions)
 

@@ -371,7 +371,8 @@ export default function AgenciesDashBoard({
                           your new data, but will still be able to see
                           information you already submitted before you deleted
                           the connection. Additionally, you will no longer be
-                          able to see the campaigns where you are associated with this agency.
+                          able to see the campaigns where you are associated
+                          with this agency.
                         </p>
                         <button
                           onClick={() => {

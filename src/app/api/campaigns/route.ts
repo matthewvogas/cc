@@ -1,8 +1,10 @@
 import { getServerSession } from 'next-auth'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { CampaignsService } from '@/services/CampaignsService'
 import db from '@/lib/db'
+import S3Service from '@/lib/S3Service'
+import sharp from 'sharp'
 
 export async function GET() {
   try {
@@ -17,13 +19,34 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    // if (!session)
-    //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    if (!session) {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    }
 
-    const { name, description, clientId, title, hashtag } = await req.json()
+    const formData = await req.formData()
+    const name = formData.get('name') as string
+    const description = formData.get('description') as string
+    const clientId = formData.get('clientId') as string
+    const title = formData.get('title') as string
+    const hashtag = formData.get('hashtag') as string
+    const image = formData.get('image') as Blob
+
+    const buffer = Buffer.from(await image.arrayBuffer())
+    const resized = await sharp(buffer).webp({ quality: 80 }).toBuffer()
+    const blob = new Blob([resized], { type: 'image/webp' })
+
+    const UploadedImageUrl = await S3Service.uploadObject(
+      blob,
+      name,
+      'campaigns',
+      'images',
+    )
+    if (!UploadedImageUrl) {
+      throw new Error('Failed to upload image to S3')
+    }
 
     const campaign = await db.campaign.create({
       data: {
@@ -31,6 +54,7 @@ export async function POST(req: Request) {
         description,
         clientId: +clientId || null,
         userId: session!.user.id,
+        imageUrl: UploadedImageUrl,
       },
     })
 
