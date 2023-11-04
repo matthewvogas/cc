@@ -135,7 +135,7 @@ export default function Connections({ session, InstagramConnection, instgramToke
                   <Spinner width='w-4' height='h-4' border='border-2' />
                 ) : (
                   <button
-                    onClick={handleDelete}
+                    onClick={handleDeleteTikTok}
                     className='underline flex text-sm items-center'>
                     Disconnect
                   </button>
