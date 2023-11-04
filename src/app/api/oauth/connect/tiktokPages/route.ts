@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
   const response = await getUserInfo(token)
-  const page = response.pages.data.user;
+  const page = response.data.user;
 
   const TikTokPage = await db.tiktokPages.upsert({
     where: {

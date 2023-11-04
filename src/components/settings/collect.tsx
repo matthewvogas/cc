@@ -210,24 +210,23 @@ export default function Collect({
                       {loading ? (
                         <Spinner width='w-4' height='h-4' border='border-2' />
                       ) : tiktokPages.length > 0 ? (
-                        tiktokPages.map(
-                          (page: any, index: number) =>
-                              <button
-                                onClick={() => {
-                                  setTiktokPage(page.id)
-                                }}
-                                key={index}
-                                className={`${
-                                  tiktokPage == page.id
-                                  ? 'bg-[#997e5a] border-[#997e5a] text-white'
-                                  : ''
-                                } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-[#997e5a] hover:text-white`}>
-                                <p>
-                                  @{page.username} - {page.followers_count}{' '}
-                                  Followers
-                                </p>
-                              </button>
-                        )
+                        tiktokPages.map((page: any, index: number) =>(
+                          <button
+                            onClick={() => {
+                              setTiktokPage(page.id)
+                            }}
+                            key={index}
+                            className={`${
+                              tiktokPage == page.id
+                                ? 'bg-[#997e5a] border-[#997e5a] text-white'
+                                : ''
+                            } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-[#997e5a] hover:text-white`}>
+                            <p>
+                              @{page.username} - {page.followers_count}{' '}
+                              Followers
+                            </p>
+                          </button>
+                        ))
                       ) : (
                         <div>
                           <p className='font-normal text-sm text-gray-600'>
