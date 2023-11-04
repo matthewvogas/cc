@@ -45,7 +45,7 @@ export default async function Page() {
     String(session?.user.id),
   )
 
-  const tiktokConnection = await SocialConnectionService.findTikTokToken(
+  const tiktokConnection = await SocialConnectionService.findTikTok(
     String(session?.user.id),
   )
 

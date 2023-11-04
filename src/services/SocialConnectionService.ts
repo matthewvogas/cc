@@ -35,6 +35,21 @@ export class SocialConnectionService {
     }
   }
 
+  static async findTikTok(userId: string) {
+    const socialConnections = await db.socialConnection.findMany({
+      where: {
+        platform: 'TIKTOK' as SocialPlatform,
+        userId: userId
+      },
+    });
+  
+    if (socialConnections.length > 0) {
+      return socialConnections[0];
+    } else {
+      return null; 
+    }
+  }
+
   static async findInstagramPages(userId: string) {
     const socialConnections = await db.socialConnection.findMany({
       where: {

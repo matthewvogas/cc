@@ -5,11 +5,10 @@ import { useRouter } from 'next/navigation';
 type Props = {
   session: any
   InstagramConnection: any
-  instgramToken: any
   tiktokConnection: any
 }
 
-export default function Connections({ session, InstagramConnection, instgramToken, tiktokConnection }: Props) {
+export default function Connections({ session, InstagramConnection, tiktokConnection }: Props) {
 
   const router = useRouter();
 
@@ -57,7 +56,7 @@ export default function Connections({ session, InstagramConnection, instgramToke
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: InstagramConnection.id,
+        id: tiktokConnection.id,
       }),
     })
     if (res.ok) {
@@ -65,7 +64,7 @@ export default function Connections({ session, InstagramConnection, instgramToke
       setLoading(false)
     }
 
-    const resPages = await fetch('/api/pagesRosalind/', {
+    const resPages = await fetch('/api/oauth/connect/tiktokPages', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -129,7 +128,7 @@ export default function Connections({ session, InstagramConnection, instgramToke
             ) : (
               <div className='flex gap-4'>
                 <label className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
-                  Connected with token {tiktokConnection}
+                  Connected with token {tiktokConnection.id}
                 </label>
                 {loading ? (
                   <Spinner width='w-4' height='h-4' border='border-2' />

@@ -80,7 +80,7 @@ export default function Collect({
         setErrorPage('')
       }
 
-      const res = await fetch('/api/collectPosts', {
+      const res = await fetch('/api/collect/instagram', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -212,7 +212,6 @@ export default function Collect({
                       ) : tiktokPages.length > 0 ? (
                         tiktokPages.map(
                           (page: any, index: number) =>
-                            parseInt(page.followers_count) > 100 && (
                               <button
                                 onClick={() => {
                                   setTiktokPage(page.id)
@@ -220,15 +219,14 @@ export default function Collect({
                                 key={index}
                                 className={`${
                                   tiktokPage == page.id
-                                    ? 'bg-[#997e5a] border-[#997e5a] text-white'
-                                    : ''
+                                  ? 'bg-[#997e5a] border-[#997e5a] text-white'
+                                  : ''
                                 } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-[#997e5a] hover:text-white`}>
                                 <p>
                                   @{page.username} - {page.followers_count}{' '}
                                   Followers
                                 </p>
                               </button>
-                            ),
                         )
                       ) : (
                         <div>
@@ -241,7 +239,7 @@ export default function Collect({
                     </div>
 
                     <div className='text-right'>
-                      {tiktokPages.length > 0 ? (
+                      {instagramPage.length > 0 ? (
                         <div>
                           <button
                             className='cursor-pointer'

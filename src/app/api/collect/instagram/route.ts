@@ -1,9 +1,6 @@
-import { authOptions } from '../auth/[...nextauth]/route'
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import db from '@/lib/db'
-import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { InstagramPagesService } from '@/services/InstagramPagesService'
+import { NextRequest, NextResponse } from 'next/server'
+import db from '@/lib/db'
 
 export async function POST(req: NextRequest) {
   const { sessionId, instagramPage, instgramToken } = await req.json()
