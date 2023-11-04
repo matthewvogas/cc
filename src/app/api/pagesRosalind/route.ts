@@ -41,3 +41,23 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ usernames })
 }
+
+export async function DELETE(req: NextRequest) {
+  const { userId } = await req.json()
+
+  const pages = await db.tiktokPages.findMany({
+    where: {
+      userId: userId,
+    },
+  })
+
+  for (let page of pages) {
+    await db.tiktokPages.delete({
+      where: {
+        id: page.id,
+      },
+    })
+  }
+
+  return NextResponse.json({ SUCCES: pages })
+}
