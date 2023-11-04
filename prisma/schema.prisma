@@ -70,6 +70,7 @@ model User {
   initiatedConnections Connection[]     @relation("InitiatedConnections")
   receivedConnections  Connection[]     @relation("ReceivedConnections")
   instagramPages       instagramPages[] @relation("userIdInstagramPage")
+  tiktokPages          tiktokPages[]    @relation("userIdTikTokPage")
 
   suscription Suscriptions[] @relation("userId")
 
@@ -109,6 +110,21 @@ model instagramPages {
 
   socialConnection SocialConnection[]
   user             User               @relation("userIdInstagramPage", fields: [userId], references: [id])
+}
+
+model tiktokPages {
+  id     String @id @default(cuid())
+  userId String
+
+  username            String
+  name                String
+  profile_picture_url String
+  followers_count     String
+  accountId           String
+  tokenId             String
+
+  socialConnection SocialConnection[]
+  user             User               @relation("userIdTikTokPage", fields: [userId], references: [id])
 }
 
 model Invite {
@@ -158,6 +174,7 @@ model SocialConnection {
   refreshToken   String?
   longToken      String?
   instagramPages instagramPages[]
+  tiktokPages    tiktokPages[]
 
   creators Creator[]
 }
