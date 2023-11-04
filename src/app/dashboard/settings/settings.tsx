@@ -13,6 +13,7 @@ type Props = {
   session: any
   posts: any
   instagramPages: any
+  tiktokPages: any
   instgramToken: any
   instagramConnection: any
   tiktokConnection: any
@@ -23,6 +24,7 @@ export default function Settings({
   session,
   posts,
   instagramPages,
+  tiktokPages,
   instgramToken,
   instagramConnection,
   tiktokConnection,
@@ -36,6 +38,7 @@ export default function Settings({
             session={session}
             posts={posts}
             instagramPages={instagramPages}
+            tiktokPages={tiktokPages}
             instgramToken={instgramToken}
           />
         </div>

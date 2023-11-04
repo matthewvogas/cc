@@ -6,16 +6,7 @@ export async function POST(req: NextRequest) {
 
   const { userId } = await req.json()
 
-
   const token = await SocialConnectionService.findTikTokToken(userId)
-
-  interface TiktokBusinessAccount {
-    username: string | ''
-    name: string | ''
-    profile_picture_url: string
-    followers_count: number | 0
-    id: string
-  }
 
     async function getUserInfo(accessToken: any): Promise<any> {
       const url =
@@ -35,49 +26,48 @@ export async function POST(req: NextRequest) {
       return data
     }
 
-  const page = await getUserInfo(token)
+  const response = await getUserInfo(token)
+  const page = response.pages.data.user;
 
-  return NextResponse.json({ pages: page })
-
-  const TikTokPage = await db.instagramPages.upsert({
+  const TikTokPage = await db.tiktokPages.upsert({
     where: {
-      id: page.id,
+      id: page.open_id,
     },
     create: {
-      id: page.id,
+      id: page.open_id,
       userId: userId,
       username: page.username,
-      name: page?.name || '',
-      profile_picture_url: page.profile_picture_url,
-      followers_count: String(page.followers_count),
-      accountId: page.id,
+      name: page?.username || '',
+      profile_picture_url: page.avatar_url,
+      followers_count: String(page.follower_count),
+      accountId: page.open_id,
       tokenId: '',
     },
     update: {
       userId: userId,
       username: page.username,
-      name: page?.name || '',
-      profile_picture_url: page.profile_picture_url,
-      followers_count: String(page.followers_count),
-      accountId: page.id,
+      name: page?.username || '',
+      profile_picture_url: page.avatar_url,
+      followers_count: String(page.follower_count),
+      accountId: page.open_id,
       tokenId: '',
     },
   })
 
-  return NextResponse.json({ pages: 'instagramBusinessAccounts' })
+  return NextResponse.json({ pages: TikTokPage })
 }
 
 export async function DELETE(req: NextRequest) {
   const { userId } = await req.json()
 
-  const pages = await db.instagramPages.findMany({
+  const pages = await db.tiktokPages.findMany({
     where: {
       userId: userId,
     },
   })
 
   for (let page of pages) {
-    await db.instagramPages.delete({
+    await db.tiktokPages.delete({
       where: {
         id: page.id,
       },
@@ -91,7 +81,7 @@ export async function GET(req: NextRequest) {
   const url = new URL(req.url)
   const id = url.searchParams.get('id')
 
-  const pages = await db.instagramPages.findMany({
+  const pages = await db.tiktokPages.findMany({
     where: {
       userId: String(id),
     },
@@ -99,7 +89,7 @@ export async function GET(req: NextRequest) {
 
   const usernames = []
   for (let page of pages) {
-    await db.instagramPages.findFirst({
+    await db.tiktokPages.findFirst({
       where: {
         id: page.id,
       },
