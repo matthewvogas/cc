@@ -46,6 +46,38 @@ export default function Connections({ session, InstagramConnection, instgramToke
       setLoading(false)
     }
 
+  }
+
+  const handleDeleteTikTok = async () => {
+
+    setLoading(true)
+    const res = await fetch('/api/socialConnections', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: InstagramConnection.id,
+      }),
+    })
+    if (res.ok) {
+      router.refresh()
+      setLoading(false)
+    }
+
+    const resPages = await fetch('/api/pagesRosalind/', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: session.user.id,
+      }),
+    })
+    if (resPages.ok) {
+      router.refresh()
+      setLoading(false)
+    }
 
   }
 
