@@ -128,7 +128,7 @@ export default function Connections({ session, InstagramConnection, tiktokConnec
             ) : (
               <div className='flex gap-4'>
                 <label className='bg-[#E7F5EE] text-xs px-8 py-3 rounded-full font-medium'>
-                  Connected with token {tiktokConnection.id}
+                  Connected with token {tiktokConnection.token}
                 </label>
                 {loading ? (
                   <Spinner width='w-4' height='h-4' border='border-2' />
