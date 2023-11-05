@@ -4,14 +4,15 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import db from '@/lib/db'
 
 export async function GET(req: NextRequest, res: NextResponse) {
+
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')
+  const id = searchParams.get('state')
   const domain = process.env.NEXTAUTH_URL
 
   let userId = ''
-  const session = await getServerSession(authOptions)
+  userId = String(id)
 
-  userId = session!.user.id
   const tiktokResponse = await fetch(
     `https://open.tiktokapis.com/v2/oauth/token/`,
     {
@@ -25,7 +26,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         client_secret: process.env.TIKTOK_CLIENT_SECRET!,
         code: code!,
         grant_type: 'authorization_code',
-        redirect_uri: `${domain}/api/oauth/connect/tiktokcb/`,
+        redirect_uri: `${domain}/api/oauth/connect/rosalindcb`,
       }),
     },
   ).then(res => res.json())
