@@ -39,7 +39,13 @@ export async function GET(req: NextRequest) {
     };
   }
 
-  return NextResponse.json({ usernames })
+  const pageTikTok = await db.tiktokPages.findMany({
+    where: {
+      userId: String(id),
+    },
+  })
+
+  return NextResponse.json({ 'Instagram': usernames, 'Tiktok': pageTikTok})
 }
 
 export async function DELETE(req: NextRequest) {
