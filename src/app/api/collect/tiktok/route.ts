@@ -56,9 +56,6 @@ export async function POST(req: NextRequest) {
 
   console.log(userData)
 
-  return NextResponse.json({'Info': userData})
-
-
   async function getUserVideos(accessToken: any): Promise<any> {
     const url =
       'https://open.tiktokapis.com/v2/video/list/?fields=id,title,video_description,duration,cover_image_url,embed_link&max_count=20'

@@ -84,7 +84,6 @@ export default function Collect({
     setLoading(true)
     try {
       if (instagramPage === '') {
-        console.log('sin paginas')
         return setErrorPage('You need to select one page, try again')
       } else {
         setErrorPage('')
@@ -116,7 +115,6 @@ export default function Collect({
     setLoading(true)
     try {
       if (instagramPage === '') {
-        console.log('sin paginas')
         return setErrorPage('You need to select one page, try again')
       } else {
         setErrorPage('')
