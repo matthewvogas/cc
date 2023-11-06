@@ -73,22 +73,22 @@ export default function Collect({
   const router = useRouter()
 
   const handleNetworks = async () => {
-    if (instagramPage != '') {
+    if (instagramPage != '' && tiktokPage != '') {
       handleLinksInstagram()
+      handleLinksTiktok()
     } else if (tiktokPage != '') {
       handleLinksTiktok()
+    } else if (instagramPage != '') {
+      handleLinksInstagram()
+    } else {
+      setLoading(false)
+      return setErrorPage('You need to select one page, try again')
     }
   }
 
   const handleLinksInstagram = async () => {
     setLoading(true)
     try {
-      if (instagramPage === '') {
-        return setErrorPage('You need to select one page, try again')
-      } else {
-        setErrorPage('')
-      }
-
       const res = await fetch('/api/collect/instagram', {
         method: 'POST',
         headers: {
@@ -111,23 +111,17 @@ export default function Collect({
       console.log(error)
     }
   }
+
   const handleLinksTiktok = async () => {
     setLoading(true)
     try {
-      if (instagramPage === '') {
-        return setErrorPage('You need to select one page, try again')
-      } else {
-        setErrorPage('')
-      }
-
       const res = await fetch('/api/collect/tiktok', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          tiktokToken: tiktokToken,
-          sessionId: session.user.id,
+          userId: session.user.id,
         }),
       })
 
@@ -144,7 +138,7 @@ export default function Collect({
 
   const tabs: TabItem[] = [
     {
-      label: 'Instagram',
+      label: 'Posts',
       content: (
         <div className='mt-8'>
           <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48'>
@@ -249,7 +243,7 @@ export default function Collect({
                       {loading ? (
                         <Spinner width='w-4' height='h-4' border='border-2' />
                       ) : tiktokPages.length > 0 ? (
-                        tiktokPages.map((page: any, index: number) =>(
+                        tiktokPages.map((page: any, index: number) => (
                           <button
                             onClick={() => {
                               setTikTok(page.id)
@@ -277,7 +271,7 @@ export default function Collect({
                     </div>
 
                     <div className='text-right'>
-                      {tiktokPage.length > 0 ? (
+                      {tiktokPage.length > 0 || instagramPage.length > 0 ? (
                         <div>
                           <button
                             className='cursor-pointer'

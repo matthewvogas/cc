@@ -4,10 +4,59 @@ import db from '@/lib/db'
 import { SocialConnectionService } from '@/services/SocialConnectionService'
 
 export async function POST(req: NextRequest) {
+  const { userId } = await req.json()
 
-  const { sessionId } = await req.json()
-  
-  const tiktokToken = await SocialConnectionService.findTikTokToken(sessionId)
+  const token = await SocialConnectionService.findTikTokToken(userId)
+
+  async function getUserInfo(accessToken: any): Promise<any> {
+    const url =
+      'https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username,bio_description,profile_deep_link,is_verified,follower_count,video_count,likes_count'
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user info: ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data
+  }
+
+  const response = await getUserInfo(token)
+  const page = response.data.user
+
+  const creator = await db.creator.upsert({
+    where: {
+      username_platform: {
+        username: page.username,
+        platform: 'tiktok',
+      },
+    },
+    create: {
+      followersCount: page.follower_count,
+      username: page.username,
+      platform: 'tiktok',
+      uuid: page.open_id,
+      users: {
+        connect: {
+          id: userId,
+        },
+      },
+    },
+    update: {
+      followersCount: page.follower_count,
+      uuid: page.open_id,
+      users: {
+        connect: {
+          id: userId,
+        },
+      },
+    },
+  })
 
   interface PostData {
     id: string
@@ -32,35 +81,12 @@ export async function POST(req: NextRequest) {
     plays: number
     video_views: number
   }
-  
-  async function getUserInfo(accessToken: any): Promise<any> {
-    const url =
-      'https://open.tiktokapis.com/v2/user/info/?fields=open_id,avatar_url,display_name,username,bio_description,profile_deep_link,is_verified,follower_count,video_count,likes_count'
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch user info: ${response.statusText}`)
-    }
-
-    const data = await response.json()
-    return data
-  }
-  
-  
-  const userData = await getUserInfo(tiktokToken)
-
-  console.log(userData)
 
   async function getUserVideos(accessToken: any): Promise<any> {
     const url =
-      'https://open.tiktokapis.com/v2/video/list/?fields=id,title,video_description,duration,cover_image_url,embed_link&max_count=20'
+      'https://open.tiktokapis.com/v2/video/list/?fields=id,create_time,cover_image_url,share_url,video_description,duration,title,like_count,comment_count,share_count,view_count'
     const response = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -74,160 +100,75 @@ export async function POST(req: NextRequest) {
     return data
   }
 
-  const page = userData.data.user;
-  const response = await getUserVideos(tiktokToken);
-  const videos = response.data.videos  
-
-  const postDataArray = Array.isArray(response.data.videos)
-    ? extractPostData(response.data.videos)
-    : []
-
-  console.log(postDataArray)
-
-  function extractPostData(data: any[]): PostData[] {
-    const postArray: PostData[] = []
-
-    for (const post of data) {
-      const insights = post.insights.data
-      const postData: PostData = {
-        id: post.id,
-        media_type: post.media_type,
-
-        caption: post.caption,
-        media_url: post.media_url,
-        permalink: post.permalink,
-        shortcode: post.shortcode,
-        thumbnail_url: post.thumbnail_url,
-
-        reach:
-          insights.find((insight: any) => insight.name === 'reach')?.values[0]
-            .value || 0,
-        comments:
-          insights.find((insight: any) => insight.name === 'comments')
-            ?.values[0].value || 0,
-        engagement:
-          insights.find((insight: any) => insight.name === 'engagement')
-            ?.values[0].value || 0,
-        likes:
-          insights.find((insight: any) => insight.name === 'likes')?.values[0]
-            .value || 0,
-        impressions:
-          insights.find((insight: any) => insight.name === 'impressions')
-            ?.values[0].value || 0,
-        saved:
-          insights.find((insight: any) => insight.name === 'saved')?.values[0]
-            .value || 0,
-        shares:
-          insights.find((insight: any) => insight.name === 'shares')?.values[0]
-            .value || 0,
-        plays:
-          insights.find((insight: any) => insight.name === 'plays')?.values[0]
-            .value || 0,
-        video_views:
-          insights.find((insight: any) => insight.name === 'video_views')
-            ?.values[0].value || 0,
-      }
-      postArray.push(postData)
-    }
-    return postArray
-  }
+  const responseVideos = await getUserVideos(token)
+  const videos = responseVideos.data.videos
 
   for (const post of videos) {
-    const creator = await db.creator.upsert({
-      where: {
-        username_platform: {
-          username: page[0].username,
-          platform: 'instagram',
-        },
-      },
-      create: {
-        followersCount: parseInt(page[0].followers_count),
-        username: page[0].username,
-        platform: 'instagram',
-        uuid: page[0].id,
-        users: {
-          connect: {
-            id: sessionId,
-          },
-        },
-      },
-      update: {
-        followersCount: parseInt(page[0].followers_count),
-        uuid: page[0].id,
-        users: {
-          connect: {
-            id: sessionId,
-          },
-        },
-      },
-    })
-
     const postToSave = await db.post.upsert({
       where: {
         shortcode_platform: {
-          shortcode: String(post.shortcode),
-          platform: 'instagram',
+          shortcode: String(post.share_url),
+          platform: 'tiktok',
         },
       },
       create: {
-        platform: 'instagram',
-        permalink: post.permalink,
-        shortcode: post.shortcode,
-        imageUrl: post.thumbnail_url || post.media_url,
+        platform: 'tiktok',
+        permalink: post.share_url,
+        shortcode: post.share_url,
+        imageUrl: post.cover_image_url,
 
         // data
         creatorId: creator.id,
-        caption: post.caption,
-        userId: sessionId,
+        caption: post.video_description,
+        userId: userId,
 
         // insighst
-        engagementCount: post.engagement,
-        reachCount: post.reach,
-        sharesCount: post.shares,
-        commentsCount: post.comments,
-        playsCount: post.plays,
-        savesCount: post.saved,
-        likesCount: post.likes,
+        engagementCount: (post.like_count + post.comment_count + post.share_count) / post.view_count * 100,
+        reachCount: 0,
+        sharesCount: post.share_count,
+        commentsCount: post.comment_count,
+        playsCount: post.view_count,
+        savesCount: 0,
+        likesCount: post.like_count,
       },
       update: {
         // urls
-        platform: 'instagram',
-        permalink: String(post.permalink),
-        shortcode: String(post.shortcode),
-        imageUrl: post.thumbnail_url || post.media_url,
+        platform: 'tiktok',
+        permalink: String(post.share_url),
+        shortcode: String(post.share_url),
+        imageUrl: post.cover_image_url,
 
         // data
         creatorId: creator.id,
-        caption: String(post.caption),
-        userId: sessionId,
+        caption: String(post.video_description),
+        userId: userId,
 
         // insighst
-        engagementCount: post.engagement,
-        reachCount: post.reach,
-        sharesCount: post.shares,
-        commentsCount: post.comments,
-        playsCount: post.plays,
-        savesCount: post.saved,
-        likesCount: post.likes,
+        engagementCount: (post.like_count + post.comment_count + post.share_count) / post.view_count * 100,
+        reachCount: 0,
+        sharesCount: post.share_count,
+        commentsCount: post.comment_count,
+        playsCount: post.view_count,
+        savesCount: 0,
+        likesCount: post.like_count,
       },
     })
 
     const showPost = () => {
       console.log('Caption:', post.caption)
       console.log('Media URL:', post.media_url)
-      console.log('Permalink:', post.permalink)
-      console.log('Shortcode:', post.shortcode)
+      console.log('Permalink:', post.share_url)
+      console.log('Shortcode:', post.share_url)
       console.log('Comments:', post.comments)
-      console.log('Engagement:', post.engagement)
-      console.log('Likes:', post.likes)
+      console.log('Engagement:', (post.like_count + post.comment_count + post.share_count) / post.view_count * 100)
+      console.log('Likes:', post.like_count)
       console.log('Impressions:', post.impressions)
-      console.log('Saved:', post.saved)
+      console.log('Saved:', 0)
       console.log('Shares:', post.shares)
       console.log('Plays:', post.plays)
       console.log('-----------------------------')
     }
 
-    return NextResponse.json({'postToSave': showPost})
   }
 
   return NextResponse.json('ok')
