@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   const page = await InstagramPagesService.findUnique(instagramPage)
 
   const posts = await fetch(
-    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(engagement,comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}&limit=3`,
+    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(engagement,comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}`,
   ).then(res => res.json())
 
   interface PostData {

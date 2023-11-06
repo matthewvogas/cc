@@ -15,6 +15,7 @@ type Props = {
   instagramPages: any
   tiktokPages: any
   instgramToken: any
+  tiktokToken: any
 }
 
 type TabItem = {
@@ -62,15 +63,24 @@ export default function Collect({
   instagramPages,
   tiktokPages,
   instgramToken,
+  tiktokToken,
 }: Props) {
   const [loading, setLoading] = React.useState(false)
-  const [instagramPage, setInstagramPage] = useState('')
-  const [tiktokPage, setTiktokPage] = useState('')
+  const [instagramPage, setInstagram] = useState('')
+  const [tiktokPage, setTikTok] = useState('')
   const [errorPage, setErrorPage] = useState('')
 
   const router = useRouter()
 
-  const handleLinksSubmit = async () => {
+  const handleNetworks = async () => {
+    if (instagramPage != '') {
+      handleLinksInstagram()
+    } else if (tiktokPage != '') {
+      handleLinksTiktok()
+    }
+  }
+
+  const handleLinksInstagram = async () => {
     setLoading(true)
     try {
       if (instagramPage === '') {
@@ -88,6 +98,38 @@ export default function Collect({
         body: JSON.stringify({
           instagramPage: instagramPage,
           instgramToken: instgramToken,
+          sessionId: session.user.id,
+        }),
+      })
+
+      if (res.ok == true) {
+        setLoading(false)
+        router.refresh()
+      } else {
+        console.log(200)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleLinksTiktok = async () => {
+    setLoading(true)
+    try {
+      if (instagramPage === '') {
+        console.log('sin paginas')
+        return setErrorPage('You need to select one page, try again')
+      } else {
+        setErrorPage('')
+      }
+
+      const res = await fetch('/api/collect/tiktok', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tiktokPage: tiktokPage,
+          tiktokToken: tiktokToken,
           sessionId: session.user.id,
         }),
       })
@@ -175,7 +217,7 @@ export default function Collect({
                             parseInt(page.followers_count) > 100 && (
                               <button
                                 onClick={() => {
-                                  setInstagramPage(page.id)
+                                  setInstagram(page.id)
                                 }}
                                 key={index}
                                 className={`${
@@ -213,7 +255,7 @@ export default function Collect({
                         tiktokPages.map((page: any, index: number) =>(
                           <button
                             onClick={() => {
-                              setTiktokPage(page.id)
+                              setTikTok(page.id)
                             }}
                             key={index}
                             className={`${
@@ -238,11 +280,11 @@ export default function Collect({
                     </div>
 
                     <div className='text-right'>
-                      {instagramPage.length > 0 ? (
+                      {tiktokPage.length > 0 ? (
                         <div>
                           <button
                             className='cursor-pointer'
-                            onClickCapture={handleLinksSubmit}>
+                            onClickCapture={handleNetworks}>
                             <label
                               htmlFor='my-modal-3'
                               className={`${ptMono.className} cursor-pointer rounded-xl bg-[#D3F0E2] px-8 py-3`}>
@@ -254,7 +296,7 @@ export default function Collect({
                         <button
                           disabled
                           className='cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl border-gray-200 bg-[#e9e9e9] px-8 py-3'
-                          onClickCapture={handleLinksSubmit}>
+                          onClickCapture={handleNetworks}>
                           {'collect'}
                         </button>
                       )}

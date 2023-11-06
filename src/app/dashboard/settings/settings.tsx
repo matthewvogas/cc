@@ -17,6 +17,7 @@ type Props = {
   instgramToken: any
   instagramConnection: any
   tiktokConnection: any
+  tiktokToken: any
 }
 
 export default function Settings({
@@ -28,6 +29,7 @@ export default function Settings({
   instgramToken,
   instagramConnection,
   tiktokConnection,
+  tiktokToken,
 }: Props) {
   const tabs: TabItem[] = [
     {
@@ -40,6 +42,7 @@ export default function Settings({
             instagramPages={instagramPages}
             tiktokPages={tiktokPages}
             instgramToken={instgramToken}
+            tiktokToken={tiktokToken}
           />
         </div>
       ),

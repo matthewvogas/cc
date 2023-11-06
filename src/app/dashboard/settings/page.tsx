@@ -32,6 +32,10 @@ export default async function Page() {
   const instgramToken = await SocialConnectionService.findInstagramToken(
     session!.user?.id,
   )
+
+  const tiktokToken = await SocialConnectionService.findTikTokToken(
+    session!.user?.id,
+  )
   const posts = await PostsService.findByUser(String(session?.user.id))
 
   const instagramPages = await InstagramPagesService.findByUserId(
@@ -59,6 +63,7 @@ export default async function Page() {
       instgramToken={instgramToken}
       instagramConnection={instagramConnection}
       tiktokConnection={tiktokConnection}
+      tiktokToken={tiktokToken}
     />
   )
 }
