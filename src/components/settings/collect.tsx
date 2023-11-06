@@ -128,7 +128,6 @@ export default function Collect({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          tiktokPage: tiktokPage,
           tiktokToken: tiktokToken,
           sessionId: session.user.id,
         }),
