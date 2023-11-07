@@ -27,14 +27,15 @@ export async function POST(req: NextRequest) {
     })
   }
 
+  const domain = process.env.NEXTAUTH_URL
   try {
     const checkoutSession = await stripe.checkout.sessions.create({
       line_items: lineItems,
       payment_method_types: ['card'],
       mode: 'subscription',
       metadata: { user_id: session.user.id },
-      success_url: 'http://localhost:3000/dashboard/settings',
-      cancel_url: 'https://example.com/cancel',
+      success_url: `${domain}/dashboard/settings`,
+      cancel_url: `${domain}/dashboard/settings`,
     })
 
     return new Response(JSON.stringify({ sessionId: checkoutSession.id }), {
