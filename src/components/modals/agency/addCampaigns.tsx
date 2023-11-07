@@ -33,10 +33,12 @@ export default function AddCampaign({
   const [clientId, setClientId] = useState<string | null>(null)
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [fileName, setFileName] = useState<string | null>(null)
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const originalFile = e.target.files[0]
+      setFileName(originalFile.name)
       const options = {
         maxSizeMB: 2,
         maxWidthOrHeight: 1920,
@@ -65,7 +67,7 @@ export default function AddCampaign({
     if (selectedFile) {
       formData.append('image', selectedFile)
     }
-
+    console.log(formData.values())
     try {
       const res = await fetch('/api/campaigns', {
         method: 'POST',
@@ -75,6 +77,7 @@ export default function AddCampaign({
       if (res.status === 200) refreshCampaigns()
       console.log(res.status)
       setIsOpen(false)
+      setFileName(null)
     } catch (error: any) {
       setFetchError(error?.message)
     }
@@ -142,7 +145,6 @@ export default function AddCampaign({
                   </>
                 )}
               </div>
-
               <p className='py-4'>Campaign Title</p>
               <input
                 onChange={e => setName(e.target.value)}
@@ -152,18 +154,31 @@ export default function AddCampaign({
                 placeholder='Campaign Name'
                 className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
               />
-
               <p className='py-4'>Campaign Description</p>
               <textarea
                 required
-                className=' textarea-bordered textarea w-full rounded-lg'
+                className=' textarea-bordered textarea w-full rounded-lg mb-3'
                 onChange={e => setDescription(e.target.value)}
                 placeholder='A brief description about your campaign'
               />
+              <input
+                type='file'
+                accept='image/*'
+                onChange={handleFileChange}
+                id='file-upload'
+                className='hidden'
+              />
 
-              <input type='file' accept='image/*' onChange={handleFileChange} />
+              <label
+                htmlFor='file-upload'
+                className='cursor-pointer text-black rounded-full bg-rose-200  px-2 py-1 transition duration-300 ease-in-out flex flex-col items-center'>
+                Upload Image
+                {fileName && (
+                  <div className='mt-2 text-sm text-gray-600'>{fileName}</div>
+                )}
+              </label>
+
               <hr className='my-8 h-px border-0 bg-gray-200' />
-
               {fetchError && (
                 <div className='alert alert-error shadow-lg'>
                   <div>
@@ -183,12 +198,13 @@ export default function AddCampaign({
                   </div>
                 </div>
               )}
-
-              <button
-                type='submit'
-                className='rounded-full bg-rose-200 px-6 py-2 '>
-                create campaign
-              </button>
+              <div className='flex items-center justify-center'>
+                <button
+                  type='submit'
+                  className='rounded-full bg-rose-200 px-6 py-2 '>
+                  create campaign
+                </button>
+              </div>
             </form>
           </Dialog.Panel>
         </div>

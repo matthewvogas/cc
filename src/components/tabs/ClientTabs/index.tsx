@@ -2,13 +2,14 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { inter, ptMono } from '@/app/fonts'
+import { ptMono } from '@/app/fonts'
 import { Tab } from '@headlessui/react'
 import imageCover from 'public/assets/register/campaignCover.jpg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TitleSingleClient from '@/components/labels/titleSingleClient'
 import coverImage from 'public/assets/campaigns/coverImage.png'
 import { useRouter } from 'next/navigation'
+import imageCompression from 'browser-image-compression'
 
 export default function ClientTabs({
   client,
@@ -20,9 +21,61 @@ export default function ClientTabs({
   const [activeSocial, setActiveTab] = useState('Campaigns')
   const router = useRouter()
   const [name, setName] = useState(client.name)
-  const [description, setDescription] = useState('campaign.description')
   const [fetchError, setFetchError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [image, setImage] = useState('')
+  const [showChangeText, setShowChangeText] = useState(false)
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const originalFile = e.target.files[0]
+      const options = {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      }
+      try {
+        const compressedFile = await imageCompression(originalFile, options)
+        setSelectedFile(compressedFile)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  const handleCreate = async () => {
+    const formData = new FormData()
+    formData.append('name', selectedFile!.name)
+    formData.append('image', selectedFile!)
+
+    try {
+      const res = await fetch(`/api/clients/${client.id}/cover`, {
+        method: 'POST',
+        body: formData,
+      })
+      if (res.status === 200) {
+        router.refresh()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  useEffect(() => {
+    const fetchCoverImage = async () => {
+      const res = await fetch(`/api/clients/${client.id}/cover`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const data = await res.json()
+      console.log(data)
+      setImage(data)
+      console.log(`Esta es la cover image: ${coverImage}`)
+    }
+    fetchCoverImage()
+  }, [])
 
   const handleUpdate = async () => {
     try {
@@ -143,7 +196,7 @@ export default function ClientTabs({
                     <button
                       className='bg-[#D9F0F1] px-10 py-3 rounded-full'
                       onClick={() => {
-                        handleUpdate()
+                        handleUpdate(), handleCreate()
                       }}>
                       Update Information
                     </button>
@@ -201,20 +254,41 @@ export default function ClientTabs({
                           />
                         </div>
 
-                        <div>
-                          <div className='flex flex-col h-full'>
-                            <p className={`text-sm`}>Your cover image</p>
+                        <div className='relative'>
+                          <p className='text-sm'>Your cover image</p>
+                          <div
+                            className='relative mt-2 w-full h-[200px] overflow-hidden rounded-xl border p-2 hover:cursor-pointer'
+                            onMouseEnter={() => setShowChangeText(true)}
+                            onMouseLeave={() => setShowChangeText(false)}>
                             <Image
-                              className={`object-cover mt-2 rounded-xl w-full h-[200px] p-2 border outline-none`}
-                              src={coverImage}
-                              alt={''}
+                              className='object-cover w-full h-full'
+                              src={image || coverImage}
+                              alt=''
+                              layout='fill' // Asegúrate de que la imagen cubra el contenedor
+                            />
+                            {showChangeText && (
+                              <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white'>
+                                Change cover image
+                              </div>
+                            )}
+                            <input
+                              type='file'
+                              accept='image/*'
+                              className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+                              onChange={handleFileChange}
                             />
                           </div>
                         </div>
                       </div>
 
                       <div className='w-full'>
-                        <Image className={`w-full`} src={coverImage} alt={''} />
+                        <Image
+                          className={`w-full`}
+                          src={coverImage}
+                          alt={''}
+                          width={1160}
+                          height={150}
+                        />
                       </div>
                     </div>
 
