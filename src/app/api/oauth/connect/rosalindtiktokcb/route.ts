@@ -26,7 +26,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         client_secret: process.env.TIKTOK_CLIENT_SECRET!,
         code: code!,
         grant_type: 'authorization_code',
-        redirect_uri: `${domain}/api/oauth/connect/rosalindcb`,
+        redirect_uri: `${domain}/api/oauth/connect/rosalindcb/`,
       }),
     },
   ).then(res => res.json())

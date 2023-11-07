@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const TIKTOK_CLIENT_KEY = process.env.TIKTOK_CLIENT_KEY
   const domain = process.env.NEXTAUTH_URL
 
-  const redirect_uri = `${domain}/api/oauth/connect/rosalindcb`;
+  const redirect_uri = `${domain}/api/oauth/connect/rosalindcb/`;
 
   const tiktokAuthURL = `https://www.tiktok.com/v2/auth/authorize?client_key=${TIKTOK_CLIENT_KEY}&scope=${scope}&response_type=${response_type}&redirect_uri=${encodeURIComponent(redirect_uri)}&state=${id}`;
 
