@@ -312,7 +312,7 @@ export default function Subscription() {
                             <div className='mt-6 flex gap-5'>
                               <button
                                 type='button'
-                                className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
+                                className='inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
                                 onClick={() => setShowCancelAlert(false)}>
                                 Close
                               </button>
