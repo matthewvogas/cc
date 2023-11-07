@@ -25,14 +25,20 @@ const getStripe = (): Promise<Stripe | null> => {
 export async function checkout({ lineItems }: CheckoutProps): Promise<void> {
   try {
     const stripe = await getStripe()
-    await stripe?.redirectToCheckout({
-      mode: 'subscription',
-      lineItems,
-      successUrl:
-        'http://localhost:3000/dashboard/settings?session_id={CHECKOUT_SESSION_ID}',
-      cancelUrl: 'http://localhost:3000/dashboard/settings',
-    })
+    if (!stripe) {
+      throw new Error('Stripe not found')
+    }
 
+    const res = await fetch('/api/subscriptions/checkoutSession', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lineItems }),
+    })
+    const session = await res.json()
+
+    if (res.ok && session.sessionId) {
+      await stripe?.redirectToCheckout({ sessionId: session.sessionId })
+    }
   } catch (error) {
     console.error('Error during checkout:', error)
   }

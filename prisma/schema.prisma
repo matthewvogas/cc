@@ -79,17 +79,31 @@ model User {
 
 model Suscriptions {
   id             String          @id @default(cuid())
-  userId         String          @map("user_id")
+  userId         String          @unique @map("user_id")
   user           User            @relation("userId", fields: [userId], references: [id])
   payment_method payment_methods
 
-  customerId       String    @unique
-  subscriptionId   String?   @unique
-  priceId          String?   @unique
-  currentPeriodEnd DateTime? @unique
+  customerId       String                  @unique
+  subscriptionId   String?
+  priceId          String?
+  currentPeriodEnd DateTime?
+  status           EnumSubscriptionStatus? @default(ACTIVE)
+  subscriptionType subscriptionType?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+enum subscriptionType {
+  YES
+  ABSOLUTELY
+}
+
+enum EnumSubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELED
+  UNPAID
 }
 
 enum payment_methods {

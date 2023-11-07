@@ -103,7 +103,7 @@ export default function SidebarCreators() {
   }, [])
 
   return (
-    <aside className='sticky inset-0 z-[51] h-screen w-64' aria-label='Sidebar'>
+    <aside className='sticky inset-0 z-[49] h-screen w-64' aria-label='Sidebar'>
       <div className='flex h-screen w-64 flex-col overflow-y-auto bg-sidebarBackground px-6 py-4  '>
         <div>
           <div
