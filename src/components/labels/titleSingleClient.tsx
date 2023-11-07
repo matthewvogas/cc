@@ -1,20 +1,44 @@
 'use client'
 
 import coverImageClient from 'public/assets/uniqueClient/clientCoverPage.jpg'
-import { Tab } from '@headlessui/react'
-import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 type Props = {
   client: any
 }
 
 export default function TitleSingleClient({ client }: Props) {
+  const [coverImage, setCoverImage] = useState('')
+
+  useEffect(() => {
+    const fetchCoverImage = async () => {
+      const res = await fetch(`/api/clients/${client.id}/cover`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const data = await res.json()
+      console.log(data)
+      setCoverImage(data)
+      console.log(`Esta es la cover image: ${coverImage}`)
+    }
+    fetchCoverImage()
+  }, [])
+
   return (
     <div className='w-full'>
       <div className='relative'>
-        <Image className='w-full -mb-24' src={coverImageClient} alt='' />
+        <Image
+          className='w-full -mb-24'
+          src={coverImage || coverImageClient}
+          alt=''
+          width={1660}
+          height={160}
+        />
         <div className='absolute  inset-0 bg-gradient-to-t from-[#000000d0] to-transparent'></div>
       </div>
       <div className='mx-auto  h-full w-full justify-between px-12'>

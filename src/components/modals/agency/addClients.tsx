@@ -1,10 +1,9 @@
+import React, { useState } from 'react'
 import imageCompression from 'browser-image-compression'
 import TagsInput from '@/components/inputs/tag'
 import useClients from '@/hooks/useClients'
 import { Dialog } from '@headlessui/react'
-import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
-import { set } from 'zod'
 
 type Props = {
   campaignsFallback: any
@@ -23,15 +22,16 @@ export default function AddClients({
     useClients(clientsFallback)
 
   const [tags, setTags] = useState<string[]>([])
-
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [fileName, setFileName] = useState<string | null>(null)
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const originalFile = e.target.files[0]
+      setFileName(originalFile.name)
       const options = {
         maxSizeMB: 2,
         maxWidthOrHeight: 1920,
@@ -64,6 +64,7 @@ export default function AddClients({
       if (res.status === 200) refreshClients()
       console.log(res.status)
       setIsOpen(false)
+      setFileName(null)
     } catch (error: any) {
       setFetchError(error?.message)
     }
@@ -87,19 +88,15 @@ export default function AddClients({
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className='relative z-[99]'>
-        {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className='fixed inset-0 bg-black bg-opacity-25' />
-
-        {/* Full-screen container to center the panel */}
         <div className='fixed inset-0 flex items-center justify-center p-4'>
-          {/* The actual dialog panel  */}
           <Dialog.Panel className='mx-auto flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
             <Dialog.Title className='mb-8 text-lg font-bold'>
               Add New Client
             </Dialog.Title>
             <div className={`w-full justify-start ${ptMono.className}`}>
               <form onSubmit={handleCreate} className='flex flex-col gap-4'>
-                <label htmlFor='name'>client name</label>
+                <label htmlFor='name'>Client Name</label>
                 <input
                   onChange={e => setName(e.target.value)}
                   type='text'
@@ -110,7 +107,7 @@ export default function AddClients({
                 />
 
                 <div>
-                  <label>{`tags`}</label>
+                  <label>Tags</label>
                   <TagsInput tags={tags} setTags={setTags} />
                 </div>
 
@@ -120,23 +117,23 @@ export default function AddClients({
                   type='file'
                   accept='image/*'
                   onChange={handleFileChange}
+                  id='filxe-upload'
+                  className='hidden'
                 />
+
+                <label
+                  htmlFor='file-upload'
+                  className='cursor-pointer text-center text-black rounded-full bg-rose-200 px-4 py-2 transition duration-300 ease-in-out'>
+                  Upload Image
+                  {fileName && (
+                    <div className='mt-2 text-sm text-gray-600'>{fileName}</div>
+                  )}
+                </label>
 
                 {fetchError && (
                   <div className='alert alert-error shadow-lg'>
                     <div>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        className='h-6 w-6 flex-shrink-0 stroke-current'
-                        fill='none'
-                        viewBox='0 0 24 24'>
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-                        />
-                      </svg>
+                      {/* ... */}
                       <span>{fetchError}</span>
                     </div>
                   </div>
@@ -145,7 +142,7 @@ export default function AddClients({
                 <button
                   type='submit'
                   className='rounded-full bg-rose-200 px-6 py-2 '>
-                  create client
+                  Create Client
                 </button>
               </form>
             </div>

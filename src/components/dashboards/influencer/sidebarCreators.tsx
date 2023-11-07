@@ -70,7 +70,7 @@ export default function SidebarCreators() {
           if (response.ok) {
             const data = await response.json()
             setProfileImage(data.image)
-          } 
+          }
         } catch (error) {
           console.error('Error uploading:', error)
         }
@@ -117,15 +117,12 @@ export default function SidebarCreators() {
               src={logo}
               alt='background'
             />
-
             <span>for creators</span>
-
             {showChangeText && (
               <div className='absolute mt-25 left-8 top-7 z-10 h-[300px] w-[143px] mask mask-circle flex items-center justify-center bg-black bg-opacity-50 text-white'>
                 Change photo
               </div>
             )}
-
             <input
               type='file'
               accept='image/*'

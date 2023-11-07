@@ -68,7 +68,6 @@ export default function PortfolioTabs({
 
         if (res.status === 200) router.refresh()
         console.log(res.status)
-
       } else {
         const res = await fetch('/api/connections', {
           method: 'POST',
