@@ -4,7 +4,7 @@ import S3Service from '@/lib/S3Service'
 import db from '@/lib/db'
 
 export async function GET(
-  res: NextResponse,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {

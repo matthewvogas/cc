@@ -72,10 +72,9 @@ export default function ClientTabs({
       const data = await res.json()
       console.log(data)
       setImage(data)
-      console.log(`Esta es la cover image: ${coverImage}`)
     }
     fetchCoverImage()
-  }, [])
+  }, [client.id])
 
   const handleUpdate = async () => {
     try {

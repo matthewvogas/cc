@@ -184,7 +184,7 @@ export default function Subscription() {
                   </span>
                 ) : (
                   <span className='font-bold'>
-                    You don't have any plan yet.
+                    {'You don&apos;t have any plan yet'}.
                   </span>
                 )}
               </div>
