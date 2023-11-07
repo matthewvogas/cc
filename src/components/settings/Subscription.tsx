@@ -1,14 +1,16 @@
-import React, { use, useEffect, useState } from 'react'
 import CheckboxGreen from 'public/assets/register/falseCheckboxGreen.svg'
-import Checkbox from 'public/assets/register/falseCheckbox.svg'
-import Banner from 'public/assets/register/BannerPlans.jpg'
-import Radio from 'public/assets/register/falseRadio.svg'
-import Image from 'next/image'
-import { ptMono } from '@/app/fonts'
 import { useSubscriptionStore } from './store/subscriptionStore'
+import Checkbox from 'public/assets/register/falseCheckbox.svg'
+import { Dialog, Transition } from '@headlessui/react'
+import React, { useEffect, useState } from 'react'
+import { getServerSession } from 'next-auth'
 import { checkout } from './checkout'
-import { get } from 'http'
-import { loadStripe } from '@stripe/stripe-js'
+import { ptMono } from '@/app/fonts'
+import Image from 'next/image'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+
+import { EnumSubscriptionStatus } from '@prisma/client'
+
 type Props = {
   tabs: any[]
 }
@@ -43,25 +45,59 @@ function CustomTabs({ tabs }: Props) {
 }
 
 export default function Subscription() {
+  const [status, setStatus] = useState('')
+
   const { yesPlan, setYesPlan, absolutelyPlan, setAbsolutelyPlan } =
     useSubscriptionStore()
-  const [endSub, setEndSub] = useState()
+  const [isOpen, setIsOpen] = useState(false)
+  const [endSubscription, setEndSubscription] = useState()
+  const [price, setPrice] = useState()
+  const [last4, setLast4] = useState()
+  const [expMonth, setExpMonth] = useState()
+  const [expYear, setExpYear] = useState()
+  const [brand, setBrand] = useState()
+  const [billingInterval, setBillingInterval] = useState()
+  const [subscriptionType, setSubscriptionType] = useState()
+  const [showCancelAlert, setShowCancelAlert] = useState(false)
 
   useEffect(() => {
-    console.log('hola')
     async function getSubscription() {
-      const response = await fetch('/api/subscriptions')
+      try {
+        const response = await fetch('/api/subscriptions')
 
-      if (!response.ok) {
-        throw new Error('Failed to get subscription')
+        if (!response.ok) {
+          throw new Error('Failed to get subscription')
+        }
+        const data = await response.json()
+
+        setEndSubscription(data.subscription.currentPeriodEnd)
+        setPrice(data.price)
+        setLast4(data.last4)
+        setExpMonth(data.expMonth)
+        setExpYear(data.expYear)
+        setBrand(data.brand)
+        setBillingInterval(data.billingInterval)
+
+        setStatus(data.subscription.status)
+
+        setSubscriptionType(data.subscriptionType)
+      } catch {
+        console.error('Error fetching subscription:')
       }
-      const data = await response.json()
-      setEndSub(data.subscription.currentPeriodEnd)
     }
     getSubscription()
-  }, [])
-  const date = new Date(endSub!)
+  }, [status, setStatus])
+
+  const date = new Date(endSubscription!)
   const handleYesPayment = async () => {
+    // Check if the status is ACTIVE before proceeding with checkout
+    if (status === 'ACTIVE') {
+      // Show modal to inform the user they must cancel the current plan first
+      setShowCancelAlert(true)
+      return // Exit the function early
+    }
+
+    // If the status is not ACTIVE, proceed with the checkout
     if (yesPlan) {
       await checkout({
         lineItems: [
@@ -74,7 +110,14 @@ export default function Subscription() {
     }
   }
   const handleAbsolutelyPayment = async () => {
-    console.log(`hola ${absolutelyPlan}`)
+    // Check if the status is ACTIVE before proceeding with checkout
+    if (status === 'ACTIVE') {
+      // Show modal to inform the user they must cancel the current plan first
+      setShowCancelAlert(true)
+      return // Exit the function early
+    }
+
+    // If the status is not ACTIVE, proceed with the checkout
     if (absolutelyPlan) {
       await checkout({
         lineItems: [
@@ -85,6 +128,35 @@ export default function Subscription() {
         ],
       })
     }
+  }
+  const handleCancelSubscription = async () => {
+    try {
+      const response = await fetch('/api/subscriptions', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to cancel subscription.')
+      }
+      setStatus('CANCELED')
+      closeModal()
+      return data
+    } catch (error) {
+      console.error('Error:', error)
+      throw error
+    }
+  }
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+  function openModal() {
+    setIsOpen(true)
   }
 
   const tabs = [
@@ -101,35 +173,172 @@ export default function Subscription() {
             </div>
             <div className='divider'></div>
             <div className='flex flex-row items-center justify-between p-10'>
-              <span className='font-bold'>Yes 🥥</span>
-              <button className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50 mr-80'>
-                upgrade
-              </button>
+              <div className='flex flex-row items-center justify-between p-10'>
+                {status === EnumSubscriptionStatus.CANCELED ? (
+                  <span className='font-bold'>
+                    Your subscription is canceled. 🚫
+                  </span>
+                ) : subscriptionType !== 'CANCELED' ? (
+                  <span className='font-bold'>
+                    Your current plan is {subscriptionType} 🥥
+                  </span>
+                ) : (
+                  <span className='font-bold'>
+                    You don't have any plan yet.
+                  </span>
+                )}
+              </div>
+
+              {subscriptionType !== 'ABSOLUTELY' ? (
+                <a
+                  href='#plans'
+                  className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50 mr-80 '>
+                  upgrade
+                </a>
+              ) : null}
+
               <div className=''>
-                <span className={`${ptMono.className}`}>$14.99/month</span>
+                <span className={`${ptMono.className}`}>
+                  {status === 'ACTIVE' ? `$${price}/${billingInterval}` : null}
+                </span>
               </div>
             </div>
             <div className='divider -mt-5'></div>
             <div className='p-10'>
-              <span className='font-semibold'>
-                You’ll be charged $14.99 on {date.toLocaleDateString()} on the
-                Visa ending in 6495.
-              </span>
-              <div className='flex flex-row gap-10 mt-5'>
-                <a href='/' className='underline'>
-                  Update your payment plan
-                </a>
-                <a href='' className='underline'>
-                  Cancel your subscription
-                </a>
-                <span>
-                  Save 25% by
-                  <a href='' className='underline'>
-                    {' '}
-                    switching to a yearly plan
-                  </a>
-                </span>
-              </div>
+              <span className='font-semibold'></span>
+
+              {status === 'ACTIVE' && (
+                <div className='flex flex-row gap-10 mt-5'>
+                  {subscriptionType !== 'ABSOLUTELY' ? (
+                    <a id='' className='underline'>
+                      Update your payment plan
+                    </a>
+                  ) : null}
+
+                  <button className='underline' onClick={openModal}>
+                    Cancel your subscription
+                  </button>
+                  <Transition appear show={isOpen}>
+                    <Dialog
+                      as='div'
+                      className='fixed inset-0 z-50 overflow-y-auto'
+                      onClose={closeModal}>
+                      <div className='flex items-center justify-center min-h-screen px-4 z-50 text-center'>
+                        <Transition.Child
+                          enter='ease-out duration-300'
+                          enterFrom='opacity-0'
+                          enterTo='opacity-100'
+                          leave='ease-in duration-200'
+                          leaveFrom='opacity-100'
+                          leaveTo='opacity-0'>
+                          <Dialog.Overlay className='fixed inset-0 bg-black opacity-60' />
+                        </Transition.Child>
+
+                        <Transition.Child
+                          enter='ease-out duration-300'
+                          enterFrom='opacity-0 scale-95'
+                          enterTo='opacity-100 scale-100'
+                          leave='ease-in duration-200'
+                          leaveFrom='opacity-100 scale-100'
+                          leaveTo='opacity-0 scale-95'>
+                          <Dialog.Panel className='inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
+                            <Dialog.Title
+                              as='h3'
+                              className='text-lg font-medium leading-6 text-gray-900'>
+                              Cancel Subscription
+                            </Dialog.Title>
+                            <div className='mt-4'>
+                              <p className='text-sm text-gray-600'>
+                                Are you sure you want to cancel your
+                                subscription?
+                              </p>
+                            </div>
+                            <div className='mt-6 flex gap-5'>
+                              <button
+                                type='button'
+                                className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
+                                onClick={handleCancelSubscription}>
+                                Yes, Cancel Subscrption!
+                              </button>
+                              <button
+                                type='button'
+                                className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
+                                onClick={closeModal}>
+                                No, Bring me back to Subscriptions!
+                              </button>
+                            </div>
+                          </Dialog.Panel>
+                        </Transition.Child>
+                      </div>
+                    </Dialog>
+                  </Transition>
+                  <Transition appear show={showCancelAlert}>
+                    <Dialog
+                      as='div'
+                      className='fixed inset-0 z-50 overflow-y-auto'
+                      onClose={() => setShowCancelAlert(false)}>
+                      <div className='flex items-center justify-center min-h-screen px-4 text-center'>
+                        <Transition.Child
+                          as='div'
+                          enter='ease-out duration-300'
+                          enterFrom='opacity-0'
+                          enterTo='opacity-100'
+                          leave='ease-in duration-200'
+                          leaveFrom='opacity-100'
+                          leaveTo='opacity-0'>
+                          <Dialog.Overlay className='fixed inset-0 bg-black opacity-60' />
+                        </Transition.Child>
+                        <Transition.Child
+                          as='div'
+                          enter='ease-out duration-300'
+                          enterFrom='opacity-0 scale-95'
+                          enterTo='opacity-100 scale-100'
+                          leave='ease-in duration-200'
+                          leaveFrom='opacity-100 scale-100'
+                          leaveTo='opacity-0 scale-95'>
+                          <Dialog.Panel className='inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
+                            <Dialog.Title
+                              as='h3'
+                              className='text-lg font-medium leading-6 text-gray-900'>
+                              Plan Change Alert
+                            </Dialog.Title>
+                            <div className='mt-4'>
+                              <p className='text-sm text-gray-600'>
+                                You currently have an active subscription.
+                                Please cancel your current plan before
+                                purchasing a new one.
+                              </p>
+                            </div>
+                            <div className='mt-6 flex gap-5'>
+                              <button
+                                type='button'
+                                className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
+                                onClick={() => setShowCancelAlert(false)}>
+                                Close
+                              </button>
+                              <button
+                                type='button'
+                                className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
+                                onClick={handleCancelSubscription}>
+                                Cancel Current Subscription
+                              </button>
+                            </div>
+                          </Dialog.Panel>
+                        </Transition.Child>
+                      </div>
+                    </Dialog>
+                  </Transition>
+
+                  {subscriptionType !== 'ABSOLUTELY' ? (
+                    <span>
+                      Save 25% by{' '}
+                      <a href='' className='underline'>
+                        switching to a yearly plan
+                      </a>
+                    </span>
+                  ) : null}
+                </div>
+              )}
             </div>
           </div>
           <div className='flex gap-10 mt-10'>
@@ -158,10 +367,21 @@ export default function Subscription() {
                           setYesPlan('price_1O2IiuDud2nVdnbnGMG7CnlC')
                         }
                       />
-
                       <div>
-                        <p className='text-sm font-medium'>$8.99/month</p>
-                        <p className='text-xs opacity-50'>billed monthly</p>
+                        <div className='flex flex-row items-center'>
+                          <div className='mr-4'>
+                            <p className='text-sm font-medium'>$8.99/month</p>
+                            <p className='text-xs opacity-50'>
+                              billed monthly ($8.99)
+                            </p>
+                          </div>
+
+                          {price === 8.99 && status === 'ACTIVE' ? (
+                            <span className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                              Purchased
+                            </span>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
                     {/* <p className='bg-active text-black text-xs px-4 py-2 rounded-lg'>save 30%</p> */}
@@ -178,25 +398,43 @@ export default function Subscription() {
                           setYesPlan('price_1O2KKTDud2nVdnbnF0aAHFFy')
                         }
                       />
-
                       <div>
-                        <p className='text-sm font-medium'>$6/month</p>
-                        <p className='text-xs opacity-50'>
-                          billed annually ($132)
-                        </p>
+                        <div className='flex flex-row items-center'>
+                          <div className='mr-4'>
+                            <p className='text-sm font-medium'>$6/month</p>
+                            <p className='text-xs opacity-50'>
+                              billed annually ($132)
+                            </p>
+                          </div>
+
+                          {price === 132 && status === 'ACTIVE' ? (
+                            <span className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                              Purchased
+                            </span>
+                          ) : (
+                            <button className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                              save 30%
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <button className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
-                      save 30%
-                    </button>
                   </div>
                 </div>
               </div>
 
+              {subscriptionType === 'YES' ? (
+                <div className='mt-8 flex justify-between'>
+                  <h4 className='text-base font-bold'>Due today</h4>
+                  <p className='text-base font-bold'>${price}</p>
+                </div>
+              ) : null}
               <div className='divider'></div>
-              <p className='text-xs font-medium opacity-50'>
-                This is your current plan renewing September
-              </p>
+              {subscriptionType === 'YES' ? (
+                <p className='text-xs font-medium opacity-50'>
+                  This is your current plan renewing {date.toLocaleDateString()}
+                </p>
+              ) : null}
 
               <div className='mt-8 flex flex-col gap-2'></div>
               <button
@@ -207,7 +445,7 @@ export default function Subscription() {
               </button>
             </div>
 
-            <div className='w-96 rounded-t-lg bg-greenPlan p-8 '>
+            <div className='w-96 rounded-t-lg bg-greenPlan p-8 ' id='plans'>
               <div className=''>
                 <h2 className={`mb-5 text-2xl ${ptMono.className}`}>
                   Absolutely 🥥🥥
@@ -235,11 +473,22 @@ export default function Subscription() {
                         }
                       />
                       <div>
-                        <p className='text-sm font-medium'>$14.99/month</p>
-                        <p className='text-xs opacity-50'>billed monthly</p>
+                        <div className='flex flex-row items-center'>
+                          <div className='mr-4'>
+                            <p className='text-sm font-medium'>$14.99/month</p>
+                            <p className='text-xs opacity-50'>
+                              billed monthly ($14.99)
+                            </p>
+                          </div>
+
+                          {price === 14.99 && status === 'ACTIVE' ? (
+                            <span className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                              Purchased
+                            </span>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
-                    {/* <p className='bg-active text-black text-xs px-4 py-2 rounded-lg'>save 30%</p> */}
                   </div>
 
                   <div className='flex justify-between rounded-lg bg-white px-5 py-4'>
@@ -255,31 +504,47 @@ export default function Subscription() {
                       />
 
                       <div>
-                        <p className='text-sm font-medium'>$11/month</p>
-                        <p className='text-xs opacity-50'>
-                          billed annually ($1,428)
-                        </p>
+                        <div className='flex flex-row items-center'>
+                          <div className='mr-4'>
+                            <p className='text-sm font-medium'>$11/month</p>
+                            <p className='text-xs opacity-50'>
+                              billed annually ($1428)
+                            </p>
+                          </div>
+
+                          {price === 1428 && status === 'ACTIVE' ? (
+                            <span className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                              Purchased
+                            </span>
+                          ) : (
+                            <button className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
+                              save 30%
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <button className='rounded-lg bg-active px-4 py-2 text-xs text-black'>
-                      {''}
-                      save 30%
-                    </button>
                   </div>
                 </div>
               </div>
 
-              <div className='mt-8 flex justify-between'>
-                <h4 className='text-base font-bold'>Due today</h4>
-                <p className='text-base font-bold'>$11.00</p>
-              </div>
+              {subscriptionType === 'ABSOLUTELY' ? (
+                <div className='mt-8 flex justify-between'>
+                  <h4 className='text-base font-bold'>Due today</h4>
+                  <p className='text-base font-bold'>${price}</p>
+                </div>
+              ) : null}
 
               <div className='divider'></div>
+              {subscriptionType === 'ABSOLUTELY' ? (
+                <p className='text-xs font-medium opacity-50'>
+                  This is your current plan renewing {date.toLocaleDateString()}
+                </p>
+              ) : null}
               <button
-                className='mt-3 w-full rounded-full bg-active p-4 pl-6 text-center text-base font-medium lowercase text-black '
+                className='mt-9 w-full rounded-full bg-active p-4 pl-6 text-center text-base font-medium lowercase text-black '
                 onClick={() => handleAbsolutelyPayment()}>
-                {' '}
-                Save 30% with annual
+                Buy Plan
               </button>
             </div>
           </div>
@@ -300,8 +565,12 @@ export default function Subscription() {
             <div className='divider'></div>
             <div className='bg-beigePlan m-10 rounded-lg'>
               <a href='' className='flex gap-2 p-4'>
-                <span className='font-semibold'>Visa 6495</span>
-                <span className='italic'>Exp. 5/2026</span>
+                <span className='font-semibold capitalize'>
+                  {brand} {last4}
+                </span>
+                <span className='italic'>
+                  Exp. {expMonth}/{expYear}
+                </span>
               </a>
             </div>
             <button className='bg-greenCTA p-4 rounded-full px-10 font-semibold bg-opacity-50 ml-10 mb-20'>
