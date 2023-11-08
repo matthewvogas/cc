@@ -183,7 +183,7 @@ export default function Collect({
                 </label>
 
                 <div className='px-10 py-8'>
-                  <h3 className='text-xl font-bold'>
+                  <h3 className='text-lg font-bold'>
                     Facebook - Instagram Accounts Associate
                   </h3>
 
@@ -205,22 +205,28 @@ export default function Collect({
                       ) : instagramPages.length > 0 ? (
                         instagramPages.map(
                           (page: instagramPages, index: number) =>
-                            parseInt(page.followers_count) > 100 && (
-                              <button
-                                onClick={() => {
-                                  setInstagram(page.id)
-                                }}
-                                key={index}
-                                className={`${
-                                  instagramPage == page.id
-                                    ? 'bg-[#997e5a] border-[#997e5a] text-white'
-                                    : ''
-                                } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-[#997e5a] hover:text-white`}>
-                                <p>
-                                  @{page.username} - {page.followers_count}{' '}
-                                  Followers
-                                </p>
-                              </button>
+                            parseInt(page.followers_count) > 0 && (
+                              <>
+
+                                  <span className='text-base '>
+                                    Facebook Page: <span className='font-bold'>{page.name}</span>
+                                  </span>
+                                <button
+                                  onClick={() => {
+                                    setInstagram(page.id)
+                                  }}
+                                  key={index}
+                                  className={`${
+                                    instagramPage == page.id
+                                      ? 'bg-[#3a7a55] border-[#265a3c] text-white'
+                                      : ''
+                                  } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>
+                                  <p>
+                                    Instagram associated: @{page.username} - {page.followers_count}{' '}
+                                    Followers
+                                  </p>
+                                </button>
+                              </>
                             ),
                         )
                       ) : (
@@ -235,7 +241,7 @@ export default function Collect({
 
                     <hr className=' h-px bg-gray-200 my-8'></hr>
 
-                    <h3 className='text-xl font-bold'>
+                    <h3 className='text-lg font-bold'>
                       TikTok Accounts Associate
                     </h3>
 
@@ -251,9 +257,9 @@ export default function Collect({
                             key={index}
                             className={`${
                               tiktokPage == page.id
-                                ? 'bg-[#997e5a] border-[#997e5a] text-white'
+                                ? 'bg-[#3a7a55] border-[#265a3c] text-white'
                                 : ''
-                            } flex gap-2 justify-center items-center pl-3 pr-3 py-2 border border-beigeSelected rounded-full hover:bg-[#997e5a] hover:text-white`}>
+                            } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>
                             <p>
                               @{page.username} - {page.followers_count}{' '}
                               Followers
