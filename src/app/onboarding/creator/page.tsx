@@ -611,7 +611,7 @@ export default function RegisterPage() {
                       ))}
                     </div>
                     <Link
-                      href={'/dashboard'}
+                      href={'/plans'}
                       id='nextButton5'
                       onClickCapture={() => {
                         captureInformation()
