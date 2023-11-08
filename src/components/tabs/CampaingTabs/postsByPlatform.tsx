@@ -74,6 +74,10 @@ export default function PostsByPlatform({
     return false
   })
 
+  const instagramPostsCount = campaign?.posts?.filter(post => post.platform === 'instagram').length;
+  const tiktokPostsCount = campaign?.posts?.filter(post => post.platform === 'tiktok').length;
+  const storiesCount = campaign?.stories?.length;
+
   return (
     <>
       <div className=''>
@@ -95,7 +99,7 @@ export default function PostsByPlatform({
                   : 'opacity-50'
               }`}
               onClick={() => setActiveSocial('Instagram')}>
-              Instagram
+              Instagram {`(${instagramPostsCount})`}
             </Tab>
             <Tab
               className={`p-2 text-base font-medium outline-none ${
@@ -104,7 +108,7 @@ export default function PostsByPlatform({
                   : 'opacity-50'
               }`}
               onClick={() => setActiveSocial('TikTok')}>
-              TikTok
+              TikTok {`(${tiktokPostsCount})`}
             </Tab>
             <Tab
               className={`p-2 text-base font-medium outline-none ${
@@ -113,7 +117,7 @@ export default function PostsByPlatform({
                   : 'opacity-50'
               }`}
               onClick={() => setActiveSocial('Stories')}>
-              Stories
+              Stories {`(${storiesCount})`}
             </Tab>
           </Tab.List>
           <Tab.Panels>

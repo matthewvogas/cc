@@ -65,7 +65,11 @@ export default function StatsInfluencer({
           frome === 'campaign' ? 'bg-[#FCFBFA] mx-12 rounded-xl' : ''
         } ${frome === 'shareCampaign' ? 'h-full' : ''} gap-6 px-12 py-9`}>
         {frome === 'campaign' && (
-          <h3 className='mb-5 font-medium text-lg'>Results</h3>
+          <div className='flex'>
+            <h3 className='mb-5 font-medium text-lg mr-32'>Content</h3>
+            <h3 className='mb-5 font-medium text-lg ml-2 mr-80'>Result</h3>
+            <h3 className='mb-5 font-medium text-lg ml-6'>Engagement</h3>
+          </div>
         )}
 
         <div style={gridContainerStyle}>

@@ -340,49 +340,40 @@ export default function AgenciesDashBoard({
                   src={agency.image || imageCover}
                   alt={agency.user1.name}
                 />
-                <div className='h-auto border border-gray-200 px-5 py-4 pl-4 flex justify-between items-baseline'>
+                <div className='h-auto border border-gray-200 px-5 py-4 pl-4 flex justify-between items-center'>
                   <p className={`text-lg font-medium text-gray-800`}>
                     {agency.user1.name}
                   </p>
-                  <label
-                    htmlFor='my-modal-4'
-                    className='text-sm  text-gray-400 hover:text-black'>
-                    remove connection
-                  </label>
-                  <input
-                    type='checkbox'
-                    id='my-modal-4'
-                    className='  modal-toggle'
-                  />
-                  <div className='modal '>
-                    <div className='modal-box relative border max-w-[456px] flex flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
-                      <label
-                        htmlFor='my-modal-4'
-                        className='absolute right-4 top-2 cursor-pointer text-lg text-black'>
-                        ✕
-                      </label>
-
-                      <div className='px-10 py-8'>
-                        <h3 className='text-xl font-bold mb-2'>Important</h3>
-                        <p className='mb-4'>
-                          Make sure you want to remove the connection with{' '}
-                          {agency.user1.name}. This will cause{' '}
-                          {agency.user1.name} will no longer be able to access
-                          your new data, but will still be able to see
-                          information you already submitted before you deleted
-                          the connection. Additionally, you will no longer be
-                          able to see the campaigns where you are associated
-                          with this agency.
-                        </p>
-                        <button
-                          onClick={() => {
-                            handleRemoveConnection(agency.user1.id)
-                          }}
-                          className='bg-[#ffdede] flex  hover:bg-[#ffcbcb] text-sm align-center items-center  px-4  py-3  rounded-full'>
-                          Remove Connection
-                        </button>
-                      </div>
+                  <div className='dropdown-end dropdown cursor-pointer '>
+                    <div className='flex justify-end outline-none '>
+                      <svg
+                        tabIndex={0}
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='h-6 w-6 outline-none'>
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
+                        />
+                      </svg>
                     </div>
+                    <ul
+                      tabIndex={0}
+                      className=' dropdown-content menu rounded-box  w-max border-2 border-gray-100 bg-white p-2'>
+                      <button
+                        onClick={() => {
+                          handleRemoveConnection(agency.user1.id)
+                        }}
+                        className='text-back m-2 rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
+                        Remove Connection
+                      </button>
+                      <Link href={'/dashboard/campaigns'} className='text-back m-2 text-center rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
+                        View campaigns
+                      </Link>
+                    </ul>
                   </div>
                 </div>
               </div>

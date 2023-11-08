@@ -1,3 +1,4 @@
+'use client'
 import logo from 'public/assets/register/codecoco.svg'
 import MobileMenu from './headerMenu'
 import Image from 'next/image'
@@ -19,23 +20,22 @@ export default function Header({ frome }: Props) {
           frome == 'signup' ? 'bg-transparent' : 'bg-[#F9F8F5]'
         }  lg:px-7 lg:py-3`}>
         <div className='flex items-center gap-4'>
-          {frome == 'signup' ? null : (
-            <Link
-              href={'/signup'}
-              className='flex lg:hidden px-5 py-3 rounded-full items-center gap-2 font-normal text-base opacity-80 '>
-              <span className=''>Get Started 🥥</span>
-            </Link>
-          )}
+          
+
           <Image
             className='hidden lg:block h-auto mr-4 w-[120px] lg:w-[150px] md:w-[140px]'
             src={logo}
             alt=''
           />
           <div className='gap-7 hidden lg:flex'>
-            <Link className='flex items-center gap-2 text-base font-medium' href={'/signup/agency'}>
+            <Link
+              className='flex items-center gap-2 text-base font-medium'
+              href={'/'}>
               For Agencies
             </Link>
-            <Link className='flex items-center gap-2 text-base font-medium' href={'/signup/creator'}>
+            <Link
+              className='flex items-center gap-2 text-base font-medium'
+              href={'/creator'}>
               For Creators
             </Link>
           </div>
@@ -58,16 +58,22 @@ export default function Header({ frome }: Props) {
             }`}>
             <span className='hidden lg:inline'>Login 🥥</span>
           </Link>
-          <Link
-            href='/signup/agency'
-            className={`${
-              frome === 'signup'
-                ? 'hidden'
-                : 'flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base  bg-[#D3F0E2] opacity-80'
-            }`}>
-            <span className='hidden lg:inline'>Get Started 🥥</span>
-            {/* <span className='text-lg text-black lg:hidden'>🥥 +</span> */}
-          </Link>
+          
+          {frome == 'landing' && (
+            <Link
+              href={'/signup/agency'}
+              className='flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base  bg-[#D3F0E2] opacity-80'>
+              <span className=''>Get Started 🥥</span>
+            </Link>
+          )}
+          
+          {frome == 'landingCreator' && (
+            <Link
+              href={'/signup/creator'}
+              className='flex px-5 py-3 rounded-full items-center gap-2 font-normal text-base  bg-[#D3F0E2] opacity-80'>
+              <span className=''>Get Started 🥥</span>
+            </Link>
+          )}
         </div>
 
         <div className='z-10 flex lg:hidden'>

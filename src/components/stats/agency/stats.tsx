@@ -50,6 +50,12 @@ export default function Stats({
     paddingBottom: '20px',
   }
 
+  const leftBorderStatStyle: React.CSSProperties = {
+    ...statStyle,
+    borderLeft: '1px solid black',
+    paddingLeft: '56px',
+  }
+
   return (
     <>
       {frome == 'dashboard' ? (
@@ -67,32 +73,47 @@ export default function Stats({
           frome === 'campaign' ? 'bg-[#FCFBFA] mx-12 rounded-xl' : ''
         } ${frome === 'shareCampaign' ? 'h-full' : ''} gap-6 px-12 py-9`}>
         {frome === 'campaign' && (
-          <h3 className='mb-5 font-medium text-lg'>Results</h3>
+          <div className='flex'>
+            <h3 className='mb-5 font-medium text-lg mr-32'>Content</h3>
+            <h3 className='mb-5 font-medium text-lg ml-2 mr-80'>Result</h3>
+            <h3 className='mb-5 font-medium text-lg ml-6'>Engagement</h3>
+          </div>
         )}
 
         <div style={gridContainerStyle}>
-          {stats?.find((section: any) => section.section === 'private')?.data
-            .length === 0 ? (
-            <p className={`opacity-60`}>
-              More information like, engagement rate, likes, views, etc. will be
-              displayed soon.
-            </p>
-          ) : null}
           {stats
             ?.find((section: any) => section.section === 'private')
-            ?.data.map((stat: any, index: number) => (
-              <div
-                key={index}
-                style={{
-                  ...statStyle,
-                  ...(index > 1 && { borderRight: 'none', marginRight: '0px' }),
-                }}>
-                <h4 className={`${titleStatStyle}`}>{stat.title}</h4>
-                <p className={`${descriptionStatStyle} ${ptMono.className}`}>
-                  {stat.description}
-                </p>
-              </div>
-            ))}
+            ?.data.map((stat: any, index: number, statArray: any) => {
+              let dynamicStyle = { ...statStyle }
+
+              if (index > 1) {
+                dynamicStyle.borderRight = 'none'
+                dynamicStyle.marginRight = '0px'
+              }
+
+              if (index === 6 || index === 7) {
+                dynamicStyle.borderLeft = '1px solid black'
+                dynamicStyle.paddingLeft = '56px'
+              }
+
+              // Determine if this is one of the last two stats
+              const isLastTwo = index >= statArray.length - 2
+              const textClasses = `${descriptionStatStyle} ${
+                isLastTwo ? 'text-green-500' : ''
+              } ${ptMono.className}`
+
+              return (
+                <div key={index} style={dynamicStyle}>
+                  <h4
+                    className={`${titleStatStyle} ${
+                      isLastTwo ? 'text-green-500' : ''
+                    }`}>
+                    {stat.title}
+                  </h4>
+                  <p className={textClasses}>{stat.description}</p>
+                </div>
+              )
+            })}
         </div>
       </div>
     </>
