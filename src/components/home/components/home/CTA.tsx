@@ -1,10 +1,13 @@
-import cta_image from 'public/assets/register/cta_footer.jpg'
 import EmailTrigger from './emailTrigger'
 import { BsCheck } from 'react-icons/bs'
 import { useState } from 'react'
 import Image from 'next/image'
 
-export default function Try() {
+type Props = {
+  cta_image: any
+}
+
+export default function Try({cta_image} : Props) {
   const [email, setEmail] = useState('')
 
   const handleEmailSubmit = (submittedEmail: any) => {

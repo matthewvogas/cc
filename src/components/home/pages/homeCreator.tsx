@@ -2,7 +2,7 @@
 
 import heroImage from 'public/assets/SandBox/Mobile/heroImage.png'
 import FunctionalityCard from '../components/home/functionalityCard'
-import cta_image from 'public/assets/register/cta_footer.jpg'
+import cta_image from 'public/assets/register/cta_creator.jpg'
 import Testimonial from '../components/home/testimonial'
 import HomePostCard from '../components/home/postCard'
 import Stats from '../components/home/stats'
@@ -11,25 +11,25 @@ import CTA from '../components/home/CTA'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 
-import imageOne from 'public/assets/SandBox/headSection/FirstCardImage.jpg'
-import imageTwo from 'public/assets/SandBox/headSection/SecondCardImage.jpg'
-import imageThree from 'public/assets/SandBox/headSection/ThridCardImage.jpg'
-import imageFour from 'public/assets/SandBox/headSection/FourCardImage.jpg'
-import imageFive from 'public/assets/SandBox/headSection/FiveCardImage.jpg'
-import imageSix from 'public/assets/SandBox/headSection/SixCardImage.jpg'
-import imageSeven from 'public/assets/SandBox/headSection/SevenCardImage.jpg'
-import imageEight from 'public/assets/SandBox/headSection/EightCardImage.jpg'
+import imageOne from 'public/assets/homeCreator/creator_principal_card1.jpg'
+import imageTwo from 'public/assets/homeCreator/creator_principal_card2.jpg'
+import imageThree from 'public/assets/homeCreator/creator_principal_card3.jpg'
+import imageFour from 'public/assets/homeCreator/creator_principal_card4.jpg'
+import imageFive from 'public/assets/homeCreator/creator_principal_card5.jpg'
+import imageSix from 'public/assets/homeCreator/creator_principal_card6.jpg'
+import imageSeven from 'public/assets/SandBox/headSection/ThridCardImage.jpg'
+import imageEight from 'public/assets/SandBox/headSection/FirstCardImage.jpg'
 
 import OneCard from 'public/assets/SandBox/Cards/liveTracking.png'
 import OneCardMobile from 'public/assets/SandBox/Cards/liveTrackingMobile.png'
-import TwoCard from 'public/assets/SandBox/Cards/FilterAndExplore.png'
-import TwoCardMobile from 'public/assets/SandBox/Cards/FilterAndExploreMobile.png'
-import ThreeCard from 'public/assets/SandBox/Cards/automaticTracking.png'
-import ThreeCardMobile from 'public/assets/SandBox/Cards/automaticTrackingMobile.png'
-import FourCard from 'public/assets/SandBox/Cards/shareCampaigns.png'
-import FourCardMobile from 'public/assets/SandBox/Cards/shareCampaignsMobile.png'
+import TwoCard from 'public/assets/homeCreator/TopPerformingC.png'
+import TwoCardMobile from 'public/assets/homeCreator/TopPerformingC.png'
+import ThreeCard from 'public/assets/homeCreator/Tracking.png'
+import ThreeCardMobile from 'public/assets/homeCreator/Tracking.png'
+import FourCard from 'public/assets/SandBox/Cards/automaticTracking.png'
+import FourCardMobile from 'public/assets/SandBox/Cards/automaticTrackingMobile.png'
 import InfoCards from '../components/home/infoCards'
-import SliderCard from '../components/home/sliderCard'
+import SliderCardCreator from '../components/home/sliderCardCreator'
 import EmailTrigger from '../components/home/emailTrigger'
 
 const DataOne = {
@@ -95,9 +95,9 @@ const cardData = [
     bg: 'bg-secondBackground',
     imageCard: OneCard,
     imageCardMobile: OneCardMobile,
-    subTitle: 'live campaign tracking',
+    subTitle: 'live post results tracking',
     title:
-      'Create campaigns to organize and track post analytics across platforms',
+      'Track the live results of your best sponsored content',
     features: {
       1: 'Live post analytics in one place',
       2: 'A clear view of your campaigns + their results',
@@ -112,11 +112,11 @@ const cardData1 = [
     bg: 'bg-[#F2EDE7]',
     imageCard: TwoCard,
     imageCardMobile: TwoCardMobile,
-    subTitle: 'deep dive into results',
-    title: 'View, filter, and analyze live results in a visual and dynamic way',
+    subTitle: 'know your best, show your best',
+    title: 'Identify your top performing posts with detailed insights',
     features: {
-      1: 'See all posts across platforms together in a grid view',
-      2: 'Filter down by results, creators, platform, + more',
+      1: 'Display your best posts across platforms in a grid view',
+      2: 'Filter down by results, brands, platform, + more',
       3: 'Identify top performing content',
     },
   },
@@ -129,11 +129,11 @@ const cardData2 = [
     imageCard: ThreeCard,
     imageCardMobile: ThreeCardMobile,
     subTitle: 'know when your creators have posted',
-    title: 'Automated tracking of when your creators post for your campaigns',
+    title: 'Don\'t waste time with links or screenshots. Track your content via hashtag.',
     features: {
       1: 'Codecoco can track when your creators post for you with hashtags',
       2: 'Codecoco automatically adds posts to your campaign',
-      3: 'Save hours of following up and checking',
+      3: 'Get a running portfolio of your work',
     },
   },
 ]
@@ -141,15 +141,31 @@ const cardData2 = [
 const cardData3 = [
   {
     size: '700px',
-    bg: 'bg-secondBackground',
+    bg: 'bg-[#F2EDE7]',
     imageCard: FourCard,
     imageCardMobile: FourCardMobile,
     subTitle: 'share live campaigns in seconds',
-    title: 'Share campaigns publicly or privately with your clients',
+    title: 'Share best content publicly or privately with your clients',
     features: {
-      1: 'Share live campaign results in real time with clients',
+      1: 'Share live post results in real time with clients',
       2: 'Create public and private links',
-      3: 'Embed campaigns on your own site',
+      3: 'Embed posts on your own site',
+    },
+  },
+]
+
+const cardData4 = [
+  {
+    size: '700px',
+    bg: 'bg-secondBackground',
+    imageCard: FourCard,
+    imageCardMobile: FourCardMobile,
+    subTitle: 'connect with your clients',
+    title: 'Connect with agencies on Codecoco so they can track your sponsored posts',
+    features: {
+      1: 'Don\'t waste time sending screenshots or stats',
+      2: 'Your clients can get live results from your automatically',
+      3: 'Verify your work with top agencies',
     },
   },
 ]
@@ -162,12 +178,12 @@ export default function Home() {
         <div className='m-auto flex w-full lg:w-[980px] flex-col justify-center bg-white'>
           <div className='mb-16 text-center px-10 flex flex-col items-center gap-5'>
             <h1 className='text-2xl lg:text-4xl font-bold text-black'>
-              Real-Time Campaign Tracking Made Easy
+              Create a running, live portfolio of your best sponsored content
             </h1>
             <h3
               className={`${ptMono.className} text-sm lg:text-lg text-textBlack `}>
-              Never ask for screenshots or spend hours collecting links. Fully
-              automated campaign tracking and reports in seconds.
+              Display your most impressive brand sponsored content and track
+              live stats to show potential sponsors
             </h3>
             <EmailTrigger />
           </div>
@@ -235,15 +251,15 @@ export default function Home() {
         <div className='m-auto flex lg:w-[1060px] flex-col justify-center   '>
           <div className='-mt-16 flex gap-4 lg:flex-row flex-col'>
             <InfoCards
-              description={'Create campaigns to track posts across platforms'}
+              description={'Create a grid of your best sponsored posts'}
             />
             <InfoCards description={'View, filter, and analyze live results'} />
             <InfoCards
-              description={'Automated tracking of when your creators post'}
+              description={'Share results publicly and privately with clients'}
             />
             <InfoCards
               description={
-                'Share campaigns publicly and privately with clients'
+                'Verify your work with top agencies and brands'
               }
             />
           </div>
@@ -290,7 +306,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='relative z-10  lg:bg-secondBackground lg:pb-24  lg:block'>
+      <section className='relative z-10  lg:bg-[#F2EDE7] lg:pb-24  lg:block'>
         <div className='m-auto flex lg:w-[1290px] flex-col justify-center lg:pt-[69px] '>
           {cardData3.map((card, index) => (
             <FunctionalityCard
@@ -303,9 +319,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonial */}
-      <section className='w-full'>
-        <Testimonial />
+      <section className='relative z-10  lg:bg-secondBackground lg:pb-24  lg:block'>
+        <div className='m-auto flex lg:w-[1290px] flex-col justify-center lg:pt-[69px] '>
+          {cardData4.map((card, index) => (
+            <FunctionalityCard
+              key={index}
+              card={card}
+              flex={index % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}
+              justify={index % 2 === 0 ? 'justify-end' : ''}
+            />
+          ))}
+        </div>
       </section>
 
       {/* Slider Cards */}
@@ -313,24 +337,14 @@ export default function Home() {
         <div className='m-auto flex lg:w-[1190px] flex-col justify-center lg:pt-20'>
           <h2 className='mb-9 mt-9 text-2xl font-bold text-black text-center lg:text-left px-20 lg:px-0'>
             <span className='hidden lg:block lg:text-[28px]'>
-              How to create a Codecoco campaign 🥥
+              How to create a Codecoco Portfolio 🥥
             </span>
             <span className=' lg:hidden '>
               Track results with 4 simples steps
             </span>
           </h2>
         </div>
-        <SliderCard />
-      </section>
-
-      {/* Stats */}
-      <section className='w-full'>
-        <Stats />
-      </section>
-
-      {/* try */}
-      <section className='w-full'>
-        <Try />
+        <SliderCardCreator />
       </section>
 
       {/* try */}
