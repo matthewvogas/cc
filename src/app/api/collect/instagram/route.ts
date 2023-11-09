@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   const page = await InstagramPagesService.findUnique(instagramPage)
 
   const posts = await fetch(
-    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(engagement,comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}`,
+    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}`,
   ).then(res => res.json())
 
   interface PostData {
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     // photo and video
     reach: number
-    engagement: number
+    // engagement: number
     comments: number
     likes: number
     impressions: number
@@ -62,9 +62,9 @@ export async function POST(req: NextRequest) {
         comments:
           insights.find((insight: any) => insight.name === 'comments')
             ?.values[0].value || 0,
-        engagement:
-          insights.find((insight: any) => insight.name === 'engagement')
-            ?.values[0].value || 0,
+        // engagement:
+        //   insights.find((insight: any) => insight.name === 'engagement')
+        //     ?.values[0].value || 0,
         likes:
           insights.find((insight: any) => insight.name === 'likes')?.values[0]
             .value || 0,
@@ -138,7 +138,7 @@ export async function POST(req: NextRequest) {
         userId: sessionId,
 
         // insighst
-        engagementCount: post.engagement,
+        engagementCount: (post.likes + post.shares + post.saved + post.comments) / creator.followersCount! * 100,
         reachCount: post.reach,
         sharesCount: post.shares,
         commentsCount: post.comments,
@@ -159,7 +159,7 @@ export async function POST(req: NextRequest) {
         userId: sessionId,
 
         // insighst
-        engagementCount: post.engagement,
+        engagementCount: (post.likes + post.shares + post.saved + post.comments) / creator.followersCount! * 100,
         reachCount: post.reach,
         sharesCount: post.shares,
         commentsCount: post.comments,
@@ -175,7 +175,7 @@ export async function POST(req: NextRequest) {
       console.log('Permalink:', post.permalink)
       console.log('Shortcode:', post.shortcode)
       console.log('Comments:', post.comments)
-      console.log('Engagement:', post.engagement)
+      console.log('Engagement:', (post.likes + post.shares + post.saved + post.comments) / creator.followersCount! * 100,)
       console.log('Likes:', post.likes)
       console.log('Impressions:', post.impressions)
       console.log('Saved:', post.saved)
