@@ -25,10 +25,10 @@ const links = [
     href: '/dashboard/invitations',
     name: 'Creators',
   },
-  // {
-  //   href: '/dashboard/creators',
-  //   name: 'Creators',
-  // },
+  {
+    href: '/dashboard/settings',
+    name: 'Settings',
+  },
   {
     href: '/privacy',
     name: 'Privacy Policy',
@@ -105,7 +105,7 @@ export default function Sidebar() {
   }, [])
 
   return (
-    <aside className='sticky inset-0 z-[51] h-screen w-64' aria-label='Sidebar'>
+    <aside className='sticky inset-0 z-[50] h-screen w-64' aria-label='Sidebar'>
       <div className='flex h-screen w-64 flex-col overflow-y-auto bg-sidebarBackground px-6 py-4  '>
         <div>
           <div
@@ -131,7 +131,6 @@ export default function Sidebar() {
               onChange={handleFileChange} // Función para manejar el cambio de archivo
               className='absolute inset-0 w-full h-full mt-36 z-20 opacity-0 cursor-pointer'
             />
-            
           </div>
           <div className='flex ml-8 mt-10 mb-10 justify-center mask mask-circle mr-8 h-50 w-50'>
             <Image

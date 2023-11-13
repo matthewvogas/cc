@@ -170,6 +170,16 @@ export default function Collect({
       label: 'Posts',
       content: (
         <div className='mt-8'>
+          {subscriptionType === 'YES' && posts.length >= SUB_LIMITS.YES && (
+            <div className='mb-4 rounded border border-green-300 bg-greenPlan px-4 py-3 text-green-700'>
+              <p className='font-semibold'>Attention!</p>
+              <p>
+                {posts.length} posts have been retrieved from your account. For
+                unlimited posts, consider{' '}
+                <span className=''>upgrading to a higher plan</span>.
+              </p>
+            </div>
+          )}
           <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48'>
             {loading ? (
               <Spinner width='w-4' height='h-4' border='border-2' />
@@ -236,10 +246,10 @@ export default function Collect({
                           (page: instagramPages, index: number) =>
                             parseInt(page.followers_count) > 0 && (
                               <>
-
-                                  <span className='text-base '>
-                                    Facebook Page: <span className='font-bold'>{page.name}</span>
-                                  </span>
+                                <span className='text-base '>
+                                  Facebook Page:{' '}
+                                  <span className='font-bold'>{page.name}</span>
+                                </span>
                                 <button
                                   onClick={() => {
                                     setInstagram(page.id)
@@ -251,8 +261,8 @@ export default function Collect({
                                       : ''
                                   } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>
                                   <p>
-                                    Instagram associated: @{page.username} - {page.followers_count}{' '}
-                                    Followers
+                                    Instagram associated: @{page.username} -{' '}
+                                    {page.followers_count} Followers
                                   </p>
                                 </button>
                               </>
