@@ -1,7 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { CampaignsService } from '@/services/CampaignsService'
 import { CreatorsService } from '@/services/CreatorsService'
-import CampaingsTabs from '@/components/tabs/CampaingTabs'
 import { StoriesService } from '@/services/StoriesService'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import TitlePage from '@/components/labels/titlePage'

@@ -370,7 +370,9 @@ export default function AgenciesDashBoard({
                         className='text-back m-2 rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
                         Remove Connection
                       </button>
-                      <Link href={'/dashboard/campaigns'} className='text-back m-2 text-center rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
+                      <Link
+                        href={'/dashboard/campaigns'}
+                        className='text-back m-2 text-center rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
                         View campaigns
                       </Link>
                     </ul>

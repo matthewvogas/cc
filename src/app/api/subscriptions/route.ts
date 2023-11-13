@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.SIGNING_SECRET!,
+      process.env.TEST_SIGNING_SECRET!,
     )
 
     const session = event.data.object as Stripe.Checkout.Session
@@ -47,8 +47,8 @@ export async function POST(req: NextRequest) {
 
       let subtype =
         subscription.items.data[0].price.id ===
-          'price_1O2IiuDud2nVdnbnGMG7CnlC' ||
-        subscription.items.data[0].price.id === 'price_1O2KKTDud2nVdnbnF0aAHFFy'
+          'price_1OAF90Dud2nVdnbnxAgbOyXq' ||
+        subscription.items.data[0].price.id === 'price_1OAFFmDud2nVdnbnrrdKcgTK'
           ? 'YES'
           : 'ABSOLUTELY'
 

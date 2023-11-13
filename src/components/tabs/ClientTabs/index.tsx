@@ -37,6 +37,9 @@ export default function ClientTabs({
       try {
         const compressedFile = await imageCompression(originalFile, options)
         setSelectedFile(compressedFile)
+
+        // Crear una URL de objeto para mostrar la imagen seleccionada
+        setImage(URL.createObjectURL(compressedFile))
       } catch (error) {
         console.error(error)
       }
@@ -145,9 +148,11 @@ export default function ClientTabs({
                       className={`inline-block bg-beigeTransparent border min-w-[250px] ${ptMono.className}`}>
                       <Image
                         className={`object-cover`}
-                        src={imageCover}
+                        src={card.imageUrl || imageCover}
                         alt={card.name}
                         style={{ width: '250px', height: '310px' }}
+                        width={250}
+                        height={310}
                       />
                       <div className='mb-4 flex justify-between gap-4 px-6 pt-4'>
                         <h5>{card.name}</h5>
@@ -263,13 +268,14 @@ export default function ClientTabs({
                               className='object-cover w-full h-full'
                               src={image || coverImage}
                               alt=''
-                              layout='fill' // Asegúrate de que la imagen cubra el contenedor
+                              layout='fill'
                             />
                             {showChangeText && (
                               <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white'>
                                 Change cover image
                               </div>
                             )}
+
                             <input
                               type='file'
                               accept='image/*'

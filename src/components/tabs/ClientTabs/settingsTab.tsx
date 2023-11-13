@@ -2,16 +2,24 @@ import coverImage from 'public/assets/campaigns/coverImage.png'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { useRouter } from 'next/navigation'
 import { inter } from '@/app/fonts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import imageCompression from 'browser-image-compression'
 
-export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
+export default function SettingsTab({
+  campaign,
+  client,
+}: {
+  client: any
+  campaign: CampaignRes
+}) {
   const router = useRouter()
   const [campaignName, setCampaignName] = useState(campaign.name)
-  const [clientName, setClientName] = useState('') // Nuevo estado para el nombre del cliente
   const [description, setDescription] = useState(campaign.description)
   const [fetchError, setFetchError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [showChangeText, setShowChangeText] = useState(false)
+  const [image, setImage] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const handleEdit = async () => {
     try {
@@ -31,6 +39,23 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
       setFetchError(error?.message)
     }
   }
+  const handleCreate = async () => {
+    const formData = new FormData()
+    formData.append('name', selectedFile!.name)
+    formData.append('image', selectedFile!)
+
+    try {
+      const res = await fetch(`/api/clients/${client.id}/cover`, {
+        method: 'POST',
+        body: formData,
+      })
+      if (res.status === 200) {
+        router.refresh()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const handleRemove = async () => {
     try {
@@ -45,6 +70,40 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
     }
   }
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const originalFile = e.target.files[0]
+      const options = {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      }
+      try {
+        const compressedFile = await imageCompression(originalFile, options)
+        setSelectedFile(compressedFile)
+
+        setImage(URL.createObjectURL(compressedFile))
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+  useEffect(() => {
+    const fetchCoverImage = async () => {
+      const res = await fetch(`/api/clients/${client.id}/cover`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const data = await res.json()
+      console.log(data)
+      setImage(data)
+    }
+    fetchCoverImage()
+  }, [client.id])
+
   return (
     <div className={`mt-7 w-full justify-start`}>
       <div className='flex flex-row justify-between'>
@@ -56,7 +115,7 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
           <button
             className=' bg-[#D9F0F1] px-10 h-full rounded-full hover:bg-[#caf0f1]'
             onClick={() => {
-              handleEdit()
+              handleEdit(), handleCreate()
             }}>
             update Information
           </button>
@@ -126,13 +185,31 @@ export default function SettingsTab({ campaign }: { campaign: CampaignRes }) {
 
           <div className='flex w-full gap-6'>
             <div className='w-2/3 flex gap-6 flex-col'>
-              <div className='flex flex-col h-full'>
-                <p className={`text-sm`}>Your cover image</p>
-                <Image
-                  className={`object-cover mt-2 rounded-xl w-full h-[200px] p-2 border outline-none`}
-                  src={coverImage}
-                  alt={''}
-                />
+              <div className='relative'>
+                <p className='text-sm'>Your cover image</p>
+                <div
+                  className='relative mt-2 w-full h-[200px] overflow-hidden rounded-xl border p-2 hover:cursor-pointer'
+                  onMouseEnter={() => setShowChangeText(true)}
+                  onMouseLeave={() => setShowChangeText(false)}>
+                  <Image
+                    className='object-cover w-full h-full'
+                    src={image || coverImage}
+                    alt=''
+                    layout='fill'
+                  />
+                  {showChangeText && (
+                    <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white'>
+                      Change cover image
+                    </div>
+                  )}
+
+                  <input
+                    type='file'
+                    accept='image/*'
+                    className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+                    onChange={handleFileChange}
+                  />
+                </div>
               </div>
               <div className='flex flex-col h-full'>
                 <p className={`text-sm`}>Custom CSS</p>

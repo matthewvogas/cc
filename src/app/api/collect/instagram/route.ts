@@ -3,12 +3,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import db from '@/lib/db'
 
 export async function POST(req: NextRequest) {
-  const { sessionId, instagramPage, instgramToken } = await req.json()
+  const { sessionId, instagramPage, instgramToken, postLimit } =
+    await req.json()
 
   const page = await InstagramPagesService.findUnique(instagramPage)
 
   const posts = await fetch(
-    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}`,
+    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(engagement,comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}&limit=${postLimit}`,
   ).then(res => res.json())
 
   interface PostData {
@@ -183,7 +184,6 @@ export async function POST(req: NextRequest) {
       console.log('Plays:', post.plays)
       console.log('-----------------------------')
     }
-
   }
 
   return NextResponse.json('ok')

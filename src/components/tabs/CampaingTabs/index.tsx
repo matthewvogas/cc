@@ -25,12 +25,14 @@ export default function CampaingTabs({
   posts,
   stories,
   session,
+  client,
 }: {
   campaign: CampaignRes
   creators: any
   posts: Posts[]
   stories: Story[]
   session: any
+  client: any
 }) {
   const [openTab, setOpenTab] = useState(1)
   const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
@@ -108,10 +110,10 @@ export default function CampaingTabs({
           { title: campaign?.posts?.length, description: 'brand posts' },
           { title: creators.length, description: 'creators' },
           //
-          { title:  8492, description: 'likes' },
-          { title: '17,395,43' , description: 'views' },
-          { title: '12,412,20' , description: 'reach' },
-          { title: '359,009' , description: 'comments' },
+          { title: 8492, description: 'likes' },
+          { title: '17,395,43', description: 'views' },
+          { title: '12,412,20', description: 'reach' },
+          { title: '359,009', description: 'comments' },
           //
           { title: 12 + '%', description: 'engament rate' },
           { title: 12 + '%', description: 'engament rate' },
@@ -419,7 +421,7 @@ export default function CampaingTabs({
                   <TabsToShare campaignId={campaign.id} />
                 </div>
                 <div className={openTab === 6 ? 'block' : 'hidden'}>
-                  <SettingsTab campaign={campaign} />
+                  <SettingsTab campaign={campaign} client={client} />
                 </div>
               </div>
             </div>

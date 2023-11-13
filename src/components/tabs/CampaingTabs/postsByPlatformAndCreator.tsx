@@ -443,6 +443,7 @@ export default function PostsByPlatformAndCreator({
               <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
+                   
                     {campaignsByCreator?.map((card: any, index: any) => (
                       <Link
                         href={`/dashboard/campaigns/${card.id}`}

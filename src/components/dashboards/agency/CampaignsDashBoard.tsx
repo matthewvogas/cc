@@ -215,6 +215,7 @@ export default function CampaignsDashBoard({
 
       <div className='flex flex-col bg-white pt-12'>
         <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
+          
           {filteredCampaigns.length > 0 ? (
             filteredCampaigns.map((card: any, index: any) => (
               <Link
