@@ -13,10 +13,7 @@ let stripePromise: Promise<Stripe | null> | undefined
 
 const getStripe = (): Promise<Stripe | null> => {
   if (!stripePromise) {
-    stripePromise = loadStripe(
-      'pk_test_51KzxPnDud2nVdnbnzapruSAh1BRmBNMZehpxSkkjsykRSYSIys0oXec2w51BKau16tZOurWmZZu3NomEAcB5VHIv00OvhdWAYH' ||
-        '',
-    )
+    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY! || '')
   }
   console.log(stripePromise)
   return stripePromise

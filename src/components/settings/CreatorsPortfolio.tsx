@@ -33,6 +33,7 @@ export default function CreatorsPortfolio() {
                   <div>
                     <div className='flex flex-col h-full'>
                       <p className={`text-sm`}>Your cover image</p>
+
                       <Image
                         className={`object-cover mt-2 rounded-xl w-full h-[200px] p-2 border outline-none`}
                         src={coverImage}

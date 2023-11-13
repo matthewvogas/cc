@@ -7,6 +7,7 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import TitlePage from '@/components/labels/titlePage'
 import { PostsService } from '@/services/PostsSerivce'
 import { getServerSession } from 'next-auth'
+import { ClientsService } from '@/services/ClientsServices'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,6 +23,7 @@ export default async function CampaignPage({
     const posts = await PostsService.findMany(id)
     const stories = await StoriesService.findByCampaign(id)
     const session = await getServerSession(authOptions)
+    const client = await ClientsService.findUnique(params.id)
 
     return (
       <div className='overflow-clip'>
@@ -44,6 +46,7 @@ export default async function CampaignPage({
             posts={posts}
             stories={stories}
             session={session}
+            client={client}
           />
         </div>
       </div>

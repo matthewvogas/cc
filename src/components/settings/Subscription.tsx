@@ -3,11 +3,9 @@ import { useSubscriptionStore } from './store/subscriptionStore'
 import Checkbox from 'public/assets/register/falseCheckbox.svg'
 import { Dialog, Transition } from '@headlessui/react'
 import React, { useEffect, useState } from 'react'
-import { getServerSession } from 'next-auth'
-import { checkout } from './checkout'
+import { checkout } from '../../app/api/subscriptions/checkout/checkout'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 import { EnumSubscriptionStatus } from '@prisma/client'
 
@@ -90,14 +88,11 @@ export default function Subscription() {
 
   const date = new Date(endSubscription!)
   const handleYesPayment = async () => {
-    // Check if the status is ACTIVE before proceeding with checkout
     if (status === 'ACTIVE') {
-      // Show modal to inform the user they must cancel the current plan first
       setShowCancelAlert(true)
-      return // Exit the function early
+      return
     }
 
-    // If the status is not ACTIVE, proceed with the checkout
     if (yesPlan) {
       await checkout({
         lineItems: [
@@ -110,14 +105,11 @@ export default function Subscription() {
     }
   }
   const handleAbsolutelyPayment = async () => {
-    // Check if the status is ACTIVE before proceeding with checkout
     if (status === 'ACTIVE') {
-      // Show modal to inform the user they must cancel the current plan first
       setShowCancelAlert(true)
-      return // Exit the function early
+      return
     }
 
-    // If the status is not ACTIVE, proceed with the checkout
     if (absolutelyPlan) {
       await checkout({
         lineItems: [
@@ -364,15 +356,15 @@ export default function Subscription() {
                         name='Yes Subscription'
                         id=''
                         onChange={() =>
-                          setYesPlan('price_1O2IiuDud2nVdnbnGMG7CnlC')
+                          setYesPlan('price_1OAF90Dud2nVdnbnxAgbOyXq')
                         }
                       />
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$8.99/month</p>
+                            <p className='text-sm font-medium'>$59/month</p>
                             <p className='text-xs opacity-50'>
-                              billed monthly ($8.99)
+                              billed monthly ($59)
                             </p>
                           </div>
 
@@ -395,15 +387,15 @@ export default function Subscription() {
                         id=''
                         defaultChecked
                         onChange={() =>
-                          setYesPlan('price_1O2KKTDud2nVdnbnF0aAHFFy')
+                          setYesPlan('price_1OAFFmDud2nVdnbnrrdKcgTK')
                         }
                       />
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$6/month</p>
+                            <p className='text-sm font-medium'>$540/month</p>
                             <p className='text-xs opacity-50'>
-                              billed annually ($132)
+                              billed annually ($540)
                             </p>
                           </div>
 
@@ -469,15 +461,15 @@ export default function Subscription() {
                         name='Absolutely Subscription'
                         id=''
                         onChange={() =>
-                          setAbsolutelyPlan('price_1O2KfYDud2nVdnbnKmlxr9ov')
+                          setAbsolutelyPlan('price_1OAFIGDud2nVdnbnIIm7tio2')
                         }
                       />
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$14.99/month</p>
+                            <p className='text-sm font-medium'>$149/month</p>
                             <p className='text-xs opacity-50'>
-                              billed monthly ($14.99)
+                              billed monthly ($149)
                             </p>
                           </div>
 
@@ -499,14 +491,14 @@ export default function Subscription() {
                         id=''
                         defaultChecked
                         onChange={() =>
-                          setAbsolutelyPlan('price_1O2KhqDud2nVdnbnn0pVhFKG')
+                          setAbsolutelyPlan('price_1OAFKVDud2nVdnbn7WTBDc5U')
                         }
                       />
 
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$11/month</p>
+                            <p className='text-sm font-medium'>$1428/Year</p>
                             <p className='text-xs opacity-50'>
                               billed annually ($1428)
                             </p>

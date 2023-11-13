@@ -171,10 +171,12 @@ export default function AddCampaign({
 
               <label
                 htmlFor='file-upload'
-                className='cursor-pointer text-black rounded-full bg-rose-200  px-2 py-1 transition duration-300 ease-in-out flex flex-col items-center'>
+                className='cursor-pointer text-black rounded-full bg-rose-200 px-2 py-1 transition duration-300 ease-in-out flex flex-col items-center'>
                 Upload Image
                 {fileName && (
-                  <div className='mt-2 text-sm text-gray-600'>{fileName}</div>
+                  <div className='mt-2 text-sm text-center text-gray-600 truncate w-full'>
+                    {fileName}
+                  </div>
                 )}
               </label>
 

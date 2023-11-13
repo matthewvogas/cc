@@ -8,8 +8,8 @@ interface SubscriptionStore {
 }
 
 export const useSubscriptionStore = create<SubscriptionStore>(set => ({
-  yesPlan: 'price_1O2KKTDud2nVdnbnF0aAHFFy',
+  yesPlan: 'price_1OAFFmDud2nVdnbnrrdKcgTK',
   setYesPlan: yesPlan => set({ yesPlan }),
-  absolutelyPlan: 'price_1O2KhqDud2nVdnbnn0pVhFKG',
+  absolutelyPlan: 'price_1OAFKVDud2nVdnbn7WTBDc5U',
   setAbsolutelyPlan: absolutelyPlan => set({ absolutelyPlan }),
 }))

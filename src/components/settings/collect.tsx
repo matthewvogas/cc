@@ -1,13 +1,14 @@
 import InstagramData from '@/app/dashboard/socialData/instagramData'
 import PostCard from '../cards/influencer/posts/postCard'
 import { Tab } from '@headlessui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import Link from 'next/link'
 import { instagramPages } from '@prisma/client'
 import Image from 'next/image'
 import Spinner from '../loading/spinner'
 import { useRouter } from 'next/navigation'
+import { set } from 'zod'
 
 type Props = {
   session: any
@@ -65,12 +66,39 @@ export default function Collect({
   instgramToken,
   tiktokToken,
 }: Props) {
+  const SUB_LIMITS = {
+    YES: 20,
+    ABSOLUTELY: Infinity,
+  }
+
   const [loading, setLoading] = React.useState(false)
   const [instagramPage, setInstagram] = useState('')
   const [tiktokPage, setTikTok] = useState('')
   const [errorPage, setErrorPage] = useState('')
+  const [postLimit, setPostLimit] = useState(SUB_LIMITS.YES)
+  const [subscriptionType, setSubscriptionType] = useState(null)
 
   const router = useRouter()
+
+  useEffect(() => {
+    async function getSubscription() {
+      try {
+        const response = await fetch('/api/subscriptions')
+        if (!response.ok) {
+          throw new Error('Failed to get subscription')
+        }
+        const data = await response.json()
+        setSubscriptionType(data.subscriptionType)
+        setPostLimit(
+          SUB_LIMITS[data.subscriptionType as keyof typeof SUB_LIMITS],
+        )
+        console.log(subscriptionType)
+      } catch {
+        console.error('Error fetching subscription:')
+      }
+    }
+    getSubscription()
+  }, [subscriptionType, setSubscriptionType])
 
   const handleNetworks = async () => {
     if (instagramPage != '' && tiktokPage != '') {
@@ -98,6 +126,7 @@ export default function Collect({
           instagramPage: instagramPage,
           instgramToken: instgramToken,
           sessionId: session.user.id,
+          postLimit: postLimit,
         }),
       })
 
@@ -145,7 +174,7 @@ export default function Collect({
             {loading ? (
               <Spinner width='w-4' height='h-4' border='border-2' />
             ) : null}
-            {posts?.map((post: any, index: any) => (
+            {posts.map((post: any, index: any) => (
               <PostCard key={index} post={post} />
             ))}
           </div>

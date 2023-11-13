@@ -117,7 +117,7 @@ export default function AddClients({
                   type='file'
                   accept='image/*'
                   onChange={handleFileChange}
-                  id='filxe-upload'
+                  id='file-upload'
                   className='hidden'
                 />
 
@@ -126,7 +126,9 @@ export default function AddClients({
                   className='cursor-pointer text-center text-black rounded-full bg-rose-200 px-4 py-2 transition duration-300 ease-in-out'>
                   Upload Image
                   {fileName && (
-                    <div className='mt-2 text-sm text-gray-600'>{fileName}</div>
+                    <div className='mt-2 text-sm truncate text-gray-600'>
+                      {fileName}
+                    </div>
                   )}
                 </label>
 

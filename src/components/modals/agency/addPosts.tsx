@@ -223,8 +223,9 @@ export default function AddNewPosts({
                           className='underline'
                           onClick={handleDownloadClick}>
                           sample CSV template
-                        </button>{' '}
-                        to see an example fo the format required.
+                        </button>
+                        {''}
+                        to see an example of the format required.
                       </p>
 
                       <div className='flex flex-col gap-3'>

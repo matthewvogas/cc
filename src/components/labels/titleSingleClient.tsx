@@ -32,13 +32,13 @@ export default function TitleSingleClient({ client }: Props) {
     <div className='w-full'>
       <div className='relative'>
         <Image
-          className='w-full -mb-24'
+          className='w-full -mb-24 max-h-44 object-cover'
           src={coverImage || coverImageClient}
           alt=''
           width={1660}
           height={160}
         />
-        <div className='absolute  inset-0 bg-gradient-to-t from-[#000000d0] to-transparent'></div>
+        <div className='absolute  inset-0 bg-gradient-to-t from-[#000000d0] to-transparent max-h-44'></div>
       </div>
       <div className='mx-auto  h-full w-full justify-between px-12'>
         <div className='w-full'>
