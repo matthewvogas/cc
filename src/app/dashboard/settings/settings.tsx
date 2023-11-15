@@ -12,6 +12,7 @@ type Props = {
   user: User | null
   session: any
   posts: any
+  stories: any
   instagramPages: any
   tiktokPages: any
   instgramToken: any
@@ -24,6 +25,7 @@ export default function Settings({
   user,
   session,
   posts,
+  stories,
   instagramPages,
   tiktokPages,
   instgramToken,
@@ -39,6 +41,7 @@ export default function Settings({
           <Collect
             session={session}
             posts={posts}
+            stories={stories}
             instagramPages={instagramPages}
             tiktokPages={tiktokPages}
             instgramToken={instgramToken}

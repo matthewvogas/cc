@@ -35,8 +35,8 @@ export default function AddCreators({ userCreators, session }: Props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          agencyId: session?.user?.id,
-          creatorId: creatorSelected,
+          senderId: session?.user?.id,
+          receiverId: creatorSelected,
         }),
       })
 

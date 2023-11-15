@@ -7,12 +7,12 @@ export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
 
-    const { agencyId, creatorId } = await req.json()
+    const { senderId, receiverId } = await req.json()
 
     const invite = await db.invite.create({
       data: {
-        senderId: agencyId,
-        receiverId: creatorId,
+        senderId: senderId,
+        receiverId: receiverId,
         status: 'PENDING',
       },
     })

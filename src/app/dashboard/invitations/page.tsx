@@ -12,10 +12,7 @@ import { CampaignsService } from '@/services/CampaignsService'
 export default async function Invites() {
   const session = await getServerSession(authOptions)
 
-  const invites = await InviteService.getPendingInvitationsbyUserId(
-    session!.user!.id,
-  )
-  const creatorInvites = await InviteService.getPendingInvitationsbyCreatorId(
+  const invites = await InviteService.getPendingInvitationsbyReceiverId(
     session!.user!.id,
   )
 
@@ -55,13 +52,12 @@ export default async function Invites() {
           creators={creators}
           campaigns={campaigns}
           connections={connections}
-          creatorInvites={creatorInvites}
         />
       ) : null}
       {session?.user?.role === 'CREATOR' ? (
         <PortfolioTabs
           instagramConnection={InstagramConnection}
-          invites={creatorInvites}
+          invites={invites}
           session={session}
           agenciesConnections={userCreators}
           agency={agencies}
@@ -71,7 +67,6 @@ export default async function Invites() {
           creators={creators}
           campaigns={campaigns}
           connections={connections}
-          creatorInvites={creatorInvites}
         />
       ) : null}
     </div>

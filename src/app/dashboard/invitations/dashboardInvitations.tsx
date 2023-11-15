@@ -23,7 +23,6 @@ type Props = {
   creators: any
   campaigns: any
   connections: any
-  creatorInvites: any
 }
 
 export default function PortfolioTabs({
@@ -38,7 +37,6 @@ export default function PortfolioTabs({
   creators,
   campaigns,
   connections,
-  creatorInvites,
 }: Props) {
   const [other, setOther] = useState('')
   const [inviteId, setInviteId] = useState('')
@@ -110,15 +108,6 @@ export default function PortfolioTabs({
     (invite: any) => invite.status === 'PENDING',
   )
 
-  const uniqueInvitations = pendingInvitations.filter(
-    (invite: any, index: any, self: any) =>
-      index ===
-      self.findIndex(
-        (t: any) =>
-          t.userId1 === invite.userId1 && t.userId2 === invite.userId2,
-      ),
-  )
-
   const tabs: TabItem[] = [
     {
       label: 'Accepted',
@@ -147,16 +136,12 @@ export default function PortfolioTabs({
       label: 'Pending',
       content: (
         <div>
-          {uniqueInvitations.map((invite: any) => (
+          {pendingInvitations.map((invite: any) => (
             <div
               key={invite.id}
               className='border rounded-lg p-4 m-2 bg-white shadow-md flex justify-between items-center'>
               <div className='font-semibold'>
-                {session.user.role === 'AGENCY' ? (
-                  <p> {invite.receiver.name} sent you an invitation </p>
-                ) : (
-                  <p> {invite.sender.name} sent you an invitation </p>
-                )}
+                From: {invite.sender.name}
                 <div className='font-light'>
                   Status: {done ? 'DONE' : 'PENDING'}
                 </div>
@@ -182,9 +167,7 @@ export default function PortfolioTabs({
                     }}
                     onMouseOver={() => {
                       {
-                        session.user.role === 'AGENCY'
-                          ? setOther(invite.receiver.id)
-                          : setOther(invite.sender.id)
+                        setOther(invite.sender.id)
                       }
                       setInviteId(invite.id)
                       setStatus('ACCEPTED')

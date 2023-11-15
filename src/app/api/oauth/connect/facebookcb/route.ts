@@ -15,10 +15,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   let userId = ''
   const session = await getServerSession(authOptions)
 
+  userId = session!.user.id
 
-    userId = session!.user.id
-
-  
   const facebookResponse = await fetch(
     `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${FACEBOOK_CLIENT_ID}&redirect_uri=${redirect_uri}&client_secret=${FACEBOOK_CLIENT_SECRET}&code=${code}`,
   ).then(res => res.json())

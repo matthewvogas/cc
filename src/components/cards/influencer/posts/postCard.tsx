@@ -114,49 +114,49 @@ export default function PostCard({ post }: { post: Post }) {
 
         <div>
           {post.commentsCount !== undefined && post.commentsCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Comments: {post.commentsCount}
             </span>
           ) : null}
 
           {post.likesCount !== undefined && post.likesCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Likes: {post.likesCount}
             </span>
           ) : null}
 
           {post.reachCount !== undefined && post.reachCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Reach: {post.reachCount}
             </span>
           ) : null}
 
           {post.engagementCount !== undefined && post.engagementCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Engagement: {post.engagementCount}
             </span>
           ) : null}
 
           {post.impressionsCount !== undefined && post.impressionsCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Impressions: {post.impressionsCount}
             </span>
           ) : null}
 
           {post.savesCount !== undefined && post.savesCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Saved: {post.savesCount}
             </span>
           ) : null}
 
           {post.sharesCount !== undefined && post.sharesCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Shares: {post.sharesCount}
             </span>
           ) : null}
 
           {post.playsCount !== undefined && post.playsCount > 0 ? (
-            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
               Plays: {post.playsCount}
             </span>
           ) : null}

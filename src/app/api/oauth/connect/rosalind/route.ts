@@ -6,12 +6,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const id = searchParams.get('id')
 
   const domain = process.env.NEXTAUTH_URL
-  const FACEBOOK_GRAPH_VERSION = process.env.FACEBOOK_GRAPH_VERSION
-  const client_id = process.env.FACEBOOK_CLIENT_ID
+  const client_id = process.env.INSTAGRAM_CLIENT_ID
   const response_type = 'code'
   
   const redirect_uri = `${domain}/api/oauth/connect/rosalindcb`;
-  const FacebookAuthURL = `https://www.facebook.com/${FACEBOOK_GRAPH_VERSION}/dialog/oauth?client_id=${client_id}&scope=instagram_basic%2Cinstagram_manage_insights%2Cpages_show_list%2Cbusiness_management&response_type=${response_type}&redirect_uri=${encodeURIComponent(redirect_uri)}&state=${id}`;
+
+  const InstagramAuthURL = `https://api.instagram.com/oauth/authorize?client_id=${client_id}&scope=user_profile&response_type=${response_type}&redirect_uri=${redirect_uri}`;
   
-  return NextResponse.redirect(FacebookAuthURL, { status: 302 })
+  return NextResponse.redirect(InstagramAuthURL, { status: 302 })
 }

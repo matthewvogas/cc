@@ -8,11 +8,12 @@ import { instagramPages } from '@prisma/client'
 import Image from 'next/image'
 import Spinner from '../loading/spinner'
 import { useRouter } from 'next/navigation'
-import { set } from 'zod'
+import StoryCard from '../cards/influencer/stories/StoryCard'
 
 type Props = {
   session: any
   posts: any
+  stories: any
   instagramPages: any
   tiktokPages: any
   instgramToken: any
@@ -61,6 +62,7 @@ function Tabs({ tabs }: TabsProps) {
 export default function Collect({
   session,
   posts,
+  stories,
   instagramPages,
   tiktokPages,
   instgramToken,
@@ -164,6 +166,29 @@ export default function Collect({
       console.log(error)
     }
   }
+  const handleInstagramStories = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/collect/instagramStories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          pageId: instagramPage
+        }),
+      })
+
+      if (res.ok == true) {
+        setLoading(false)
+        router.refresh()
+      } else {
+        console.log(200)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const tabs: TabItem[] = [
     {
@@ -181,10 +206,24 @@ export default function Collect({
         </div>
       ),
     },
-    // {
-    //   label: 'Tiktok',
-    //   content: <div>{/* <InstagramData /> */}</div>,
-    // },
+    {
+      label: 'Instagram Stories',
+      content:
+      <div className='mt-8'>
+          <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48'>
+            {loading ? (
+              <Spinner width='w-4' height='h-4' border='border-2' />
+            ) : null}
+            {stories?.map((story: any, index: any) => (
+              <StoryCard key={index} story={story} />
+            ))}
+          </div>
+        </div>,
+    },
+    {
+      label: 'Tiktok',
+      content: <div>{/* <InstagramData /> */}</div>,
+    },
   ]
 
   return (
@@ -193,20 +232,29 @@ export default function Collect({
         <h1 className='font-bold text-2xl'>My social data</h1>
         <div className='p-4 flex gap-4'>
           <div>
-            <div className='flex'>
+            <div className='flex gap-4'>
               <p className='mr-4'>{errorPage}</p>
               <label
-                htmlFor='my-modal-3'
+                htmlFor='posts-modal'
                 className={`${ptMono.className} rounded-full cursor-pointer border px-8 py-4`}>
-                {'collect'}
+                {'Update Posts'}
+              </label>
+              <label
+                htmlFor='stories-modal'
+                className={`${ptMono.className} rounded-full cursor-pointer border px-8 py-4`}>
+                {'Update Stories'}
               </label>
             </div>
 
-            <input type='checkbox' id='my-modal-3' className='  modal-toggle' />
+            <input
+              type='checkbox'
+              id='posts-modal'
+              className='  modal-toggle'
+            />
             <div className='modal '>
               <div className='modal-box relative flex max-w-max flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
                 <label
-                  htmlFor='my-modal-3'
+                  htmlFor='posts-modal'
                   className='absolute right-4 top-2 cursor-pointer text-lg text-black'>
                   ✕
                 </label>
@@ -236,10 +284,10 @@ export default function Collect({
                           (page: instagramPages, index: number) =>
                             parseInt(page.followers_count) > 0 && (
                               <>
-
-                                  <span className='text-base '>
-                                    Facebook Page: <span className='font-bold'>{page.name}</span>
-                                  </span>
+                                <span className='text-base '>
+                                  Facebook Page:{' '}
+                                  <span className='font-bold'>{page.name}</span>
+                                </span>
                                 <button
                                   onClick={() => {
                                     setInstagram(page.id)
@@ -251,8 +299,8 @@ export default function Collect({
                                       : ''
                                   } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>
                                   <p>
-                                    Instagram associated: @{page.username} - {page.followers_count}{' '}
-                                    Followers
+                                    Instagram associated: @{page.username} -{' '}
+                                    {page.followers_count} Followers
                                   </p>
                                 </button>
                               </>
@@ -312,7 +360,7 @@ export default function Collect({
                             className='cursor-pointer'
                             onClickCapture={handleNetworks}>
                             <label
-                              htmlFor='my-modal-3'
+                              htmlFor='posts-modal'
                               className={`${ptMono.className} cursor-pointer rounded-xl bg-[#D3F0E2] px-8 py-3`}>
                               {'collect'}
                             </label>
@@ -323,7 +371,110 @@ export default function Collect({
                           disabled
                           className='cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl border-gray-200 bg-[#e9e9e9] px-8 py-3'
                           onClickCapture={handleNetworks}>
-                          {'collect'}
+                          {'collect posts'}
+                        </button>
+                      )}
+                      <input
+                        id='my-input'
+                        type='text'
+                        style={{ display: 'none' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input
+              type='checkbox'
+              id='stories-modal'
+              className='  modal-toggle'
+            />
+
+            <div className='modal '>
+              <div className='modal-box relative flex max-w-max flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
+                <label
+                  htmlFor='stories-modal'
+                  className='absolute right-4 top-2 cursor-pointer text-lg text-black'>
+                  ✕
+                </label>
+
+                <div className='px-10 py-8'>
+                  <h3 className='text-lg font-bold'>
+                    Facebook - Instagram Accounts Associate
+                  </h3>
+
+                  <div className={`w-full justify-start `}>
+                    <p className={` pb-6 text-xs text-[#7F7F7F] mt-2`}>
+                      You can upload the content of your accounts one account at
+                      a time, reload the page if you don&apos;t see new pages.{' '}
+                      <br />
+                      <span className='font-semibold'>
+                        {' '}
+                        If the page has less than 100 followers. It will not
+                        appear on the list.
+                      </span>
+                    </p>
+
+                    <div className='flex flex-col justify-start items-start gap-4'>
+                      {loading ? (
+                        <Spinner width='w-4' height='h-4' border='border-2' />
+                      ) : instagramPages.length > 0 ? (
+                        instagramPages.map(
+                          (page: instagramPages, index: number) =>
+                            parseInt(page.followers_count) > 0 && (
+                              <>
+                                <span className='text-base '>
+                                  Facebook Page:{' '}
+                                  <span className='font-bold'>{page.name}</span>
+                                </span>
+                                <button
+                                  onClick={() => {
+                                    setInstagram(page.id)
+                                  }}
+                                  key={index}
+                                  className={`${
+                                    instagramPage == page.id
+                                      ? 'bg-[#3a7a55] border-[#265a3c] text-white'
+                                      : ''
+                                  } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>
+                                  <p>
+                                    Instagram associated: @{page.username} -{' '}
+                                    {page.followers_count} Followers
+                                  </p>
+                                </button>
+                              </>
+                            ),
+                        )
+                      ) : (
+                        <div>
+                          <p className='font-normal text-sm text-gray-600'>
+                            There are no pages available, connect your pages
+                            within the Connections section
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className='text-right mt-12'>
+                      {instagramPage.length > 0 ? (
+                        <div>
+                          <button
+                            className='cursor-pointer'
+                            onClickCapture={handleInstagramStories}>
+                            <label
+                              htmlFor='stories-modal'
+                              className={`${ptMono.className} cursor-pointer rounded-xl bg-[#D3F0E2] px-8 py-3`}>
+                              {'update stories'}
+                            </label>
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          disabled
+                          className={`cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl border-gray-200 bg-[#e9e9e9] px-8 py-3`}
+                          onClickCapture={handleInstagramStories}>
+                          {'update stories'}
                         </button>
                       )}
                       <input
