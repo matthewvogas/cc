@@ -44,16 +44,18 @@ export default function SettingsTab({
     formData.append('name', selectedFile!.name)
     formData.append('image', selectedFile!)
 
-    try {
-      const res = await fetch(`/api/clients/${client.id}/cover`, {
-        method: 'POST',
-        body: formData,
-      })
-      if (res.status === 200) {
-        router.refresh()
+    if (client.id) {
+      try {
+        const res = await fetch(`/api/clients/${client.id}/cover`, {
+          method: 'POST',
+          body: formData,
+        })
+        if (res.status === 200) {
+          router.refresh()
+        }
+      } catch (error) {
+        console.error(error)
       }
-    } catch (error) {
-      console.error(error)
     }
   }
 
@@ -89,20 +91,29 @@ export default function SettingsTab({
     }
   }
   useEffect(() => {
-    const fetchCoverImage = async () => {
-      const res = await fetch(`/api/clients/${client.id}/cover`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+    try {
 
-      const data = await res.json()
-      console.log(data)
-      setImage(data)
+      if (client.id) {
+        const fetchCoverImage = async () => {
+          const res = await fetch(`/api/clients/${client.id}/cover`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+    
+          const data = await res.json()
+          console.log(data)
+          setImage(data)
+        }
+        fetchCoverImage()
+      } 
+      
+    } catch (error) {
+      console.log(error)
     }
-    fetchCoverImage()
-  }, [client.id])
+   
+  }, [client?.id])
 
   return (
     <div className={`mt-7 w-full justify-start`}>
