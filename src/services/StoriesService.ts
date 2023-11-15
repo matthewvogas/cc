@@ -2,6 +2,7 @@ import db from '@/lib/db'
 import { Prisma, Story } from '@prisma/client'
 
 export class StoriesService {
+
   static async findByCampaign(
     campaignId: number,
     limit?: number,
@@ -10,6 +11,23 @@ export class StoriesService {
     return db.story.findMany({
       where: {
         campaignId: +campaignId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: limit,
+      skip: offset,
+    })
+  }
+
+  static async findByUser(
+    userId: string,
+    limit?: number,
+    offset?: number,
+  ) {
+    return db.story.findMany({
+      where: {
+        userId: String(userId),
       },
       orderBy: {
         createdAt: 'desc',

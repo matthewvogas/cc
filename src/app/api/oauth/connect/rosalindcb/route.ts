@@ -5,26 +5,53 @@ import db from '@/lib/db'
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = new URL(req.url)
-  const code = searchParams.get('code')
+  let code = searchParams.get('code')
   const id = searchParams.get('state')
 
-  const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
-  const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
+  const INSTAGRAM_CLIENT_ID = process.env.INSTAGRAM_CLIENT_ID
+  const INSTAGRAM_CLIENT_SECRET = process.env.INSTAGRAM_CLIENT_SECRET
   const domain = process.env.NEXTAUTH_URL
-  const redirect_uri = `${domain}/api/oauth/connect/rosalindcb`;
+  const redirect_uri = `${domain}/api/oauth/connect/rosalindcb`
+
+  code = code!.replace('#_', '')
 
   let userId = ''
   const session = await getServerSession(authOptions)
 
   userId = String(id)
 
-  const facebookResponse = await fetch(
-    `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${FACEBOOK_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&client_secret=${FACEBOOK_CLIENT_SECRET}&code=${code}`,
-  ).then(res => res.json());
-  
+  const params = new URLSearchParams()
+
+  params.append('client_id', INSTAGRAM_CLIENT_ID!)
+  params.append('client_secret', INSTAGRAM_CLIENT_SECRET!)
+  params.append('grant_type', 'authorization_code')
+  params.append('redirect_uri', redirect_uri)
+  params.append('code', code) // 'code' is already sanitized to remove '#_'
+
+  const instagramResponse = await fetch(
+    'https://api.instagram.com/oauth/access_token',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params,
+    },
+  ).then(res => res.json())
+
+  const longLive = await fetch(
+    `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${INSTAGRAM_CLIENT_SECRET}&access_token=${instagramResponse.access_token}`,
+  ).then(res => res.json())
+
   const longToken = await fetch(
-    `https://graph.facebook.com/v18.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${FACEBOOK_CLIENT_ID}&client_secret=${FACEBOOK_CLIENT_SECRET}&fb_exchange_token=${facebookResponse.access_token}`,
-  ).then(res => res.json());
+    `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${longLive.access_token}`,
+  ).then(res => res.json())
+
+  const user = await fetch(
+    `https://graph.instagram.com/v18.0/me?fields=username&access_token=${longToken.access_token}`,
+  ).then(res => res.json())
+
+  return NextResponse.json(user.username)
 
   const succes = `https://withrosalind.com/network`
 

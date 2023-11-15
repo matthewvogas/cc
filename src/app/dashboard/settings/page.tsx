@@ -6,6 +6,7 @@ import Settings from './settings'
 import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { UserService } from '@/services/UsersService'
 import { TiktokPagesService } from '@/services/TiktokPagesService'
+import { StoriesService } from '@/services/StoriesService'
 
 export default async function Page() {
   const session = await getServerSession(authOptions)
@@ -37,6 +38,7 @@ export default async function Page() {
     session!.user?.id,
   )
   const posts = await PostsService.findByUser(String(session?.user.id))
+  const stories = await StoriesService.findByUser(session!.user?.id)
 
   const instagramPages = await InstagramPagesService.findByUserId(
     session!.user?.id,
@@ -58,6 +60,7 @@ export default async function Page() {
       user={user}
       session={session}
       posts={posts}
+      stories={stories}
       instagramPages={instagramPages}
       tiktokPages={tiktokPages}
       instgramToken={instgramToken}

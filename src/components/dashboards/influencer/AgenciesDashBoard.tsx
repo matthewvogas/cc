@@ -82,8 +82,8 @@ export default function AgenciesDashBoard({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          agencyId: agenciesSelected?.id,
-          creatorId: session,
+          senderId: session,
+          receiverId: agenciesSelected?.id,
         }),
       })
 

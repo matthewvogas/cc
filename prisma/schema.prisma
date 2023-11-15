@@ -297,6 +297,7 @@ model Post {
   playsCount       Int?      @map("plays_count")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
+  hashtags         hashtag[]
 
   @@unique([shortcode, platform])
   @@map("posts")
@@ -315,8 +316,35 @@ model Story {
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
 
+  username         String?
+  permalink        String?
+  profile_activity Int?
+  impressions      Int?
+  reach            Int?
+  replies          Int?
+  shares           Int?
+  profile_visits   Int?
+  follows          Int?
+
+  tapBack      Int?
+  swipeForward Int?
+  tapExit      Int?
+  tapForward   Int?
+
+  hashtags hashtag[]
+
   @@unique([imageUrl, campaignId])
   @@map("stories")
+}
+
+model hashtag {
+  id      Int     @id @default(autoincrement())
+  uuid    String?
+  hashtag String?
+  storyId Int?    @map("story_id")
+  story   Story?  @relation(fields: [storyId], references: [id])
+  postId  Int?    @map("post_id")
+  post    Post?   @relation(fields: [postId], references: [id])
 }
 
 enum CreatorStatus {

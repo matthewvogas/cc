@@ -1,6 +1,6 @@
 import db from '@/lib/db'
 export class InviteService {
-  static async getPendingInvitationsbyUserId(userId: string) {
+  static async getPendingInvitationsbSenderId(userId: string) {
     const invitations = await db.invite.findMany({
       where: {
         senderId: userId,
@@ -15,7 +15,7 @@ export class InviteService {
     return invitations
   }
 
-  static async getPendingInvitationsbyCreatorId(userId: string) {
+  static async getPendingInvitationsbyReceiverId(userId: string) {
     const invitations = await db.invite.findMany({
       where: {
         receiverId: userId,

@@ -1,9 +1,9 @@
-import S3Service from '@/lib/S3Service'
-import db from '@/lib/db'
-import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import S3Service from '@/lib/S3Service'
 import sharp from 'sharp'
+import db from '@/lib/db'
 
 export async function POST(req: NextRequest) {
   const { searchParams } = new URL(req.url)
