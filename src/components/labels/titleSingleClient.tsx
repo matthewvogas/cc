@@ -13,20 +13,26 @@ export default function TitleSingleClient({ client }: Props) {
   const [coverImage, setCoverImage] = useState('')
 
   useEffect(() => {
-    const fetchCoverImage = async () => {
-      const res = await fetch(`/api/clients/${client.id}/cover`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+    try {
+      if (client.id) {
+        const fetchCoverImage = async () => {
+          const res = await fetch(`/api/clients/${client?.id}/cover`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
 
-      const data = await res.json()
-      console.log(data)
-      setCoverImage(data)
+          const data = await res.json()
+          console.log(data)
+          setCoverImage(data)
+        }
+        fetchCoverImage()
+      }
+    } catch (error) {
+      console.log(error)
     }
-    fetchCoverImage()
-  }, [client.id])
+  }, [client?.id])
 
   return (
     <div className='w-full'>
