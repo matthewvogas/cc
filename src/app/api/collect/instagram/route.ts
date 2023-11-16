@@ -3,13 +3,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import db from '@/lib/db'
 
 export async function POST(req: NextRequest) {
+
   const { sessionId, instagramPage, instgramToken, postLimit } =
     await req.json()
 
   const page = await InstagramPagesService.findUnique(instagramPage)
 
   const posts = await fetch(
-    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(engagement,comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}&limit=${postLimit}`,
+    `https://graph.facebook.com/v17.0/${instagramPage}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(comments,likes,impressions,reach,saved,shares,plays)&access_token=${instgramToken}&limit=${postLimit}`,
   ).then(res => res.json())
 
   interface PostData {
@@ -120,55 +121,100 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    const postToSave = await db.post.upsert({
+    const postExists = await db.post.findFirst({
       where: {
-        shortcode_platform: {
+        shortcode: post.shortcode,
+        userId: sessionId,
+      },
+    })
+
+    if (postExists) {
+      const postToSave = await db.post.upsert({
+        where: {
+          id: postExists!.id,
           shortcode: String(post.shortcode),
           platform: 'instagram',
         },
-      },
-      create: {
-        platform: 'instagram',
-        permalink: post.permalink,
-        shortcode: post.shortcode,
-        imageUrl: post.thumbnail_url || post.media_url,
+        create: {
+          platform: 'instagram',
+          permalink: post.permalink,
+          shortcode: post.shortcode,
+          imageUrl: post.thumbnail_url || post.media_url,
 
-        // data
-        creatorId: creator.id,
-        caption: post.caption,
-        userId: sessionId,
+          // data
+          creatorId: creator.id,
+          caption: post.caption,
+          userId: sessionId,
+          uuid: post.id,
 
-        // insighst
-        engagementCount: (post.likes + post.shares + post.saved + post.comments) / creator.followersCount! * 100,
-        reachCount: post.reach,
-        sharesCount: post.shares,
-        commentsCount: post.comments,
-        playsCount: post.plays,
-        savesCount: post.saved,
-        likesCount: post.likes,
-      },
-      update: {
-        // urls
-        platform: 'instagram',
-        permalink: String(post.permalink),
-        shortcode: String(post.shortcode),
-        imageUrl: post.thumbnail_url || post.media_url,
+          // insighst
+          engagementCount:
+            ((post.likes + post.shares + post.saved + post.comments) /
+              creator.followersCount!) *
+            100,
+          reachCount: post.reach,
+          sharesCount: post.shares,
+          commentsCount: post.comments,
+          playsCount: post.plays,
+          savesCount: post.saved,
+          likesCount: post.likes,
+        },
+        update: {
+          // urls
+          platform: 'instagram',
+          permalink: String(post.permalink),
+          shortcode: String(post.shortcode),
+          imageUrl: post.thumbnail_url || post.media_url,
 
-        // data
-        creatorId: creator.id,
-        caption: String(post.caption),
-        userId: sessionId,
+          // data
+          creatorId: creator.id,
+          caption: String(post.caption),
+          userId: sessionId,
 
-        // insighst
-        engagementCount: (post.likes + post.shares + post.saved + post.comments) / creator.followersCount! * 100,
-        reachCount: post.reach,
-        sharesCount: post.shares,
-        commentsCount: post.comments,
-        playsCount: post.plays,
-        savesCount: post.saved,
-        likesCount: post.likes,
-      },
-    })
+          // insighst
+          engagementCount:
+            ((post.likes + post.shares + post.saved + post.comments) /
+              creator.followersCount!) *
+            100,
+          reachCount: post.reach,
+          sharesCount: post.shares,
+          commentsCount: post.comments,
+          playsCount: post.plays,
+          savesCount: post.saved,
+          likesCount: post.likes,
+        },
+      })
+    } else {
+
+      const postToSave = await db.post.create({
+        data: {
+          // urls
+          platform: 'instagram',
+          permalink: String(post.permalink),
+          shortcode: String(post.shortcode),
+          imageUrl: post.thumbnail_url || post.media_url,
+
+          // data
+          creatorId: creator.id,
+          caption: String(post.caption),
+          userId: sessionId,
+          uuid: post.id,
+
+          // insighst
+          engagementCount:
+            ((post.likes + post.shares + post.saved + post.comments) /
+              creator.followersCount!) *
+            100,
+          reachCount: post.reach,
+          sharesCount: post.shares,
+          commentsCount: post.comments,
+          playsCount: post.plays,
+          savesCount: post.saved,
+          likesCount: post.likes,
+        },
+      })
+
+    }
 
     const showPost = () => {
       console.log('Caption:', post.caption)
@@ -176,7 +222,12 @@ export async function POST(req: NextRequest) {
       console.log('Permalink:', post.permalink)
       console.log('Shortcode:', post.shortcode)
       console.log('Comments:', post.comments)
-      console.log('Engagement:', (post.likes + post.shares + post.saved + post.comments) / creator.followersCount! * 100,)
+      console.log(
+        'Engagement:',
+        ((post.likes + post.shares + post.saved + post.comments) /
+          creator.followersCount!) *
+          100,
+      )
       console.log('Likes:', post.likes)
       console.log('Impressions:', post.impressions)
       console.log('Saved:', post.saved)

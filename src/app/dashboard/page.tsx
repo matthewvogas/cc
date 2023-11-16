@@ -15,6 +15,7 @@ import Stats from '@/components/stats/agency/stats'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { ConnectionService } from '@/services/ConnectionService'
+import { InstagramPagesService } from '@/services/InstagramPagesService'
 
 export const dynamic = 'force-dynamic'
 
@@ -37,6 +38,10 @@ export default async function Home() {
 
   const connections = await ConnectionService.findManyByUserIdFromCreator(
     String(session?.user.id)
+  )
+
+  const instagramPages = await InstagramPagesService.findByUserId(
+    String(session?.user.id),
   )
 
   const stats = [
@@ -86,6 +91,7 @@ export default async function Home() {
           <TitleDashboard title={'Welcome,'} user={session?.user!} />
           <CampaignCardIfluencer
             user={session?.user!}
+            instagramPages={instagramPages}
             campaignsFallback={campaignsWithCreator}
             clientsFallback={clients}
           />

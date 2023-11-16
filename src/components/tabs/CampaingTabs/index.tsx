@@ -41,16 +41,53 @@ export default function CampaingTabs({
   const [selectedCampaign, setSelectedCampaign] = useState('')
 
   const getLikes = () => {
-    let likes = 0
-
+    let likes = 1
     posts.map((post: any, key: number) => {
-      if (post.likes) {
-        likes += post.likes
-      }
+      likes += post.likesCount
     })
-
     return likes
   }
+
+  const getViews = () => {
+    let impressions = 1
+    posts.map((post: any, key: number) => {
+      impressions += post.impressionsCount
+    })
+    return impressions
+  }
+
+  const getReach = () => {
+    let impressions = 1
+    posts.map((post: any, key: number) => {
+      impressions += post.reachCount
+    })
+    return impressions
+  }
+
+  const getComments = () => {
+    let comments = 1
+    posts.map((post: any, key: number) => {
+      comments += post.commentsCount
+    })
+    return comments
+  }
+
+  const getShares = () => {
+    let comments = 1
+    posts.map((post: any, key: number) => {
+      comments += post.sharesCount
+    })
+    return comments
+  }
+
+  const getSaves = () => {
+    let saves = 1
+    posts.map((post: any, key: number) => {
+      saves += post.savesCount
+    })
+    return saves
+  }
+
 
   const handleRemoveSocial = (red: any) => {
     const updatedSocialFilter = socialActiveFilter.filter(c => c !== red)
@@ -82,11 +119,11 @@ export default function CampaingTabs({
         data: [
           { title: campaign?.posts?.length, description: 'brand posts' },
           { title: creators.length, description: 'creators' },
-          { title: 8492, description: 'likes' },
+          { title: getLikes(), description: 'likes' },
           { title: 12 + '%', description: 'engament rate' },
-          { title: '17,395,43', description: 'views' },
-          { title: '12,412,20', description: 'reach' },
-          { title: '359,009', description: 'comments' },
+          { title: getViews(), description: 'views' },
+          { title: getReach(), description: 'reach' },
+          { title: getSaves() , description: 'comments' },
         ],
       },
       {
@@ -110,13 +147,15 @@ export default function CampaingTabs({
           { title: campaign?.posts?.length, description: 'brand posts' },
           { title: creators.length, description: 'creators' },
           //
-          { title: 8492, description: 'likes' },
-          { title: '17,395,43', description: 'views' },
-          { title: '12,412,20', description: 'reach' },
-          { title: '359,009', description: 'comments' },
+          { title: getLikes(), description: 'likes' },
+          { title: getViews(), description: 'views' },
+          { title: getReach(), description: 'reach' },
+          { title: getComments() , description: 'comments' },
+          { title: getShares() , description: 'shares' },
+          { title: getSaves() , description: 'saves' },
           //
-          { title: 12 + '%', description: 'engament rate' },
-          { title: 12 + '%', description: 'engament rate' },
+          { title: 'soon available', description: 'engament/views' },
+          { title: 'soon available', description: 'engament/impression' },
         ],
       },
       {

@@ -44,30 +44,51 @@ export async function POST(req: NextRequest) {
   for (const page of instagramBusinessAccounts) {
     console.log(instagramBusinessAccounts)
 
-    const pages = await db.instagramPages.upsert({
+    const pageExist = await db.instagramPages.findFirst({
       where: {
-        id: page.id,
-      },
-      create: {
-        id: page.id,
         userId: userId,
-        username: page.username,
-        name: page?.name || '',
-        profile_picture_url: page.profile_picture_url,
-        followers_count: String(page.followers_count),
         accountId: page.id,
-        tokenId: '',
-      },
-      update: {
-        userId: userId,
-        username: page.username,
-        name: page?.name || '',
-        profile_picture_url: page.profile_picture_url,
-        followers_count: String(page.followers_count),
-        accountId: page.id,
-        tokenId: '',
       },
     })
+
+    if (pageExist) {
+      const pages = await db.instagramPages.upsert({
+        where: {
+          id: page.id,
+        },
+        create: {
+          id: page.id,
+          userId: userId,
+          username: page.username,
+          name: page?.name || '',
+          profile_picture_url: page.profile_picture_url,
+          followers_count: String(page.followers_count),
+          accountId: page.id,
+          tokenId: '',
+        },
+        update: {
+          userId: userId,
+          username: page.username,
+          name: page?.name || '',
+          profile_picture_url: page.profile_picture_url,
+          followers_count: String(page.followers_count),
+          accountId: page.id,
+          tokenId: '',
+        },
+      })
+    } else {
+      const pages = await db.instagramPages.create({
+        data: {
+          userId: userId,
+          username: page.username,
+          name: page?.name || '',
+          profile_picture_url: page.profile_picture_url,
+          followers_count: String(page.followers_count),
+          accountId: page.id,
+          tokenId: '',
+        },
+      })
+    }
 
     console.log('succes: ', page.id)
   }

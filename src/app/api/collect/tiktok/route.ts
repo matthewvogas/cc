@@ -104,55 +104,89 @@ export async function POST(req: NextRequest) {
   const videos = responseVideos.data.videos
 
   for (const post of videos) {
-    const postToSave = await db.post.upsert({
+
+
+    const postExists = await db.post.findFirst({
       where: {
-        shortcode_platform: {
+        shortcode: String(post.share_url),
+        platform: 'tiktok',
+      },
+    })
+
+    if (postExists) {
+      const postToSave = await db.post.upsert({
+        where: {
+          id: postExists.id,
           shortcode: String(post.share_url),
           platform: 'tiktok',
         },
-      },
-      create: {
-        platform: 'tiktok',
-        permalink: post.share_url,
-        shortcode: post.share_url,
-        imageUrl: post.cover_image_url,
+        create: {
+          platform: 'tiktok',
+          permalink: post.share_url,
+          shortcode: post.share_url,
+          imageUrl: post.cover_image_url,
+  
+          // data
+          creatorId: creator.id,
+          caption: post.video_description,
+          userId: userId,
+  
+          // insighst
+          engagementCount: (post.like_count + post.comment_count + post.share_count) / post.view_count * 100,
+          reachCount: 0,
+          sharesCount: post.share_count,
+          commentsCount: post.comment_count,
+          playsCount: post.view_count,
+          savesCount: 0,
+          likesCount: post.like_count,
+        },
+        update: {
+          // urls
+          platform: 'tiktok',
+          permalink: String(post.share_url),
+          shortcode: String(post.share_url),
+          imageUrl: post.cover_image_url,
+  
+          // data
+          creatorId: creator.id,
+          caption: String(post.video_description),
+          userId: userId,
+  
+          // insighst
+          engagementCount: (post.like_count + post.comment_count + post.share_count) / post.view_count * 100,
+          reachCount: 0,
+          sharesCount: post.share_count,
+          commentsCount: post.comment_count,
+          playsCount: post.view_count,
+          savesCount: 0,
+          likesCount: post.like_count,
+        },
+      })
+    } else {
+      const postToSave = await db.post.create({
+        data: {
+          platform: 'tiktok',
+          permalink: post.share_url,
+          shortcode: post.share_url,
+          imageUrl: post.cover_image_url,
+  
+          // data
+          creatorId: creator.id,
+          caption: post.video_description,
+          userId: userId,
+  
+          // insighst
+          engagementCount: (post.like_count + post.comment_count + post.share_count) / post.view_count * 100,
+          reachCount: 0,
+          sharesCount: post.share_count,
+          commentsCount: post.comment_count,
+          playsCount: post.view_count,
+          savesCount: 0,
+          likesCount: post.like_count,
+        },
+      })
 
-        // data
-        creatorId: creator.id,
-        caption: post.video_description,
-        userId: userId,
-
-        // insighst
-        engagementCount: (post.like_count + post.comment_count + post.share_count) / post.view_count * 100,
-        reachCount: 0,
-        sharesCount: post.share_count,
-        commentsCount: post.comment_count,
-        playsCount: post.view_count,
-        savesCount: 0,
-        likesCount: post.like_count,
-      },
-      update: {
-        // urls
-        platform: 'tiktok',
-        permalink: String(post.share_url),
-        shortcode: String(post.share_url),
-        imageUrl: post.cover_image_url,
-
-        // data
-        creatorId: creator.id,
-        caption: String(post.video_description),
-        userId: userId,
-
-        // insighst
-        engagementCount: (post.like_count + post.comment_count + post.share_count) / post.view_count * 100,
-        reachCount: 0,
-        sharesCount: post.share_count,
-        commentsCount: post.comment_count,
-        playsCount: post.view_count,
-        savesCount: 0,
-        likesCount: post.like_count,
-      },
-    })
+    }
 
     const showPost = () => {
       console.log('Caption:', post.caption)

@@ -7,6 +7,7 @@ import { CreatorsService } from '@/services/CreatorsService'
 import { ClientsService } from '@/services/ClientsServices'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { getServerSession } from 'next-auth'
+import { InstagramPagesService } from '@/services/InstagramPagesService'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,6 +22,10 @@ export default async function CampaignPage() {
     String(session?.user.id),
   )
 
+  const instagramPages = await InstagramPagesService.findByUserId(
+    String(session?.user.id),
+  )
+
   const campaignsWithCreator = await ConnectionService.findManyByUserIdFromCreator(String(session?.user.id))
 
   return (
@@ -29,7 +34,7 @@ export default async function CampaignPage() {
       (
         <CampaignsDashBoardInfluencer
           campaignsFallback={campaignsWithCreator}
-          // creatorsFallback={creators}
+          instagramPages={instagramPages}
         />
       )
       :

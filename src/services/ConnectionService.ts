@@ -42,7 +42,16 @@ export class ConnectionService {
       include: {
         user1: {
           include: {
-            campaigns: true,
+            campaigns: {
+              include : {
+                posts: {
+                  include: {
+                    creator: true
+                  }
+                },
+                user: true,
+              }
+            },
             socialConnections: true,
           },
         },
@@ -72,6 +81,7 @@ export class ConnectionService {
           include: {
             campaigns: true,
             socialConnections: true,
+            instagramPages: true
           },
         },
       },
@@ -85,6 +95,15 @@ export class ConnectionService {
       where: {
         userId1: userId1,
       },
+      include: {
+        user2: {
+          include: {
+            campaigns: true,
+            socialConnections: true,
+            instagramPages: true
+          },
+        },
+      }
     })
 
     return connections
