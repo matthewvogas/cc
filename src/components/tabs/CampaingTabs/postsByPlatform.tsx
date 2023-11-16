@@ -15,6 +15,7 @@ import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
 import PostCardTest from '@/components/cards/test/posts/postCard'
 import PostCard from '@/components/cards/influencer/posts/postCard'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   readonly id: number
@@ -36,6 +37,9 @@ export default function PostsByPlatform({
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
+
+  const [loading, setLoading] = React.useState(false)
+  const router = useRouter()
 
   const tiktokPosts = campaign.posts!.filter(post => post.platform === 'tiktok')
   const filteredPosts = campaign?.posts?.filter((post: any) => {
@@ -74,9 +78,39 @@ export default function PostsByPlatform({
     return false
   })
 
-  const instagramPostsCount = campaign?.posts?.filter(post => post.platform === 'instagram').length;
-  const tiktokPostsCount = campaign?.posts?.filter(post => post.platform === 'tiktok').length;
-  const storiesCount = campaign?.stories?.length;
+  const instagramPostsCount = campaign?.posts?.filter(
+    post => post.platform === 'instagram',
+  ).length
+  const tiktokPostsCount = campaign?.posts?.filter(
+    post => post.platform === 'tiktok',
+  ).length
+  const storiesCount = campaign?.stories?.length
+
+  const refreshPosts = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/collect/auto`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: session.user.id,
+          campaignId: campaign.id,
+        }),
+      })
+
+      if (res.ok == true) {
+        setLoading(false)
+        router.push(`/dashboard/campaigns/${campaign.id}`)
+        console.log(200)
+      } 
+    } catch (error) {
+      console.log('error')
+
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -150,8 +184,9 @@ export default function PostsByPlatform({
                   {shared != true && (
                     <div className='flex gap-4 justify-end'>
                       <button
+                        onClick={refreshPosts}
                         className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                        refresh data
+                        {loading == true ? 'loading...' : 'refresh data'} 
                         <FiRotateCw
                           style={{
                             color: '#00000080',

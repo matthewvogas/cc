@@ -50,12 +50,6 @@ export default function Stats({
     paddingBottom: '20px',
   }
 
-  const leftBorderStatStyle: React.CSSProperties = {
-    ...statStyle,
-    borderLeft: '1px solid black',
-    paddingLeft: '56px',
-  }
-
   return (
     <>
       {frome == 'dashboard' ? (
@@ -91,8 +85,8 @@ export default function Stats({
                 dynamicStyle.marginRight = '0px'
               }
 
-              if (index === 6 || index === 7) {
-                dynamicStyle.borderLeft = '1px solid black'
+              if (index === 8 || index === 9) {
+                dynamicStyle.borderLeft = '1px solid #E6E6E3'
                 dynamicStyle.paddingLeft = '56px'
               }
 

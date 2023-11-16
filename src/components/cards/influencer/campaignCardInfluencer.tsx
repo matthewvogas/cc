@@ -14,18 +14,36 @@ import { useEffect, useState } from 'react'
 type Props = {
   user: any
   campaignsFallback: any
+  instagramPages: any
   clientsFallback: any
 }
 
 export default function CampaignCardIfluencer({
   campaignsFallback,
+  instagramPages,
   clientsFallback,
   user,
 }: Props) {
-  const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
-  const postData = campaignsFallback[0]?.user1?.campaigns
+
   const [profileImage, setProfileImage] = useState('')
+
+  const filteredCards = campaignsFallback[0].user1.campaigns.flatMap(
+    (card: any) => {
+      // Filtra los posts que coinciden con los usernames en instagramPages
+      const filteredPosts = card.posts.filter((post: any) =>
+        instagramPages.some(
+          (page: any) => post.creator.username === page.username,
+        ),
+      )
+
+      // Si hay posts filtrados, devuelve el objeto card modificado
+      if (filteredPosts.length > 0) {
+        return [{ ...card, posts: filteredPosts }]
+      } else {
+        return []
+      }
+    },
+  )
 
   useEffect(() => {
     const fetchProfileImage = async () => {
@@ -62,8 +80,8 @@ export default function CampaignCardIfluencer({
       />
 
       <div className='bg-white flex overflow-x-auto gap-4 md:px-12'>
-        {postData?.length > 0 ? (
-          postData?.map((card: any, index: any) => {
+        {filteredCards?.length > 0 ? (
+          filteredCards?.map((card: any, index: any) => {
             return (
               <Link
                 href={`/dashboard/campaigns/${card.id}`}
@@ -88,7 +106,7 @@ export default function CampaignCardIfluencer({
                           priority
                           className={`h-12 w-12`}
                           width={150}
-                          src={img}
+                          src={card.user.image}
                           alt='background'
                           height={150}
                         />

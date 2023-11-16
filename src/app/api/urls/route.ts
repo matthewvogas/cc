@@ -142,52 +142,69 @@ export async function POST(req: NextRequest) {
       //   media_url = await S3Service.uploadPostObject(video, postOnRes.id!)
       // }
 
-      //const postInsights = InstagramService.getInsights(postOnRes)
       const postExists = await db.post.findFirst({
         where: {
           shortcode: shortcode,
+          userId: session?.user.id,
         },
       })
 
       if (postExists) {
-        postSkipped.push(url.trim())
-      }
 
-      const postToSave = await db.post.upsert({
-        where: {
-          shortcode_platform: {
+        const postToSave = await db.post.upsert({
+          where: {
+            id: postExists!.id,
+            shortcode: shortcode,
+            userId: session?.user.id,
+          },
+          create: {
             shortcode: shortcode,
             platform: 'instagram',
+            campaignId: +campaignId,
+            userId: session!.user.id,
+            creatorId: creator.id,
+            imageUrl: thumbnail_url,
+            permalink: `https://www.instagram.com/p/${shortcode}/`,
           },
-        },
-        create: {
-          shortcode: shortcode,
-          platform: 'instagram',
-          campaignId: +campaignId,
-          userId: session!.user.id,
-          creatorId: creator.id,
-          imageUrl: thumbnail_url,
-          permalink: `https://www.instagram.com/p/${shortcode}/`,
-        },
-        update: {
-          imageUrl: thumbnail_url,
-          campaignId: +campaignId,
-          userId: session!.user.id,
-          creatorId: creator.id,
-          permalink: `https://www.instagram.com/p/${shortcode}/`,
-        },
-      })
+          update: {
+            imageUrl: thumbnail_url,
+            campaignId: +campaignId,
+            userId: session!.user.id,
+            creatorId: creator.id,
+            permalink: `https://www.instagram.com/p/${shortcode}/`,
+          },
+        })
 
-      // if (!postToSave) {
-      //   console.log('Post not saved')
-      //   postError++
-      //   continue
-      // }
-      if (postToSave) {
-        console.log(`Post ${url.trim()} saved to db`)
-        postSaved.push(postToSave.permalink!)
+        if (postToSave) {
+          console.log(`Post ${url.trim()} saved to db`)
+          postSaved.push(postToSave.permalink!)
+        }
+      } else {
+        const postToSave = await db.post.create({
+          data: {
+            shortcode: shortcode,
+            userId: session!.user.id,
+            platform: 'instagram',
+            campaignId: +campaignId,
+            creatorId: creator.id,
+            imageUrl: thumbnail_url,
+            permalink: `https://www.instagram.com/p/${shortcode}/`,
+          },
+        })
+
+        // if (!postToSave) {a
+        //   console.log('Post not saved')
+        //   postError++
+        //   continue
+        // }
+
+        if (postToSave) {
+          console.log(`Post ${url.trim()} saved to db`)
+          postSaved.push(postToSave.permalink!)
+        }
       }
     }
+
     if (url.includes('tiktok')) {
       if (url.startsWith('https://vm.tiktok.com')) {
         postError.push(url.trim())
@@ -264,65 +281,65 @@ export async function POST(req: NextRequest) {
           },
         })
 
-        if (postExists) {
-          postSkipped.push(url.trim())
-        }
-
-        const postToSave = await db.post.upsert({
-          where: {
-            shortcode_platform: {
+        if (!postExists) {
+          const postToSave = await db.post.upsert({
+            where: {
+              id: postExists!.id,
               shortcode: oembed.embed_product_id!,
               platform: 'tiktok',
             },
-          },
-          create: {
-            platform: 'tiktok',
-            uuid: oembed.embed_product_id!,
-            campaignId: +campaignId,
-            userId: session!.user.id,
-            permalink: `https://www.tiktok.com/@${oembed?.author_unique_id}/video/${oembed.embed_product_id!}`,
-            creatorId: creator.id,
-            imageUrl: thumbnail_url,
-            mediaUrl: thumbnail_url,
-            commentsCount: 0,
-            likesCount: 0,
-            sharesCount: 0,
-            playsCount: 0,
-            caption: oembed?.title!,
-            engagementCount: 0,
-            impressionsCount: 0,
-            reachCount: 0,
-            shortcode: oembed.embed_product_id!,
-            savesCount: 0,
-          },
-          update: {
-            uuid: oembed.embed_product_id!,
-            campaignId: +campaignId,
-            userId: session!.user.id,
-            permalink: `https://www.tiktok.com/@${oembed?.author_unique_id}/video/${oembed.embed_product_id}`,
-            creatorId: creator.id,
-            imageUrl: thumbnail_url,
-            mediaUrl: thumbnail_url,
-            commentsCount: 0,
-            likesCount: 0,
-            sharesCount: 0,
-            playsCount: 0,
-            caption: oembed?.title!,
-            engagementCount: 0,
-            impressionsCount: 0,
-            reachCount: 0,
-            shortcode: oembed.embed_product_id!,
-            savesCount: 0,
-          },
-        })
+            create: {
+              platform: 'tiktok',
+              uuid: oembed.embed_product_id!,
+              campaignId: +campaignId,
+              userId: session!.user.id,
+              permalink: `https://www.tiktok.com/@${oembed?.author_unique_id}/video/${oembed.embed_product_id!}`,
+              creatorId: creator.id,
+              imageUrl: thumbnail_url,
+              mediaUrl: thumbnail_url,
+              commentsCount: 0,
+              likesCount: 0,
+              sharesCount: 0,
+              playsCount: 0,
+              caption: oembed?.title!,
+              engagementCount: 0,
+              impressionsCount: 0,
+              reachCount: 0,
+              shortcode: oembed.embed_product_id!,
+              savesCount: 0,
+            },
+            update: {
+              uuid: oembed.embed_product_id!,
+              campaignId: +campaignId,
+              userId: session!.user.id,
+              permalink: `https://www.tiktok.com/@${oembed?.author_unique_id}/video/${oembed.embed_product_id}`,
+              creatorId: creator.id,
+              imageUrl: thumbnail_url,
+              mediaUrl: thumbnail_url,
+              commentsCount: 0,
+              likesCount: 0,
+              sharesCount: 0,
+              playsCount: 0,
+              caption: oembed?.title!,
+              engagementCount: 0,
+              impressionsCount: 0,
+              reachCount: 0,
+              shortcode: oembed.embed_product_id!,
+              savesCount: 0,
+            },
+          })
 
-        if (!postToSave) {
-          console.log('Post not saved')
-          postError.push(url.trim())
-          continue
+          console.log(`Post ${postToSave.permalink} saved to db`)
+          postSaved.push(postToSave.permalink!)
+
+          if (!postToSave) {
+            console.log('Post not saved')
+            postError.push(url.trim())
+            continue
+          }
+        } else {
+          postSkipped.push(url.trim())
         }
-        console.log(`Post ${postToSave.permalink} saved to db`)
-        postSaved.push(postToSave.permalink!)
       } catch (err) {
         console.log(err)
         postError.push(url.trim())
