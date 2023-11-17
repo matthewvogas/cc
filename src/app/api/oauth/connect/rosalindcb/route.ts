@@ -51,9 +51,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     `https://graph.instagram.com/v18.0/me?fields=username&access_token=${longToken.access_token}`,
   ).then(res => res.json())
 
-  return NextResponse.json(user.username)
-
-  const succes = `https://withrosalind.com/network`
+  const succes = `https://withrosalind.com/network?username=${user.username}`
 
   try {
     const newSocialConnection = await db.socialConnection.create({
