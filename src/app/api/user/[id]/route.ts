@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { useParams } from 'next/navigation'
+
 import { db } from '@/lib/db'
 
 export async function GET(
@@ -26,4 +26,23 @@ export async function PUT(
   })
 
   return NextResponse.json(handleUpdate)
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  try {
+    await db.user.delete({
+      where: {
+        id: params.id,
+      },
+    })
+
+    return NextResponse.json({ 'User deleted': params.id })
+  } catch (err: any) {
+    return NextResponse.json(err.message, {
+      status: 404,
+    })
+  }
 }

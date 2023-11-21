@@ -1,7 +1,10 @@
 import { fetcher } from '@/lib/Utils'
 import useSWR from 'swr'
 
-export default function useCampaigns(campaignId: string, fallbackData?: any) {
+export default function useCampaignPosts(
+  campaignId: string,
+  fallbackData?: any,
+) {
   const { data, error, mutate, isLoading } = useSWR(
     `/api/posts?campaign=${campaignId}`,
     fetcher,
@@ -11,7 +14,7 @@ export default function useCampaigns(campaignId: string, fallbackData?: any) {
   )
 
   return {
-    posts: data,
+    posts: data?.posts || [],
     arePostsLoading: isLoading,
     postsError: error,
     refreshPosts: mutate,
