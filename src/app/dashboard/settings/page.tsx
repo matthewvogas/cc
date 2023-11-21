@@ -37,15 +37,14 @@ export default async function Page() {
   const tiktokToken = await SocialConnectionService.findTikTokToken(
     session!.user?.id,
   )
+
   const posts = await PostsService.findByUser(String(session?.user.id))
   const stories = await StoriesService.findByUser(session!.user?.id)
 
   const instagramPages = await InstagramPagesService.findByUserId(
     session!.user?.id,
   )
-  const tiktokPages = await TiktokPagesService.findByUserId(
-    session!.user?.id,
-  )
+  const tiktokPages = await TiktokPagesService.findByUserId(session!.user?.id)
 
   const instagramConnection = await SocialConnectionService.findInstagram(
     String(session?.user.id),

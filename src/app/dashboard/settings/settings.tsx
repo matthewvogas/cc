@@ -50,14 +50,14 @@ export default function Settings({
         </div>
       ),
     },
-    // {
-    //   label: 'Account Settings',
-    //   content: (
-    //     <div>
-    //       <TwoTabsComponent tabs={[]} session={session} user={user} />
-    //     </div>
-    //   ),
-    // },
+    {
+      label: 'Account Settings',
+      content: (
+        <div>
+          <TwoTabsComponent tabs={[]} session={session} user={user} />
+        </div>
+      ),
+    },
     {
       label: 'Portfolio',
       content: (
@@ -70,7 +70,11 @@ export default function Settings({
       label: 'Connections',
       content: (
         <div>
-          <Connections session={session} InstagramConnection={instagramConnection} tiktokConnection={tiktokConnection}/>
+          <Connections
+            session={session}
+            InstagramConnection={instagramConnection}
+            tiktokConnection={tiktokConnection}
+          />
         </div>
       ),
     },

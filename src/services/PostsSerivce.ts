@@ -106,6 +106,4 @@ export class PostsService {
 
     return posts as Posts[]
   }
-
 }
-

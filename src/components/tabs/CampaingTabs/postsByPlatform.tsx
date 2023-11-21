@@ -15,6 +15,7 @@ import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
 import PostCardTest from '@/components/cards/test/posts/postCard'
 import PostCard from '@/components/cards/influencer/posts/postCard'
+import usePosts from '@/hooks/usePostsByUser'
 import { useRouter } from 'next/navigation'
 
 type Props = {
@@ -33,16 +34,30 @@ export default function PostsByPlatform({
 }: Props) {
   const [filterPosts, setFilterPosts] = React.useState('hidden')
   const [tags, setTags] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const limit = 1
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
 
+  const { posts, hasMore, arePostsLoading, postsError, refreshPosts } =
+    usePosts(String(campaign.id), currentPage, limit, campaign.posts)
+
+  const goToNextPage = () => {
+    if (hasMore) setCurrentPage(c => c + 1)
+  }
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(c => c - 1)
+  }
+
+  const tiktokPosts = posts!.filter((post: any) => post.platform === 'tiktok')
   const [loading, setLoading] = React.useState(false)
   const router = useRouter()
+  
+  const filteredPosts = posts?.filter((post: any) => {
 
-  const tiktokPosts = campaign.posts!.filter(post => post.platform === 'tiktok')
-  const filteredPosts = campaign?.posts?.filter((post: any) => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
@@ -78,39 +93,17 @@ export default function PostsByPlatform({
     return false
   })
 
-  const instagramPostsCount = campaign?.posts?.filter(
-    post => post.platform === 'instagram',
+  const instagramPostsCount = posts?.filter(
+    (post: any) => post.platform === 'instagram',
   ).length
-  const tiktokPostsCount = campaign?.posts?.filter(
-    post => post.platform === 'tiktok',
+
+  const tiktokPostsCount = posts?.filter(
+    (post: any) => post.platform === 'tiktok',
   ).length
-  const storiesCount = campaign?.stories?.length
 
-  const refreshPosts = async () => {
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/collect/auto`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sessionId: session.user.id,
-          campaignId: campaign.id,
-        }),
-      })
-
-      if (res.ok == true) {
-        setLoading(false)
-        router.push(`/dashboard/campaigns/${campaign.id}`)
-        console.log(200)
-      } 
-    } catch (error) {
-      console.log('error')
-
-      console.log(error)
-    }
-  }
+  const storiesCount = campaign.posts?.filter(
+    (post: any) => post.platform === 'tiktok',
+  ).length
 
   return (
     <>
@@ -231,7 +224,7 @@ export default function PostsByPlatform({
                   {filteredPosts!.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
-                  {campaign?.posts?.length === 0 && (
+                  {posts.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -318,7 +311,7 @@ export default function PostsByPlatform({
                     : filteredPosts!.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {campaign?.posts?.length === 0 && (
+                  {posts.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -408,7 +401,7 @@ export default function PostsByPlatform({
                     : filteredPosts!.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {campaign?.posts?.length === 0 && (
+                  {posts.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>

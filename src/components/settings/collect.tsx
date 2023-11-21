@@ -8,6 +8,8 @@ import { instagramPages } from '@prisma/client'
 import Image from 'next/image'
 import Spinner from '../loading/spinner'
 import { useRouter } from 'next/navigation'
+import { set } from 'zod'
+import useSWR from 'swr'
 import StoryCard from '../cards/influencer/stories/StoryCard'
 
 type Props = {
@@ -81,6 +83,27 @@ export default function Collect({
   const [subscriptionType, setSubscriptionType] = useState(null)
 
   const router = useRouter()
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+
+  const fetcher = (url: string) => fetch(url).then(res => res.json())
+  const { data, error } = useSWR(
+    `/api/posts/creator?limit=${limit}&offset=${currentPage * limit}`,
+    fetcher,
+  )
+
+  const totalPages = Math.ceil(data?.totalPosts / limit)
+
+  const loadMorePosts = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousPosts = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
 
   useEffect(() => {
     async function getSubscription() {
@@ -205,13 +228,33 @@ export default function Collect({
               </p>
             </div>
           )}
-          <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48'>
+
+          <div className='flex justify-between w-full mb-10'>
+            <div>
+              {page.length > 1 && (
+                <button onClick={loadPreviousPosts} className='btn mr-2'>
+                  Previous
+                </button>
+              )}
+              {currentPage + 1 < totalPages && (
+                <button onClick={loadMorePosts} className='btn'>
+                  Next
+                </button>
+              )}
+            </div>
+            <div>
+              Page {currentPage + 1} of {totalPages}
+            </div>
+          </div>
+          <div className='justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2 2xl:grid-cols-5 gap-y-2 pb-48'>
             {loading ? (
               <Spinner width='w-4' height='h-4' border='border-2' />
-            ) : null}
-            {posts.map((post: any, index: any) => (
-              <PostCard key={index} post={post} />
-            ))}
+            ) : (
+              Array.isArray(data?.posts) &&
+              data?.posts?.map((post: any, index: any) => (
+                <PostCard key={index} post={post} />
+              ))
+            )}
           </div>
         </div>
       ),

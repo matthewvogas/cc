@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import img from '/public/assets/creatorRegister/exampleImage.jpg'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { Dialog, Transition } from '@headlessui/react'
 
 import { ptMono } from '@/app/fonts'
 type Props = {
@@ -42,8 +43,32 @@ function CustomTabs({ tabs }: Props) {
 export default function Settings({ session, user }: Props) {
   const [name, setName] = useState(session.user.name)
   const [email, setEmail] = useState(session.user.email)
+  const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const [fetchError, setFetchError] = useState('')
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+  function openModal() {
+    setIsOpen(true)
+  }
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`api/user/${session.user.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (res.ok) {
+        router.push('/login')
+      }
+    } catch (error: any) {
+      setFetchError(error?.message)
+    }
+  }
 
   const handleUpdate = async () => {
     try {
@@ -184,9 +209,69 @@ export default function Settings({ session, user }: Props) {
               <span>Delete your Codecoco account and all data.</span>
             </div>
             <div>
-              <button className='border bg-[#FACEBC] p-4 px-8 rounded-full font-semibold mr-10 bg-opacity-40'>
+              <button
+                onClick={openModal}
+                className='border bg-[#FACEBC] p-4 px-8 rounded-full font-semibold mr-10 bg-opacity-40'>
                 delete your account
               </button>
+              <Transition appear show={isOpen}>
+                <Dialog
+                  as='div'
+                  className='fixed inset-0 z-50 overflow-y-auto'
+                  onClose={closeModal}>
+                  <div className='flex items-center justify-center min-h-screen px-4 text-center'>
+                    <Transition.Child
+                      enter='ease-out duration-300'
+                      enterFrom='opacity-0'
+                      enterTo='opacity-100'
+                      leave='ease-in duration-200'
+                      leaveFrom='opacity-100'
+                      leaveTo='opacity-0'>
+                      <Dialog.Overlay className='fixed inset-0 bg-black opacity-60' />
+                    </Transition.Child>
+
+                    <Transition.Child
+                      enter='ease-out duration-300'
+                      enterFrom='opacity-0 scale-95'
+                      enterTo='opacity-100 scale-100'
+                      leave='ease-in duration-200'
+                      leaveFrom='opacity-100 scale-100'
+                      leaveTo='opacity-0 scale-95'>
+                      <Dialog.Panel className='inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
+                        <Dialog.Title
+                          as='h3'
+                          className='text-lg font-medium leading-6 text-red-600'>
+                          DELETE YOUR ACCOUNT
+                        </Dialog.Title>
+                        <div className='mt-4'>
+                          <p className='text-sm text-gray-600'>
+                            Are you sure you want to DELETE your codecoco
+                            account?
+                            <span className='block text-red-500'>
+                              By doing this, all your data will be permanently
+                              deleted from our database.
+                            </span>
+                          </p>
+                        </div>
+                        <div className='mt-6 flex gap-5'>
+                          <button
+                            type='button'
+                            className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500'
+                            onClick={handleDelete}>
+                            Yes, Delete My Account!
+                          </button>
+                          <button
+                            type='button'
+                            className='inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-transparent rounded-md hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500'
+                            onClick={closeModal}>
+                            No, Keep My Account
+                          </button>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </Dialog>
+              </Transition>
             </div>
           </div>
         </div>
@@ -257,7 +342,6 @@ export default function Settings({ session, user }: Props) {
         </div>
       ),
     },
-    // Agrega más pestañas según sea necesario
   ]
 
   return (

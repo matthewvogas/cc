@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
   interface PostData {
     id: string
     media_type: string
-
     caption: string
     media_url: string
     permalink: string
@@ -147,24 +146,24 @@ export async function POST(req: NextRequest) {
           userId: sessionId,
           uuid: post.id,
 
-          // insighst
-          engagementCount:
-            ((post.likes + post.shares + post.saved + post.comments) /
-              creator.followersCount!) *
-            100,
-          reachCount: post.reach,
-          sharesCount: post.shares,
-          commentsCount: post.comments,
-          playsCount: post.plays,
-          savesCount: post.saved,
-          likesCount: post.likes,
-        },
-        update: {
-          // urls
-          platform: 'instagram',
-          permalink: String(post.permalink),
-          shortcode: String(post.shortcode),
-          imageUrl: post.thumbnail_url || post.media_url,
+        // insighst
+        engagementCount:
+          ((post.likes + post.shares + post.saved + post.comments) /
+            creator.followersCount!) *
+          100,
+        reachCount: post.reach,
+        sharesCount: post.shares,
+        commentsCount: post.comments,
+        playsCount: post.plays,
+        savesCount: post.saved,
+        likesCount: post.likes,
+      },
+      update: {
+        // urls
+        platform: 'instagram',
+        permalink: String(post.permalink),
+        shortcode: String(post.shortcode),
+        imageUrl: post.thumbnail_url || post.media_url,
 
           // data
           creatorId: creator.id,
