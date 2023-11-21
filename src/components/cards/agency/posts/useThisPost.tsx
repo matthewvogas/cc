@@ -118,7 +118,6 @@ export default function UseThisPost({ post }: Props) {
                 </div>
                 <div className='flex flex-col px-6 pb-2'>
                   {/* post data */}
-
                   {/* <div>
                     <span className='mb-2 mr-2 inline-block py-1 pr-2 text-sm font-semibold text-gray-700'>
                       Comments: {post?.commentsCount}

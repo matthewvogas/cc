@@ -111,7 +111,6 @@ export default function PostCard({ post }: { post: Post }) {
       </div>
       <div className='flex flex-col px-6 pb-2'>
         {/* Posts data */}
-
         <div>
           {post.commentsCount !== undefined && post.commentsCount > 0 ? (
             <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
@@ -161,7 +160,6 @@ export default function PostCard({ post }: { post: Post }) {
             </span>
           ) : null}
         </div>
-
         <div className='dropdown-end dropdown cursor-pointer '>
           <div className='flex justify-end outline-none'>
             <svg
