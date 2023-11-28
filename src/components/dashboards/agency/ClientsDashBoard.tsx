@@ -11,16 +11,55 @@ import Search from '../../inputs/search'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import Pagination from '@/components/pagination/pagination/pagination'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 export default function ClientsDashBoard({ clientsFallback }: any) {
-  const { clients, areClientsLoading, clientsError, refreshClients } =
-    useClients(clientsFallback)
 
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+
+  const { data, areClientsLoading, clientsError, refreshClients } = useClients(
+    limit,
+    currentPage * limit,
+  )
+
+  const loadMoreClients = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousClients = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+  
+  const totalPages = Math.ceil(data?.totalClients / limit)
+  
   const [tagSelected, setSearchTags] = useState('')
   const [sort, setSort] = React.useState('')
   const [inputSearchValue, setInputSearchValue] = useState('')
 
-  const filteredClients = clients?.filter((client: any) => {
+
+
+  if (areClientsLoading) {
+    return (
+      <SkeletonTheme inline={false}>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+    </SkeletonTheme>
+      )
+  }
+  
+  const filteredClients = data.clients?.filter((client: any) => {
     const clientNameMatches = client?.name
       .toLowerCase()
       .includes(inputSearchValue.toLowerCase())
@@ -43,42 +82,19 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
     }
   })
 
-  async function fetchClients() {
-    const response = await fetch('/api/clients')
-    const data = await response.json()
-
-    if (response.status !== 200) {
-      throw new Error(data.error)
-    }
-
-    return data
-  }
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data = await fetchClients()
-      } catch (error) {
-        console.error('Error fetching clients:', error)
-      }
-    }
-
-    loadData()
-  }, [])
-
   return (
     <>
       <TitlePage
         title={'Clients'}
         moduleText={'clients'}
         client={''}
-        clientsFallback={clients}
+        clientsFallback={data.clients}
         campaignsFallback={null}
         setSort={setSort}
       />
 
       <div className='flex flex-col bg-white'>
-        <div className='flex items-start px-12 gap-3 justify-between overflow-x-auto mt-8'>
+        <div className='flex items-start px-12 gap-3 justify-between overflow-x-auto mt-8 mb-8'>
           <div className=' flex gap-3'>
             <div>
               <p className={`${ptMono.className} mb-2 text-sm`}>by Name</p>
@@ -92,28 +108,37 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
               <SearchByTag
                 setSearchTags={setSearchTags}
                 tagSelected={tagSelected}
-                searchTags={clients}
+                searchTags={data.clients}
               />
             </div>
           </div>
 
           <AddClients
             campaignsFallback={undefined}
-            clientsFallback={clients}
+            clientsFallback={data.clients}
             text={'add new'}
             icon={undefined}
           />
         </div>
-        <div className='mt-12 flex gap-4 md:px-12 flex-wrap'>
+
+        <Pagination
+          pageLength={page.length}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          loadPrevious={loadPreviousClients}
+          loadMore={loadMoreClients}
+        />
+
+        <div className='justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 2xl:grid-cols-4 gap-y-6 pb-48 px-12'> 
           {filteredClients?.length > 0 ? (
             filteredClients?.map((client: any, index: any) => (
               <Link
                 href={`/dashboard/clients/${client.id || 1}`}
                 key={index}
-                className='h-80 min-w-[320px] mb-24 w-80 border-gray-100 relative'>
+                className='h-80 w-full border-gray-100 relative'>
                 <Image
                   priority
-                  className={`h-64 object-cover`}
+                  className={`h-64 w-full object-cover`}
                   src={client?.imageUrl || imageCover}
                   alt={client?.name}
                   width={320}

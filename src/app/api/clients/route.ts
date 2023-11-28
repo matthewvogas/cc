@@ -6,12 +6,29 @@ import { ClientsService } from '@/services/ClientsServices'
 import S3Service from '@/lib/S3Service'
 import sharp from 'sharp'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const url = new URL(req.url)
     const session = await getServerSession(authOptions)
 
-    const clients = await ClientsService.findMany(session!.user.id)
-    return NextResponse.json(clients)
+    if (!session)
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+    const offset = parseInt(url.searchParams.get('offset') || '0')
+    const hasMore = true
+
+    const clients = await ClientsService.findMany(
+      session!.user.id,
+      limit,
+      offset,
+    )
+
+    const total = await ClientsService.findMany(session!.user.id)
+    const totalClients = total.length
+
+    return NextResponse.json({ clients, totalClients, hasMore })
+
   } catch (err) {
     console.log(err)
     return NextResponse.json(err, {

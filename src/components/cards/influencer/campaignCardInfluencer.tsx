@@ -10,6 +10,9 @@ import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import useConnections from '@/hooks/useConnections'
+import Pagination from '@/components/pagination/pagination/pagination'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 type Props = {
   user: any
@@ -24,26 +27,7 @@ export default function CampaignCardIfluencer({
   clientsFallback,
   user,
 }: Props) {
-
   const [profileImage, setProfileImage] = useState('')
-
-  const filteredCards = campaignsFallback[0].user1.campaigns.flatMap(
-    (card: any) => {
-      // Filtra los posts que coinciden con los usernames en instagramPages
-      const filteredPosts = card.posts.filter((post: any) =>
-        instagramPages.some(
-          (page: any) => post.creator.username === page.username,
-        ),
-      )
-
-      // Si hay posts filtrados, devuelve el objeto card modificado
-      if (filteredPosts.length > 0) {
-        return [{ ...card, posts: filteredPosts }]
-      } else {
-        return []
-      }
-    },
-  )
 
   useEffect(() => {
     const fetchProfileImage = async () => {
@@ -68,6 +52,59 @@ export default function CampaignCardIfluencer({
     fetchProfileImage()
   }, [])
 
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+
+  const { data, areAgenciesLoading, agenciesError, refreshAgencies } =
+    useConnections(limit, currentPage * limit)
+
+  const loadMoreCconnections = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousConnections = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalAgencies / limit)
+
+  if (areAgenciesLoading) {
+    return (
+      <SkeletonTheme inline={false}>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+      </SkeletonTheme>
+    )
+  }
+
+  const filteredCards = data?.connections[0]?.user1.campaigns.flatMap(
+    (card: any) => {
+      // Filtra los posts que coinciden con los usernames en instagramPages
+      const filteredPosts = card.posts.filter((post: any) =>
+        instagramPages.some(
+          (page: any) => post.creator.username === page.username,
+        ),
+      )
+
+      // Si hay posts filtrados, devuelve el objeto card modificado
+      if (filteredPosts.length > 0) {
+        return [{ ...card, posts: filteredPosts }]
+      } else {
+        return []
+      }
+    },
+  )
+
   return (
     <>
       <ActionalTitle
@@ -79,6 +116,13 @@ export default function CampaignCardIfluencer({
         stats={undefined}
       />
 
+      <Pagination
+        pageLength={page.length}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loadPrevious={loadPreviousConnections}
+        loadMore={loadMoreCconnections}
+      />
       <div className='bg-white flex overflow-x-auto gap-4 md:px-12'>
         {filteredCards?.length > 0 ? (
           filteredCards?.map((card: any, index: any) => {

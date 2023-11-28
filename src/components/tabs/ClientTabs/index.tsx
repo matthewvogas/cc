@@ -77,7 +77,7 @@ export default function ClientTabs({
           })
   
           const data = await res.json()
-          console.log(data)
+          // console.log(data)
           setImage(data)
         }
         fetchCoverImage()

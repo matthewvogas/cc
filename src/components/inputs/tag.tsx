@@ -26,16 +26,15 @@ function TagsInput({ tags, setTags, required }: Props) {
   }
 
   return (
-    <div className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-gray-50 pl-4 py-2 text-sm text-gray-900 flex flex-wrap gap-2 bg-transparent outline-none'>
+    <div className=' w-full  rounded-3xl border border-[#d1d1d1]  pl-2 py-[6px] text-sm text-gray-900 flex gap-2 outline-none overflow-auto flex-wrap'>
       {tags?.map((tag, index) => (
         <div
           className='flex items-center gap-1 rounded-full bg-gray-200 px-2 py-1'
           key={index}>
-          {/* One hardcoded tag for test */}
-          <span className='text-gray-800'>{tag}</span>
+          <span className='text-gray-800 min-h-max w-max'>{tag}</span>
           <span
             onClick={() => removeTag(index)}
-            className='close flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-gray-700 text-white'>
+            className=' flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-gray-700 text-white'>
             &times;
           </span>
         </div>

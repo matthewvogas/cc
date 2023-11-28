@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { set } from 'zod'
 import useSWR from 'swr'
 import StoryCard from '../cards/influencer/stories/StoryCard'
+import Pagination from '../pagination/pagination/pagination'
 
 type Props = {
   session: any
@@ -31,23 +32,34 @@ interface TabsProps {
   tabs: TabItem[]
 }
 
-function Tabs({ tabs }: TabsProps) {
+function Tabs({
+  tabs,
+  activeSocial,
+  setActiveSocial,
+}: TabsProps & { activeSocial: string; setActiveSocial: Function }) {
   const [activeTab, setActiveTab] = useState(0)
 
   const handleTabClick = (index: number) => {
     setActiveTab(index)
+    if (tabs[index].label === 'Instagram') {
+      setActiveSocial('instagram')
+    } else if (tabs[index].label === 'Tiktok') {
+      setActiveSocial('tiktok')
+    } else if (tabs[index].label === 'All Posts') {
+      setActiveSocial('All')
+    }
   }
 
   return (
     <div className='w-full'>
-      <Tab.Group>
-        <Tab.List className='flex space-x-16 '>
+      <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
+        <Tab.List className='flex space-x-16 px-12'>
           {tabs.map((tab, index) => (
             <Tab
               key={index}
               className={({ selected }) =>
                 `relative outline-none inline-block ${
-                  selected ? 'text-black  outline-none' : 'opacity-30'
+                  selected ? 'text-black outline-none' : 'opacity-30'
                 }`
               }
               onClick={() => handleTabClick(index)}>
@@ -75,6 +87,7 @@ export default function Collect({
     ABSOLUTELY: Infinity,
   }
 
+  const [activeSocial, setActiveSocial] = useState('All')
   const [loading, setLoading] = React.useState(false)
   const [instagramPage, setInstagram] = useState('')
   const [tiktokPage, setTikTok] = useState('')
@@ -89,7 +102,9 @@ export default function Collect({
 
   const fetcher = (url: string) => fetch(url).then(res => res.json())
   const { data, error } = useSWR(
-    `/api/posts/creator?limit=${limit}&offset=${currentPage * limit}`,
+    `/api/posts/creator?limit=${limit}&offset=${
+      currentPage * limit
+    }&activeSocial=${activeSocial}`,
     fetcher,
   )
 
@@ -198,7 +213,7 @@ export default function Collect({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          pageId: instagramPage
+          pageId: instagramPage,
         }),
       })
 
@@ -215,38 +230,68 @@ export default function Collect({
 
   const tabs: TabItem[] = [
     {
-      label: 'Posts',
+      label: 'All Posts',
       content: (
         <div className='mt-8'>
-          {subscriptionType === 'YES' && posts.length >= SUB_LIMITS.YES && (
-            <div className='mb-4 rounded border border-green-300 bg-greenPlan px-4 py-3 text-green-700'>
-              <p className='font-semibold'>Attention!</p>
-              <p>
-                {posts.length} posts have been retrieved from your account. For
-                unlimited posts, consider{' '}
-                <span className=''>upgrading to a higher plan</span>.
-              </p>
-            </div>
-          )}
+          <Pagination
+            pageLength={page.length}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            loadPrevious={loadPreviousPosts}
+            loadMore={loadMorePosts}
+          />
 
-          <div className='flex justify-between w-full mb-10'>
-            <div>
-              {page.length > 1 && (
-                <button onClick={loadPreviousPosts} className='btn mr-2'>
-                  Previous
-                </button>
-              )}
-              {currentPage + 1 < totalPages && (
-                <button onClick={loadMorePosts} className='btn'>
-                  Next
-                </button>
-              )}
-            </div>
-            <div>
-              Page {currentPage + 1} of {totalPages}
-            </div>
+          <div className='justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2 2xl:grid-cols-5 gap-y-2 pb-48 px-12'>
+            {loading ? (
+              <Spinner width='w-4' height='h-4' border='border-2' />
+            ) : (
+              Array.isArray(data?.posts) &&
+              data?.posts?.map((post: any, index: any) => (
+                <PostCard key={index} post={post} />
+              ))
+            )}
           </div>
-          <div className='justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2 2xl:grid-cols-5 gap-y-2 pb-48'>
+        </div>
+      ),
+    },
+    {
+      label: 'Instagram',
+      content: (
+        <div className='mt-8 '>
+          <Pagination
+            pageLength={page.length}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            loadPrevious={loadPreviousPosts}
+            loadMore={loadMorePosts}
+          />
+
+          <div className='justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2 2xl:grid-cols-5 gap-y-2 pb-48 px-12'>
+            {loading ? (
+              <Spinner width='w-4' height='h-4' border='border-2' />
+            ) : (
+              Array.isArray(data?.posts) &&
+              data?.posts?.map((post: any, index: any) => (
+                <PostCard key={index} post={post} />
+              ))
+            )}
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: 'Tiktok',
+      content: (
+        <div className='mt-8'>
+          <Pagination
+            pageLength={page.length}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            loadPrevious={loadPreviousPosts}
+            loadMore={loadMorePosts}
+          />
+
+          <div className='justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2 2xl:grid-cols-5 gap-y-2 pb-48 px-12'>
             {loading ? (
               <Spinner width='w-4' height='h-4' border='border-2' />
             ) : (
@@ -261,8 +306,8 @@ export default function Collect({
     },
     {
       label: 'Instagram Stories',
-      content:
-      <div className='mt-8'>
+      content: (
+        <div className='mt-8'>
           <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48'>
             {loading ? (
               <Spinner width='w-4' height='h-4' border='border-2' />
@@ -271,17 +316,14 @@ export default function Collect({
               <StoryCard key={index} story={story} />
             ))}
           </div>
-        </div>,
-    },
-    {
-      label: 'Tiktok',
-      content: <div>{/* <InstagramData /> */}</div>,
+        </div>
+      ),
     },
   ]
 
   return (
     <div>
-      <div className='flex flex-row justify-between items-center mb-6'>
+      <div className='flex flex-row justify-between items-center mb-6 px-12'>
         <h1 className='font-bold text-2xl'>My social data</h1>
         <div className='p-4 flex gap-4'>
           <div>
@@ -339,15 +381,17 @@ export default function Collect({
                               <>
                                 <span className='text-base '>
                                   Facebook Page:{' '}
-                                  <span className='font-bold'>{page.name}</span>
+                                  <span className='font-bold'>
+                                    {page.name}{' '}
+                                  </span>
                                 </span>
                                 <button
                                   onClick={() => {
-                                    setInstagram(page.id)
+                                    setInstagram(page.accountId)
                                   }}
                                   key={index}
                                   className={`${
-                                    instagramPage == page.id
+                                    instagramPage == page.accountId
                                       ? 'bg-[#3a7a55] border-[#265a3c] text-white'
                                       : ''
                                   } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>
@@ -382,11 +426,11 @@ export default function Collect({
                         tiktokPages.map((page: any, index: number) => (
                           <button
                             onClick={() => {
-                              setTikTok(page.id)
+                              setTikTok(page.accountId)
                             }}
                             key={index}
                             className={`${
-                              tiktokPage == page.id
+                              tiktokPage == page.accountId
                                 ? 'bg-[#3a7a55] border-[#265a3c] text-white'
                                 : ''
                             } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>
@@ -543,8 +587,22 @@ export default function Collect({
           </div>
         </div>
       </div>
+      {subscriptionType === 'YES' && posts.length >= SUB_LIMITS.YES && (
+        <div className='mb-4 rounded border border-green-300 bg-greenPlan px-4 py-3 text-green-700 mx-12'>
+          <p className='font-semibold'>Attention!</p>
+          <p>
+            {posts.length} posts have been retrieved from your account. For
+            unlimited posts, consider{' '}
+            <span className=''>upgrading to a higher plan</span>.
+          </p>
+        </div>
+      )}
       <div className=''>
-        <Tabs tabs={tabs} />
+        <Tabs
+          tabs={tabs}
+          activeSocial={activeSocial}
+          setActiveSocial={setActiveSocial}
+        />
       </div>
     </div>
   )

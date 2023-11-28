@@ -18,8 +18,7 @@ export default function AddClients({
   text,
   icon,
 }: Props) {
-  const { clients, areClientsLoading, clientsError, refreshClients } =
-    useClients(clientsFallback)
+
 
   const [tags, setTags] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState(false)
@@ -61,7 +60,7 @@ export default function AddClients({
         body: formData,
       })
 
-      if (res.status === 200) refreshClients()
+      if (res.status === 200) 
       console.log(res.status)
       setIsOpen(false)
       setFileName(null)
@@ -90,8 +89,8 @@ export default function AddClients({
         className='relative z-[99]'>
         <div className='fixed inset-0 bg-black bg-opacity-25' />
         <div className='fixed inset-0 flex items-center justify-center p-4'>
-          <Dialog.Panel className='mx-auto flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
-            <Dialog.Title className='mb-8 text-lg font-bold'>
+          <Dialog.Panel className='mx-auto flex max-w-lg flex-col items-center justify-center rounded-lg bg-white px-20 py-12'>
+            <Dialog.Title className='mb-8 text-lg font-medium'>
               Add New Client
             </Dialog.Title>
             <div className={`w-full justify-start ${ptMono.className}`}>
@@ -103,11 +102,11 @@ export default function AddClients({
                   id='name'
                   required
                   placeholder='Name'
-                  className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+                  className='w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
                 />
 
                 <div>
-                  <label>Tags</label>
+                  <p className='pb-4'>Tags</p>
                   <TagsInput tags={tags} setTags={setTags} />
                 </div>
 
@@ -123,14 +122,14 @@ export default function AddClients({
 
                 <label
                   htmlFor='file-upload'
-                  className='cursor-pointer text-center text-black rounded-full bg-rose-200 px-4 py-2 transition duration-300 ease-in-out'>
+                  className='cursor-pointer text-center text-black rounded-full bg-[#FCDDD1] px-4 py-2 transition duration-300 ease-in-out'>
                   Upload Image
+                </label>
                   {fileName && (
-                    <div className='mt-2 text-sm truncate text-gray-600'>
-                      {fileName}
+                    <div className='flex text-sm justify-center w-full text-gray-600'>
+                      image selected
                     </div>
                   )}
-                </label>
 
                 {fetchError && (
                   <div className='alert alert-error shadow-lg'>
@@ -143,7 +142,7 @@ export default function AddClients({
 
                 <button
                   type='submit'
-                  className='rounded-full bg-rose-200 px-6 py-2 '>
+                  className='rounded-full bg-[#FCDDD1] px-6 py-2 '>
                   Create Client
                 </button>
               </form>

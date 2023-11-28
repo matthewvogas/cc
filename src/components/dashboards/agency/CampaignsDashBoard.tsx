@@ -15,6 +15,8 @@ import Image from 'next/image'
 import Search from '../../inputs/search'
 import Link from 'next/link'
 import React from 'react'
+import PaginationScroll from '@/components/pagination/scroll/scroll'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 export default function CampaignsDashBoard({
   clientsFallback,
@@ -23,10 +25,24 @@ export default function CampaignsDashBoard({
   campaignsFallback: CampaignRes
   clientsFallback: any
 }) {
-  const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
-  const { clients, areClientsLoading, clientsError, refreshClients } =
-    useClients(clientsFallback)
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 6
+
+  const { data, areCampaignsLoading, campaignsError, refreshCampaigns } =
+    useCampaigns(Number(limit), Number(currentPage * limit))
+
+  const loadMoreCampaigns = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousCampaigns = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalCampaigns / limit)
 
   const [title, setTitle] = useState('')
   const [isOpen, setIsOpen] = useState(false)
@@ -68,7 +84,7 @@ export default function CampaignsDashBoard({
   const [inputSearchValue, setInputSearchValue] = useState('')
   const [tagSelected, setSearchTags] = useState('')
 
-  const filteredClients = clients.filter((client: any) => {
+  const filteredClients = clientsFallback.filter((client: any) => {
     const clientNameMatches = client.name
       .toLowerCase()
       .includes(inputSearchValue.toLowerCase())
@@ -91,7 +107,23 @@ export default function CampaignsDashBoard({
     }
   })
 
-  const filteredCampaigns = campaigns.filter((campaign: any) => {
+  if (areCampaignsLoading) {
+    return (
+      <SkeletonTheme inline={false}>
+      <p className='px-12 mt-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+    </SkeletonTheme>
+      )
+  }
+
+  const filteredCampaigns = data.campaigns.filter((campaign: any) => {
     if (clientFilterSelected.length == 0) {
       return true
     }
@@ -215,7 +247,6 @@ export default function CampaignsDashBoard({
 
       <div className='flex flex-col bg-white pt-12'>
         <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
-          
           {filteredCampaigns.length > 0 ? (
             filteredCampaigns.map((card: any, index: any) => (
               <Link
@@ -298,9 +329,16 @@ export default function CampaignsDashBoard({
               </div>
             </div>
           )}
-          <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
       </div>
+
+      <PaginationScroll
+        pageLength={page.length}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loadPrevious={loadPreviousCampaigns}
+        loadMore={loadMoreCampaigns}
+      />
 
       {/* Esta es el modal  */}
       <Dialog
@@ -323,12 +361,12 @@ export default function CampaignsDashBoard({
                 <select
                   required
                   onChange={e => setClientId(e.target.value)}
-                  className='block w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
+                  className='block w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
                   <option value={0} disabled>
                     Choose a client
                   </option>
                   <option>No Client</option>
-                  {clients.map((client: Client, index: any) => (
+                  {clientsFallback.map((client: Client, index: any) => (
                     <option value={client.id} key={index}>
                       {client.name}
                     </option>
@@ -341,7 +379,7 @@ export default function CampaignsDashBoard({
                     <input
                       value={hashtag}
                       onChange={e => setHashtag(e.target.value)}
-                      className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+                      className='w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
                       placeholder='hashtag to track'
                       type='text'
                       required
@@ -357,7 +395,7 @@ export default function CampaignsDashBoard({
                 type='text'
                 id='name'
                 placeholder='Campaign Name'
-                className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+                className='w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
               />
 
               <p className='py-4'>Campaign Description</p>

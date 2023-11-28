@@ -143,7 +143,7 @@ function Tabs({ tabs }: TabsProps) {
         </Tab.List>
       </Tab.Group>
       <div className='divider -mt-3' />
-      <div className='px-12'>{tabs[activeTab].content}</div>
+      <div className=''>{tabs[activeTab].content}</div>
     </div>
   )
 }

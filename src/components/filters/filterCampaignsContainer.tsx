@@ -21,10 +21,6 @@ export default function FilterCampaignsContainer({
   campaignsFallback,
   clientsFallback,
 }: Props) {
-  const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
-  const { clients, areClientsLoading, clientsError, refreshClients } =
-    useClients(clientsFallback)
 
   const [inputSearchValue, setInputSearchValue] = useState('')
 
@@ -34,7 +30,7 @@ export default function FilterCampaignsContainer({
   const [clientNameFilterSelected, setClientNametFilterSelected] = useState('')
   const [tagSelected, setSearchTags] = useState('')
 
-  const filteredClients = clients.filter((client: any) => {
+  const filteredClients = clientsFallback.filter((client: any) => {
     const clientNameMatches = client.name
       .toLowerCase()
       .includes(inputSearchValue.toLowerCase())

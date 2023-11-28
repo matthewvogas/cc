@@ -122,10 +122,10 @@ export const Login = () => {
 
       <div className='flex w-full flex-col gap-4 justify-center px-4'>
         <Link href='/signup/agency' className='text-lg '>
-          create a new account like Agency
+          Join as an agency
         </Link>
         <Link href='/signup/creator' className='text-lg '>
-          create a new account like Creator
+          Join as a creator
         </Link>
         {/* <Link href='/signup' className='text-lg'>
     reset your password

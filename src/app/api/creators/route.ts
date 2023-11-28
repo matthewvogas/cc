@@ -7,17 +7,34 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export async function GET(req: NextRequest) {
   try {
-    // if (!session)
-    //   return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    const url = new URL(req.url)
     const session = await getServerSession(authOptions)
-    const { searchParams } = new URL(req.url)
-    const id = searchParams.get('campaign')
-    if (id) {
-      const campaign = await CreatorsService.findByCampaignId(parseInt(id))
-      return NextResponse.json(campaign)
+
+    if (!session)
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+    const offset = parseInt(url.searchParams.get('offset') || '10')
+
+    if (isNaN(limit) || isNaN(offset)) {
+      return NextResponse.json(
+        { error: 'Invalid query parameters' },
+        { status: 400 },
+      )
     }
-    const creators = await CreatorsService.findMany(session!.user.id)
-    return NextResponse.json(creators)
+
+    const hasMore = true
+
+    const creators = await CreatorsService.findMany(
+      session!.user.id,
+      limit,
+      offset,
+    )
+
+    const total = await CreatorsService.findMany(session!.user.id)
+    const totalCreators = await total.length
+
+    return NextResponse.json({ creators, totalCreators, hasMore })
   } catch (err) {
     console.log(err)
     return NextResponse.json(err, {

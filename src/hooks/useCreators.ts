@@ -1,13 +1,15 @@
-import { fetcher } from '@/lib/Utils'
 import useSWR from 'swr'
+import { fetcher } from '@/lib/Utils'
 
-export default function useCreators(fallbackData?: any) {
-  const { data, error, mutate, isLoading } = useSWR('/api/creators', fetcher, {
-    fallbackData: fallbackData || [],
-  })
+export default function useCreators(limit: number, offset: number) {
+  const { data, error, mutate, isLoading } = useSWR(
+    `/api/creators?limit=${limit}&offset=${offset}`,
+    fetcher,
+    {},
+  )
 
   return {
-    creators: data,
+    data: data,
     areCreatorsLoading: isLoading,
     creatorsError: error,
     refreshCreators: mutate,

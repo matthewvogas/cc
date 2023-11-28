@@ -7,25 +7,38 @@ export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url)
     const session = await getServerSession(authOptions)
-    const campaignId = url.searchParams.get('campaign')
 
-    const limitParam = url.searchParams.get('limit')
-    const offsetParam = url.searchParams.get('offset')
+    if (!session)
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-    const limit = limitParam ? parseInt(limitParam, 10) : 10
-    const offset = offsetParam ? parseInt(offsetParam, 10) : 0
+    const campaignId = url.searchParams.get('campaignId')
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+    const offset = parseInt(url.searchParams.get('offset') || '0')
+    const activeSocial = url.searchParams.get('activeSocial')
+
 
     const posts = await db.post.findMany({
-      where: { campaignId: +campaignId! },
-      include: { creator: true },
-      take: limit + 1,
-      skip: offset,
+      where: {
+        campaignId: +campaignId!,
+        platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
+      },
+      include: {
+        creator: true,
+      },
+      take: +limit,
+      skip: +offset,
     })
 
-    const hasMore = posts.length > limit
-    const resultPosts = hasMore ? posts.slice(0, -1) : posts
+    const hasMore = true
 
-    return NextResponse.json({ posts: resultPosts, hasMore })
+    const totalPosts = await db.post.count({
+      where: {
+        userId: session?.user.id,
+        platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
+      },
+    })
+
+    return NextResponse.json({ posts, hasMore, totalPosts })
   } catch (err) {
     console.log(err)
     return NextResponse.json(err, { status: 500 })

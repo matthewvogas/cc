@@ -3,20 +3,20 @@
 import TikTokNotAccountConnected from '../../errors/agency/tiktokNotAccountsConnected'
 import FilterPostsContainer from '../../filters/filterPostsContainer'
 import BrokeSocialLinks from '../../errors/agency/brokeSocialLinks'
+import Pagination from '@/components/pagination/pagination/pagination'
+import PostCard from '@/components/cards/influencer/posts/postCard'
 import FilterPostsTrigger from '../../filters/filterPostsTrigger'
 import AddNewStories from '@/components/modals/agency/addStories'
+import PostCardTest from '@/components/cards/test/posts/postCard'
 import AddNewPosts from '@/components/modals/agency/addPosts'
 import StoryCard from '../../cards/agency/stories/storyCard'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { EmptyPost } from '../../empty/emptyPost'
+import usePosts from '@/hooks/usePostsByUser'
 import { FiRotateCw } from 'react-icons/fi'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
-import PostCardTest from '@/components/cards/test/posts/postCard'
-import PostCard from '@/components/cards/influencer/posts/postCard'
-import usePosts from '@/hooks/usePostsByUser'
-import { useRouter } from 'next/navigation'
 
 type Props = {
   readonly id: number
@@ -34,30 +34,47 @@ export default function PostsByPlatform({
 }: Props) {
   const [filterPosts, setFilterPosts] = React.useState('hidden')
   const [tags, setTags] = useState<string[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const limit = 1
+
   const [activePlatforms, setActivePlatforms] = useState<any[]>([])
   const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
 
-  const { posts, hasMore, arePostsLoading, postsError, refreshPosts } =
-    usePosts(String(campaign.id), currentPage, limit, campaign.posts)
+  const [loading, setLoading] = useState(false)
 
-  const goToNextPage = () => {
-    if (hasMore) setCurrentPage(c => c + 1)
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+
+  const { data, arePostsLoading, postsError, refreshPosts } = usePosts(
+    String(campaign.id),
+    limit,
+    currentPage * limit,
+    activeSocial,
+  )
+
+  const loadMorePosts = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
   }
 
-  const goToPreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(c => c - 1)
+  const loadPreviousPosts = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
   }
 
-  const tiktokPosts = posts!.filter((post: any) => post.platform === 'tiktok')
-  const [loading, setLoading] = React.useState(false)
-  const router = useRouter()
+  const totalPages = Math.ceil(data?.totalPosts / limit)
   
-  const filteredPosts = posts?.filter((post: any) => {
+  if (arePostsLoading) {
+    return <p className='px-12'>loading posts...</p>
+  }
 
+
+  const tiktokPosts = data.posts?.filter(
+    (post: any) => post.platform === 'tiktok',
+  )
+
+  const filteredPosts = data.posts?.filter((post: any) => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
@@ -93,11 +110,11 @@ export default function PostsByPlatform({
     return false
   })
 
-  const instagramPostsCount = posts?.filter(
+  const instagramPostsCount = campaign.posts?.filter(
     (post: any) => post.platform === 'instagram',
   ).length
 
-  const tiktokPostsCount = posts?.filter(
+  const tiktokPostsCount = campaign.posts?.filter(
     (post: any) => post.platform === 'tiktok',
   ).length
 
@@ -116,7 +133,9 @@ export default function PostsByPlatform({
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
-              onClick={() => setActiveSocial('All')}>
+              onClick={() => {
+                setActiveSocial('All'), setPage([0])
+              }}>
               All posts
             </Tab>
             <Tab
@@ -125,7 +144,9 @@ export default function PostsByPlatform({
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
-              onClick={() => setActiveSocial('Instagram')}>
+              onClick={() => {
+                setActiveSocial('instagram'), setPage([0])
+              }}>
               Instagram {`(${instagramPostsCount})`}
             </Tab>
             <Tab
@@ -134,7 +155,9 @@ export default function PostsByPlatform({
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
-              onClick={() => setActiveSocial('TikTok')}>
+              onClick={() => {
+                setActiveSocial('tiktok'), setPage([0])
+              }}>
               TikTok {`(${tiktokPostsCount})`}
             </Tab>
             <Tab
@@ -143,7 +166,9 @@ export default function PostsByPlatform({
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
-              onClick={() => setActiveSocial('Stories')}>
+              onClick={() => {
+                setActiveSocial('Stories'), setPage([0])
+              }}>
               Stories {`(${storiesCount})`}
             </Tab>
           </Tab.List>
@@ -179,7 +204,7 @@ export default function PostsByPlatform({
                       <button
                         onClick={refreshPosts}
                         className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                        {loading == true ? 'loading...' : 'refresh data'} 
+                        {loading == true ? 'loading...' : 'refresh data'}
                         <FiRotateCw
                           style={{
                             color: '#00000080',
@@ -198,6 +223,14 @@ export default function PostsByPlatform({
                   )}
                 </div>
               </div>
+
+              <Pagination
+                pageLength={page.length}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                loadPrevious={loadPreviousPosts}
+                loadMore={loadMorePosts}
+              />
 
               <BrokeSocialLinks brokeLinks={[]} />
 
@@ -221,10 +254,10 @@ export default function PostsByPlatform({
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {filteredPosts!.map((post: any, index: any) => (
+                  {filteredPosts?.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
-                  {posts.length === 0 && (
+                  {data.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -281,6 +314,14 @@ export default function PostsByPlatform({
                 </div>
               </div>
 
+              <Pagination
+                pageLength={page.length}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                loadPrevious={loadPreviousPosts}
+                loadMore={loadMorePosts}
+              />
+
               <BrokeSocialLinks brokeLinks={[]} />
 
               <FilterPostsContainer
@@ -305,13 +346,13 @@ export default function PostsByPlatform({
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {/* funcion ternaria para preguntar por test user */}
                   {session?.user?.role == 'TESTER'
-                    ? filteredPosts!.map((post: any, index: any) => (
+                    ? filteredPosts?.map((post: any, index: any) => (
                         <PostCardTest key={index} post={post} />
                       ))
-                    : filteredPosts!.map((post: any, index: any) => (
+                    : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {posts.length === 0 && (
+                  {data.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -369,9 +410,17 @@ export default function PostsByPlatform({
                 </div>
               </div>
 
+              <Pagination
+                pageLength={page.length}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                loadPrevious={loadPreviousPosts}
+                loadMore={loadMorePosts}
+              />
+
               <div className='flex flex-col gap-4'>
                 <BrokeSocialLinks brokeLinks={[]} />
-                <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
+                {/* <TikTokNotAccountConnected tiktokCards={tiktokPosts} /> */}
               </div>
 
               <FilterPostsContainer
@@ -395,13 +444,13 @@ export default function PostsByPlatform({
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {session?.user?.role == 'TESTER'
-                    ? filteredPosts!.map((post: any, index: any) => (
+                    ? filteredPosts?.map((post: any, index: any) => (
                         <PostCardTest key={index} post={post} />
                       ))
-                    : filteredPosts!.map((post: any, index: any) => (
+                    : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {posts.length === 0 && (
+                  {data.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>

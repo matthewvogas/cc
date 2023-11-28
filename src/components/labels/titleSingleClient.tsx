@@ -24,7 +24,7 @@ export default function TitleSingleClient({ client }: Props) {
           })
 
           const data = await res.json()
-          console.log(data)
+          // console.log(data)
           setCoverImage(data)
         }
         fetchCoverImage()

@@ -31,8 +31,6 @@ export default function CreatorsDashBoard({
   userCreatorsFallback: any
   session: any
 }) {
-  const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
 
   const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
   const [followerCountFilter, setFollowerCountFilter] = useState(0)

@@ -1,11 +1,15 @@
 'use client'
 
+import Pagination from '@/components/pagination/pagination/pagination'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import imageCover from 'public/assets/register/TopPost.jpg'
-import useClients from '@/hooks/useClients'
 import ActionalTitle from '../../../labels/actionalTitle'
+import useConnections from '@/hooks/useConnections'
+import useClients from '@/hooks/useClients'
 import { inter, ptMono } from '@/app/fonts'
 import { FiUsers } from 'react-icons/fi'
 import { Client } from '@prisma/client'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,6 +20,40 @@ export default function AgenciesCard({
   agencies: any
   campaignsFallback: any
 }) {
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+
+  const { data, areAgenciesLoading, agenciesError, refreshAgencies } =
+    useConnections(limit, currentPage * limit)
+
+  const loadMoreCconnections = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousConnections = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalAgencies / limit)
+
+  if (areAgenciesLoading) {
+    return (
+      <SkeletonTheme inline={false}>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+      </SkeletonTheme>
+    )
+  }
 
   return (
     <>
@@ -28,9 +66,16 @@ export default function AgenciesCard({
         userPositionId={0}
         stats={undefined}
       />{' '}
+      <Pagination
+        pageLength={page.length}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loadPrevious={loadPreviousConnections}
+        loadMore={loadMoreCconnections}
+      />
       <div className='flex overflow-x-auto gap-4 md:px-12 mb-12'>
-        {agencies.length > 0 ? (
-          agencies.map((agency: any, index: any) => (
+        {data.connections.length > 0 ? (
+          data.connections.map((agency: any, index: any) => (
             <Link
               href={`/dashboard/clients/${agency.id || 1}`}
               key={index}
@@ -39,7 +84,7 @@ export default function AgenciesCard({
                 priority
                 className={`h-64 object-cover`}
                 src={imageCover}
-                alt={agency.user1.name|| 'card'}
+                alt={agency.user1.name || 'card'}
               />
               <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                 <p

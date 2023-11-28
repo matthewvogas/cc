@@ -16,6 +16,9 @@ import { ptMono } from '@/app/fonts'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import useCreators from '@/hooks/useCreators'
+import Pagination from '@/components/pagination/pagination/pagination'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 
 const dropdownButton =
   'text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100'
@@ -41,10 +44,14 @@ export default function CreatorRow({
   search,
   searchByTag,
   creatorsFilter,
-}: Props) {  
+}: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
   const [tags, setTags] = useState<string[]>([])
+
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 5
 
   const handleHelloClick = () => {
     setIsOpen(!isOpen)
@@ -90,37 +97,41 @@ export default function CreatorRow({
     }
   })
 
-  const filteredCreators = connections?.filter(
-    (creator: any) => {
-      // console.log(creator)
+  const { data, areCreatorsLoading, creatorsError, refreshCreators } =
+    useCreators(Number(limit), Number(currentPage * limit))
 
-      if (creator.followersCount === undefined) {
-        return false
-      }
+  const loadMoreCreators = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
 
-      if (
-        creatorsFilter.socialActiveFilter.length > 0 &&
-        !creatorsFilter.socialActiveFilter.includes(creator.platform)
-      ) {
-        return false
-      }
+  const loadPreviousCreators = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
 
-      if (
-        (creatorsFilter.followerCountFilter > 0 &&
-          creator.followersCount < creatorsFilter.followerCountFilter) ||
-        (creatorsFilter.followerCountFilterSecond > 0 &&
-          creator.followersCount > creatorsFilter.followerCountFilterSecond)
-      ) {
-        return false
-      }
+  const totalPages = Math.ceil(data?.totalCreators / limit)
 
-      return true
-    },
-  )
+  if (areCreatorsLoading) {
+    return (
+      <SkeletonTheme inline={false}>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+      </SkeletonTheme>
+    )
+  }
 
   return (
     <>
-      <div className='my-5 h-screen w-full md:px-12'>
+     
+      <div className='my-5  w-full md:px-12'>
         <table className='table w-full'>
           <thead className=' border-b border-gray-200'>
             <tr>
@@ -149,7 +160,7 @@ export default function CreatorRow({
             </tr>
           </thead>
           <tbody>
-            {connections?.map((creator: any, index: number) => (
+            {data.creators?.map((creator: any, index: number) => (
               <tr key={index} className={`text-sm ${ptMono.className} `}>
                 {comeFrom === 'campigns' && (
                   <>
@@ -167,10 +178,10 @@ export default function CreatorRow({
                             />
                           </div>
                         </div>
-                        <div> 
+                        <div>
                           <div className='font-bold'>{creator.name}</div>
                           <div className='text-sm opacity-50'>
-                            {creator.user2.name}
+                            {creator.username}
                           </div>
                         </div>
                       </div>
@@ -336,6 +347,14 @@ export default function CreatorRow({
           </tbody>
         </table>
       </div>
+
+      <Pagination
+        pageLength={page.length}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loadPrevious={loadPreviousCreators}
+        loadMore={loadMoreCreators}
+      />
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -397,7 +416,7 @@ export default function CreatorRow({
                       separate multiple with a enter
                     </span>
                     <button
-                      className={`px-9 py-3 bg-green-200 ${ptMono.className} rounded-full`}>
+                      className={`px-9 py-3 bg-[#D3F0E2] ${ptMono.className} rounded-full`}>
                       start tracking
                     </button>
                   </div>
@@ -444,8 +463,8 @@ export default function CreatorRow({
         {/* Full-screen container to center the panel */}
         <div className='fixed inset-0 flex items-center justify-center p-4'>
           {/* The actual dialog panel  */}
-          <Dialog.Panel className='mx-auto flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
-            <Dialog.Title className='mb-8 text-lg font-bold'>
+          <Dialog.Panel className='mx-auto flex max-w-lg flex-col items-center justify-center rounded-lg bg-white px-20 py-12'>
+            <Dialog.Title className='mb-8 text-lg font-medium'>
               Edit client
             </Dialog.Title>
             <div className={`w-full justify-start ${ptMono.className}`}>
@@ -457,7 +476,7 @@ export default function CreatorRow({
                   id='name'
                   required
                   placeholder='Name'
-                  className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+                  className='w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
                 />
 
                 <div>
