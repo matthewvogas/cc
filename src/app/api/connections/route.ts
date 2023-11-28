@@ -3,18 +3,34 @@ import { authOptions } from '../auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import db from '@/lib/db'
+import { ConnectionService } from '@/services/ConnectionService'
 
 export async function GET(req: Request, res: Response) {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-  }
-
   try {
-    const connections = await db.connection.findMany({})
+    const session = await getServerSession(authOptions)
+    const url = new URL(req.url)
 
-    return NextResponse.json(connections)
+    if (!session) {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    }
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+    const offset = parseInt(url.searchParams.get('offset') || '10')
+
+    const connections = await ConnectionService.findManyByUserIdFromCreator(
+      session.user.id,
+      limit,
+      offset
+    )
+    const total = await ConnectionService.findManyByUserIdFromCreator(
+      session.user.id,
+    )
+    const totalAgencies = total.length
+
+    const hasMore = true
+
+    console.log(connections)
+
+    return NextResponse.json({ connections, totalAgencies, hasMore })
   } catch (err: any) {
     return NextResponse.json(
       { error: err.message },
@@ -122,12 +138,11 @@ export async function DELETE(req: Request, res: Response) {
           id: connection.id,
         },
       })
-      
+
       return NextResponse.json({ success: true, delteConnection })
     }
 
     return NextResponse.json({ success: true, connection })
-
   } catch (err: any) {
     return NextResponse.json(
       { error: err.message },

@@ -20,10 +20,10 @@ export default function AddCampaign({
   text,
   icon,
 }: Props) {
-  const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
-  const { clients, areClientsLoading, clientsError, refreshClients } =
-    useClients(clientsFallback)
+  // const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
+  //   useCampaigns(campaignsFallback)
+  // const { clients, areClientsLoading, clientsError, refreshClients } =
+  //   useClients(clientsFallback)
 
   const [isOpen, setIsOpen] = useState(false)
   const [title, setTitle] = useState('')
@@ -74,8 +74,7 @@ export default function AddCampaign({
         body: formData,
       })
 
-      if (res.status === 200) refreshCampaigns()
-      console.log(res.status)
+      if (res.status === 200) console.log(res.status)
       setIsOpen(false)
       setFileName(null)
     } catch (error: any) {
@@ -113,18 +112,18 @@ export default function AddCampaign({
             </Dialog.Title>
             <form
               onSubmit={handleCreate}
-              className={`w-full justify-start ${ptMono.className}`}>
+              className={`w-full justify-start flex flex-col ${ptMono.className}`}>
               <div>
                 <p className='py-4'>Client</p>
                 <select
                   required
                   onChange={e => setClientId(e.target.value)}
-                  className='block w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
+                  className='block w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'>
                   <option value={0} disabled>
                     Choose a client
                   </option>
                   <option>No Client</option>
-                  {clients.map((client: Client, index: any) => (
+                  {clientsFallback.map((client: Client, index: any) => (
                     <option value={client.id} key={index}>
                       {client.name}
                     </option>
@@ -137,7 +136,7 @@ export default function AddCampaign({
                     <input
                       value={hashtag}
                       onChange={e => setHashtag(e.target.value)}
-                      className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
+                      className='w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
                       placeholder='hashtag to track'
                       type='text'
                       required
@@ -152,14 +151,7 @@ export default function AddCampaign({
                 type='text'
                 id='name'
                 placeholder='Campaign Name'
-                className='w-full rounded-full border border-gray-300 bg-gray-50 p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
-              />
-              <p className='py-4'>Campaign Description</p>
-              <textarea
-                required
-                className=' textarea-bordered textarea w-full rounded-lg mb-3'
-                onChange={e => setDescription(e.target.value)}
-                placeholder='A brief description about your campaign'
+                className='mb-4 w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
               />
               <input
                 type='file'
@@ -171,16 +163,16 @@ export default function AddCampaign({
 
               <label
                 htmlFor='file-upload'
-                className='cursor-pointer text-black rounded-full bg-rose-200 px-2 py-1 transition duration-300 ease-in-out flex flex-col items-center'>
+                className='mb-2 w-full cursor-pointer text-center text-black rounded-full bg-[#FCDDD1] px-4 py-2 '>
                 Upload Image
-                {fileName && (
-                  <div className='mt-2 text-sm text-center text-gray-600 truncate w-full'>
-                    {fileName}
-                  </div>
-                )}
               </label>
 
-              <hr className='my-8 h-px border-0 bg-gray-200' />
+              {fileName && (
+                <div className='mb-4 w-full flex text-sm justify-center  text-gray-600'>
+                  image selected
+                </div>
+              )}
+
               {fetchError && (
                 <div className='alert alert-error shadow-lg'>
                   <div>
@@ -203,7 +195,7 @@ export default function AddCampaign({
               <div className='flex items-center justify-center'>
                 <button
                   type='submit'
-                  className='rounded-full bg-rose-200 px-6 py-2 '>
+                  className='mb-2 w-full cursor-pointer text-center text-black rounded-full bg-[#FCDDD1] px-4 py-2'>
                   create campaign
                 </button>
               </div>

@@ -27,9 +27,7 @@ export default function Stats({
   frome,
   userPositionId,
 }: Props) {
-  const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
-  const postData = campaigns
+
 
   const gridContainerStyle = {
     display: 'grid',
@@ -93,14 +91,14 @@ export default function Stats({
               // Determine if this is one of the last two stats
               const isLastTwo = index >= statArray.length - 2
               const textClasses = `${descriptionStatStyle} ${
-                isLastTwo ? 'text-green-500' : ''
+                isLastTwo ? 'text-[#81cca8]' : ''
               } ${ptMono.className}`
 
               return (
                 <div key={index} style={dynamicStyle}>
                   <h4
                     className={`${titleStatStyle} ${
-                      isLastTwo ? 'text-green-500' : ''
+                      isLastTwo ? 'text-[#81cca8]' : ''
                     }`}>
                     {stat.title}
                   </h4>

@@ -91,7 +91,7 @@ export default function FilterPostsContainer({
       case 'creator':
         return (
           <Dialog.Panel className='flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-10 py-12'>
-            <Dialog.Title className='mb-8 text-lg font-bold'>
+            <Dialog.Title className='mb-8 text-lg font-medium'>
               filter view by creator
             </Dialog.Title>
             <FilterBy
@@ -108,7 +108,7 @@ export default function FilterPostsContainer({
       case 'hashtag':
         return (
           <Dialog.Panel className='flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-10 py-12'>
-            <Dialog.Title className='mb-8 text-lg font-bold'>
+            <Dialog.Title className='mb-8 text-lg font-medium'>
               filter view by hashtag
             </Dialog.Title>
             <FilterBy

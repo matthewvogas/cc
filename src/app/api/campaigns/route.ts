@@ -6,11 +6,35 @@ import db from '@/lib/db'
 import S3Service from '@/lib/S3Service'
 import sharp from 'sharp'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const url = new URL(req.url)
     const session = await getServerSession(authOptions)
-    const campaigns = await CampaignsService.findMany(session!.user.id)
-    return NextResponse.json(campaigns)
+
+    if (!session)
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+    const offset = parseInt(url.searchParams.get('offset') || '0')
+
+    if (isNaN(limit) || isNaN(offset)) {
+      return NextResponse.json(
+        { error: 'Invalid query parameters' },
+        { status: 400 },
+      )
+    }
+
+    const hasMore = true
+
+    const campaigns = await CampaignsService.findMany(
+      session!.user.id,
+      limit,
+      offset,
+    )
+    const total = await CampaignsService.findMany(session!.user.id)
+    const totalCampaigns = await total.length
+
+    return NextResponse.json({ totalCampaigns, campaigns, hasMore })
   } catch (err) {
     console.log(err)
     return NextResponse.json(err, {

@@ -27,9 +27,6 @@ export default function StatsInfluencer({
   frome,
   userPositionId,
 }: Props) {
-  const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
-  const postData = campaigns
 
   const gridContainerStyle = {
     display: 'flex',

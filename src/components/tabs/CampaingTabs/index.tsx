@@ -120,7 +120,7 @@ export default function CampaingTabs({
           { title: campaign?.posts?.length, description: 'brand posts' },
           { title: creators.length, description: 'creators' },
           { title: getLikes(), description: 'likes' },
-          { title: 12 + '%', description: 'engament rate' },
+          { title: 12 + '%', description: 'engagement rate' },
           { title: getViews(), description: 'views' },
           { title: getReach(), description: 'reach' },
           { title: getSaves() , description: 'comments' },
@@ -154,8 +154,8 @@ export default function CampaingTabs({
           { title: getShares() , description: 'shares' },
           { title: getSaves() , description: 'saves' },
           //
-          { title: 'soon available', description: 'engament/views' },
-          { title: 'soon available', description: 'engament/impression' },
+          { title: 'soon available', description: 'engagement/views' },
+          { title: 'soon available', description: 'engagement/impression' },
         ],
       },
       {

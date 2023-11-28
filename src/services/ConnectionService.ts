@@ -34,7 +34,7 @@ export class ConnectionService {
     return connections
   }
 
-  static async findManyByUserIdFromCreator(UserId: string) {
+  static async findManyByUserIdFromCreator(UserId: string, limit?: number, offset?: number) {
     const connections = await db.connection.findMany({
       where: {
         userId2: UserId,
@@ -62,6 +62,8 @@ export class ConnectionService {
           },
         },
       },
+      take: limit,
+      skip: offset,
     })
 
     return connections

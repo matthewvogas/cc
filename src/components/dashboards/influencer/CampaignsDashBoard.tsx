@@ -1,11 +1,14 @@
 'use client'
 
 import FilterCampaignsContainer from '@/components/filters/filterCampaignsContainer'
+import Pagination from '@/components/pagination/pagination/pagination'
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import img from '/public/assets/creatorRegister/exampleImage.jpg'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import angleDown from 'public/assets/register/angle-down.svg'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import AddCampaign from '../../modals/agency/addCampaigns'
+import useConnections from '@/hooks/useConnections'
 import { Client, Campaign } from '@prisma/client'
 import useCampaigns from '@/hooks/useCampaigns'
 import TitlePage from '../../labels/titlePage'
@@ -26,43 +29,55 @@ export default function CampaignsDashBoardInfluencer({
   campaignsFallback: any
   instagramPages: any
 }) {
-  const [title, setTitle] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [hashtag, setHashtag] = useState('')
-  const [clientId, setClientId] = useState<string | null>(null)
-  const [fetchError, setFetchError] = useState<string | null>(null)
+
   const [sort, setSort] = React.useState('')
-  const [show, setShow] = React.useState('hidden')
 
   const [clientFilterSelected, setClientFilterSelected] = useState<number[]>([])
   const [clientNameFilterSelected, setClientNametFilterSelected] = useState('')
-  const [inputSearchValue, setInputSearchValue] = useState('')
-  const [tagSelected, setSearchTags] = useState('')
 
-  // const filteredCampaigns = campaignsFallback.filter((campaign: any) => {
-  //   if (clientFilterSelected.length == 0) {
-  //     return true
-  //   }
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
 
-  //   if (campaign?.clientId == clientFilterSelected) {
-  //     return true
-  //   }
+  const { data, areAgenciesLoading, agenciesError, refreshAgencies } =
+    useConnections(limit, currentPage * limit)
 
-  //   return false
-  // })
+  const loadMoreCconnections = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
 
-  const filteredCards = campaignsFallback[0].user1.campaigns.flatMap(
+  const loadPreviousConnections = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalAgencies / limit)
+
+  if (areAgenciesLoading) {
+    return (
+      <SkeletonTheme inline={false}>
+      <p className='px-12 mt-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+    </SkeletonTheme>
+      )
+  }
+
+  const filteredCards = data?.connections[0]?.user1.campaigns.flatMap(
     (card: any) => {
-      // Filtra los posts que coinciden con los usernames en instagramPages
       const filteredPosts = card.posts.filter((post: any) =>
         instagramPages.some(
           (page: any) => post.creator.username === page.username,
         ),
       )
 
-      // Si hay posts filtrados, devuelve el objeto card modificado
       if (filteredPosts.length > 0) {
         return [{ ...card, posts: filteredPosts }]
       } else {
@@ -84,41 +99,6 @@ export default function CampaignsDashBoardInfluencer({
 
       <div className='flex justify-between items-center px-12 w-full'>
         <div className='w-full'>
-          {/* <div className='flex gap-4'>
-            <button
-              type='button'
-              onClick={() => {
-                show == 'hidden' ? setShow('block') : setShow('hidden')
-              }}
-              className={` flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap`}>
-              filters
-              <Image
-                src={angleDown}
-                className={`ml-8 w-[22px] h-[22px]`}
-                alt=''
-              />
-            </button>
-
-            <button
-              type='button'
-              onClick={() => {}}
-              className={`bg-[#D9F0F1] text-xm whitespace-nowrap text-base md:text-base items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-              top performing 🥥
-            </button>
-
-            <button
-              type='button'
-              onClick={() => {}}
-              className={`px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium whitespace-nowrap bg-beigeFirst`}>
-              latest
-            </button>
-          </div> */}
-
-          {/* <FilterCampaignsContainer
-            show={show}
-            campaignsFallback={campaignsFallback}
-            clientsFallback={null}
-          /> */}
         </div>
         <div className='mt-4'>
           {clientFilterSelected.length != 0 ? (
@@ -149,9 +129,17 @@ export default function CampaignsDashBoardInfluencer({
         </div>
       </div>
 
+      <Pagination
+          pageLength={page.length}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          loadPrevious={loadPreviousConnections}
+          loadMore={loadMoreCconnections}
+        />
+
       <div className='flex flex-col bg-white pt-12'>
         <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
-          {filteredCards.length > 0 ? (
+          {filteredCards?.length > 0 ? (
             filteredCards.map((card: any, index: number) => {
               return (
                 <Link
@@ -247,7 +235,6 @@ export default function CampaignsDashBoardInfluencer({
               </div>
             </div>
           )}
-          <div className='absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent'></div>
         </div>
       </div>
     </>

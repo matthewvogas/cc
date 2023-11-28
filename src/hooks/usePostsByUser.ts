@@ -2,25 +2,20 @@ import useSWR from 'swr'
 import { fetcher } from '@/lib/Utils'
 
 export default function usePosts(
-  UserId: string,
-  page: number,
-  limit: number = 1,
-  fallbackData?: any,
+  campaignId: string,
+  limit: number,
+  offset: number,
+  activeSocial: string,
 ) {
-  const offset = (page - 1) * limit
-
   const { data, error, mutate, isLoading } = useSWR(
-    `/api/posts?userId=${UserId}&limit=${limit}&offset=${offset}`,
+    `/api/posts/agency?campaignId=${campaignId}&limit=${limit}&offset=${offset}&activeSocial=${activeSocial}`,
     fetcher,
-    { fallbackData: fallbackData || [] },
   )
 
-  console.log(data)
   return {
-    posts: data || [],
+    data: data,
     arePostsLoading: isLoading,
     postsError: error,
-    hasMore: data?.hasMore,
     refreshPosts: mutate,
   }
 }

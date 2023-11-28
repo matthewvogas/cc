@@ -51,9 +51,9 @@ export default function TabsToShare(props: { campaignId: any }) {
                 href='#link1'
                 role='tablist'>
                 <div className='p-2'>
-                  <p className='pb-1 text-2xl font-bold '>share via link</p>
+                  <p className='pb-1 text-2xl font-medium '>share via link</p>
                   <label
-                    className='flex w-4/6 pb-2 text-lg leading-[18px]'
+                    className='flex w-4/6 pb-2 text-lg leading-[18px] font-light'
                     htmlFor=''>
                     get a shareable link or invite specific people to view this
                     campaign
@@ -78,9 +78,9 @@ export default function TabsToShare(props: { campaignId: any }) {
                 href='#link1'
                 role='tablist'>
                 <div className='p-2'>
-                  <p className='pb-1 text-2xl font-bold'>embed</p>
+                  <p className='pb-1 text-2xl font-medium'>embed</p>
                   <label
-                    className='flex w-4/6 pb-2 text-lg leading-[18px]'
+                    className='flex w-4/6 pb-2 text-lg leading-[18px] font-light'
                     htmlFor=''>
                     embed your campaign grid and results on your own webpage
                   </label>
@@ -126,26 +126,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                         </h4>
                         <div className='mr-4 rounded-xl border-2  '>
                           <div className='flex flex-wrap gap-3 rounded-t-lg border-b-2 bg-beigeFirst p-6'>
-                            <label
-                              className='rounded-xl bg-white px-4 py-3'
-                              htmlFor=''>
-                              sophia@themilkbar.co
-                            </label>
-                            <label
-                              className='rounded-xl bg-white px-4 py-3'
-                              htmlFor=''>
-                              sophia@themilkbar.co
-                            </label>
-                            <label
-                              className='rounded-xl bg-white px-4 py-3'
-                              htmlFor=''>
-                              sophia@themilkbar.co
-                            </label>
-                            <label
-                              className='rounded-xl bg-white px-4 py-3'
-                              htmlFor=''>
-                              sophia@themilkbar.co
-                            </label>
+                            
                           </div>
                           <div>
                             <input
@@ -163,26 +144,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                           Users who currently have access
                         </h4>
                         <div className='flex flex-wrap gap-4'>
-                          <label
-                            className='rounded-xl bg-green-100 px-4 py-3'
-                            htmlFor=''>
-                            sophia@themilkbar.co
-                          </label>
-                          <label
-                            className='rounded-xl bg-green-100 px-4 py-3'
-                            htmlFor=''>
-                            sophia@themilkbar.co
-                          </label>
-                          <label
-                            className='rounded-xl bg-green-100 px-4 py-3'
-                            htmlFor=''>
-                            sophia@themilkbar.co
-                          </label>
-                          <label
-                            className='rounded-xl bg-green-100 px-4 py-3'
-                            htmlFor=''>
-                            sophia@themilkbar.co
-                          </label>
+                         
                         </div>
                       </div>
                     </div>

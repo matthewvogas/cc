@@ -1,11 +1,15 @@
 'use client'
 
+import PaginationScroll from '@/components/pagination/scroll/scroll'
 import imageCover from 'public/assets/register/campaignCover.jpg'
-import useCampaigns from '@/hooks/useCampaigns'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import ActionalTitle from '../../../labels/actionalTitle'
+import 'react-loading-skeleton/dist/skeleton.css'
+import useCampaigns from '@/hooks/useCampaigns'
 import { FiCoffee } from 'react-icons/fi'
 import { Campaign } from '@prisma/client'
 import { ptMono } from '@/app/fonts'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -22,9 +26,40 @@ export default function CampaignCard({
   campaignsFallback,
   clientsFallback,
 }: Props) {
-  const { areCampaignsLoading, campaigns, campaignsError, refreshCampaigns } =
-    useCampaigns(campaignsFallback)
-  const postData = campaigns
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 5
+
+  const { data, areCampaignsLoading, campaignsError, refreshCampaigns } =
+    useCampaigns(Number(limit), Number(currentPage * limit))
+
+  const loadMoreCampaigns = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousCampaigns = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalCampaigns / limit)
+
+  if (areCampaignsLoading) {
+    return (
+      <SkeletonTheme>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+    </SkeletonTheme>
+    )
+  }
 
   return (
     <>
@@ -37,18 +72,17 @@ export default function CampaignCard({
         stats={undefined}
       />
 
-      <div className='bg-white flex overflow-x-auto gap-4 md:px-12'>
-        {postData.length > 0 ? (
-          postData.map((card: any, index: any) => (
+      <div className='justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 2xl:grid-cols-5 gap-y-6 px-12'>
+        {data.campaigns.length > 0 ? (
+          data.campaigns.map((card: any, index: any) => (
             <Link
               href={`/dashboard/campaigns/${card.id}`}
               key={index}
-              className={`bg-beigeTransparent border min-w-[250px]`}>
+              className={`bg-beigeTransparent border min-w-[236px]`}>
               <Image
-                className={`object-cover`}
+                className={` w-full h-80 object-cover`}
                 src={card.imageUrl || imageCover}
                 alt={card.name}
-                style={{ width: '250px', height: '310px' }}
                 width={250}
                 height={310}
               />
@@ -123,6 +157,13 @@ export default function CampaignCard({
           </div>
         )}
       </div>
+      <PaginationScroll
+        pageLength={page.length}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loadPrevious={loadPreviousCampaigns}
+        loadMore={loadMoreCampaigns}
+      />
     </>
   )
 }

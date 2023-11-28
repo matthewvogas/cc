@@ -24,8 +24,6 @@ export default function AddNewPosts({
   text,
   icon,
 }: Props) {
-  const { clients, areClientsLoading, clientsError, refreshClients } =
-    useClients(clientsFallback)
 
   const router = useRouter()
 
@@ -283,10 +281,10 @@ export default function AddNewPosts({
                       <div className='flex gap-3'>
                         <select
                           required
-                          className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-gray-50 pl-4 py-3 text-sm text-gray-900 flex-grow bg-transparent outline-none'
+                          className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-[#0000] pl-4 py-3 text-sm text-gray-900 flex-grow  outline-none'
                           name=''
                           id=''></select>
-                        <button className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-gray-50 pl-4 py-2 text-sm text-gray-900 flex flex-wrap gap-2 bg-transparent outline-none'>
+                        <button className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-[#0000] pl-4 py-2 text-sm text-gray-900 flex flex-wrap gap-2  outline-none'>
                           upload a list
                         </button>
                       </div>
@@ -294,7 +292,7 @@ export default function AddNewPosts({
 
                     <div className='flex w-full flex-col justify-end items-end px-7 mt-4 mb-4 '>
                       <button
-                        className={`flex self-end bg-[#E2DED4] rounded-lg px-8 py-2`}>
+                        className={`flex self-end bg-[#D3F0E2] rounded-lg px-8 py-2`}>
                         {loading ? (
                           <Spinner width='w-4' height='h-4' border='border-2' />
                         ) : (

@@ -1,13 +1,15 @@
 import { fetcher } from '@/lib/Utils'
 import useSWR from 'swr'
 
-export default function useCampaigns(fallbackData?: any) {
-  const { data, error, mutate, isLoading } = useSWR('/api/campaigns', fetcher, {
-    fallbackData: fallbackData || [],
-  })
+
+export default function useCampaigns(
+  limit: number,
+  offset: number,
+  ) {
+  const { data, error, mutate, isLoading } = useSWR(`/api/campaigns?limit=${limit}&offset=${offset}`, fetcher,)
 
   return {
-    campaigns: data,
+    data: data,
     areCampaignsLoading: isLoading,
     campaignsError: error,
     refreshCampaigns: mutate,

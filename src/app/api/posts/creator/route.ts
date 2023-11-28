@@ -11,10 +11,12 @@ export async function GET(req: NextRequest) {
 
     const limit = parseInt(url.searchParams.get('limit') || '10')
     const offset = parseInt(url.searchParams.get('offset') || '0')
+    const activeSocial = url.searchParams.get('activeSocial') || '0'
 
     const posts = await db.post.findMany({
       where: {
         userId: session?.user.id,
+        platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
       },
       include: {
         creator: true,
@@ -31,9 +33,11 @@ export async function GET(req: NextRequest) {
     const totalPosts = await db.post.count({
       where: {
         userId: session?.user.id,
+        platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
       },
     })
 
+    console.log(posts)
     return NextResponse.json({ posts, hasMore, totalPosts }, { status: 200 })
   } catch (err) {
     console.log(err)

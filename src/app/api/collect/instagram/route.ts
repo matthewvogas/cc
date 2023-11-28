@@ -40,8 +40,6 @@ export async function POST(req: NextRequest) {
     ? extractPostData(posts.data)
     : []
 
-  console.log(postDataArray)
-
   function extractPostData(data: any[]): PostData[] {
     const postArray: PostData[] = []
 

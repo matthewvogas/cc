@@ -150,7 +150,6 @@ export async function POST(req: NextRequest) {
       })
 
       if (postExists) {
-
         const postToSave = await db.post.upsert({
           where: {
             id: postExists!.id,
@@ -281,7 +280,7 @@ export async function POST(req: NextRequest) {
           },
         })
 
-        if (!postExists) {
+        if (postExists) {
           const postToSave = await db.post.upsert({
             where: {
               id: postExists!.id,
@@ -329,16 +328,34 @@ export async function POST(req: NextRequest) {
             },
           })
 
-          console.log(`Post ${postToSave.permalink} saved to db`)
-          postSaved.push(postToSave.permalink!)
-
-          if (!postToSave) {
-            console.log('Post not saved')
-            postError.push(url.trim())
-            continue
-          }
+          console.log('Post not saved')
+          postError.push(url.trim())
         } else {
-          postSkipped.push(url.trim())
+
+          const postToSave = await db.post.create({
+            data: {
+              platform: 'tiktok',
+              uuid: oembed.embed_product_id!,
+              campaignId: +campaignId,
+              userId: session!.user.id,
+              permalink: `https://www.tiktok.com/@${oembed?.author_unique_id}/video/${oembed.embed_product_id!}`,
+              creatorId: creator.id,
+              imageUrl: thumbnail_url,
+              mediaUrl: thumbnail_url,
+              commentsCount: 0,
+              likesCount: 0,
+              sharesCount: 0,
+              playsCount: 0,
+              caption: oembed?.title!,
+              engagementCount: 0,
+              impressionsCount: 0,
+              reachCount: 0,
+              shortcode: oembed.embed_product_id!,
+              savesCount: 0,
+            },
+          })
+          postSaved.push(postToSave.permalink!)
+          console.log(`Post ${postToSave.permalink} saved to db`)
         }
       } catch (err) {
         console.log(err)

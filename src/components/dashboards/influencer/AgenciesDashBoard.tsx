@@ -7,17 +7,19 @@ import { inter, ptMono } from '@/app/fonts'
 import Search from '../../inputs/search'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { RegisterNextButton } from '@/app/onboarding/agency/registerNextButton'
 import { Pagination } from 'swiper/modules'
+import PaginationScroll from '@/components/pagination/pagination/pagination'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { useRouter } from 'next/navigation'
 import { useAgenciesDashboard } from './store/AgencyDashBoardStore'
+import useConnections from '@/hooks/useConnections'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-// import './swiper.css'
 type Props = {
   agenciesConnections: any
   agency: any
@@ -42,14 +44,51 @@ export default function AgenciesDashBoard({
     setSecondStep,
   } = useAgenciesDashboard()
 
-  const filteredAgenciesSearch = agency?.filter((creator: any) => {
-    const AgenciesNameMatches = creator.name
-      .toLowerCase()
-      .includes(inputSearchValue.toLowerCase())
-    return AgenciesNameMatches
-  })
+  const router = useRouter()
 
-  const filteredAgencies = agenciesConnections.filter((agency: any) => {
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+
+  const { data, areAgenciesLoading, agenciesError, refreshAgencies } =
+    useConnections(limit, currentPage * limit)
+
+  const loadMoreCconnections = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousConnections = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalAgencies / limit)
+
+  if (areAgenciesLoading) {
+    return(
+      <SkeletonTheme inline={false}>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+      <p className='px-12'>
+        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+      </p>
+    </SkeletonTheme>
+      )
+  }
+
+  // const filteredAgenciesSearch = data.connections?.filter((creator: any) => {
+  //   const AgenciesNameMatches = creator.name
+  //     .toLowerCase()
+  //     .includes(inputSearchValue.toLowerCase())
+  //   return AgenciesNameMatches
+  // })
+
+  const filteredAgencies = data.connections.filter((agency: any) => {
     const agencyNameMatches = agency.user1.name
       .toLowerCase()
       .includes(inputSearchValue.toLowerCase())
@@ -72,7 +111,6 @@ export default function AgenciesDashBoard({
     }
   })
 
-  const router = useRouter()
 
   const sendInvite = async () => {
     try {
@@ -128,7 +166,7 @@ export default function AgenciesDashBoard({
               <SearchByTag
                 setSearchTags={setSearchTags}
                 tagSelected={tagSelected}
-                searchTags={agenciesConnections}
+                searchTags={filteredAgencies}
               />
             </div>
           </div>
@@ -202,7 +240,7 @@ export default function AgenciesDashBoard({
                               <div className=''>
                                 <div className='gap-2'>
                                   {/* <p>{agenciesSelected?.id}</p> */}
-                                  {filteredAgenciesSearch
+                                  {data.connections
                                     .slice(0, 2)
                                     .map((agency: any, index: any) => (
                                       <button
@@ -328,9 +366,18 @@ export default function AgenciesDashBoard({
             </div>
           </div>
         </div>
+
+        <PaginationScroll
+          pageLength={page.length}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          loadPrevious={loadPreviousConnections}
+          loadMore={loadMoreCconnections}
+        />
+
         <div className='mt-12 flex gap-4 md:px-12 flex-wrap'>
-          {agenciesConnections.length > 0 ? (
-            agenciesConnections.map((agency: any, index: any) => (
+          {filteredAgencies.length > 0 ? (
+            filteredAgencies.map((agency: any, index: any) => (
               <div
                 key={index}
                 className='h-80 min-w-[320px] mb-24 w-80 border-gray-100 relative '>

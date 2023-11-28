@@ -1,11 +1,15 @@
 'use client'
 
+import PaginationScroll from '@/components/pagination/scroll/scroll'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import imageCover from 'public/assets/register/TopPost.jpg'
+import ActionalTitle from '../../../labels/actionalTitle'
+import 'react-loading-skeleton/dist/skeleton.css'
 import useClients from '@/hooks/useClients'
 import { inter, ptMono } from '@/app/fonts'
-import ActionalTitle from '../../../labels/actionalTitle'
 import { FiUsers } from 'react-icons/fi'
 import { Client } from '@prisma/client'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,8 +20,42 @@ export default function ClientCard({
   clientsFallback: Client[]
   campaignsFallback: any
 }) {
-  const { clients, refreshClients, areClientsLoading, clientsError } =
-    useClients(clientsFallback)
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 5
+
+  const { data, areClientsLoading, clientsError, refreshClients } = useClients(
+    limit,
+    currentPage * limit,
+  )
+
+  const loadMoreClients = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousClients = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalClients / limit)
+
+  if (areClientsLoading) {
+    return (
+      <SkeletonTheme inline={false}>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+      </SkeletonTheme>
+    )
+  }
 
   return (
     <>
@@ -30,20 +68,20 @@ export default function ClientCard({
         userPositionId={0}
         stats={undefined}
       />{' '}
-      <div className='flex overflow-x-auto gap-4 md:px-12'>
-        {clients.length > 0 ? (
-          clients.map((card: Client, index: any) => (
+      <div className='justify-start grid grid-cols-2 md:grid-cols-5 xl:grid-cols-5 gap-x-6 2xl:grid-cols-5 gap-y-6  px-12'>
+        {data.clients.length > 0 ? (
+          data.clients.map((card: Client, index: any) => (
             <Link
               href={`/dashboard/clients/${card.id || 1}`}
               key={index}
-              className='min-h-[250px] min-w-[250px]  '>
+              className='h-80 w-full border-gray-100 relative'>
               <Image
                 priority
-                className={`h-64 object-cover`}
+                className={`h-64 w-full object-cover`}
                 src={card.imageUrl || imageCover}
                 alt={card?.name || 'card'}
-                width={250}
-                height={310}
+                width={320}
+                height={180}
               />
               <div className=' h-auto border border-gray-200 bg-white px-2 py-4 pl-4'>
                 <p
@@ -69,6 +107,13 @@ export default function ClientCard({
           </div>
         )}
       </div>
+      <PaginationScroll
+        pageLength={page.length}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loadPrevious={loadPreviousClients}
+        loadMore={loadMoreClients}
+      />
     </>
   )
 }
