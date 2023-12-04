@@ -87,7 +87,7 @@ export default function CampaingTabs({
     })
     return saves
   }
-
+  
 
   const handleRemoveSocial = (red: any) => {
     const updatedSocialFilter = socialActiveFilter.filter(c => c !== red)
@@ -123,7 +123,7 @@ export default function CampaingTabs({
           { title: 12 + '%', description: 'engagement rate' },
           { title: getViews(), description: 'views' },
           { title: getReach(), description: 'reach' },
-          { title: getSaves() , description: 'comments' },
+          { title: getSaves(), description: 'comments' },
         ],
       },
       {
@@ -150,9 +150,9 @@ export default function CampaingTabs({
           { title: getLikes(), description: 'likes' },
           { title: getViews(), description: 'views' },
           { title: getReach(), description: 'reach' },
-          { title: getComments() , description: 'comments' },
-          { title: getShares() , description: 'shares' },
-          { title: getSaves() , description: 'saves' },
+          { title: getComments(), description: 'comments' },
+          { title: getShares(), description: 'shares' },
+          { title: getSaves(), description: 'saves' },
           //
           { title: 'soon available', description: 'engagement/views' },
           { title: 'soon available', description: 'engagement/impression' },
@@ -434,27 +434,18 @@ export default function CampaingTabs({
                   </div>
                 </div>
                 <div className={openTab === 4 ? 'block' : 'hidden'}>
-                  <div className='flex gap-8'>
-                    <div className='w-96 px-12'>
-                      <p className='my-8 text-xl font-bold'>Stats</p>
-                      <div className='flex flex-col gap-4'>
-                        <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
-                          {`👤 ${campaign?._count?.creators} Creators`}
-                        </p>
-                        <p className={`w-44 rounded-lg bg-green-50 px-6 py-4`}>
-                          {`📝 ${campaign?.posts?.length} Posts`}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className='relative'></div>
-                    <div className='overflow-scroll'>
-                      <p className='absolute '>Top posts by views</p>
-                      <div className='w-full mt-12'>
-                        <TopPost posts={campaign.posts!} />
-                      </div>
-                    </div>
+                  <div className='flex mx-12 mb-8 gap-8'>
+                    <p className=''>Top posts by views</p>
                   </div>
+                  <Stats
+                    campaignsFallback={[]}
+                    clientsFallback={undefined}
+                    stats={stats}
+                    frome={'campaign'}
+                    userPositionId={0}
+                  />
+
+                  <div className='relative'></div>
                 </div>
                 <div className={openTab === 5 ? 'block' : 'hidden'}>
                   <TabsToShare campaignId={campaign.id} />

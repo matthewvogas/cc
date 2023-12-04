@@ -440,7 +440,7 @@ export default function CreatorRow({
                         className='file-input-bordered file-input w-full'
                       />
                       <button
-                        className='flex self-end rounded-full bg-green-200 px-8 py-2'
+                        className='flex self-end rounded-full bg-[#D3F0E2] px-8 py-2'
                         type='submit'>
                         add
                       </button>
