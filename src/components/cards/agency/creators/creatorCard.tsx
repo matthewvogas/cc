@@ -8,7 +8,7 @@ import {
 import modalCover from 'public/assets/register/addpostToTrack.jpg'
 import ViewCreator from '@/components/modals/agency/viewCreator'
 import avatar from 'public/assets/register/avatar.jpg'
-import { CreatorStatus } from './creatorStatus'
+import { Connect } from './creatorStatus'
 import { Dialog, Tab } from '@headlessui/react'
 import TagsInput from '../../../inputs/tag'
 import Search from '../../../inputs/search'
@@ -27,23 +27,23 @@ const thTable = 'bg-white text-sm normal-case'
 type Props = {
   comeFrom: string
   connections: any
-  creators: any
   campaigns: any
   clients: any
   search: string
   searchByTag?: any
   creatorsFilter: any
+  session: any
 }
 
 export default function CreatorRow({
   comeFrom,
   connections,
-  creators,
   campaigns,
   clients,
   search,
   searchByTag,
   creatorsFilter,
+  session,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
@@ -128,9 +128,29 @@ export default function CreatorRow({
     )
   }
 
+  const hasPendingInvitations = (users: any) => {
+    return users.some((user: any) =>
+      user.receivedInvitations.some(
+        (invitation: any) =>
+          invitation.status === 'PENDING' &&
+          invitation.senderId == session.user.id,
+      ),
+    )
+  }
+
+  const hasConnection = (users: any) => {
+    const userCreator = users.users.find((user: any) => user.role === 'CREATOR')
+
+    return userCreator?.receivedConnections.some((connection: any) => {
+      return (
+        (connection.userId1 && connection.userId1 === session.user.id) ||
+        (connection.userId2 && connection.userId2 === session.user.id)
+      )
+    })
+  }
+
   return (
     <>
-     
       <div className='my-5  w-full md:px-12'>
         <table className='table w-full'>
           <thead className=' border-b border-gray-200'>
@@ -187,10 +207,20 @@ export default function CreatorRow({
                       </div>
                     </td>
                     <td className='bg-white'>
-                      <CreatorStatus state={'INVITE'} />
+                      {hasConnection(creator) ? (
+                        <p className=' w-fit rounded-full px-5 py-3 bg-[rgba(211,240,226,0.50)]'>
+                          connected
+                        </p>
+                      ) : hasPendingInvitations(creator.users) ? (
+                        <p className='w-fit rounded-full px-5 py-3 bg-[rgba(211,240,226,0.50)]'>
+                          pending
+                        </p>
+                      ) : (
+                        <Connect session={session} creator={creator} />
+                      )}
                     </td>
                     <td className='bg-white'>
-                      <p>{creator.followersCount || 'no data getting yet'}</p>
+                      <p>{creator.followersCount || '---'}</p>
                     </td>
                     <td className='flex'>
                       <PostHashtagStatus state={'NOT'} />

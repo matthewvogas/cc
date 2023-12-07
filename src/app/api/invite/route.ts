@@ -5,10 +5,8 @@ import db from '@/lib/db'
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions)
-
+    
     const { senderId, receiverId } = await req.json()
-
     const invite = await db.invite.create({
       data: {
         senderId: senderId,
