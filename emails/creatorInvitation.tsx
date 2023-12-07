@@ -36,7 +36,7 @@ export const YelpRecentLoginEmail = ({
 
   const featuresList = [
     'Never send a single stats screenshot again',
-    'With Rosalind can track all post results',
+    'The agency can track all post results',
     'Your work is presented beautifully to brands',
   ]
 

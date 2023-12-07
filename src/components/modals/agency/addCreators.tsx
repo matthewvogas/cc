@@ -4,7 +4,7 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import EmailsInput from '@/components/inputs/email'
 import { Dialog, Tab } from '@headlessui/react'
 import { inter, ptMono } from '@/app/fonts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import React from 'react'
 import Search from '@/components/inputs/search'
@@ -16,9 +16,21 @@ type Props = {
 
 export default function AddCreators({ userCreators, session }: Props) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [linkToShareInvite, setLinkToShareInvite] = useState<string[]>([])
+  const [linkToShareInvite, setLinkToShareInvite] = useState('')
+  const [codeToShareInvite, setCodeToShareInvite] = useState('')
   const [emails, setEmails] = useState<string[]>([])
   const [inputSearchValue, setInputSearchValue] = useState('')
+
+  const [isCopied, setIsCopied] = useState(false)
+
+  const [email, setEmail] = useState('')
+  const [enviadoStatus, setEnviadoStatus] = useState('bg-transparent')
+  const [enviado, setEnviado] = useState('')
+  const [inviteStatus, setInviteStatus] = useState('invite')
+  const handleChange = (event: any) => {
+    setEmail(event.target.value)
+  }
+
   const [creatorSelected, setCreatorSelected] = useState('')
   const filteredCreators = userCreators.filter((creator: any) => {
     const creatorNameMatches = creator?.name
@@ -45,6 +57,63 @@ export default function AddCreators({ userCreators, session }: Props) {
 
     setIsOpen(false)
   }
+
+  const sendGetRequest = async () => {
+    const recipientEmail = email
+
+    try {
+      const response = await fetch(`/api/email?to=${recipientEmail}`, {
+        method: 'GET',
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log(data.message)
+        setEnviadoStatus('bg-green-400 text-white')
+        setEnviado('')
+        setTimeout(() => {
+          setIsOpen(false)
+          setEnviadoStatus('bg-transparent')
+          setInviteStatus('invited')
+        }, 2000)
+      } else {
+        console.error('Error en la solicitud:', response.statusText)
+        setEnviado('Error, write the email correctly')
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error)
+    }
+  }
+
+  useEffect(() => {
+    const url =
+      'https://dev.codecoco.co/invites/' + String(session?.user?.email)
+    const iframeString = `<iframe src="${url}" width="600" height="400" frameborder="0" allowfullscreen></iframe>`
+    setLinkToShareInvite(url)
+    setCodeToShareInvite(iframeString)
+  }, [])
+
+  const copyToClipboardLink = async () => {
+    try {
+      await navigator.clipboard.writeText(linkToShareInvite)
+
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (err) {
+      console.error('Error al copiar al portapapeles: ', err)
+    }
+  }
+  const copyToClipboardCode = async () => {
+    try {
+      await navigator.clipboard.writeText(codeToShareInvite)
+
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (err) {
+      console.error('Error al copiar al portapapeles: ', err)
+    }
+  }
+
   return (
     <>
       <button
@@ -119,7 +188,6 @@ export default function AddCreators({ userCreators, session }: Props) {
                         setInputSearchValue={setInputSearchValue}
                       />
 
-
                       <div
                         tabIndex={0}
                         className={`dropdown-content rounded-box mt-2 w-auto border-2 border-gray-100 bg-white ${ptMono.className}`}>
@@ -144,52 +212,6 @@ export default function AddCreators({ userCreators, session }: Props) {
                         </div>
                       </div>
                     </div>
-
-                    {/* <div className='flex items-center mt-6'>
-                      <div className='w-full h-[1px] bg-gray-300'></div>
-                      <p className='px-4'>or</p>
-                      <div className='w-full h-[1px] bg-gray-300'></div>
-                    </div> */}
-
-                    {/* <p
-                      className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
-                      Creator name
-                    </p> */}
-                    {/* <div className='flex gap-2'>
-                      <input
-                        type='text'
-                        id='default-input'
-                        placeholder='name'
-                        className={`w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 focus:outline-0 ${ptMono.className}`}
-                      />
-                    </div> */}
-
-                    {/* <div className='flex gap-5'>
-                      <div className=' mt-4'>
-                        <label
-                          className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
-                          Instagram Handle
-                        </label>
-                        <input
-                          type='text'
-                          id='default-input'
-                          placeholder='@milkbar.co'
-                          className=' mt-2 w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 outline-0'
-                        />
-                      </div>
-                      <div className=' mt-4'>
-                        <label
-                          className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
-                          TikTok Handle
-                        </label>
-                        <input
-                          type='text'
-                          id='default-input'
-                          placeholder='@matthewvogas'
-                          className=' mt-2 w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 outline-0'
-                        />
-                      </div>
-                    </div> */}
 
                     <div className='mt-6 text-right'>
                       <button
@@ -233,14 +255,31 @@ export default function AddCreators({ userCreators, session }: Props) {
                       Send an invite via email
                     </p>
                     <div className='flex gap-2'>
-                      <EmailsInput emails={emails} setEmails={setEmails} />
-                      <button className='rounded-xl bg-active px-8 py-2 '>
+                      <input
+                        value={email}
+                        onChange={handleChange}
+                        type='text'
+                        className='flex items-center bg-transparent px-2 text-sm rounded-xl border bg-gray-50  gap-2 w-full pl-2 py-2 pr-2 outline-none'
+                        placeholder='sophia@codecoco.co'
+                      />
+                      <button
+                        onClick={sendGetRequest}
+                        className={`rounded-xl border px-8 py-2  ${enviadoStatus}`}>
                         send
                       </button>
                     </div>
-
+                    <div className='mb-12 mt-2'>
+                      <p className='text-sm text-red-600 font-semibold'>
+                        {enviado}
+                      </p>
+                      <label
+                        className='text-xs text-black opacity-50 '
+                        htmlFor=''>
+                        write only one email
+                      </label>
+                    </div>
                     <p
-                      className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
+                      className={`text-sm font-medium pb-2 ${inter.className}`}>
                       Copy link
                     </p>
                     <div className='flex gap-2'>
@@ -250,7 +289,9 @@ export default function AddCreators({ userCreators, session }: Props) {
                         id='default-input'
                         className={`w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 focus:outline-0 ${ptMono.className}`}
                       />
-                      <button className='rounded-xl bg-active px-8 py-2 '>
+                      <button
+                        onClick={copyToClipboardLink}
+                        className='rounded-xl bg-active px-8 py-2 '>
                         copy
                       </button>
                     </div>
@@ -264,10 +305,16 @@ export default function AddCreators({ userCreators, session }: Props) {
                         sign up for this campaign from? Copy this embed code.
                       </label>
                       <button
-                        className={`text-sm ml-6 w-80 rounded-full border border-[#FACEBC] bg-opacity-70 px-8 ${ptMono.className}`}>
+                        onClick={copyToClipboardCode}
+                        className={`text-sm ml-6 w-80 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 ${ptMono.className}`}>
                         embed a form
                       </button>
                     </div>
+                    {isCopied && (
+                      <div className='shadow-lg fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-300 px-4 py-2 rounded-md'>
+                        Code copied!
+                      </div>
+                    )}
                   </div>
                 </Tab.Panel>
               </Tab.Panels>

@@ -57,6 +57,20 @@ export class UserService {
     return user
   }
 
+  static async findByInstagram(username: string) {
+    const user = await db.user.findFirst({
+      where: {
+        instagramPages : {
+          some: {
+            username 
+          }
+        },
+      },
+    })
+
+    return user
+  }
+
   static async updateRole(id: string, role: UserRole) {
     const updatedUser = await db.user.update({
       where: {

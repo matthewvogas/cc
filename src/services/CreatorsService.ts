@@ -32,7 +32,13 @@ export class CreatorsService {
                 userId,
               },
             },
-            users: true,
+            // users: true
+          },
+        },
+        users: {
+          include: {
+            receivedInvitations: true,           
+            receivedConnections: true
           },
         },
       },

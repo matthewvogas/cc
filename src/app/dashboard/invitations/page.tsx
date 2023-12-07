@@ -37,6 +37,8 @@ export default async function Invites() {
     session!.user.id,
   )) as CampaignRes
 
+  console.log(userCreators)
+
   return (
     <div>
       {session?.user?.role === 'AGENCY' ? (

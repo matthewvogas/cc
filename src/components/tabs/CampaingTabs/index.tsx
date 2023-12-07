@@ -411,12 +411,12 @@ export default function CampaingTabs({
                   </div>
                   <CreatorRow
                     comeFrom={'campigns'}
-                    creators={creators}
                     campaigns={campaign}
                     clients={[]}
                     search={''}
                     creatorsFilter={filters}
                     connections={null}
+                    session={session}
                   />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>

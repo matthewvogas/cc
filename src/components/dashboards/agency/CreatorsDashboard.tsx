@@ -171,7 +171,7 @@ export default function CreatorsDashBoard({
           search={''}
           creatorsFilter={filters}
           campaigns={campaignsFallback}
-          creators={userCreatorsFallback}
+          session={session}
         />
       </div>
     </>
