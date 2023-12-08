@@ -16,8 +16,6 @@ export async function POST(req: NextRequest) {
   let postSaved: Array<string> = []
   let postError: Array<string> = []
   let postSkipped: Array<string> = []
-  // console.log(urls)
-
   for (const url of posts) {
     console.log('Processing url: ' + url.trim())
     if (!url) {
@@ -35,38 +33,6 @@ export async function POST(req: NextRequest) {
         postError.push(url.trim())
         continue
       }
-
-      // const creatorInDb = await db.creator.findFirst({
-      //   where: {
-      //     username: oembed?.author_name,
-      //     platform: 'instagram',
-      //   },
-      // })
-
-      // let data = null
-
-      // if (creatorInDb && creatorInDb.accessToken) {
-      //   data = await InstagramService.getPrivateInstagramData(
-      //     shortcode,
-      //     creatorInDb.accessToken,
-      //   )
-      // }
-
-      // if (!data) {
-      //   console.log('No Token')
-      //   postError++
-      //   continue
-      // }
-
-      // const profileUrl = await fetch(res.profile_picture_url!).then(res =>
-      //   res.blob(),
-      // )
-      // const profileImageUrl = await S3Service.uploadCreatorImage(
-      //   profileUrl,
-      //   res.id!,
-      // )
-
-      // console.log(profileImageUrl)
 
       const creator = await db.creator.upsert({
         where: {
@@ -103,22 +69,6 @@ export async function POST(req: NextRequest) {
         },
       })
 
-      // if (!creator) {
-      //   console.log('Creator not found')
-      //   postError++
-      //   continue
-      // }
-
-      // const postOnRes = res.media?.data?.find(
-      //   media => media.permalink?.includes(shortcode),
-      // )
-
-      // if (!postOnRes) {
-      //   console.log('Post not found')
-      //   postError++
-      //   continue
-      // }
-
       let thumbnail_url = null
 
       try {
@@ -135,12 +85,6 @@ export async function POST(req: NextRequest) {
       } catch (e) {
         console.log('ERROR No thumbnail for link', url.trim())
       }
-
-      // let media_url = thumbnail_url
-      // if (postOnRes.media_url && postOnRes.media_url.includes('.mp4')) {
-      //   const video = await fetch(postOnRes.media_url!).then(res => res.blob())
-      //   media_url = await S3Service.uploadPostObject(video, postOnRes.id!)
-      // }
 
       const postExists = await db.post.findFirst({
         where: {
@@ -190,12 +134,6 @@ export async function POST(req: NextRequest) {
             permalink: `https://www.instagram.com/p/${shortcode}/`,
           },
         })
-
-        // if (!postToSave) {a
-        //   console.log('Post not saved')
-        //   postError++
-        //   continue
-        // }
 
         if (postToSave) {
           console.log(`Post ${url.trim()} saved to db`)
@@ -328,7 +266,7 @@ export async function POST(req: NextRequest) {
             },
           })
 
-          console.log('Post not saved')
+          console.log('Post updated or saved')
           postError.push(url.trim())
         } else {
 

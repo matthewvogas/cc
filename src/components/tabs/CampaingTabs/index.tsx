@@ -40,54 +40,48 @@ export default function CampaingTabs({
   const [followerCountFilterSecond, setFollowerCountFilterSecond] = useState(0)
   const [selectedCampaign, setSelectedCampaign] = useState('')
 
-  const getLikes = () => {
-    let likes = 1
-    posts.map((post: any, key: number) => {
-      likes += post.likesCount
-    })
-    return likes
-  }
+  const getLikes = useMemo(() => {
+    return posts.reduce(
+      (totalLikes, post) => totalLikes + (post.likesCount || 0),
+      1,
+    )
+  }, [posts])
 
-  const getViews = () => {
-    let impressions = 1
-    posts.map((post: any, key: number) => {
-      impressions += post.impressionsCount
-    })
-    return impressions
-  }
+  const getViews = useMemo(() => {
+    return posts.reduce(
+      (totalImpressions, post) =>
+        totalImpressions + (post.impressionsCount || 0),
+      1,
+    )
+  }, [posts])
 
-  const getReach = () => {
-    let impressions = 1
-    posts.map((post: any, key: number) => {
-      impressions += post.reachCount
-    })
-    return impressions
-  }
+  const getReach = useMemo(() => {
+    return posts.reduce(
+      (totalImpressions, post) => totalImpressions + (post.reachCount || 0),
+      1,
+    )
+  }, [posts])
 
-  const getComments = () => {
-    let comments = 1
-    posts.map((post: any, key: number) => {
-      comments += post.commentsCount
-    })
-    return comments
-  }
+  const getComments = useMemo(() => {
+    return posts.reduce(
+      (totalComments, post) => totalComments + (post.commentsCount || 0),
+      1,
+    )
+  }, [posts])
 
-  const getShares = () => {
-    let comments = 1
-    posts.map((post: any, key: number) => {
-      comments += post.sharesCount
-    })
-    return comments
-  }
+  const getShares = useMemo(() => {
+    return posts.reduce(
+      (totalShares, post) => totalShares + (post.sharesCount || 0),
+      1,
+    )
+  }, [posts])
 
-  const getSaves = () => {
-    let saves = 1
-    posts.map((post: any, key: number) => {
-      saves += post.savesCount
-    })
-    return saves
-  }
-  
+  const getSaves = useMemo(() => {
+    return posts.reduce(
+      (totalSaves, post) => totalSaves + (post.savesCount || 0),
+      1,
+    )
+  }, [posts])
 
   const handleRemoveSocial = (red: any) => {
     const updatedSocialFilter = socialActiveFilter.filter(c => c !== red)
@@ -119,11 +113,11 @@ export default function CampaingTabs({
         data: [
           { title: campaign?.posts?.length, description: 'brand posts' },
           { title: creators.length, description: 'creators' },
-          { title: getLikes(), description: 'likes' },
+          { title: getLikes, description: 'likes' },
           { title: 12 + '%', description: 'engagement rate' },
-          { title: getViews(), description: 'views' },
-          { title: getReach(), description: 'reach' },
-          { title: getSaves(), description: 'comments' },
+          { title: getViews, description: 'views' },
+          { title: getReach, description: 'reach' },
+          { title: getSaves, description: 'comments' },
         ],
       },
       {
@@ -137,7 +131,14 @@ export default function CampaingTabs({
         ],
       },
     ]
-  }, [campaign?.posts?.length, creators.length])
+  }, [
+    campaign?.posts?.length,
+    creators.length,
+    getLikes,
+    getViews,
+    getReach,
+    getSaves,
+  ])
 
   const statsNormal = useMemo(() => {
     return [
@@ -147,12 +148,12 @@ export default function CampaingTabs({
           { title: campaign?.posts?.length, description: 'brand posts' },
           { title: creators.length, description: 'creators' },
           //
-          { title: getLikes(), description: 'likes' },
-          { title: getViews(), description: 'views' },
-          { title: getReach(), description: 'reach' },
-          { title: getComments(), description: 'comments' },
-          { title: getShares(), description: 'shares' },
-          { title: getSaves(), description: 'saves' },
+          { title: getLikes, description: 'likes' },
+          { title: getViews, description: 'views' },
+          { title: getReach, description: 'reach' },
+          { title: getComments, description: 'comments' },
+          { title: getShares, description: 'shares' },
+          { title: getSaves, description: 'saves' },
           //
           { title: 'soon available', description: 'engagement/views' },
           { title: 'soon available', description: 'engagement/impression' },
@@ -169,7 +170,16 @@ export default function CampaingTabs({
         ],
       },
     ]
-  }, [campaign?.posts?.length, creators.length])
+  }, [
+    campaign?.posts?.length,
+    creators.length,
+    getLikes,
+    getViews,
+    getReach,
+    getComments,
+    getSaves,
+    getShares,
+  ])
 
   useEffect(() => {
     if (session.user.role === 'TESTER') {

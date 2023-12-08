@@ -91,7 +91,7 @@ export default function AddCreators({ userCreators, session }: Props) {
     const iframeString = `<iframe src="${url}" width="600" height="400" frameborder="0" allowfullscreen></iframe>`
     setLinkToShareInvite(url)
     setCodeToShareInvite(iframeString)
-  }, [])
+  }, [session])
 
   const copyToClipboardLink = async () => {
     try {

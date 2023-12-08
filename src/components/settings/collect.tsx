@@ -1,7 +1,7 @@
 import InstagramData from '@/app/dashboard/socialData/instagramData'
 import PostCard from '../cards/influencer/posts/postCard'
 import { Tab } from '@headlessui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import Link from 'next/link'
 import { instagramPages } from '@prisma/client'
@@ -82,10 +82,14 @@ export default function Collect({
   instgramToken,
   tiktokToken,
 }: Props) {
-  const SUB_LIMITS = {
-    YES: 20,
-    ABSOLUTELY: Infinity,
-  }
+  
+  const SUB_LIMITS = useMemo(
+    () => ({
+      YES: 20,
+      ABSOLUTELY: Infinity,
+    }),
+    [],
+  )
 
   const [activeSocial, setActiveSocial] = useState('All')
   const [loading, setLoading] = React.useState(false)
@@ -138,7 +142,7 @@ export default function Collect({
       }
     }
     getSubscription()
-  }, [subscriptionType, setSubscriptionType])
+  }, [subscriptionType, setSubscriptionType, SUB_LIMITS])
 
   const handleNetworks = async () => {
     if (instagramPage != '' && tiktokPage != '') {

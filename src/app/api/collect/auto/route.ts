@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   async function updatePosts(instagramPage: string, instgramToken: string) {
     try {
-      const res = await fetch('http://localhost:3000/api/collect/instagram', {
+      const res = await fetch('https://dev.codecoco.co/api/collect/instagram', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +42,6 @@ export async function POST(req: NextRequest) {
   }
 
   for (const post of CampaignPosts) {
-    // if (post.creator?.username == page.username) {
     for (const connection of connections) {
       let connectionUserId2 = ''
 

@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
       where: {
         userId: session?.user.id,
         platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
+        campaignId: parseInt(campaignId!)
       },
     })
 

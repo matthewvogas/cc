@@ -35,7 +35,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   })
 
   // callback
-  const successUrl = `http://localhost:3000/dashboard/settings`
+  const successUrl = `https://dev.codecoco.co/dashboard/settings`
 
   // Succes subscription
   console.log(subscription)

@@ -150,7 +150,7 @@ export default function CampaignCardIfluencer({
                           priority
                           className={`h-12 w-12`}
                           width={150}
-                          src={card.user.image}
+                          src={card.user.image || imageCover}
                           alt='background'
                           height={150}
                         />

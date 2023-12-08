@@ -1,6 +1,5 @@
 'use client'
 
-import TikTokNotAccountConnected from '../../errors/agency/tiktokNotAccountsConnected'
 import FilterPostsContainer from '../../filters/filterPostsContainer'
 import BrokeSocialLinks from '../../errors/agency/brokeSocialLinks'
 import Pagination from '@/components/pagination/pagination/pagination'
@@ -14,6 +13,7 @@ import { CampaignRes } from '@/types/campaign/campaignRes'
 import { EmptyPost } from '../../empty/emptyPost'
 import usePosts from '@/hooks/usePostsByUser'
 import { FiRotateCw } from 'react-icons/fi'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
@@ -45,13 +45,40 @@ export default function PostsByPlatform({
   const [page, setPage] = useState([0])
   const currentPage = page[page.length - 1]
   const limit = 10
-
-  const { data, arePostsLoading, postsError, refreshPosts } = usePosts(
+  const router = useRouter()
+  
+  const { data, arePostsLoading, postsError } = usePosts(
     String(campaign.id),
     limit,
     currentPage * limit,
     activeSocial,
   )
+
+  const refreshPosts = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/collect/auto`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: session.user.id,
+          campaignId: campaign.id,
+        }),
+      })
+
+      if (res.ok == true) {
+        setLoading(false)
+        router.push(`/dashboard/campaigns/${campaign.id}`)
+        console.log(200)
+      } 
+    } catch (error) {
+      console.log('error')
+
+      console.log(error)
+    }
+  }
 
   const loadMorePosts = () => {
     if (data?.hasMore) {
@@ -65,6 +92,7 @@ export default function PostsByPlatform({
 
   const totalPages = Math.ceil(data?.totalPosts / limit)
   
+   
   if (arePostsLoading) {
     return <p className='px-12'>loading posts...</p>
   }
@@ -140,7 +168,7 @@ export default function PostsByPlatform({
             </Tab>
             <Tab
               className={`p-2 text-base font-medium outline-none ${
-                activeSocial === 'Instagram'
+                activeSocial === 'instagram'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
@@ -151,7 +179,7 @@ export default function PostsByPlatform({
             </Tab>
             <Tab
               className={`p-2 text-base font-medium outline-none ${
-                activeSocial === 'TikTok'
+                activeSocial === 'tiktok'
                   ? 'border-b-4 border-[#7E7E7D]'
                   : 'opacity-50'
               }`}
@@ -275,21 +303,6 @@ export default function PostsByPlatform({
                     filterPosts={filterPosts}
                     setFilterPosts={setFilterPosts}
                   />
-                  {/* <div className='flex gap-4'>
-                    <FilterPostsTrigger filterPosts={filterPosts} setFilterPosts={setFilterPosts} />
-                    <button
-                      type='button'
-                      onClick={() => {
-                        activeButton != 'topPerforming' ? setActiveButton('topPerforming') : setActiveButton('')
-                      }}
-                      className={`${activeButton == 'topPerforming'
-                        ? ' bg-[#D9F0F1]'
-                        : 'bg-[#EBF6F6]'
-                        } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-                      top performing 🥥
-                    </button>
-                  </div> */}
-
                   {shared != true && (
                     <div className='flex gap-4 justify-end'>
                       <button

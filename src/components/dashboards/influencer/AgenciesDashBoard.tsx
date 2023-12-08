@@ -131,7 +131,7 @@ export default function AgenciesDashBoard({
 
   const handleRemoveConnection = async (agencyId: string) => {
     try {
-      const res = await fetch('http://localhost:3000/api/connections', {
+      const res = await fetch('https://dev.codecoco.co/api/connections', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ export default function AgenciesDashBoard({
       if (res.status === 200)
         router.push('/dashboard/invitations'), router.refresh()
     } catch (error: any) {
-      console.log('hi')
+      console.log(error)
     }
   }
 
@@ -203,11 +203,6 @@ export default function AgenciesDashBoard({
                       }`}>
                       2. Connect Instagram
                     </label>
-                    {/* <label
-                      htmlFor=''
-                      className='bg-white px-9 py-5 rounded-full bg-opacity-40 '>
-                      3. Connect TikTok
-                    </label> */}
                   </div>
                 </div>
 

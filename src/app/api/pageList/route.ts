@@ -42,7 +42,6 @@ export async function POST(req: NextRequest) {
     )
 
   for (const page of instagramBusinessAccounts) {
-    console.log(instagramBusinessAccounts)
 
     const pageExist = await db.instagramPages.findFirst({
       where: {
@@ -88,6 +87,32 @@ export async function POST(req: NextRequest) {
           tokenId: '',
         },
       })
+    }
+
+    console.log('Username', page.username)
+
+    const creatorExist = await db.creator.findFirst({
+      where: {
+        username: page.username,
+      },
+    })
+
+    console.log('Creador encontrado', creatorExist)
+    
+    if (creatorExist) {
+      const updatePage = await db.creator.update({
+        where: {
+          id: creatorExist?.id,
+        },
+        data: {
+          uuid: page.id,
+          users: {
+            connect: [{ id: userId }],
+          },
+        },
+      })
+
+      console.log('succes:', updatePage)
     }
 
     console.log('succes: ', page.id)

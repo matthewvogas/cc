@@ -32,7 +32,7 @@ export default function PostCard({ post }: { post: Post }) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/posts/${post.id}`, {
+      const response = await fetch(`/api/posts/agency/${post.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

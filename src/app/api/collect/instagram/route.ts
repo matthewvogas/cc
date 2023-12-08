@@ -61,9 +61,6 @@ export async function POST(req: NextRequest) {
         comments:
           insights.find((insight: any) => insight.name === 'comments')
             ?.values[0].value || 0,
-        // engagement:
-        //   insights.find((insight: any) => insight.name === 'engagement')
-        //     ?.values[0].value || 0,
         likes:
           insights.find((insight: any) => insight.name === 'likes')?.values[0]
             .value || 0,

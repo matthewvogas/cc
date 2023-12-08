@@ -59,7 +59,7 @@ export default function ClientsDashBoard({ clientsFallback }: any) {
       )
   }
   
-  const filteredClients = data.clients?.filter((client: any) => {
+  const filteredClients = data?.clients?.filter((client: any) => {
     const clientNameMatches = client?.name
       .toLowerCase()
       .includes(inputSearchValue.toLowerCase())
