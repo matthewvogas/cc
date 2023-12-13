@@ -12,7 +12,7 @@ export default async function Page() {
   const session = await getServerSession(authOptions)
   const fetchUser = async (userId: string) => {
     try {
-      const response = await fetch(`https://dev.codecoco.co/api/user/${userId}`)
+      const response = await fetch(`https://codecoco.co/api/user/${userId}`)
 
       if (!response.ok) {
         throw new Error('Failed to fetch user')

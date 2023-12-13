@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   async function updatePosts(instagramPage: string, instgramToken: string) {
     try {
-      const res = await fetch('https://dev.codecoco.co/api/collect/instagram', {
+      const res = await fetch('https://codecoco.co/api/collect/instagram', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

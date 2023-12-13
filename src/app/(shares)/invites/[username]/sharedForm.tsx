@@ -1,13 +1,8 @@
 'use client'
 
-import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
-import PostsByPlatform from '@/components/tabs/CampaingTabs/postsByPlatform'
-import { CampaignRes } from '@/types/campaign/campaignRes'
-import { Posts } from '@/types/posts/PostByCampaignRes'
 import { useEffect, useState } from 'react'
 import React from 'react'
 import { inter, ptMono } from '@/app/fonts'
-import Search from '@/components/inputs/search'
 import { User } from '@prisma/client'
 import Link from 'next/link'
 

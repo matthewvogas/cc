@@ -87,7 +87,7 @@ export default function AddCreators({ userCreators, session }: Props) {
 
   useEffect(() => {
     const url =
-      'https://dev.codecoco.co/invites/' + String(session?.user?.email)
+      'https://codecoco.co/invites/' + String(session?.user?.email)
     const iframeString = `<iframe src="${url}" width="600" height="400" frameborder="0" allowfullscreen></iframe>`
     setLinkToShareInvite(url)
     setCodeToShareInvite(iframeString)

@@ -7,7 +7,6 @@ import { SetStateAction, useEffect, useMemo, useState } from 'react'
 import SettingsTab from '@/components/tabs/ClientTabs/settingsTab'
 import FilterCreators from '@/components/filters/filtersCreators'
 import PostCard from '@/components/cards/agency/posts/postCard'
-import TopPost from '@/components/cards/agency/posts/topPost'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { Posts } from '@/types/posts/PostByCampaignRes'
 import Stats from '@/components/stats/agency/stats'
@@ -19,13 +18,14 @@ type StatsItem = {
   data: { title: any; description: string }[]
 }
 
-export default function CampaingTabs({
+export default function CampaingsTabs({
   campaign,
   creators,
   posts,
   stories,
   session,
   client,
+  connections,
 }: {
   campaign: CampaignRes
   creators: any
@@ -33,7 +33,9 @@ export default function CampaingTabs({
   stories: Story[]
   session: any
   client: any
+  connections: any
 }) {
+
   const [openTab, setOpenTab] = useState(1)
   const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
   const [followerCountFilter, setFollowerCountFilter] = useState(0)
@@ -298,6 +300,7 @@ export default function CampaingTabs({
                       id={campaign.id!}
                       campaign={campaign}
                       creators={creators}
+                      connections={connections}
                       shared={false}
                       session={session}
                     />

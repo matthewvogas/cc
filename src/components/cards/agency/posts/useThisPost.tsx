@@ -17,13 +17,13 @@ export default function UseThisPost({ post }: Props) {
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
-    '<iframe src="http://dev.codecoco.co/campaign/' +
+    '<iframe src="http://codecoco.co/campaign/' +
     post?.campaignId +
     '"' +
     ' height="200" width="300"></iframe>' +
     '</body> </html>'
   const iframe =
-    '<iframe src="http://dev.codecoco.co/campaign/' +
+    '<iframe src="http://codecoco.co/campaign/' +
     post?.campaignId +
     ' height="200" width="300"></iframe>'
 

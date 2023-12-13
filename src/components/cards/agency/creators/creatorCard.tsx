@@ -224,7 +224,6 @@ export default function CreatorRow({
                     </td>
                     <td className='flex'>
                       <PostHashtagStatus state={'NOT'} />
-                      {/* <AddNewPosts campaignsFallback={undefined} clientsFallback={undefined} text={''} icon={undefined}/> */}
                     </td>
                     <td>
                       <div className='dropdown-end dropdown cursor-pointer'>

@@ -13,19 +13,24 @@ export class ConnectionService {
   static async findManyByUserId(UserId: string) {
     const connections = await db.connection.findMany({
       where: {
-        userId2: UserId,
+        OR: [
+          { userId2: UserId },
+          { userId1: UserId }
+        ],
       },
       include: {
         user1: {
           include: {
             campaigns: true,
             socialConnections: true,
+            instagramPages: true
           },
         },
         user2: {
           include: {
             campaigns: true,
             socialConnections: true,
+            instagramPages: true
           },
         },
       },

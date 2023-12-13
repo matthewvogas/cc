@@ -16,11 +16,13 @@ export function SharedCampaign({
   campaign,
   posts,
   creators,
+  connections,
 }: {
   user: any
   campaign: CampaignRes
   posts: Posts[]
   creators: CreatorsByCampaignRes[]
+  connections: any
 }) {
   const stats = [
     {
@@ -159,8 +161,9 @@ export function SharedCampaign({
           id={campaign.id!}
           shared={true}
           creators={creators}
-          session={undefined}
-        />
+          session={undefined} 
+          connections={connections}   
+               />
       </div>
     </div>
   )

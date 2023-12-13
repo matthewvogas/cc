@@ -7,6 +7,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import { CreatorsService } from '@/services/CreatorsService'
 import { getServerSession } from 'next-auth'
+import { ConnectionService } from '@/services/ConnectionService'
 
 export default async function shareCampaign({
   params,
@@ -18,9 +19,13 @@ export default async function shareCampaign({
     id,
   )) as CreatorsByCampaignRes[]
 
+  const session = await getServerSession(authOptions)
+
+  const connections = await ConnectionService.findManyByUserIdFromCreator(
+    String(session?.user.id),
+  )
   const campaign = (await CampaignsService.findUnique(id)) as CampaignRes
   const posts = await PostsService.findMany(id)
-  const session = await getServerSession(authOptions)
 
   return (
     <div>
@@ -29,7 +34,8 @@ export default async function shareCampaign({
           user={session?.user}
           campaign={campaign}
           posts={posts}
-          creators={creators}></SharedCampaign>
+          creators={creators}
+          connections={connections}></SharedCampaign>
       ) : (
         <div className='flex justify-center items-center h-screen bg-[#F3F0EC]'>
           <h3 className='text-lg px-6 py-3  bg-[#8a7356] text-white shadow-xl  rounded-xl'>

@@ -83,7 +83,7 @@ export const YelpRecentLoginEmail = ({
 
                 <Row style={{ ...boxInfos, paddingTop: '0' }}>
                   <Column style={containerButton} colSpan={2}>
-                    <a href='https://dev.codecoco.co/login' style={button}>
+                    <a href='https://codecoco.co/login' style={button}>
                       connect now
                     </a>
                   </Column>

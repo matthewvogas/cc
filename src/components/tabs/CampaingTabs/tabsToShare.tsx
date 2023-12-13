@@ -14,13 +14,13 @@ export default function TabsToShare(props: { campaignId: any }) {
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
-    '<iframe src="https://dev.codecoco.co/campaign/' +
+    '<iframe src="https://codecoco.co/campaign/' +
     props.campaignId +
     '"' +
     ' height="400" width="300"></iframe>' +
     '</body> </html>'
   const iframe =
-    '<iframe src="https://dev.codecoco.co/campaign/' +
+    '<iframe src="https://codecoco.co/campaign/' +
     props.campaignId +
     '"' +
     ' height="400" width="300"></iframe>'
@@ -111,7 +111,7 @@ export default function TabsToShare(props: { campaignId: any }) {
                       className='mb-2 w-full rounded-xl px-5 py-3 focus:outline-none'
                       type='text'
                       value={
-                        'https://dev.codecoco.co/campaign/' + props.campaignId
+                        'https://codecoco.co/campaign/' + props.campaignId
                       }
                       readOnly
                     />

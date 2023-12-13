@@ -14,13 +14,13 @@ export default function Share() {
     <title>Campaign</title>
   </head>
   <body>
-    <iframe src="http://dev.codecoco.co/campaign/" height=
+    <iframe src="http://codecoco.co/campaign/" height=
   </body>
   </html>`
 
-  const frame = `<iframe src="http://dev.codecoco.co/campaign/" height=`
+  const frame = `<iframe src="http://codecoco.co/campaign/" height=`
 
-  const link = `http://dev.codecoco.co/campaign/`
+  const link = `http://codecoco.co/campaign/`
 
   const codigoConSaltosDeLinea = codigo.replace(/\n/g, '\n')
   const [type, setType] = React.useState(codigo)
