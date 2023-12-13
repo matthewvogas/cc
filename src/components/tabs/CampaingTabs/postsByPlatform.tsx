@@ -22,6 +22,7 @@ type Props = {
   readonly id: number
   readonly campaign: CampaignRes
   readonly creators: any[]
+  readonly connections: any[]
   readonly shared: boolean
   readonly session: any
 }
@@ -29,6 +30,7 @@ export default function PostsByPlatform({
   id,
   campaign,
   creators,
+  connections,
   shared,
   session,
 }: Props) {
@@ -146,9 +148,7 @@ export default function PostsByPlatform({
     (post: any) => post.platform === 'tiktok',
   ).length
 
-  const storiesCount = campaign.posts?.filter(
-    (post: any) => post.platform === 'tiktok',
-  ).length
+  const storiesCount = campaign.stories?.length
 
   return (
     <>
@@ -244,6 +244,7 @@ export default function PostsByPlatform({
                       <AddNewPosts
                         campaignsFallback={campaign}
                         clientsFallback={undefined}
+                        connections={connections}
                         text={''}
                         icon={undefined}
                       />
@@ -319,6 +320,7 @@ export default function PostsByPlatform({
                       <AddNewPosts
                         campaignsFallback={campaign}
                         clientsFallback={undefined}
+                        connections={connections}
                         text={''}
                         icon={undefined}
                       />
@@ -415,6 +417,7 @@ export default function PostsByPlatform({
                       <AddNewPosts
                         campaignsFallback={campaign}
                         clientsFallback={undefined}
+                        connections={connections}
                         text={''}
                         icon={undefined}
                       />

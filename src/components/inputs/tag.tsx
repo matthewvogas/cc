@@ -26,7 +26,7 @@ function TagsInput({ tags, setTags, required }: Props) {
   }
 
   return (
-    <div className=' w-full  rounded-3xl border border-[#d1d1d1]  pl-2 py-[6px] text-sm text-gray-900 flex gap-2 outline-none overflow-auto flex-wrap'>
+    <div className='w-full rounded-3xl border border-[#d1d1d1]  pl-2 py-[6px] text-sm text-gray-900 flex gap-2 outline-none overflow-auto flex-wrap'>
       {tags?.map((tag, index) => (
         <div
           className='flex items-center gap-1 rounded-full bg-gray-200 px-2 py-1'

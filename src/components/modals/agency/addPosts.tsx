@@ -7,13 +7,15 @@ import useClients from '@/hooks/useClients'
 import { Dialog } from '@headlessui/react'
 import { excelToJson } from '@/lib/Utils'
 import { Tab } from '@headlessui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
+import DropdownCheckbox from '@/components/inputs/dropdownCheckbox'
 
 type Props = {
   campaignsFallback: any
   clientsFallback: any
+  connections: any
   text: string
   icon: any
 }
@@ -21,9 +23,53 @@ type Props = {
 export default function AddNewPosts({
   campaignsFallback,
   clientsFallback,
+  connections,
   text,
   icon,
 }: Props) {
+  interface CheckboxOption {
+    id: string
+    username: string
+    checked: boolean
+  }
+  const [checkboxOptions, setCheckboxOptions] = useState<CheckboxOption[]>([])
+  const [errorText, setErrorText] = useState('')
+
+  useEffect(() => {
+    const transformedOptions = connections.flatMap((connection: any) => {
+      const creator =
+        connection.user1.role === 'CREATOR'
+          ? connection.user1
+          : connection.user2
+
+      const instagramToken = creator.socialConnections.find(
+        (conn: any) => conn.platform === 'INSTAGRAM',
+      )?.token
+
+      if (creator.instagramPages && instagramToken) {
+        return creator.instagramPages.map((page: any) => ({
+          id: page.accountId,
+          username: page.username,
+          checked: false,
+          token: instagramToken,
+        }))
+      }
+
+      return []
+    })
+
+    setCheckboxOptions(transformedOptions)
+  }, [connections])
+
+  const handleOptionChange = (id: string, checked: boolean) => {
+    const updatedOptions = checkboxOptions.map(option => {
+      if (option.id === id) {
+        return { ...option, checked }
+      }
+      return option
+    })
+    setCheckboxOptions(updatedOptions)
+  }
 
   const router = useRouter()
 
@@ -51,11 +97,44 @@ export default function AddNewPosts({
         link.click()
         document.body.removeChild(link)
 
-        // Liberar el objeto URL
         URL.revokeObjectURL(objectUrl)
       } catch (error) {
         console.error('Error al descargar el archivo:', error)
       }
+    }
+  }
+
+  const track = async () => {
+    setLoading(true)
+
+    const creators = checkboxOptions.filter(option => option.checked)
+    const campaignId = campaignsFallback.id
+
+    try {
+      const res = await fetch('/api/collect/track/instagram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          creators,
+          tags,
+          campaignId,
+        }),
+      })
+
+      if (res.ok) {
+        setLoading(false)
+        setErrorText('')
+        setIsOpen(false)
+      } else {
+        setLoading(false)
+        setErrorText('An error occurred, refresh the page and try again. Make sure you have correctly included the hashtags without # and creators')
+        setFetchError('An error occurred')
+      }
+    } catch (error) {
+     
+      setFetchError('An error occurred')
     }
   }
 
@@ -160,8 +239,10 @@ export default function AddNewPosts({
 
                 <Tab
                   className={({ selected }) =>
-                    ` rounded-3xl  bg-[#F8FDFB] px-12 py-2 w-full ${
-                      selected ? ' bg-[#DEF4EA] text-black' : 'text-[#CCCCCC]'
+                    ` rounded-3xl  bg-[#c0e2d2] px-12 py-2 w-full ${
+                      selected
+                        ? '  text-black'
+                        : 'text-[#4d4d4d8e] bg-[#d8ebe223]'
                     }`
                   }>
                   hashtag tracking
@@ -264,43 +345,52 @@ export default function AddNewPosts({
                   </form>
                 </Tab.Panel>
                 <Tab.Panel className=''>
-                  <form onSubmit={handleHashTagSubmit}>
-                    <div className='divider mx-0'></div>
+                  <div className='divider mx-0'></div>
 
-                    <div className='px-7'>
-                      <p className='text-sm font-semibold'>
-                        Hashtag(s) your creator will use
-                      </p>
-                      <TagsInput required tags={tags} setTags={setTags} />
-                      <span className='text-xs italic font-light mb-4'>
-                        separate multiple with a comma
-                      </span>
-                    </div>
-                    <div className='px-7'>
-                      <p className='text-sm font-semibold'>Assign to creator</p>
-                      <div className='flex gap-3'>
-                        <select
-                          required
-                          className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-[#0000] pl-4 py-3 text-sm text-gray-900 flex-grow  outline-none'
-                          name=''
-                          id=''></select>
-                        <button className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-[#0000] pl-4 py-2 text-sm text-gray-900 flex flex-wrap gap-2  outline-none'>
-                          upload a list
-                        </button>
+                  <div className='px-7'>
+                    <p className='text-sm font-semibold mb-2'>
+                      Hashtag(s) your creator will use
+                    </p>
+                    <TagsInput required tags={tags} setTags={setTags} />
+                    <span className='text-xs italic font-light mb-4'>
+                      separate multiple with a comma
+                    </span>
+                  </div>
+                  <div className='px-7'>
+                    <p className='text-sm font-semibold'>Assign to creator</p>
+                    <div className='flex gap-3'>
+                      <div className='w-full'>
+                        <DropdownCheckbox
+                          options={checkboxOptions}
+                          onOptionChange={handleOptionChange}
+                        />
                       </div>
+                      {/* <div className='w-full'>
+                          <button className='w-full mt-4 rounded-xl border border-[#7F7F7F] bg-[#0000] pl-4 py-2 text-sm text-gray-900 flex flex-wrap gap-2  outline-none'>
+                            upload a list
+                          </button>
+                        </div> */}
                     </div>
+                    <p className='mt-4 text-xs text-gray-500'>
+                      {' '}
+                      Remember that if you have not connected with the creator
+                      through codecoco, you will not be able to track the data.{' '}
+                    </p>
+                  </div>
 
-                    <div className='flex w-full flex-col justify-end items-end px-7 mt-4 mb-4 '>
-                      <button
-                        className={`flex self-end bg-[#D3F0E2] rounded-lg px-8 py-2`}>
-                        {loading ? (
-                          <Spinner width='w-4' height='h-4' border='border-2' />
-                        ) : (
-                          'start tracking'
-                        )}
-                      </button>
-                    </div>
-                  </form>
+                  <div className='flex w-full flex-col justify-end items-end px-7 mt-4 mb-4 '>
+                    <button
+                      disabled={loading}
+                      onClick={track}
+                      className={`flex self-end bg-[#D3F0E2] rounded-lg px-8 py-2`}>
+                      {loading ? (
+                        <Spinner width='w-4' height='h-4' border='border-2' />
+                      ) : (
+                        'start tracking'
+                      )}
+                    </button>
+                    <p className='pt-2 text-sm'>{errorText}</p>
+                  </div>
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>

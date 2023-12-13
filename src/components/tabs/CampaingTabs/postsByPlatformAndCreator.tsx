@@ -174,12 +174,6 @@ export default function PostsByPlatformAndCreator({
                         }}
                       />
                     </button>
-                    {/* <AddNewPosts
-                        campaignsFallback={undefined}
-                        clientsFallback={undefined}
-                        text={''}
-                        icon={undefined}
-                      /> */}
                   </div>
                 </div>
               </div>
@@ -252,12 +246,6 @@ export default function PostsByPlatformAndCreator({
                         }}
                       />
                     </button>
-                    {/* <AddNewPosts
-                        campaignsFallback={campaign}
-                        clientsFallback={undefined}
-                        text={''}
-                        icon={undefined}
-                      /> */}
                   </div>
                 </div>
               </div>
@@ -332,12 +320,6 @@ export default function PostsByPlatformAndCreator({
                           }}
                         />
                       </button>
-                      <AddNewPosts
-                        campaignsFallback={campaign}
-                        clientsFallback={undefined}
-                        text={''}
-                        icon={undefined}
-                      />
                     </div>
                   )} */}
                 </div>
