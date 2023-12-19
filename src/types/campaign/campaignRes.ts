@@ -14,6 +14,7 @@ export interface CampaignRes {
   creators?: Creator[]
   _count?: Count
   stats?: Stats
+  isPublic?: boolean
 }
 
 export interface Count {

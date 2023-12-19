@@ -22,10 +22,15 @@ interface YelpRecentLoginEmailProps {
   loginDevice?: string
   loginLocation?: string
   loginIp?: string
+  campaign?: string
+  token: string
 }
 
-export const InvitationCreator = ({
+export const AccessCampaign = ({
   baseURL,
+  agencyName,
+  campaign,
+  token,
   loginDate = new Date('September 7, 2022, 10:58 am'),
 }: YelpRecentLoginEmailProps) => {
   baseURL ||= 'http://localhost:3000'
@@ -78,7 +83,8 @@ export const InvitationCreator = ({
                     textAlign: 'center',
                     color: '#fff',
                   }}>
-                  You have been invited to connect on Codecoco
+                  You have been invited to connect with a {agencyName} campaign
+                  in codecoco
                 </Heading>
 
                 <Row style={{ ...boxInfos, paddingTop: '0' }}>
@@ -88,56 +94,6 @@ export const InvitationCreator = ({
                     </a>
                   </Column>
                 </Row>
-              </Column>
-            </Row>
-          </Section>
-
-          <Section style={features}>
-            <Row style={{ ...boxInfos, paddingBottom: '0' }}>
-              <Column>
-                <Heading
-                  as='h2'
-                  style={{
-                    fontSize: 24,
-                    fontWeight: 'normal',
-                    textAlign: 'center',
-                    color: '#000',
-                    marginBottom: '40px',
-                  }}>
-                  Codecoco will collect your campaign stats for so
-                  you don’t have to share them to with screenshots!
-                </Heading>
-                {featuresList.map((feature, index) => (
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '8px',
-                      alignItems: 'center',
-                    }}>
-                    <Img
-                      height={24}
-                      width={24}
-                      style={{ opacity: '40%' }}
-                      src={`https://golabsdewinu.s3.amazonaws.com/email/check.png`}
-                    />
-                    <p
-                      style={{
-                        fontSize: 18,
-                        fontWeight: 'normal',
-                        textAlign: 'left',
-                        color: '#000',
-                      }}
-                      key={index}>
-                      {' '}
-                      {feature}
-                    </p>
-                  </div>
-                ))}
-
-                <Img
-                  width='100%'
-                  src={`https://golabsdewinu.s3.amazonaws.com/email/SuccesfullyCreatorConnectionImage.png`}
-                />
               </Column>
             </Row>
           </Section>
@@ -180,7 +136,16 @@ export const InvitationCreator = ({
                     backgroundColor: '#DFF2E8',
                     marginBottom: '20px',
                   }}>
-                  connect now 🥥
+                  connect now like agency 🥥
+                </a>
+                <a
+                  href=''
+                  style={{
+                    ...ctaButton,
+                    backgroundColor: '#DFF2E8',
+                    marginBottom: '20px',
+                  }}>
+                  connect now like creator 🥥
                 </a>
               </Column>
               <Column style={containerButton} colSpan={2}>
@@ -205,7 +170,7 @@ export const InvitationCreator = ({
   )
 }
 
-export default InvitationCreator
+export default AccessCampaign
 
 const main = {
   backgroundColor: '#fff',
