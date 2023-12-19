@@ -47,7 +47,7 @@ export default function CampaingsTabs({
   const getLikes = useMemo(() => {
     return posts.reduce(
       (totalLikes, post) => totalLikes + (post.likesCount || 0),
-      1,
+      0,
     )
   }, [posts])
 
@@ -55,35 +55,41 @@ export default function CampaingsTabs({
     return posts.reduce(
       (totalImpressions, post) =>
         totalImpressions + (post.impressionsCount || 0),
-      1,
+      0,
     )
   }, [posts])
 
   const getReach = useMemo(() => {
     return posts.reduce(
       (totalImpressions, post) => totalImpressions + (post.reachCount || 0),
-      1,
+      0,
     )
   }, [posts])
 
   const getComments = useMemo(() => {
     return posts.reduce(
       (totalComments, post) => totalComments + (post.commentsCount || 0),
-      1,
+      0,
     )
   }, [posts])
 
   const getShares = useMemo(() => {
     return posts.reduce(
       (totalShares, post) => totalShares + (post.sharesCount || 0),
-      1,
+      0,
     )
   }, [posts])
 
   const getSaves = useMemo(() => {
     return posts.reduce(
       (totalSaves, post) => totalSaves + (post.savesCount || 0),
-      1,
+      0,
+    )
+  }, [posts])
+  const getImpressions = useMemo(() => {
+    return posts.reduce(
+      (totalSaves, post) => totalSaves + (post.impressionsCount || 0),
+      0,
     )
   }, [posts])
 
@@ -159,8 +165,8 @@ export default function CampaingsTabs({
           { title: getShares, description: 'shares' },
           { title: getSaves, description: 'saves' },
           //
-          { title: 'soon available', description: 'engagement/views' },
-          { title: 'soon available', description: 'engagement/impression' },
+          { title: (getLikes + getShares + getSaves + getComments) / getViews || 0 , description: 'engagement/views' },
+          { title: (getLikes + getShares + getSaves + getComments) / getImpressions || 0, description: 'engagement/impression' },
         ],
       },
       {
@@ -183,6 +189,7 @@ export default function CampaingsTabs({
     getComments,
     getSaves,
     getShares,
+    getImpressions
   ])
 
   useEffect(() => {
