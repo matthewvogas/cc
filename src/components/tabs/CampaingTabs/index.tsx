@@ -26,6 +26,7 @@ export default function CampaingsTabs({
   session,
   client,
   connections,
+  access,
 }: {
   campaign: CampaignRes
   creators: any
@@ -34,6 +35,7 @@ export default function CampaingsTabs({
   session: any
   client: any
   connections: any
+  access: any
 }) {
 
   const [openTab, setOpenTab] = useState(1)
@@ -461,7 +463,7 @@ export default function CampaingsTabs({
                   <div className='relative'></div>
                 </div>
                 <div className={openTab === 5 ? 'block' : 'hidden'}>
-                  <TabsToShare campaignId={campaign.id} />
+                  <TabsToShare campaignId={campaign.id} access={access} campaign={campaign} />
                 </div>
                 <div className={openTab === 6 ? 'block' : 'hidden'}>
                   <SettingsTab campaign={campaign} client={client} />

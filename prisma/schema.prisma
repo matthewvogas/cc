@@ -72,7 +72,8 @@ model User {
   instagramPages       instagramPages[] @relation("userIdInstagramPage")
   tiktokPages          tiktokPages[]    @relation("userIdTikTokPage")
 
-  suscription Suscriptions[] @relation("userId")
+  suscription    Suscriptions[]   @relation("userId")
+  AccessCampaign AccessCampaign[]
 
   @@map("users")
 }
@@ -255,19 +256,21 @@ model Tag {
 }
 
 model Campaign {
-  id          Int       @id @default(autoincrement())
-  imageUrl    String?   @map("image_url")
-  name        String
-  description String
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  creators    Creator[]
-  clientId    Int?      @map("client_id")
-  client      Client?   @relation(fields: [clientId], references: [id])
-  userId      String    @map("user_id")
-  user        User      @relation(fields: [userId], references: [id])
-  posts       Post[]
-  stories     Story[]
+  id             Int              @id @default(autoincrement())
+  imageUrl       String?          @map("image_url")
+  name           String
+  description    String
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  creators       Creator[]
+  clientId       Int?             @map("client_id")
+  client         Client?          @relation(fields: [clientId], references: [id])
+  userId         String           @map("user_id")
+  user           User             @relation(fields: [userId], references: [id])
+  posts          Post[]
+  stories        Story[]
+  AccessCampaign AccessCampaign[]
+  isPublic       Boolean?         @default(true)
 
   @@map("campaigns")
 }
@@ -350,4 +353,30 @@ enum CreatorStatus {
   SIGNEDUP
   INVITE
   REJECTED
+}
+
+model AccessCampaign {
+  id Int @id @default(autoincrement())
+
+  userId     String?
+  CampaignId Int
+  accessType String
+  createdAt  DateTime @default(now())
+  status     String?
+  email      String?
+
+  user     User?    @relation(fields: [userId], references: [id])
+  campaign Campaign @relation(fields: [CampaignId], references: [id])
+}
+
+model ShareAccess {
+  id    Int        @id @default(autoincrement())
+  email String
+  token String     @unique
+  used  Boolean    @default(false)
+  type  typeAcess?
+}
+
+enum typeAcess {
+  CAMPAIGN
 }

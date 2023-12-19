@@ -3,14 +3,51 @@ import prev from 'public/assets/register/GridExample.jpg'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import EmailsInput from '@/components/inputs/email'
+import InputEmails from '@/components/inputs/emails'
 
 const ActionButtonStyle =
   'flex w-full text-xm justify-center border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 cursor-pointer '
 
-export default function TabsToShare(props: { campaignId: any }) {
+export default function TabsToShare(props: {
+  campaignId: any
+  access: any
+  campaign: any
+}) {
   const [openTab, setOpenTab] = React.useState(1)
   const [codeToCopy, setcodeToCopy] = React.useState('')
+  const [emails, setEmails] = useState<string[]>([])
+  const [isPrivate, setIsPrivate] = React.useState(props.campaign.isPrivate)
+
+  function removeEmail(index: any) {
+    setEmails(emails.filter((el, i) => i !== index))
+  }
+
+  useEffect(() => {
+    setIsPrivate(props.campaign.isPrivate)
+  }, [props.campaign.isPrivate])
+
+  const handleCheckboxChange = async (event: any) => {
+    setIsPrivate(event.target.checked)
+
+    if (isPrivate == true) {
+      setIsPrivate(false)
+    } else {
+      setIsPrivate(true)
+    }
+
+    const res = await fetch('http://localhost:3000/api/shares/campaignAccess', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        status: isPrivate,
+        id: props.campaignId,
+      }),
+    })
+  }
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
@@ -24,6 +61,22 @@ export default function TabsToShare(props: { campaignId: any }) {
     props.campaignId +
     '"' +
     ' height="400" width="300"></iframe>'
+
+  const sendEmailsAccess = async () => {
+    const res = await fetch(`/api/shares/campaigns`, {
+      method: 'POST',
+      body: JSON.stringify({
+        emails: emails,
+        campaignId: props.campaignId,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    if (res.ok) {
+      setEmails([])
+    }
+  }
+
   return (
     <>
       <div className='flex w-full flex-wrap  '>
@@ -110,14 +163,10 @@ export default function TabsToShare(props: { campaignId: any }) {
                     <input
                       className='mb-2 w-full rounded-xl px-5 py-3 focus:outline-none'
                       type='text'
-                      value={
-                        'https://codecoco.co/campaign/' + props.campaignId
-                      }
+                      value={'https://codecoco.co/campaign/' + props.campaignId}
                       readOnly
                     />
                   </div>
-
-                  {/* Invite people to view */}
                   <div>
                     <div className='flex divide-x-2'>
                       <div className='w-4/6'>
@@ -126,14 +175,23 @@ export default function TabsToShare(props: { campaignId: any }) {
                         </h4>
                         <div className='mr-4 rounded-xl border-2  '>
                           <div className='flex flex-wrap gap-3 rounded-t-lg border-b-2 bg-beigeFirst p-6'>
-                            
+                            {emails.map((email: any, index: number) => (
+                              <p
+                                className=' flex items-center justify-center gap-3 rounded-lg px-2 py-3 bg-white shadow-sm'
+                                key={email}>
+                                {email}{' '}
+                                <span
+                                  onClick={() => removeEmail(index)}
+                                  className=' flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-gray-600'>
+                                  &times;
+                                </span>
+                              </p>
+                            ))}
                           </div>
+
                           <div>
-                            <input
-                              className='mb-2 w-full px-5 py-3 focus:outline-none'
-                              placeholder='type an email address here'
-                              type='text'
-                            />
+                            {/* emails component */}
+                            <InputEmails email={emails} setEmails={setEmails} />
                           </div>
                         </div>
                       </div>
@@ -143,24 +201,37 @@ export default function TabsToShare(props: { campaignId: any }) {
                         <h4 className='mb-4 font-semibold text-base'>
                           Users who currently have access
                         </h4>
-                        <div className='flex flex-wrap gap-4'>
-                         
+                        <div className='flex flex-wrap gap-2'>
+                          {props.access.map((email: any, index: number) => (
+                            <h2 key={index} className='border px-2 py-2 rounded-lg'>
+                              {email.email}
+                            </h2>
+                          ))}
                         </div>
                       </div>
                     </div>
 
+                    <button onClick={sendEmailsAccess} className='btn mt-4'>
+                      {' '}
+                      send{' '}
+                    </button>
                     {/* Privacy options */}
                     <h4 className='my-4 font-semibold text-base'>
                       Privacy options
                     </h4>
                     <div className='mr-4 inline-block gap-3 rounded-xl bg-beigeFirst p-3'>
-                      <input className='mx-2' type='checkbox' />
+                      <input
+                        onChange={handleCheckboxChange}
+                        className='mx-2'
+                        type='checkbox'
+                        checked={isPrivate}
+                      />
                       <label className='' htmlFor=''>
                         Require email to view
                       </label>
                     </div>
 
-                    <label htmlFor=''>view visitors</label>
+                    {/* <label htmlFor=''>view visitors</label> */}
                   </div>
                 </div>
 

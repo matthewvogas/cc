@@ -8,6 +8,7 @@ import { CreatorsByCampaignRes } from '@/types/creators/CreatorsByCampaignRes'
 import { CreatorsService } from '@/services/CreatorsService'
 import { getServerSession } from 'next-auth'
 import { ConnectionService } from '@/services/ConnectionService'
+import { AccessCampaignService } from '@/services/AccessCampaignService'
 
 export default async function shareCampaign({
   params,
@@ -25,21 +26,46 @@ export default async function shareCampaign({
     String(session?.user.id),
   )
   const campaign = (await CampaignsService.findUnique(id)) as CampaignRes
-  const posts = await PostsService.findMany(id)
 
+  const access = await AccessCampaignService.findAcess(
+    String(session!.user.email),
+    campaign.id || 0,
+  )
+
+  const posts = await PostsService.findMany(id)
+  
   return (
     <div>
       {campaign.id ? (
-        <SharedCampaign
-          user={session?.user}
-          campaign={campaign}
-          posts={posts}
-          creators={creators}
-          connections={connections}></SharedCampaign>
+        <>
+          {campaign.isPublic ? (
+            <SharedCampaign
+              user={session?.user}
+              campaign={campaign}
+              posts={posts}
+              creators={creators}
+              connections={connections}
+            />
+          ) : access.length > 0 ? (
+            <SharedCampaign
+              user={session?.user}
+              campaign={campaign}
+              posts={posts}
+              creators={creators}
+              connections={connections}
+            />
+          ) : (
+            <div className='flex justify-center items-center h-screen bg-[#F3F0EC]'>
+              <h3 className='text-lg px-6 py-3 bg-[#8a7356] text-white shadow-xl rounded-xl'>
+                Access denied to this campaign
+              </h3>
+            </div>
+          )}
+        </>
       ) : (
         <div className='flex justify-center items-center h-screen bg-[#F3F0EC]'>
-          <h3 className='text-lg px-6 py-3  bg-[#8a7356] text-white shadow-xl  rounded-xl'>
-            Hello! it is possible that this campaign does not exist, sorry
+          <h3 className='text-lg px-6 py-3 bg-[#8a7356] text-white shadow-xl rounded-xl'>
+            Hello! It is possible that this campaign does not exist, sorry.
           </h3>
         </div>
       )}
