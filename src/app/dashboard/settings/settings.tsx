@@ -35,34 +35,10 @@ export default function Settings({
 }: Props) {
   const tabs: TabItem[] = [
     {
-      label: 'My data',
-      content: (
-        <div>
-          <Collect
-            session={session}
-            posts={posts}
-            stories={stories}
-            instagramPages={instagramPages}
-            tiktokPages={tiktokPages}
-            instgramToken={instgramToken}
-            tiktokToken={tiktokToken}
-          />
-        </div>
-      ),
-    },
-    {
       label: 'Account Settings',
       content: (
         <div>
           <TwoTabsComponent tabs={[]} session={session} user={user} />
-        </div>
-      ),
-    },
-    {
-      label: 'Portfolio',
-      content: (
-        <div>
-          <CreatorsPortfolio />
         </div>
       ),
     },
@@ -87,6 +63,35 @@ export default function Settings({
       ),
     },
   ]
+
+  if (session.user.role === 'CREATOR') {
+    tabs.push(
+      {
+        label: 'My data',
+        content: (
+          <div>
+            <Collect
+              session={session}
+              posts={posts}
+              stories={stories}
+              instagramPages={instagramPages}
+              tiktokPages={tiktokPages}
+              instgramToken={instgramToken}
+              tiktokToken={tiktokToken}
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'Portfolio',
+        content: (
+          <div>
+            <CreatorsPortfolio />
+          </div>
+        ),
+      },
+    )
+  }
 
   return (
     <div>
