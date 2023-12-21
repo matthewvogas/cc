@@ -73,11 +73,8 @@ export default function PostsByPlatform({
       if (res.ok == true) {
         setLoading(false)
         router.push(`/dashboard/campaigns/${campaign.id}`)
-        console.log(200)
       } 
     } catch (error) {
-      console.log('error')
-
       console.log(error)
     }
   }
@@ -95,16 +92,16 @@ export default function PostsByPlatform({
   const totalPages = Math.ceil(data?.totalPosts / limit)
   
    
-  if (arePostsLoading) {
+  if (arePostsLoading && activeSocial != "Stories") {
     return <p className='px-12'>loading posts...</p>
   }
 
 
-  const tiktokPosts = data.posts?.filter(
+  const tiktokPosts = data?.posts.filter(
     (post: any) => post.platform === 'tiktok',
   )
 
-  const filteredPosts = data.posts?.filter((post: any) => {
+  const filteredPosts = data?.posts.filter((post: any) => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
@@ -286,7 +283,7 @@ export default function PostsByPlatform({
                   {filteredPosts?.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
-                  {data.posts?.length === 0 && (
+                  {data?.posts.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -367,7 +364,7 @@ export default function PostsByPlatform({
                     : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {data.posts?.length === 0 && (
+                  {data?.posts.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -466,7 +463,7 @@ export default function PostsByPlatform({
                     : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {data.posts?.length === 0 && (
+                  {data?.posts.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
