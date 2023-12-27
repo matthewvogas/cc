@@ -10,7 +10,7 @@ export default class EmailService {
   static smtpOptions = {
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: Number(process.env.SMTP_PORT) || 587,
-    secure: false,
+    secure: true,
     auth: {
       user: process.env.SMTP_USERNAME,
       pass: process.env.SMTP_PASSWORD,
