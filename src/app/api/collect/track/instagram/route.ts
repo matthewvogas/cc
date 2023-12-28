@@ -139,7 +139,7 @@ export async function POST(req: Request, res: Response) {
               permalink: post.permalink,
               shortcode: post.shortcode,
               imageUrl: post.thumbnail_url || post.media_url,
-              campaignId: campaignId,
+              campaignId: +campaignId,
 
               creatorId: creator.id,
               caption: post.caption,
@@ -162,7 +162,7 @@ export async function POST(req: Request, res: Response) {
               permalink: String(post.permalink),
               shortcode: String(post.shortcode),
               imageUrl: post.thumbnail_url || post.media_url,
-              campaignId: campaignId,
+              campaignId: +campaignId,
 
               creatorId: creator.id,
               caption: String(post.caption),
@@ -183,7 +183,7 @@ export async function POST(req: Request, res: Response) {
               permalink: String(post.permalink),
               shortcode: String(post.shortcode),
               imageUrl: post.thumbnail_url || post.media_url,
-              campaignId: campaignId,
+              campaignId: +campaignId,
 
               creatorId: creator.id,
               caption: String(post.caption),
@@ -266,7 +266,7 @@ export async function POST(req: Request, res: Response) {
               data: {
                 uuid: data.id,
                 userId: String(sessionId),
-                campaignId: campaignId,
+                campaignId: +campaignId,
 
                 // meter creator ID
                 imageUrl: data.thumbnail_url,
@@ -279,7 +279,7 @@ export async function POST(req: Request, res: Response) {
               data: {
                 uuid: data.id,
                 userId: String(sessionId),
-                campaignId: campaignId,
+                campaignId: +campaignId,
                 imageUrl: data.thumbnail_url,
                 username: data.username,
                 permalink: data.permalink,
@@ -330,7 +330,7 @@ export async function POST(req: Request, res: Response) {
                 imageUrl: data.media_url || data.thumbnail_url,
                 userId: String(sessionId),
                 username: data.username,
-                campaignId: campaignId,
+                campaignId: +campaignId,
 
                 // meter creator ID
                 permalink: data.permalink,
@@ -354,7 +354,7 @@ export async function POST(req: Request, res: Response) {
                 userId: String(sessionId),
                 imageUrl: data.media_url || data.thumbnail_url,
                 username: data.username,
-                campaignId: campaignId,
+                campaignId: +campaignId,
 
                 // meter creator ID
                 permalink: data.permalink,

@@ -18,7 +18,7 @@ type StatsItem = {
   data: { title: any; description: string }[]
 }
 
-export default function CampaingsTabs({
+export default function PortfoliosTabs({
   campaign,
   creators,
   posts,
@@ -292,18 +292,8 @@ export default function CampaingsTabs({
             <div className='flex-auto '>
               <div className='tab-content tab-space'>
                 <section className={openTab === 1 ? 'block' : 'hidden'}>
-                  <div className='pt-6'>
-                    <div className='mb-12'>
-                      {/* funcion ternaria qye pregunte si es test */}
-
-                      <Stats
-                        campaignsFallback={[]}
-                        clientsFallback={undefined}
-                        stats={stats}
-                        frome={'campaign'}
-                        userPositionId={0}
-                      />
-                    </div>
+                  <div className=''>
+                    
 
                     <PostsByPlatform
                       id={campaign.id!}
