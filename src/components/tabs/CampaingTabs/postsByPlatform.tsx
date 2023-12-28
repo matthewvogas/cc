@@ -19,6 +19,7 @@ import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type Props = {
   readonly id: number
@@ -227,7 +228,7 @@ export default function PostsByPlatform({
                   <div className='flex gap-4 w-full items-center justify-between'>
                     {/* usar aquí la variación de contenido */}
 
-                    {session.user.role == 'CREATOR' ? (
+                    {session?.user.role == 'CREATOR' ? (
                       <>
                         <div className='flex gap-4 w-full justify-between'>
                           <div className='flex gap-4'>
@@ -250,13 +251,13 @@ export default function PostsByPlatform({
                               top performing 🥥
                             </button>
 
-                            <button className='flex px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium bg-[#E9F7F0] hover:border-gray-400  whitespace-nowrap'>
+                            <Link target='_blank' href={`/campaign/${campaign.id}`} className='flex px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium bg-[#E9F7F0] hover:border-gray-400  whitespace-nowrap'>
                               view public link
-                            </button>
+                            </Link>
                           </div>
-                          <button className='flex  px-8 border py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
+                          <Link href={`/dashboard/portfolio`} className='flex  px-8 border py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
                             view all
-                          </button>
+                          </Link>
                         </div>
                       </>
                     ) : (
