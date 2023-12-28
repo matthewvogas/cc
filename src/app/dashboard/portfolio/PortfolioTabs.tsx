@@ -1,29 +1,37 @@
 'use client'
-import TwoTabsComponent from '@/components/settings/Twotabs'
+import backgroundImage from 'public/assets/creatorRegister/Rectangle66.jpg'
+import CampaignsPortfolio from '@/app/dashboard/portfolio/campaignsPortfolio'
+import CampaignsAgency from './campaignsAgency'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
-import Connections from '@/components/settings/Connections'
-import backgroundImage from 'public/assets/creatorRegister/Rectangle66.jpg'
 import Image from 'next/image'
-import CampaignsPortfolio from '@/app/dashboard/portfolio/campaignsPortfolio'
 
-export default function PortfolioTabs() {
+type Props = {
+  clients: any
+  campaigns: any
+  instagramPages: any
+  tokenIg: any
+}
+export default function PortfolioTabs({ clients, campaigns, instagramPages, tokenIg }: Props) {
+
+  console.log(instagramPages)
+
   const tabs: TabItem[] = [
     {
-      label: 'Campaigns + Brands',
+      label: 'Portfolios',
       content: (
         <div>
-          <CampaignsPortfolio />
+          <CampaignsPortfolio clients={clients} campaigns={campaigns} instagramPages={instagramPages} tokenIg={tokenIg}  />
         </div>
       ),
     },
     {
-      label: 'Stats',
-      content: <div>{`Campaigns + Brands`}</div>,
-    },
-    {
-      label: 'Content',
-      content: <div>{`Campaigns + Brands`}</div>,
+      label: 'With agencies',
+      content: (
+        <div>
+          <CampaignsAgency clients={clients} campaigns={campaigns} instagramPages={instagramPages} />
+        </div>
+      ),
     },
   ]
 
@@ -41,7 +49,7 @@ export default function PortfolioTabs() {
             <div>
               <div className=''>
                 <h1 className='pb-8 align-middle text-2xl font-semibold text-white'>
-                  {`Your name's Portfolio`}
+                  {`Your Portfolio & Campaigns`}
                 </h1>
               </div>
             </div>

@@ -1,27 +1,20 @@
-import { CampaignRes } from '@/types/campaign/campaignRes'
-import { Client, Campaign } from '@prisma/client'
+import { Client } from '@prisma/client'
 import { Dialog } from '@headlessui/react'
 import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import imageCompression from 'browser-image-compression'
 
 type Props = {
-  campaignsFallback: CampaignRes
   clientsFallback: any
   text: string
   icon: any
 }
 
-export default function AddCampaign({
-  campaignsFallback,
+export default function AddPortfolio({
   clientsFallback,
   text,
   icon,
 }: Props) {
-  // const { campaigns, areCampaignsLoading, campaignsError, refreshCampaigns } =
-  //   useCampaigns(campaignsFallback)
-  // const { clients, areClientsLoading, clientsError, refreshClients } =
-  //   useClients(clientsFallback)
 
   const [isOpen, setIsOpen] = useState(false)
   const [title, setTitle] = useState('')
@@ -88,7 +81,7 @@ export default function AddCampaign({
         }}>
         <label
           tabIndex={0}
-          className={`bg-[#E9F7F0] flex bg-text-lg align-center items-center border-rose-100 mx-2 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer`}>
+          className={`bg-[#E9F7F0] flex bg-text-lg align-center items-center border-rose-100 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer`}>
           {text}
           {icon}
         </label>
@@ -106,7 +99,7 @@ export default function AddCampaign({
           {/* The actual dialog panel  */}
           <Dialog.Panel className='flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
             <Dialog.Title className='text-lg font-bold'>
-              Add New Campaign
+              Add New Portfolio
             </Dialog.Title>
             <form
               onSubmit={handleCreate}
@@ -128,7 +121,7 @@ export default function AddCampaign({
                   ))}
                 </select>
 
-                {title === 'new hashtag campaign' && (
+                {title === 'new hashtag portfolio' && (
                   <>
                     <p className='py-4'>Hashtag</p>
                     <input
@@ -142,15 +135,16 @@ export default function AddCampaign({
                   </>
                 )}
               </div>
-              <p className='py-4'>Campaign Title</p>
+              <p className='py-4'>Portfolio Name</p>
               <input
                 onChange={e => setName(e.target.value)}
                 required
                 type='text'
                 id='name'
-                placeholder='Campaign Name'
+                placeholder='portfolio name'
                 className='mb-4 w-full rounded-full border border-gray-300 bg-[#0000] p-2.5 px-4 text-sm text-gray-900 focus:outline-0'
               />
+              <div className='divider'></div>
               <input
                 type='file'
                 accept='image/*'
@@ -193,8 +187,8 @@ export default function AddCampaign({
               <div className='flex items-center justify-center'>
                 <button
                   type='submit'
-                  className='mb-2 w-full cursor-pointer text-center text-black rounded-full bg-[#FCDDD1] px-4 py-2'>
-                  create campaign
+                  className='mb-2 w-full cursor-pointer text-center text-black rounded-full bg-[#FCDDD1] px-4 '>
+                  create portfolio
                 </button>
               </div>
             </form>
