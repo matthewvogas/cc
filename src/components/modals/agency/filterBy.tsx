@@ -12,19 +12,17 @@ export default function InputSearchValue(props: {
   setTags: any
   handleDialog: any
 }) {
+  const [searchValue, setSearchValue] = useState('')
+
   const handleClick = (creator: any) => {
+    
     props.setCreatorsSelecteds((prevSelectedIds: any) => {
-      if (prevSelectedIds.includes(creator.id)) {
-        return prevSelectedIds.filter(
-          (selectedId: any) => selectedId !== creator.id,
-        )
-      } else {
+      if (!prevSelectedIds.includes(creator)) {
         return [...prevSelectedIds, creator]
       }
+      return [...prevSelectedIds]
     })
   }
-
-  const [searchValue, setSearchValue] = useState('')
 
   const searchedCreators = props.creators?.filter(
     (creatorKey: { username: string }) =>
@@ -44,10 +42,12 @@ export default function InputSearchValue(props: {
               onChange={event => {
                 setSearchValue(event.target.value)
               }}
-              id='default-input'
-              placeholder='Search'
-              className={` w-full rounded-full border border-gray-300 bg-[#0000] text-sm text-gray-900 focus:outline-0`}
-              name=''></textarea>
+              id='default-input' 
+              className="textarea w-full border border-gray-300 bg-[#0000] text-sm text-gray-900 focus:outline-0"
+              placeholder="Search"
+              name=''
+              value={searchValue}>
+            </textarea>
 
             <p className={`text-xm mb-4 pb-2 pt-6 ${inter.className}`}>
               Select creators below to view only their posts

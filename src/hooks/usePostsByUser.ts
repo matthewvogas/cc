@@ -6,9 +6,23 @@ export default function usePosts(
   limit: number,
   offset: number,
   activeSocial: string,
+  tags?: string[],
+  creators?: any[],
 ) {
+
+  const creatorIdsString = creators ? creators.map(creator => creator.id).join(',') : ''
+  const tagsString = tags ? tags.join(',') : ''
+
+  let params = new URLSearchParams()
+  params.set('campaignId', campaignId)
+  params.set('limit', limit.toString())
+  params.set('offset', offset.toString())
+  params.set('activeSocial', activeSocial)
+  params.set('creators', creatorIdsString)
+  params.set('tags', tagsString)
+
   const { data, error, mutate, isLoading } = useSWR(
-    `/api/posts/agency?campaignId=${campaignId}&limit=${limit}&offset=${offset}&activeSocial=${activeSocial}`,
+    `/api/posts/agency?${params.toString()}`,
     fetcher,
   )
 

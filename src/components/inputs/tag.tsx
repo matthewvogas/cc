@@ -15,9 +15,10 @@ function TagsInput({ tags, setTags, required }: Props) {
     // If the value is empty, return
     if (!value.trim()) return
     // Add the value to the tags array
-    setTags([...tags, '#' + value])
+    let tag: string = '#' + value
+    !tags.includes(tag) ? setTags([...tags, tag]) : e.target.value = ''
     // Clear the input
-    e.target.value = ''
+    e.target.value = ''    
     e.preventDefault()
   }
 
