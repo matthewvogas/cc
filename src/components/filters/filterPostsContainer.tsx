@@ -133,7 +133,7 @@ export default function FilterPostsContainer({
         <div
           className={`py-6 bg-[#F3F0EC] rounded-xl mt-4 w-full ${filterPosts}`}>
           <div className='flex gap-10 px-8 '>
-            {/* <div>
+            <div>
               <p className='font-medium text-base mb-2'>view by</p>
               <div className='flex gap-4'>
                 <button
@@ -156,7 +156,7 @@ export default function FilterPostsContainer({
                   latest
                 </button>
               </div>
-            </div> */}
+            </div>
 
             <div className='flex flex-col'>
               <p className='font-medium text-base mb-2'>by creator</p>
@@ -175,7 +175,7 @@ export default function FilterPostsContainer({
             </div>
 
             {/* by hashtag */}
-            {/* <div>
+            <div>
               <p className='font-medium text-base mb-2'>by hashtag</p>
               <button
                 onClick={() => {
@@ -189,7 +189,7 @@ export default function FilterPostsContainer({
                 type='button'>
                 search hastags
               </button>
-            </div> */}
+            </div>
 
             <div></div>
           </div>

@@ -57,6 +57,8 @@ export default function PostsByPlatform({
     limit,
     currentPage * limit,
     activeSocial,
+    tags,
+    creatorsSelecteds,
   )
 
   const refreshPosts = async () => {
@@ -100,11 +102,11 @@ export default function PostsByPlatform({
   }
 
 
-  const tiktokPosts = data?.posts.filter(
+  const tiktokPosts = data?.posts?.filter(
     (post: any) => post.platform === 'tiktok',
   )
 
-  const filteredPosts = data?.posts.filter((post: any) => {
+  const filteredPosts = data?.posts?.filter((post: any) => {
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
@@ -342,7 +344,7 @@ export default function PostsByPlatform({
                   {filteredPosts?.map((post: any, index: any) => (
                     <PostCard key={index} post={post} />
                   ))}
-                  {data?.posts.length === 0 && (
+                  {data?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -423,7 +425,7 @@ export default function PostsByPlatform({
                     : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {data?.posts.length === 0 && (
+                  {data?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
@@ -522,7 +524,7 @@ export default function PostsByPlatform({
                     : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
-                  {data?.posts.length === 0 && (
+                  {data?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>

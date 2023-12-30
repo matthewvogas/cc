@@ -14,30 +14,57 @@ export async function GET(req: NextRequest) {
     const campaignId = url.searchParams.get('campaignId')
     const limit = parseInt(url.searchParams.get('limit') || '10')
     const offset = parseInt(url.searchParams.get('offset') || '0')
+    const tags = url.searchParams.get('tags')
+    const creators = url.searchParams.get('creators')
     const activeSocial = url.searchParams.get('activeSocial')
 
+    let condition: {
+      userId: string;
+      platform: string | { in: string[] };
+      campaignId: number;
+      creatorId?: { in: number[] };
+    } = {
+      userId: session?.user.id,
+      platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
+      campaignId: parseInt(campaignId!),
+    }
 
+    if (creators) {
+      const creatorIds = creators.split(',').map(id => parseInt(id));
+      condition = {
+        ...condition,
+        creatorId: {
+          in: creatorIds
+        }
+      }
+    }
+
+    const orTags = tags?.split(',').map((tag) => {
+      return {
+        caption: {
+          contains: tag
+        }
+      }
+    })
+    
     const posts = await db.post.findMany({
       where: {
-        campaignId: +campaignId!,
-        platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
+        ...condition,
+        OR: orTags
       },
       include: {
         creator: true,
+        hashtags: true
       },
       take: +limit,
       skip: +offset,
-    })
-
+    });
     const hasMore = true
 
     const totalPosts = await db.post.count({
-      where: {
-        userId: session?.user.id,
-        platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
-        campaignId: parseInt(campaignId!)
-      },
-    })
+      where: {...condition, OR: orTags},
+    });
+    
 
     return NextResponse.json({ posts, hasMore, totalPosts })
   } catch (err) {
