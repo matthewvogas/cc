@@ -543,6 +543,7 @@ export default function PostsByPlatform({
                       <AddNewStories
                         campaignFallback={campaign}
                         clientFallback={undefined}
+                        connections={connections}
                       />
                     </div>
                   )}

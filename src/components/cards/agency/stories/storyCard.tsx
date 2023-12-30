@@ -33,7 +33,7 @@ export default function StoryCard({ story }: { story: Story }) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/posts/creator/${story.id}`, {
+      const response = await fetch(`/api/stories/agency/${story.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

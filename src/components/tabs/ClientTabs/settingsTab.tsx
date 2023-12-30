@@ -46,7 +46,7 @@ export default function SettingsTab({
 
     if (client.id) {
       try {
-        const res = await fetch(`/api/clients/${client.id}/cover`, {
+        const res = await fetch(`/api/campaigns/${campaign.id}/cover`, { 
           method: 'POST',
           body: formData,
         })
@@ -93,9 +93,9 @@ export default function SettingsTab({
   useEffect(() => {
     try {
 
-      if (client.id) {
+      if (campaign.id) {
         const fetchCoverImage = async () => {
-          const res = await fetch(`/api/clients/${client.id}/cover`, {
+          const res = await fetch(`/api/campaigns/${campaign.id}/cover`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export default function SettingsTab({
       console.log(error)
     }
    
-  }, [client?.id])
+  }, [campaign?.id])
 
   return (
     <div className={`mt-7 w-full justify-start`}>

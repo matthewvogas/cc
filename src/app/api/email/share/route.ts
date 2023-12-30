@@ -3,6 +3,8 @@ import { render } from '@react-email/render'
 import CampaignAcess from '../../../../../emails/campaignAccess'
 import EmailService from '@/lib/EmailService'
 import { PrismaClient } from '@prisma/client'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../auth/[...nextauth]/route'
 
 const crypto = require('crypto')
 const db = new PrismaClient()
@@ -14,26 +16,28 @@ function generateUniqueToken() {
 }
 
 export async function GET(req: NextRequest) {
-
   const { searchParams } = new URL(req.url)
   const to = searchParams.get('to')
   const agency = searchParams.get('agency')
   const campaign = searchParams.get('campaign')
+
+  const session = await getServerSession(authOptions)
+
   if (!to)
     return NextResponse.json({ error: 'Missing recipent' }, { status: 400 })
 
   const token = await generateUniqueToken()
 
-  const accessToken = await db.shareAccess.create({
+  const shareAccess = await db.accessCampaign.create({
     data: {
       email: to || '',
-      token: token,
-      used: false,
-      type: 'CAMPAIGN'
+      accessType: 'WRITE',
+      userId: session?.user.id,
+      CampaignId: Number(campaign),
     },
   })
 
-  console.log(accessToken)
+  console.log(shareAccess)
 
   try {
     const campaignAccessShare = await EmailService.sendEmail({

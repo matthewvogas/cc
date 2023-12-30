@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
   try {
     const { status, id } = await req.json()
 
-    console.log(status, id)
 
     const change = await db.campaign.update({
       where: {

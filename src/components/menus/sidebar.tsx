@@ -25,10 +25,10 @@ const links = [
     href: '/dashboard/invitations',
     name: 'Creators',
   },
-  {
-    href: '/dashboard/settings',
-    name: 'Settings',
-  },
+  // {
+  //   href: '/dashboard/settings',
+  //   name: 'Settings',
+  // },
   {
     href: '/privacy',
     name: 'Privacy Policy',

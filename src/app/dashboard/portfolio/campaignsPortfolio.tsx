@@ -83,7 +83,7 @@ export default function CampaignsPortfolio({
     }))
 
     setCheckboxOptions(transformedOptions)
-  }, [instagramPages])
+  }, [instagramPages, tokenIg])
 
   const handleDownloadClick = async () => {
     const url = 'https://dewinu.com/docs/example.xlsx'
