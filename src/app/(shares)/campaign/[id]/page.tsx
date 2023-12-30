@@ -28,12 +28,24 @@ export default async function shareCampaign({
   const campaign = (await CampaignsService.findUnique(id)) as CampaignRes
 
   const access = await AccessCampaignService.findAcess(
-    String(session!.user.email),
+    String(session?.user.email),
     campaign.id || 0,
   )
 
   const posts = await PostsService.findMany(id)
-  
+
+  if (campaign.userId == session?.user.id) {
+    return (
+      <SharedCampaign
+        user={session?.user}
+        campaign={campaign}
+        posts={posts}
+        creators={creators}
+        connections={connections}
+      />
+    )
+  }
+
   return (
     <div>
       {campaign.id ? (

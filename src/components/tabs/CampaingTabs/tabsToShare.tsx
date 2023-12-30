@@ -10,55 +10,77 @@ import InputEmails from '@/components/inputs/emails'
 const ActionButtonStyle =
   'flex w-full text-xm justify-center border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 cursor-pointer '
 
-export default function TabsToShare(props: {
+type TabsToShareProps = {
   campaignId: any
-  access: any
+  access: any 
   campaign: any
-}) {
+}
+
+export default function TabsToShare({
+  campaignId,
+  access,
+  campaign,
+}: TabsToShareProps) {
   const [openTab, setOpenTab] = React.useState(1)
   const [codeToCopy, setcodeToCopy] = React.useState('')
   const [emails, setEmails] = useState<string[]>([])
-  const [isPrivate, setIsPrivate] = React.useState(props.campaign.isPrivate)
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+
+  
+  useEffect(() => {
+    setIsChecked(!campaign.isPublic ?? true)
+  }, [campaign.isPublic])
+
+  const handleCheckboxChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newCheckedStatus = event.target.checked;
+  
+    try {
+      const response = await fetch('/api/shares/campaignAccess', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status: !newCheckedStatus,
+          id: campaignId, 
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Success:', data);
+  
+      setIsChecked(newCheckedStatus);
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+  
+    }
+  }
+  
 
   function removeEmail(index: any) {
     setEmails(emails.filter((el, i) => i !== index))
   }
 
-  useEffect(() => {
-    setIsPrivate(props.campaign.isPrivate)
-  }, [props.campaign.isPrivate])
+  // const handleCheckboxChange = async (event: any) => {
+  //   console.log('Checkbox cambiado a:', event.target.checked)
 
-  const handleCheckboxChange = async (event: any) => {
-    setIsPrivate(event.target.checked)
-
-    if (isPrivate == true) {
-      setIsPrivate(false)
-    } else {
-      setIsPrivate(true)
-    }
-
-    const res = await fetch('http://localhost:3000/api/shares/campaignAccess', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        status: isPrivate,
-        id: props.campaignId,
-      }),
-    })
-  }
+  //   setIsChecked(event.target.checked)
+  // }
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Campaign</title> </head> <body>' +
     '<iframe src="https://codecoco.co/campaign/' +
-    props.campaignId +
+    campaignId +
     '"' +
     ' height="400" width="300"></iframe>' +
     '</body> </html>'
   const iframe =
     '<iframe src="https://codecoco.co/campaign/' +
-    props.campaignId +
+    campaignId +
     '"' +
     ' height="400" width="300"></iframe>'
 
@@ -67,7 +89,7 @@ export default function TabsToShare(props: {
       method: 'POST',
       body: JSON.stringify({
         emails: emails,
-        campaignId: props.campaignId,
+        campaignId: campaignId,
       }),
       headers: { 'Content-Type': 'application/json' },
     })
@@ -143,7 +165,7 @@ export default function TabsToShare(props: {
 
             <li className='-mb-px mr-2 flex flex-auto items-center text-center last:mr-0'>
               <Link
-                href={'/campaign/' + props.campaignId}
+                href={'/campaign/' + campaignId}
                 target='_blank'
                 className={`${ActionButtonStyle}`}>
                 view live campaign
@@ -163,7 +185,7 @@ export default function TabsToShare(props: {
                     <input
                       className='mb-2 w-full rounded-xl px-5 py-3 focus:outline-none'
                       type='text'
-                      value={'https://codecoco.co/campaign/' + props.campaignId}
+                      value={'https://codecoco.co/campaign/' + campaignId}
                       readOnly
                     />
                   </div>
@@ -202,8 +224,10 @@ export default function TabsToShare(props: {
                           Users who currently have access
                         </h4>
                         <div className='flex flex-wrap gap-2'>
-                          {props.access.map((email: any, index: number) => (
-                            <h2 key={index} className='border px-2 py-2 rounded-lg'>
+                          {access.map((email: any, index: number) => (
+                            <h2
+                              key={index}
+                              className='border px-2 py-2 rounded-lg'>
                               {email.email}
                             </h2>
                           ))}
@@ -224,7 +248,7 @@ export default function TabsToShare(props: {
                         onChange={handleCheckboxChange}
                         className='mx-2'
                         type='checkbox'
-                        checked={isPrivate}
+                        checked={isChecked}
                       />
                       <label className='' htmlFor=''>
                         Require email to view

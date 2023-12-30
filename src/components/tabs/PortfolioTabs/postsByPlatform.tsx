@@ -48,7 +48,7 @@ export default function PostsByPlatform({
   const currentPage = page[page.length - 1]
   const limit = 10
   const router = useRouter()
-  
+
   const { data, arePostsLoading, postsError } = usePosts(
     String(campaign.id),
     limit,
@@ -74,7 +74,7 @@ export default function PostsByPlatform({
         setLoading(false)
         router.push(`/dashboard/campaigns/${campaign.id}`)
         console.log(200)
-      } 
+      }
     } catch (error) {
       console.log('error')
 
@@ -93,12 +93,10 @@ export default function PostsByPlatform({
   }
 
   const totalPages = Math.ceil(data?.totalPosts / limit)
-  
-   
+
   if (arePostsLoading) {
     return <p className='px-12'>loading posts...</p>
   }
-
 
   const tiktokPosts = data.posts?.filter(
     (post: any) => post.platform === 'tiktok',
@@ -487,6 +485,7 @@ export default function PostsByPlatform({
                       <AddNewStories
                         campaignFallback={campaign}
                         clientFallback={undefined}
+                        connections={connections}
                       />
                     </div>
                   )}

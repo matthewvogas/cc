@@ -62,10 +62,13 @@ export async function POST(req: NextRequest) {
             create: {
               accessType: 'READ',
               campaign: campaignId,
+              email: email,
             },
             update: {
               accessType: 'READ',
               campaign: campaignId,
+              email: email,
+              userId: session.user.id,
             },
           })
         } else {
@@ -74,6 +77,7 @@ export async function POST(req: NextRequest) {
               accessType: 'READ',
               CampaignId: campaignId,
               email: email,
+              userId: session.user.id,
             },
           })
         }

@@ -258,6 +258,7 @@ model Tag {
 model Campaign {
   id             Int              @id @default(autoincrement())
   imageUrl       String?          @map("image_url")
+  coverImg       String?          @map("cover_url")
   name           String
   description    String
   createdAt      DateTime         @default(now()) @map("created_at")

@@ -15,6 +15,7 @@ export interface CampaignRes {
   _count?: Count
   stats?: Stats
   isPublic?: boolean
+  coverImg?: string
 }
 
 export interface Count {
