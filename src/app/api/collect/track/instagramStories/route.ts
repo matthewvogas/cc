@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
                     uuid: data.id,
                     userId: session.user.id,
                     // meter creator ID
-                    imageUrl: UploadedMediaUrl || UploadedImageUrl,
+                    imageUrl: UploadedImageUrl || UploadedMediaUrl,
                     username: data.username,
                     permalink: data.permalink,
                     campaignId: campaignId,
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
                     uuid: data.id,
                     userId: session.user.id,
                     // meter creator ID
-                    imageUrl: UploadedMediaUrl || UploadedImageUrl,
+                    imageUrl: UploadedImageUrl || UploadedMediaUrl,
                     username: data.username,
                     permalink: data.permalink,
                     campaignId: campaignId,
@@ -149,7 +149,7 @@ export async function POST(req: NextRequest) {
                   },
                   data: {
                     uuid: data.id,
-                    imageUrl: UploadedMediaUrl || UploadedImageUrl,
+                    imageUrl: UploadedImageUrl || UploadedMediaUrl,
                     userId: session.user.id,
                     username: data.username,
                     // meter creator ID
@@ -173,7 +173,7 @@ export async function POST(req: NextRequest) {
                   data: {
                     uuid: data.id,
                     userId: session.user.id,
-                    imageUrl: UploadedMediaUrl || UploadedImageUrl,
+                    imageUrl: UploadedImageUrl || UploadedMediaUrl,
                     username: data.username,
                     // meter creator ID
                     permalink: data.permalink,

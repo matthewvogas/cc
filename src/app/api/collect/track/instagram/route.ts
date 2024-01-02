@@ -161,7 +161,7 @@ export async function POST(req: Request, res: Response) {
               platform: 'instagram',
               permalink: post.permalink,
               shortcode: post.shortcode,
-              imageUrl: UploadedMediaUrl || UploadedImageUrl,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               campaignId: +campaignId,
 
               creatorId: creator.id,
@@ -184,7 +184,7 @@ export async function POST(req: Request, res: Response) {
               platform: 'instagram',
               permalink: String(post.permalink),
               shortcode: String(post.shortcode),
-              imageUrl: UploadedMediaUrl || UploadedImageUrl,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               campaignId: +campaignId,
 
               creatorId: creator.id,
@@ -205,7 +205,7 @@ export async function POST(req: Request, res: Response) {
               platform: 'instagram',
               permalink: String(post.permalink),
               shortcode: String(post.shortcode),
-              imageUrl: UploadedMediaUrl || UploadedImageUrl,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               campaignId: +campaignId,
 
               creatorId: creator.id,

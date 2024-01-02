@@ -157,7 +157,7 @@ export async function POST(req: NextRequest) {
           platform: 'instagram',
           permalink: post.permalink,
           shortcode: post.shortcode,
-          imageUrl: UploadedMediaUrl || UploadedImageUrl,
+          imageUrl: UploadedImageUrl || UploadedMediaUrl,
 
           // data
           creatorId: creator.id,
@@ -182,7 +182,7 @@ export async function POST(req: NextRequest) {
         platform: 'instagram',
         permalink: String(post.permalink),
         shortcode: String(post.shortcode),
-        imageUrl: UploadedMediaUrl || UploadedImageUrl,
+        imageUrl: UploadedImageUrl || UploadedMediaUrl,
 
           // data
           creatorId: creator.id,
@@ -210,7 +210,7 @@ export async function POST(req: NextRequest) {
           platform: 'instagram',
           permalink: String(post.permalink),
           shortcode: String(post.shortcode),
-          imageUrl: UploadedMediaUrl || UploadedImageUrl,
+          imageUrl: UploadedImageUrl || UploadedMediaUrl,
 
           // data
           creatorId: creator.id,
