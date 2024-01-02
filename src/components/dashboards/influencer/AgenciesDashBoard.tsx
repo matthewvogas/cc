@@ -212,7 +212,7 @@ export default function AgenciesDashBoard({
                   <SwiperSlide style={{ borderRadius: '10px' }}>
                     <div className='relative flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
                       <div className=''>
-                        <span>Let's find you a new agency</span>
+                        <span>{'Let´s find you a new agency '}</span>
                         <div className='mt-4'>
                           <div className='dropdown'>
                             <div
