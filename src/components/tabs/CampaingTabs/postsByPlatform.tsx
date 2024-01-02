@@ -107,6 +107,7 @@ export default function PostsByPlatform({
   )
 
   const filteredPosts = data?.posts?.filter((post: any) => {
+
     const isInstagramActive = activePlatforms.includes('Instagram')
     const isFilterActive = activePlatforms.length > 0
 
@@ -268,7 +269,7 @@ export default function PostsByPlatform({
                           filterPosts={filterPosts}
                           setFilterPosts={setFilterPosts}
                         />
-                        <button
+                        {/* <button
                           type='button'
                           onClick={() => {
                             activeButton != 'topPerforming'
@@ -281,7 +282,7 @@ export default function PostsByPlatform({
                               : 'bg-[#EBF6F6]'
                           } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                           top performing 🥥
-                        </button>
+                        </button> */}
                         {shared != true && (
                           <div className='flex gap-4 justify-end'>
                             <button

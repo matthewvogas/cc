@@ -128,7 +128,7 @@ export default function AgenciesDashBoard({
 
   const handleRemoveConnection = async (agencyId: string) => {
     try {
-      const res = await fetch('https://codecoco.co/api/connections', {
+      const res = await fetch('/api/connections', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

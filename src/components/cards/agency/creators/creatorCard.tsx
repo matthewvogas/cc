@@ -19,6 +19,7 @@ import Link from 'next/link'
 import useCreators from '@/hooks/useCreators'
 import Pagination from '@/components/pagination/pagination/pagination'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import { useRouter } from 'next/navigation'
 
 const dropdownButton =
   'text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100'
@@ -53,9 +54,7 @@ export default function CreatorRow({
   const currentPage = page[page.length - 1]
   const limit = 5
 
-  const handleHelloClick = () => {
-    setIsOpen(!isOpen)
-  }
+  const router = useRouter()
 
   const helloRef = useRef<HTMLDivElement | null>(null)
 
@@ -147,6 +146,10 @@ export default function CreatorRow({
         (connection.userId2 && connection.userId2 === session.user.id)
       )
     })
+  }
+
+  const handleRemoveConnection = async (creatorId: string) => {
+    // analizar lógica para borrar creadores
   }
 
   return (
@@ -245,11 +248,14 @@ export default function CreatorRow({
                           className={`dropdown-content menu rounded-box w-max z-20 border-2 border-red-100 bg-white p-2 ${
                             isOpen ? 'hidden' : ''
                           }`}>
-                          <button
+
+                          {/* tracking bug */}
+
+                          {/* <button
                             onClick={handleHelloClick}
                             className={`${dropdownButton}`}>
                             add post tracking 🥥
-                          </button>
+                          </button> */}
 
                           <div
                             ref={helloRef}
@@ -279,6 +285,9 @@ export default function CreatorRow({
                           />
 
                           <button
+                           onClick={() => {
+                            handleRemoveConnection(creator.id)
+                          }}
                             className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100`}>
                             Remove creator
                           </button>
