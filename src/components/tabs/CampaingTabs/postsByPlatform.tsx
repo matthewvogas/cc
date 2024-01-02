@@ -555,10 +555,10 @@ export default function PostsByPlatform({
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {campaign.stories!.map((story, index) => (
+                  {campaign.stories?.map((story, index) => (
                     <StoryCard key={index} story={story} />
                   ))}
-                  {campaign.stories!.length === 0 && (
+                  {campaign.stories?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
                     </div>
