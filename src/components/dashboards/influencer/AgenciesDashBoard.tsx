@@ -40,6 +40,8 @@ export default function AgenciesDashBoard({
     setSearchTags,
     inputSearchValue,
     setInputSearchValue,
+    inputSearchValueModal,
+    setInputSearchValueModal,
     SecondStep,
     setSecondStep,
   } = useAgenciesDashboard()
@@ -65,28 +67,23 @@ export default function AgenciesDashBoard({
 
   const totalPages = Math.ceil(data?.totalAgencies / limit)
 
+  const [hidden, setHidden] = useState('hidden')
+
   if (areAgenciesLoading) {
     return(
       <SkeletonTheme inline={false}>
-      <p className='px-12'>
-        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
-      </p>
-      <p className='px-12'>
-        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
-      </p>
-      <p className='px-12'>
-        <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
-      </p>
-    </SkeletonTheme>
-      )
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+      </SkeletonTheme>
+    )
   }
-
-  // const filteredAgenciesSearch = data.connections?.filter((creator: any) => {
-  //   const AgenciesNameMatches = creator.name
-  //     .toLowerCase()
-  //     .includes(inputSearchValue.toLowerCase())
-  //   return AgenciesNameMatches
-  // })
 
   const filteredAgencies = data.connections.filter((agency: any) => {
     const agencyNameMatches = agency.user1.name
@@ -198,9 +195,7 @@ export default function AgenciesDashBoard({
                     </label>
                     <label
                       htmlFor=''
-                      className={`bg-white px-9 py-5 rounded-full ${
-                        SecondStep == true ? '' : 'bg-opacity-40'
-                      }`}>
+                      className={`bg-white px-9 py-5 rounded-full ${SecondStep == true ? '' : 'bg-opacity-40'}`}>
                       2. Connect Instagram
                     </label>
                   </div>
@@ -215,57 +210,51 @@ export default function AgenciesDashBoard({
                   {/* 1 */}
 
                   <SwiperSlide style={{ borderRadius: '10px' }}>
-                    <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
+                    <div className='relative flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
                       <div className=''>
-                        <span>{`Let's find you a new agency`}</span>
+                        <span>Let's find you a new agency</span>
                         <div className='mt-4'>
                           <div className='dropdown'>
-                            <div className='flex items-center gap-5'>
-                              <Search
-                                inputSearchValue={inputSearchValue}
-                                setInputSearchValue={setInputSearchValue}
-                              />
-                              <p className='bg-[#F1EFEA] rounded-full p-3 px-5'>
-                                {agenciesSelected?.name}
-                              </p>
-                            </div>
-
                             <div
-                              className={` mt-4   bg-white ${ptMono.className}`}>
-                              <div className=''>
-                                <div className='gap-2'>
-                                  {/* <p>{agenciesSelected?.id}</p> */}
-                                  {data.connections
-                                    .slice(0, 2)
-                                    .map((agency: any, index: any) => (
-                                      <button
-                                        className='mr-10 hover:bg-[#F1EFEA] rounded-lg p-3'
-                                        key={index}
-                                        onClick={() => {
-                                          setAgenciesSelected(agency)
-                                        }}>
-                                        <div className='flex flex-col gap-1 justify-start items-start'>
-                                          <p className='text-base font-semibold'>
-                                            {agency.name}
-                                          </p>
-                                          <p className='text-sm font-light'>
-                                            {agency.role}
-                                          </p>
-                                        </div>
-                                      </button>
-                                    ))}
+                              onFocus={() => setHidden('')}
+                              onBlur={() => {
+                                setTimeout(() => setHidden('hidden'), 100)
+                              }}>
+                              <Search
+                                inputSearchValue={inputSearchValueModal}
+                                setInputSearchValue={setInputSearchValueModal}
+                              />
+                            </div>
+                            <div className={`mt-4 bg-white ${ptMono.className}`}>
+                              <div className={`${hidden}`}>
+                                <div className='gap-2 flex flex-col'>
+                                  {
+                                    agency
+                                      .filter((agen: any) => agen.name.toLowerCase().includes(inputSearchValueModal.toLowerCase()))
+                                      .slice(0, 3) 
+                                      .map((agen: any, index: number) => (
+                                        <button
+                                          className='text-start px-5 py-2 hover:bg-[#F1EFEA] rounded-lg'
+                                          key={index}
+                                          onClick={() => {
+                                            setInputSearchValueModal(agen.name)
+                                            setAgenciesSelected(agen)
+                                          }}>
+                                          {agen.name}
+                                        </button>
+                                      ))
+                                  }
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-
                       <RegisterNextButton
+                        className={`absolute bottom-10 left-96 w-1/5 rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}
                         onClickCapture={() => {
                           setSecondStep(true)
-                        }}
-                        className={`w-1/5 self-end  rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
+                        }}>
                         next
                       </RegisterNextButton>
                     </div>
@@ -299,7 +288,7 @@ export default function AgenciesDashBoard({
                           // handlePositionSlide()
                           sendInvite()
                         }}
-                        className={`w-1/5 self-end rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
+                        className={`absolute bottom-10 left-96 w-1/5 rounded-full bg-[#F1EFEA] px-2 py-4 text-black  ${ptMono.className} `}>
                         next
                       </RegisterNextButton>
                     </div>
@@ -351,7 +340,7 @@ export default function AgenciesDashBoard({
 
                       <label
                         htmlFor='my-modal-3'
-                        className={`w-1/5 self-end rounded-full bg-[#F1EFEA] px-2 py-4 text-black text-center ${ptMono.className} `}>
+                        className={`absolute bottom-10 left-96 w-1/5 rounded-full bg-[#F1EFEA] px-2 py-4 text-black text-center ${ptMono.className} `}>
                         Done
                       </label>
                     </div>
