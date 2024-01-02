@@ -313,7 +313,7 @@ export function SharedCampaign({
                             }
 
                             return (
-                              <>
+                              <div key={index}>
                                 {index != 0 && index != 1 && (
                                   <div
                                     key={index}
@@ -328,7 +328,7 @@ export function SharedCampaign({
                                     </p>
                                   </div>
                                 )}
-                              </>
+                              </div>
                             )
                           },
                         )}

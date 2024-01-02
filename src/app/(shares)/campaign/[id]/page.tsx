@@ -34,7 +34,7 @@ export default async function shareCampaign({
 
   const posts = await PostsService.findMany(id)
 
-  if (campaign.userId == session?.user.id) {
+  if (campaign.userId == session?.user.id && campaign.id) {
     return (
       <SharedCampaign
         user={session?.user}

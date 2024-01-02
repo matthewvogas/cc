@@ -8,9 +8,6 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url)
     const session = await getServerSession(authOptions)
 
-    if (!session)
-      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-
     const campaignId = url.searchParams.get('campaignId')
     const limit = parseInt(url.searchParams.get('limit') || '10')
     const offset = parseInt(url.searchParams.get('offset') || '0')
@@ -19,13 +16,11 @@ export async function GET(req: NextRequest) {
     const activeSocial = url.searchParams.get('activeSocial')
 
     let condition: {
-      userId: string
       platform: string | { in: string[] }
       campaignId: number
       creatorId?: { in: number[] }
       caption?: {  }
     } = {
-      userId: session?.user.id,
       platform:
         activeSocial! == 'All'
           ? { in: ['instagram', 'tiktok'] }
