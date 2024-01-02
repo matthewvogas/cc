@@ -17,6 +17,9 @@ interface AgenciesDashboard {
   inputSearchValue: string
   setInputSearchValue: (inputSearchValue: string) => void
 
+  inputSearchValueModal: string
+  setInputSearchValueModal: (inputSearchValueModal: string) => void
+
   SecondStep: boolean
   setSecondStep: (SecondStep: boolean) => void
 }
@@ -30,6 +33,9 @@ export const useAgenciesDashboard = create<AgenciesDashboard>(set => ({
 
   inputSearchValue: '',
   setInputSearchValue: inputSearchValue => set({ inputSearchValue }),
+
+  inputSearchValueModal: '',
+  setInputSearchValueModal: inputSearchValueModal => set({ inputSearchValueModal }),
 
   SecondStep: false,
   setSecondStep: SecondStep => set({ SecondStep }),
