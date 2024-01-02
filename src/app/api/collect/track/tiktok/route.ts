@@ -4,7 +4,8 @@ import { ConnectionService } from '@/services/ConnectionService'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import db from '@/lib/db'
-
+import sharp from 'sharp'
+import S3Service from '@/lib/S3Service'
 
 // change to tiktok tracking
 
@@ -79,6 +80,24 @@ export async function POST(req: Request, res: Response) {
     return postArray
   }
 
+  async function imageFromS3(url: RequestInfo | URL, permalink: any) {
+    const image = await fetch(url).then(r => r.blob());
+    const name = String(permalink) + new Date().getTime();
+    const buffer = Buffer.from(await image.arrayBuffer())
+    const resized = await sharp(buffer)
+      .webp({ quality: 80 })
+      .resize(300, 300)
+      .toBuffer()
+    const blob = new Blob([resized], { type: 'image/webp' })
+
+    return await S3Service.uploadObject(
+      blob,
+      name,
+      'campaigns',
+      'images',
+    )
+  }
+
   for (const page of creators) {
     const response = await fetch(
       `https://graph.facebook.com/v17.0/${page.id}/media?fields=id,media_type,caption,media_url,cover_url,permalink,shortcode,thumbnail_url,insights.metric(comments,likes,impressions,reach,saved,shares,plays)&access_token=${page.token}`,
@@ -94,6 +113,9 @@ export async function POST(req: Request, res: Response) {
       const containsHashtag = tags.some((tag: any) =>
         post.caption.includes(tag),
       )
+
+      const UploadedImageUrl = await imageFromS3(post.thumbnail_url, post.permalink);
+      const UploadedMediaUrl = await imageFromS3(post.media_url, post.permalink);
 
       if (containsHashtag) {
         const postExists = await db.post.findFirst({
@@ -141,7 +163,7 @@ export async function POST(req: Request, res: Response) {
               platform: 'instagram',
               permalink: post.permalink,
               shortcode: post.shortcode,
-              imageUrl: post.thumbnail_url || post.media_url,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               campaignId: campaignId,
 
               creatorId: creator.id,
@@ -164,7 +186,7 @@ export async function POST(req: Request, res: Response) {
               platform: 'instagram',
               permalink: String(post.permalink),
               shortcode: String(post.shortcode),
-              imageUrl: post.thumbnail_url || post.media_url,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               campaignId: campaignId,
 
               creatorId: creator.id,
@@ -185,7 +207,7 @@ export async function POST(req: Request, res: Response) {
               platform: 'instagram',
               permalink: String(post.permalink),
               shortcode: String(post.shortcode),
-              imageUrl: post.thumbnail_url || post.media_url,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               campaignId: campaignId,
 
               creatorId: creator.id,
@@ -239,6 +261,10 @@ export async function POST(req: Request, res: Response) {
       const containsHashtag = tags.some((tag: any) =>
         data.caption.includes(tag),
       )
+
+      const storyUploadedImageUrl = await imageFromS3(data.thumbnail_url, data.permalink);
+      const storyUploadedMediaUrl = await imageFromS3(data.media_url, data.permalink);
+
       if (containsHashtag) {
         const navigation = await fetch(
           `https://graph.facebook.com/v17.0/${story.id}/insights/?metric=navigation&breakdown=story_navigation_action_type&access_token=${page.token}`,
@@ -272,7 +298,7 @@ export async function POST(req: Request, res: Response) {
                 campaignId: campaignId,
 
                 // meter creator ID
-                imageUrl: data.thumbnail_url,
+                imageUrl: storyUploadedImageUrl,
                 username: data.username,
                 permalink: data.permalink,
               },
@@ -283,7 +309,7 @@ export async function POST(req: Request, res: Response) {
                 uuid: data.id,
                 userId: String(sessionId),
                 campaignId: campaignId,
-                imageUrl: data.thumbnail_url,
+                imageUrl: storyUploadedImageUrl,
                 username: data.username,
                 permalink: data.permalink,
               },
@@ -330,7 +356,7 @@ export async function POST(req: Request, res: Response) {
               },
               data: {
                 uuid: data.id,
-                imageUrl: data.media_url || data.thumbnail_url,
+                imageUrl: storyUploadedMediaUrl || storyUploadedImageUrl,
                 userId: String(sessionId),
                 username: data.username,
                 campaignId: campaignId,
@@ -355,7 +381,7 @@ export async function POST(req: Request, res: Response) {
               data: {
                 uuid: data.id,
                 userId: String(sessionId),
-                imageUrl: data.media_url || data.thumbnail_url,
+                imageUrl: storyUploadedMediaUrl || storyUploadedImageUrl,
                 username: data.username,
                 campaignId: campaignId,
 

@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { authOptions } from '../../auth/[...nextauth]/route'
+import sharp from 'sharp'
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
@@ -14,6 +15,24 @@ export async function POST(req: NextRequest) {
   const token = await SocialConnectionService.findInstagramToken(
     session!.user.id,
   )
+
+  async function imageFromS3(url: RequestInfo | URL, permalink: any) {
+    const image = await fetch(url).then(r => r.blob());
+    const name = String(permalink) + new Date().getTime();
+    const buffer = Buffer.from(await image.arrayBuffer())
+    const resized = await sharp(buffer)
+      .webp({ quality: 80 })
+      .resize(300, 300)
+      .toBuffer()
+    const blob = new Blob([resized], { type: 'image/webp' })
+
+    return await S3Service.uploadObject(
+      blob,
+      name,
+      'campaigns',
+      'images',
+    )
+  }
 
   try {
     const { searchParams } = new URL(req.url)
@@ -35,6 +54,9 @@ export async function POST(req: NextRequest) {
       const insights = await fetch(
         `https://graph.facebook.com/v18.0/${story.id}/insights/?metric=profile_activity,impressions,reach,replies,shares,profile_visits,follows&access_token=${token}`,
       ).then(res => res.json())
+
+      const UploadedImageUrl = await imageFromS3(data.thumbnail_url, data.permalink);
+      const UploadedMediaUrl = await imageFromS3(data.media_url, data.permalink);
 
       if (navigation?.error?.message || insights?.error?.message) {
         console.log(`Data:`)
@@ -59,7 +81,7 @@ export async function POST(req: NextRequest) {
               uuid: data.id,
               userId: session.user.id,
               // meter creator ID
-              imageUrl: data.media_url || data.thumbnail_url,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               username: data.username,
               permalink: data.permalink,
             },
@@ -70,7 +92,7 @@ export async function POST(req: NextRequest) {
               uuid: data.id,
               userId: session.user.id,
               // meter creator ID
-              imageUrl: data.media_url || data.thumbnail_url,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               username: data.username,
               permalink: data.permalink,
             },
@@ -118,7 +140,7 @@ export async function POST(req: NextRequest) {
             },
             data: {
               uuid: data.id,
-              imageUrl: data.media_url || data.thumbnail_url,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               userId: session.user.id,
               username: data.username,
               // meter creator ID
@@ -143,7 +165,7 @@ export async function POST(req: NextRequest) {
             data: {
               uuid: data.id,
               userId: session.user.id,
-              imageUrl: data.media_url || data.thumbnail_url,
+              imageUrl: UploadedImageUrl || UploadedMediaUrl,
               username: data.username,
               // meter creator ID
               permalink: data.permalink,
