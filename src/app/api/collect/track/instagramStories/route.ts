@@ -63,8 +63,8 @@ export async function POST(req: NextRequest) {
           console.log(`Caption: ${data.caption}`)
           console.log('------')
 
-          const UploadedImageUrl = await imageFromS3(story.thumbnail_url, story.permalink);
-          const UploadedMediaUrl = await imageFromS3(story.media_url, story.permalink);
+          const UploadedImageUrl = await imageFromS3(data.thumbnail_url, data.permalink);
+          const UploadedMediaUrl = await imageFromS3(data.media_url, data.permalink);
 
           if (data.caption) {
             const containsTag = tags.some(
