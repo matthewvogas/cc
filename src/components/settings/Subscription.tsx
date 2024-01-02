@@ -362,9 +362,9 @@ export default function Subscription() {
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$59/month</p>
+                            <p className='text-sm font-medium'>$8.99/month</p>
                             <p className='text-xs opacity-50'>
-                              billed monthly ($59)
+                              billed monthly
                             </p>
                           </div>
 
@@ -393,9 +393,9 @@ export default function Subscription() {
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$540/month</p>
+                            <p className='text-sm font-medium'>$6/month</p>
                             <p className='text-xs opacity-50'>
-                              billed annually ($540)
+                              billed annually ($132)
                             </p>
                           </div>
 
@@ -467,9 +467,9 @@ export default function Subscription() {
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$149/month</p>
+                            <p className='text-sm font-medium'>$14.99/month</p>
                             <p className='text-xs opacity-50'>
-                              billed monthly ($149)
+                              billed monthly
                             </p>
                           </div>
 
@@ -498,7 +498,7 @@ export default function Subscription() {
                       <div>
                         <div className='flex flex-row items-center'>
                           <div className='mr-4'>
-                            <p className='text-sm font-medium'>$1428/Year</p>
+                            <p className='text-sm font-medium'>$11/month</p>
                             <p className='text-xs opacity-50'>
                               billed annually ($1428)
                             </p>
