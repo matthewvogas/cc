@@ -6,6 +6,8 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import EmailsInput from '@/components/inputs/email'
 import InputEmails from '@/components/inputs/emails'
+import Spinner from '@/components/loading/spinner'
+import { useRouter } from 'next/navigation'
 
 const ActionButtonStyle =
   'flex w-full text-xm justify-center border-rose-100 border-2 inline-block py-2.5 px-8 mx-2 text-back font-medium bg-transparent rounded-full  hover:bg-rose-100 cursor-pointer '
@@ -25,7 +27,8 @@ export default function TabsToShare({
   const [codeToCopy, setcodeToCopy] = React.useState('')
   const [emails, setEmails] = useState<string[]>([])
   const [isChecked, setIsChecked] = useState<boolean>(false)
-
+  const [loading, setLoading] = React.useState(false)
+  const router = useRouter()
   
   useEffect(() => {
     setIsChecked(!campaign.isPublic ?? true)
@@ -35,6 +38,7 @@ export default function TabsToShare({
     const newCheckedStatus = event.target.checked;
   
     try {
+      setLoading(true);
       const response = await fetch('/api/shares/campaignAccess', {
         method: 'POST',
         headers: {
@@ -54,6 +58,7 @@ export default function TabsToShare({
       console.log('Success:', data);
   
       setIsChecked(newCheckedStatus);
+      setLoading(false);
     } catch (error) {
       console.error('Error en la solicitud:', error);
   
@@ -85,6 +90,7 @@ export default function TabsToShare({
     ' height="400" width="300"></iframe>'
 
   const sendEmailsAccess = async () => {
+    setLoading(true);
     const res = await fetch(`/api/shares/campaigns`, {
       method: 'POST',
       body: JSON.stringify({
@@ -96,11 +102,21 @@ export default function TabsToShare({
 
     if (res.ok) {
       setEmails([])
+      router.refresh()
     }
+    setLoading(false);
+  }
+
+  const scroll = {
+    height: '200px',
+    overflow: 'scroll'
   }
 
   return (
     <>
+    <div className='w-full text-center'>
+      { loading ? (<Spinner width='w-4' height='h-4' border='border-2' />) : '' }
+    </div>
       <div className='flex w-full flex-wrap  '>
         <div className='w-full'>
           <h5 className='bg-beigeFirst pb-4 pt-8 text-3xl font-bold md:px-20'>
@@ -223,8 +239,8 @@ export default function TabsToShare({
                         <h4 className='mb-4 font-semibold text-base'>
                           Users who currently have access
                         </h4>
-                        <div className='flex flex-wrap gap-2'>
-                          {access.map((email: any, index: number) => (
+                        <div className='flex flex-wrap gap-2' style={scroll}>
+                          {access.sort(function(a: { id: number }, b: { id: number }) { return b.id - a.id}).map((email: any, index: number) => (
                             <h2
                               key={index}
                               className='border px-2 py-2 rounded-lg bg-greenPastel'>
