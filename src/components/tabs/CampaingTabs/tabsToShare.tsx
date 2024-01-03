@@ -110,10 +110,10 @@ export default function TabsToShare({
           <ul
             className='mb-0 flex list-none flex-row  bg-beigeFirst pt-4 md:px-20 '
             role='tablist'>
-            <li className='-mb-px mr-2 flex-auto text-center last:mr-0'>
+            <li className='-mb-px w-2/6 mr-2 flex-auto text-center last:mr-0'>
               <a
                 className={
-                  ' block h-36 w-full rounded-t-3xl p-2 px-5 py-3 text-left text-xs leading-normal ' +
+                  ' block h-36 rounded-t-3xl p-2 px-5 py-3 text-left text-xs leading-normal ' +
                   (openTab === 1
                     ? ' bg-white'
                     : ' border-x border-t border-beigeBorder bg-beigeSelected')
@@ -137,7 +137,7 @@ export default function TabsToShare({
               </a>
             </li>
 
-            <li className='-mb-px mr-2 flex-auto text-center last:mr-0'>
+            <li className='-mb-px w-2/6 mr-2 flex-auto text-center last:mr-0'>
               <a
                 className={
                   'block h-36 w-full rounded-t-3xl p-2 px-5 py-3 text-left text-xs leading-normal ' +
@@ -163,7 +163,7 @@ export default function TabsToShare({
               </a>
             </li>
 
-            <li className='-mb-px mr-2 flex flex-auto items-center text-center last:mr-0'>
+            <li className='-mb-px mr-2 w-2/2 flex flex-auto items-center text-center last:mr-0'>
               <Link
                 href={'/campaign/' + campaignId}
                 target='_blank'
@@ -227,7 +227,7 @@ export default function TabsToShare({
                           {access.map((email: any, index: number) => (
                             <h2
                               key={index}
-                              className='border px-2 py-2 rounded-lg'>
+                              className='border px-2 py-2 rounded-lg bg-greenPastel'>
                               {email.email}
                             </h2>
                           ))}
