@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         connection.user2.socialConnections &&
         connection.user2.socialConnections.length > 0 &&
         connection.user2.instagramPages &&
-        connection.user2.instagramPages.length > 0
+        connection.user2.instagramPages.length >= 0
       ) {
         const socialConnection = connection.user2.socialConnections[0]
         userIds.push(socialConnection.userId)
