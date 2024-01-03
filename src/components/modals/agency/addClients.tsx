@@ -4,6 +4,7 @@ import TagsInput from '@/components/inputs/tag'
 import useClients from '@/hooks/useClients'
 import { Dialog } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   campaignsFallback: any
@@ -26,6 +27,7 @@ export default function AddClients({
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileName, setFileName] = useState<string | null>(null)
+  const router = useRouter()
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -60,10 +62,11 @@ export default function AddClients({
         body: formData,
       })
 
-      if (res.status === 200) 
+      if (res.status === 200)
       console.log(res.status)
       setIsOpen(false)
       setFileName(null)
+      router.refresh()
     } catch (error: any) {
       setFetchError(error?.message)
     }
