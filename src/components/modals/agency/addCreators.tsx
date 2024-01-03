@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import React from 'react'
 import Search from '@/components/inputs/search'
+import { useRouter } from 'next/navigation'
+import imageCover from 'public/assets/register/TopPost.jpg'
+import Image from 'next/image'
 
 type Props = {
   userCreators: any
@@ -40,6 +43,8 @@ export default function AddCreators({ userCreators, session }: Props) {
   })
 
   const [codeToCopy, setcodeToCopy] = React.useState('');
+  const router = useRouter()
+  const [isOpenSend, setIsOpenSend] = React.useState(false)
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Stats</title> </head> <body>' +
@@ -68,6 +73,7 @@ export default function AddCreators({ userCreators, session }: Props) {
 
   const sendGetRequest = async () => {
     const recipientEmail = email
+    setIsOpenSend(true);
 
     try {
       const response = await fetch(`/api/email?to=${recipientEmail}`, {
@@ -83,10 +89,14 @@ export default function AddCreators({ userCreators, session }: Props) {
           setIsOpen(false)
           setEnviadoStatus('bg-transparent')
           setInviteStatus('invited')
+          setEmail('')
+          setIsOpenSend(false);
+          router.refresh();
         }, 2000)
       } else {
-        console.error('Error en la solicitud:', response.statusText)
-        setEnviado('Error, write the email correctly')
+        setIsOpenSend(false);
+        console.error('Error en la solicitud:', response.statusText);
+        setEnviado('Error, write the email correctly');
       }
     } catch (error) {
       console.error('Error en la solicitud:', error)
@@ -124,6 +134,17 @@ export default function AddCreators({ userCreators, session }: Props) {
       console.error('Could not copy text: ', err)
     }
   }
+
+  const styles = {
+    centered: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      color: '#FFFFFF',
+    },
+  };
+
 
   return (
     <>
@@ -316,12 +337,11 @@ export default function AddCreators({ userCreators, session }: Props) {
                         </label>
                       </div>
                       <div>
-                        <button
-                          className={`text-sm m-6 w-40 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 w-full p-4 ${ptMono.className}`}>
-                          <label htmlFor='my-modal-3'> embed a form</label>
-                        </button>
+                        <label htmlFor='my-modal-3' className={`cursor-pointer text-sm m-6 w-40 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 w-full p-4 block text-center ${ptMono.className}`}>
+                          embed a form
+                        </label>
                         <input type='checkbox' id='my-modal-3' className='  modal-toggle' />
-                        <div className='modal '>
+                        <div className='modal'>
                           <div className='modal-box relative flex max-w-max flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
                             <label
                               htmlFor='my-modal-3'
@@ -395,6 +415,30 @@ export default function AddCreators({ userCreators, session }: Props) {
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+      <Dialog
+        open={isOpenSend}
+        onClose={() => setIsOpenSend(false)}
+        className='relative z-[99]'>
+        {/* The backdrop, rendered as a fixed sibling to the panel container */}
+        <div className='fixed inset-0 bg-black bg-opacity-25' />
+
+        {/* Full-screen container to center the panel */}
+        <div className='fixed inset-0 flex items-center justify-center p-4'>
+          {/* The actual dialog panel  */}
+          <Dialog.Panel className='mx-auto flex  flex-col items-center justify-center rounded-lg bg-white'>
+            <div className={`w-full justify-start ${ptMono.className}`}>
+              <p style={styles.centered}>your creators have been invited.</p>
+              <Image
+                priority
+                className={`w-full object-cover`}
+                src={imageCover}
+                alt={'card'}
+                width={500}
+                height={500}></Image>
+            </div>
           </Dialog.Panel>
         </div>
       </Dialog>
