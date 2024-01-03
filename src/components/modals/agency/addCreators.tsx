@@ -398,8 +398,6 @@ export default function AddCreators({ userCreators, session }: Props) {
           </Dialog.Panel>
         </div>
       </Dialog>
-
-
     </>
   )
 }
