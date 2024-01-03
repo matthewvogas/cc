@@ -111,16 +111,6 @@ export default function AddCreators({ userCreators, session }: Props) {
       console.error('Error al copiar al portapapeles: ', err)
     }
   }
-  const copyToClipboardCode = async () => {
-    try {
-      await navigator.clipboard.writeText(codeToShareInvite)
-
-      setIsCopied(true)
-      setTimeout(() => setIsCopied(false), 2000)
-    } catch (err) {
-      console.error('Error al copiar al portapapeles: ', err)
-    }
-  }
 
   const copiarTexto = async (text: string) => {
     try {
@@ -316,16 +306,18 @@ export default function AddCreators({ userCreators, session }: Props) {
                     </div>
                     <hr className='my-8 h-px border-0 bg-gray-200'></hr>
 
-                    <div className='flex mb-12'>
-                      <label
-                        className='text-xs text-black opacity-70'
-                        htmlFor=''>
-                        Have your own site you want to invite your creators to
-                        sign up for this campaign from? Copy this embed code.
-                      </label>
+                    <div className='flex mb-12 grid grid-cols-2 gap-4'>
+                      <div>
+                        <label
+                          className='text-xs text-black opacity-70 font-bold'
+                          htmlFor=''>
+                          Have your own site you want to invite your creators to
+                          sign up for this campaign from? Copy this embed code.
+                        </label>
+                      </div>
                       <div>
                         <button
-                          className={`text-sm ml-6 w-40 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 ${ptMono.className}`}>
+                          className={`text-sm m-6 w-40 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 w-full p-4 ${ptMono.className}`}>
                           <label htmlFor='my-modal-3'> embed a form</label>
                         </button>
                         <input type='checkbox' id='my-modal-3' className='  modal-toggle' />
