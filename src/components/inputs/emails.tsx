@@ -21,10 +21,9 @@ function InputEmails({ email, setEmails, required }: Props) {
         email.push(item.trim());
       }
     });
-
-    setEmails([...email])
-    e.target.value = ''
-    e.preventDefault()
+    setEmails([...email]);
+    e.target.value = '';
+    e.preventDefault();
   }
 
   return (
