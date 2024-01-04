@@ -5,20 +5,31 @@ import React from 'react'
 import { inter, ptMono } from '@/app/fonts'
 import { User } from '@prisma/client'
 import Link from 'next/link'
+import Spinner from '@/components/loading/spinner'
 
 export function SharedForm({ user }: { user: User }) {
   const [email, setEmail] = useState('')
   const [enviadoStatus, setEnviadoStatus] = useState('bg-transparent')
   const [enviado, setEnviado] = useState('')
   const [inviteStatus, setInviteStatus] = useState('invite')
+  const [loading, setLoading] = React.useState(false)
+
   const handleChange = (event: any) => {
-    setEmail(event.target.value)
+    setEnviado('');
+    setEmail(event.target.value);
   }
 
   const [creatorSelected, setCreatorSelected] = useState('')
 
   const sendGetRequest = async () => {
-    const recipientEmail = email
+    const recipientEmail = email;
+
+    if (!recipientEmail) {
+      setEnviado('Error, write the email correctly');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch(`/api/email?to=${recipientEmail}`, {
@@ -36,10 +47,12 @@ export function SharedForm({ user }: { user: User }) {
     } catch (error) {
       console.error('Error en la solicitud:', error)
     }
+    setLoading(false);
   }
 
   return (
     <div className='px-12 mt-8'>
+
       <h2>Connect with {user.name}</h2>
       <label className='text-xs text-black opacity-50' htmlFor=''>
         Connect with your agency using codecoco to facilitate access to
@@ -48,6 +61,11 @@ export function SharedForm({ user }: { user: User }) {
           Learn more about privacy and security.
         </Link>
       </label>
+
+      <div className='text-center'>
+        <br />
+        {loading ? (<Spinner width='w-4' height='h-4' border='border-2' />) : ''}
+      </div>
 
       <p className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
         Send me an invite via email
