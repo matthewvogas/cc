@@ -30,7 +30,9 @@ export default function AddCreators({ userCreators, session }: Props) {
   const [enviadoStatus, setEnviadoStatus] = useState('bg-transparent')
   const [enviado, setEnviado] = useState('')
   const [inviteStatus, setInviteStatus] = useState('invite')
+
   const handleChange = (event: any) => {
+    setEnviado('');
     setEmail(event.target.value)
   }
 
@@ -44,7 +46,7 @@ export default function AddCreators({ userCreators, session }: Props) {
 
   const [codeToCopy, setcodeToCopy] = React.useState('');
   const router = useRouter()
-  const [isOpenSend, setIsOpenSend] = React.useState(false)
+  const [isOpenSend, setIsOpenSend] = React.useState(false);
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Stats</title> </head> <body>' +
@@ -72,8 +74,12 @@ export default function AddCreators({ userCreators, session }: Props) {
   }
 
   const sendGetRequest = async () => {
-    const recipientEmail = email
-    setIsOpenSend(true);
+    const recipientEmail = email;
+
+    if (!recipientEmail) {
+      setEnviado('Error, write the email correctly');
+      return;
+    }
 
     try {
       const response = await fetch(`/api/email?to=${recipientEmail}`, {
@@ -90,11 +96,9 @@ export default function AddCreators({ userCreators, session }: Props) {
           setEnviadoStatus('bg-transparent')
           setInviteStatus('invited')
           setEmail('')
-          setIsOpenSend(false);
-          router.refresh();
+          setIsOpenSend(true);
         }, 2000)
       } else {
-        setIsOpenSend(false);
         console.error('Error en la solicitud:', response.statusText);
         setEnviado('Error, write the email correctly');
       }
@@ -420,7 +424,10 @@ export default function AddCreators({ userCreators, session }: Props) {
       </Dialog>
       <Dialog
         open={isOpenSend}
-        onClose={() => setIsOpenSend(false)}
+        onClose={() => {
+          setIsOpenSend(false);
+          router.refresh();
+        }}
         className='relative z-[99]'>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className='fixed inset-0 bg-black bg-opacity-25' />
@@ -433,7 +440,7 @@ export default function AddCreators({ userCreators, session }: Props) {
               <p style={styles.centered}>your creators have been invited.</p>
               <Image
                 priority
-                className={`w-full object-cover`}
+                className={`object-cover`}
                 src={imageCover}
                 alt={'card'}
                 width={500}
