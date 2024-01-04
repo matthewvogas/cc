@@ -100,6 +100,7 @@ export default async function CampaignPage({
               client={client}
               connections={connections}
               access={access}
+              shared={false}
             />
           </>
         )}

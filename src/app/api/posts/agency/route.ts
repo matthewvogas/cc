@@ -14,24 +14,18 @@ export async function GET(req: NextRequest) {
     const tags = url.searchParams.get('tags')
     const creators = url.searchParams.get('creators')
     const activeSocial = url.searchParams.get('activeSocial')
+    const order = url.searchParams.get('order')
+    const performance = url.searchParams.get('performance')
 
-    let condition: {
-      platform: string | { in: string[] }
-      campaignId: number
-      creatorId?: { in: number[] }
-      caption?: {  }
-    } = {
-      platform:
-        activeSocial! == 'All'
-          ? { in: ['instagram', 'tiktok'] }
-          : activeSocial!,
+    let clause: any = {
+      platform: activeSocial! == 'All' ? { in: ['instagram', 'tiktok'] } : activeSocial!,
       campaignId: parseInt(campaignId!),
     }
 
     if (creators) {
       const creatorIds = creators.split(',').map(id => parseInt(id))
-      condition = {
-        ...condition,
+      clause = {
+        ...clause,
         creatorId: {
           in: creatorIds,
         },
@@ -39,9 +33,9 @@ export async function GET(req: NextRequest) {
     }
 
     if (tags) {
-      const orTags = tags?.split(',').map(tag => {
-        condition = {
-          ...condition,
+      tags?.split(',').map(tag => {
+        clause = {
+          ...clause,
           caption: {
             contains: tag,
           },
@@ -49,9 +43,28 @@ export async function GET(req: NextRequest) {
       })
     }
 
+    if (performance == 'true') {
+      clause = {
+        ...clause,
+        likesCount: { not: null },
+        impressionsCount: { not: null },
+        sharesCount: { not: null }
+      }
+    }
+
+    let mainOrder = {}
+    if (order == 'createdAt') mainOrder = { orderBy: { createdAt: 'desc' } }
+    if (order == 'impressionsCount') {
+      mainOrder = { orderBy: { impressionsCount: 'desc' } }
+      clause = {
+        ...clause,
+        impressionsCount: { not: null }
+      }
+    }
+
     const posts = await db.post.findMany({
       where: {
-        ...condition,
+        ...clause,
       },
       include: {
         creator: true,
@@ -59,11 +72,12 @@ export async function GET(req: NextRequest) {
       },
       take: +limit,
       skip: +offset,
+      ...mainOrder
     })
     const hasMore = true
 
     const totalPosts = await db.post.count({
-      where: { ...condition },
+      where: { ...clause },
     })
 
     return NextResponse.json({ posts, hasMore, totalPosts })
