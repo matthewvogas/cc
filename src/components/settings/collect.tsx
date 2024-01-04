@@ -312,7 +312,7 @@ export default function Collect({
       label: 'Instagram Stories',
       content: (
         <div className='mt-8'>
-          <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48'>
+          <div className=' justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-48 mx-12'>
             {loading ? (
               <Spinner width='w-4' height='h-4' border='border-2' />
             ) : null}
@@ -456,7 +456,6 @@ export default function Collect({
 
                     <div className='text-right'>
                       {tiktokPage.length > 0 || instagramPage.length > 0 ? (
-                        <div>
                           <button
                             className='cursor-pointer'
                             onClickCapture={handleNetworks}>
@@ -466,11 +465,10 @@ export default function Collect({
                               {'collect'}
                             </label>
                           </button>
-                        </div>
                       ) : (
                         <button
                           disabled
-                          className='cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl border-gray-200 bg-[#e9e9e9] px-8 py-3'
+                          className={`cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl border-gray-200 bg-[#e9e9e9] px-8 py-3`}
                           onClickCapture={handleNetworks}>
                           {'collect posts'}
                         </button>
@@ -559,7 +557,6 @@ export default function Collect({
 
                     <div className='text-right mt-12'>
                       {instagramPage.length > 0 ? (
-                        <div>
                           <button
                             className='cursor-pointer'
                             onClickCapture={handleInstagramStories}>
@@ -569,11 +566,10 @@ export default function Collect({
                               {'update stories'}
                             </label>
                           </button>
-                        </div>
                       ) : (
                         <button
                           disabled
-                          className={`cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl border-gray-200 bg-[#e9e9e9] px-8 py-3`}
+                          className={`cursor-not-allowed ${ptMono.className} cursor-pointer rounded-xl bg-[#e9e9e9] px-8 py-3`}
                           onClickCapture={handleInstagramStories}>
                           {'update stories'}
                         </button>

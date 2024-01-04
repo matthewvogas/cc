@@ -19,7 +19,7 @@ function CustomTabs({ tabs }: Props) {
 
   return (
     <div className='flex flex-row mt-10'>
-      <div className='flex flex-col text-start ml-12 w-56 rounded-lg font-semibold'>
+      <div className='flex flex-col gap-2 text-start ml-12 w-64 rounded-lg font-semibold'>
         {tabs.map((tab, index) => (
           <div
             key={index}
@@ -131,7 +131,7 @@ export default function Settings({ session, user }: Props) {
                   edit
                 </button>
               </div>
-              <div className='flex flex-col gap-4 mt-10 '>
+              <div className='flex flex-col gap-4 mt-10 mr-12'>
                 <input
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -163,42 +163,7 @@ export default function Settings({ session, user }: Props) {
                   />
                   <div className='divider'></div>
                 </div>
-                <div className=''>
-                  <span className='font-semibold'>Categories</span>
-                  <div className='flex flex-row gap-3 mt-5'>
-                    <button className='border-2 border-[#E2DED4] rounded-full px-8 py-3 hover:bg-color-[#E2DED4]'>
-                      beauty
-                    </button>
-                    <button className='border-2 border-[#E2DED4] rounded-full px-8 py-3'>
-                      fashion
-                    </button>
-                    <button className='border-2 border-[#E2DED4] rounded-full px-8 py-3 hover:bg-color-[#E2DED4]'>
-                      skincare
-                    </button>
-                    <button className='border-dashed border-2 border-[#859991] rounded-full px-8 py-3'>
-                      add
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <div className='gap-10 mt-5'>
-                    <span className='font-semibold'>Location</span>
-                  </div>
-                  <div className='flex flex-row gap-20 mt-5'>
-                    <div className='flex flex-col gap-2'>
-                      <span className='font-semibold'>Country</span>
-                      <input
-                        className={`${ptMono.className} text-black placeholder-black bg-background bg-opacity-40 outline-none rounded-md py-2 pl-1 px-10`}
-                        placeholder='Costa Rica'></input>
-                    </div>
-                    <div className='flex flex-col gap-2 mb-10'>
-                      <span className='font-semibold'>City</span>
-                      <input
-                        className={`${ptMono.className} text-black placeholder-black bg-background bg-opacity-40 outline-none rounded-md py-2 pl-1 px-10`}
-                        placeholder='San Jose'
-                      />
-                    </div>
-                  </div>
+                <div>          
                 </div>
               </div>
             </div>

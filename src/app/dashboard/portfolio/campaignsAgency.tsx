@@ -11,11 +11,13 @@ import Link from 'next/link'
 import useConnections from '@/hooks/useConnections'
 
 type Props = {
+  connections: any
   clients: any
   campaigns: any
   instagramPages: any
 }
 export default function CampaignsAgency({
+  connections,
   clients,
   campaigns,
   instagramPages,
@@ -79,7 +81,7 @@ export default function CampaignsAgency({
     <div>
       <section>
         <div className='flex justify-between mb-8'>
-          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 mx-12'>
             <div className='flex gap-4'>
               {/* <FilterPostsTrigger
                 filterPosts={filterPosts}
@@ -96,7 +98,7 @@ export default function CampaignsAgency({
 
             <div className='flex gap-4 justify-end'>
               <AddPortfolio
-                clientsFallback={clients}
+                clientsFallback={connections}
                 text={'create a portfolio'}
                 icon={undefined}
               />
@@ -106,7 +108,7 @@ export default function CampaignsAgency({
 
         {/* // cambiar aqui */}
 
-        <div className='flex flex-col bg-white pt-12'>
+        <div className='flex flex-col bg-white pt-6'>
           <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
             {filteredCards?.length > 0 ? (
               filteredCards.map((card: any, index: any) => (

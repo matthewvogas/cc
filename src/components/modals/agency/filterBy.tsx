@@ -45,7 +45,7 @@ export default function InputSearchValue(props: {
                 setSearchValue(event.target.value)
               }}
               id='default-input' 
-              className="textarea w-full border border-gray-300 bg-[#0000] text-sm text-gray-900 focus:outline-0"
+              className="textarea w-full border border-gray-300 bg-[#0000] text-sm text-gray-900 focus:outline-0 flex align-middle items-center"
               placeholder="Search"
               name=''
               value={searchValue}>

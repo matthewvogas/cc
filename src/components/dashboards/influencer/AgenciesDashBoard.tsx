@@ -149,7 +149,7 @@ export default function AgenciesDashBoard({
   return (
     <>
       <div className='flex flex-col bg-white'>
-        <div className='flex px-12 gap-3 items-start justify-between overflow-x-auto mt-8'>
+        <div className='flex mx-12 gap-3 items-start justify-between overflow-x-auto mt-4'>
           <div className=' flex gap-3'>
             <div>
               <p className={`${ptMono.className} mb-2 text-sm`}>by Name</p>
@@ -158,20 +158,12 @@ export default function AgenciesDashBoard({
                 setInputSearchValue={setInputSearchValue}
               />
             </div>
-            <div>
-              <p className={`${ptMono.className} mb-2 text-sm`}>tags</p>
-              <SearchByTag
-                setSearchTags={setSearchTags}
-                tagSelected={tagSelected}
-                searchTags={filteredAgencies}
-              />
-            </div>
           </div>
           <div>
             <label
               htmlFor='my-modal-3'
-              className='bg-[#E9F7F0] flex bg-text-lg align-center items-center border-rose-100 mx-2 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer'>
-              Connect with agencies
+              className={`bg-[#ECF7F8] flex bg-text-lg align-center items-center border-rose-100 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer`}>
+              connect with a new agency 🥥
             </label>
             <input type='checkbox' id='my-modal-3' className='modal-toggle' />
             <div className='modal '>
@@ -197,6 +189,11 @@ export default function AgenciesDashBoard({
                       htmlFor=''
                       className={`bg-white px-9 py-5 rounded-full ${SecondStep == true ? '' : 'bg-opacity-40'}`}>
                       2. Connect Instagram
+                    </label>
+                    <label
+                      htmlFor=''
+                      className={`bg-white px-9 py-5 rounded-full ${SecondStep == true ? '' : 'bg-opacity-40'}`}>
+                      3. Connect Tiktok
                     </label>
                   </div>
                 </div>
@@ -294,7 +291,7 @@ export default function AgenciesDashBoard({
                     </div>
                   </SwiperSlide>
 
-                  {/* <SwiperSlide style={{ borderRadius: '10px' }}>
+                  <SwiperSlide style={{ borderRadius: '10px' }}>
                     <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>
                       <div>
                         <div>
@@ -303,9 +300,19 @@ export default function AgenciesDashBoard({
                           </h2>
                           <p>{agenciesSelected?.name}</p>
                           <div>
-                            <button className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
-                              Connect to Tiktok
-                            </button>
+                          <div>
+                            {instagramConnection == null ? (
+                              <a
+                                href='/api/oauth/connect/facebook'
+                                className='bg-[#859991] p-5 px-20 text-white rounded-lg '>
+                                Connect to Instagram
+                              </a>
+                            ) : (
+                              <label className='bg-[#859991] p-5 px-20 text-white rounded-lg'>
+                                Already Connected
+                              </label>
+                            )}
+                          </div>
                           </div>
                         </div>
                       </div>
@@ -319,7 +326,7 @@ export default function AgenciesDashBoard({
                         Send Invite!
                       </RegisterNextButton>
                     </div>
-                  </SwiperSlide> */}
+                  </SwiperSlide>
 
                   <SwiperSlide style={{ borderRadius: '10px' }}>
                     <div className='flex flex-col px-20 pb-20 justify-between mt-[96px] h-[483px] text-black'>

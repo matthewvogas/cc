@@ -15,10 +15,6 @@ const links = [
     name: 'dashboard',
   },
   {
-    href: '/dashboard/campaigns',
-    name: 'campaigns',
-  },
-  {
     href: '/dashboard/invitations',
     name: 'agencies',
   },

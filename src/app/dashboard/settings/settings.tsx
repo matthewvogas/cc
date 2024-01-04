@@ -19,6 +19,7 @@ type Props = {
   instagramConnection: any
   tiktokConnection: any
   tiktokToken: any
+  portfolio: any
 }
 
 export default function Settings({
@@ -32,6 +33,7 @@ export default function Settings({
   instagramConnection,
   tiktokConnection,
   tiktokToken,
+  portfolio,
 }: Props) {
   const tabs: TabItem[] = [
     {
@@ -48,6 +50,8 @@ export default function Settings({
         <div>
           <Connections
             session={session}
+            instagramPages={instagramPages}
+            tiktokPages={tiktokPages}
             InstagramConnection={instagramConnection}
             tiktokConnection={tiktokConnection}
           />
@@ -67,6 +71,14 @@ export default function Settings({
   if (session.user.role === 'CREATOR') {
     tabs.push(
       {
+        label: 'Portfolio',
+        content: (
+          <div>
+            <CreatorsPortfolio session={portfolio} />
+          </div>
+        ),
+      },
+      {
         label: 'My data',
         content: (
           <div>
@@ -81,15 +93,7 @@ export default function Settings({
             />
           </div>
         ),
-      },
-      {
-        label: 'Portfolio',
-        content: (
-          <div>
-            <CreatorsPortfolio />
-          </div>
-        ),
-      },
+      }
     )
   }
 
@@ -132,14 +136,14 @@ function Tabs({ tabs }: TabsProps) {
   return (
     <div className='w-full'>
       <Tab.Group>
-        <Tab.List className='flex p-1 space-x-16 ml-16 py-6'>
+        <Tab.List className=' space-x-16 pl-12  border-b-2 '>
           {tabs.map((tab, index) => (
             <Tab
               key={index}
               className={({ selected }) =>
-                `relative p-2${
-                  selected ? 'text-brown  outline-none' : 'text-brown'
-                } inline-block`
+                `relative ${
+                  selected ? 'font-medium text-brown pb-5 border-b-4 border-[#808080] outline-none text-[#000]' : ' text-[#808080]'
+                } inline-block pb-6 `
               }
               onClick={() => handleTabClick(index)}>
               {tab.label}
@@ -147,7 +151,6 @@ function Tabs({ tabs }: TabsProps) {
           ))}
         </Tab.List>
       </Tab.Group>
-      <div className='divider -mt-3' />
       <div className=''>{tabs[activeTab].content}</div>
     </div>
   )

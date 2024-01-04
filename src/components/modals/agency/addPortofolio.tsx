@@ -3,6 +3,9 @@ import { Dialog } from '@headlessui/react'
 import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import imageCompression from 'browser-image-compression'
+import plus from 'public/plus.svg'
+import Image from 'next/image'
+import useConnections from '@/hooks/useConnections'
 
 type Props = {
   clientsFallback: any
@@ -10,12 +13,7 @@ type Props = {
   icon: any
 }
 
-export default function AddPortfolio({
-  clientsFallback,
-  text,
-  icon,
-}: Props) {
-
+export default function AddPortfolio({ clientsFallback, text, icon }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [name, setName] = useState('')
@@ -25,6 +23,13 @@ export default function AddPortfolio({
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileName, setFileName] = useState<string | null>(null)
+
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 100000
+
+  const { data, areAgenciesLoading, agenciesError, refreshAgencies } =
+    useConnections(limit, currentPage * limit)
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -81,9 +86,9 @@ export default function AddPortfolio({
         }}>
         <label
           tabIndex={0}
-          className={`bg-[#E9F7F0] flex bg-text-lg align-center items-center border-rose-100 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer`}>
+          className={`bg-[#E9F7F0] gap-2 flex bg-text-lg align-center items-center border-rose-100 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer ${ptMono.className}`}>
           {text}
-          {icon}
+          <Image src={plus} alt={''} />
         </label>
       </button>
 
@@ -91,12 +96,9 @@ export default function AddPortfolio({
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className='relative z-[99]'>
-        {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className='fixed inset-0 bg-black bg-opacity-25' />
 
-        {/* Full-screen container to center the panel */}
         <div className='fixed inset-0 flex items-center justify-center p-4'>
-          {/* The actual dialog panel  */}
           <Dialog.Panel className='flex max-w-lg flex-col items-center justify-center rounded-xl bg-white px-20 py-12'>
             <Dialog.Title className='text-lg font-bold'>
               Add New Portfolio
@@ -114,11 +116,23 @@ export default function AddPortfolio({
                     Choose a client
                   </option>
                   <option>No Client</option>
-                  {clientsFallback.map((client: Client, index: any) => (
-                    <option value={client.id} key={index}>
-                      {client.name}
-                    </option>
-                  ))}
+                  {data?.connections.map((connection: any, index: number) => {
+                    if (connection.user1.role === 'AGENCY') {
+                      return (
+                        <option value={connection.user1.id} key={index}>
+                          {connection.user1.name}
+                        </option>
+                      )
+                    }
+                    else if (connection.user2.role === 'AGENCY') {
+                      return (
+                        <option value={connection.user2.id} key={index}>
+                          {connection.user2.name}
+                        </option>
+                      )
+                    }
+                    return null 
+                  })}
                 </select>
 
                 {title === 'new hashtag portfolio' && (
@@ -187,7 +201,7 @@ export default function AddPortfolio({
               <div className='flex items-center justify-center'>
                 <button
                   type='submit'
-                  className='mb-2 w-full cursor-pointer text-center text-black rounded-full bg-[#FCDDD1] px-4 '>
+                  className='mb-2 w-full cursor-pointer text-center py-2.5 text-black rounded-full bg-[#FCDDD1] px-4 '>
                   create portfolio
                 </button>
               </div>
