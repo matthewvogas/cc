@@ -68,7 +68,7 @@ export default function AddCreators({ userCreators, session }: Props) {
       })
 
       if (res.status === 200) console.log(res.status)
-    } catch (error: any) { }
+    } catch (error: any) {}
 
     setIsOpen(false)
   }
@@ -139,9 +139,18 @@ export default function AddCreators({ userCreators, session }: Props) {
     }
   }
 
+  const cleanData = () => {
+    setEnviado('');
+    setIsCopied(false);
+    setEnviadoStatus('');
+    setEmail('');
+    setIsOpen(false);
+    setIsOpenSend(false);
+    router.refresh();
+  }
+
   const styles = {
     centered: {
-      position: 'absolute',
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
@@ -165,7 +174,9 @@ export default function AddCreators({ userCreators, session }: Props) {
 
       <Dialog
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          cleanData();
+        }}
         className='relative z-[99]'>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
@@ -425,8 +436,7 @@ export default function AddCreators({ userCreators, session }: Props) {
       <Dialog
         open={isOpenSend}
         onClose={() => {
-          setIsOpenSend(false);
-          router.refresh();
+          cleanData();
         }}
         className='relative z-[99]'>
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
