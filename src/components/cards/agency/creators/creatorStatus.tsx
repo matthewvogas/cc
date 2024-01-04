@@ -273,18 +273,18 @@ export function Connect({ session, creator }: Props) {
                               </div>
                               <hr className='my-8 h-px border-0 bg-gray-200'></hr>
                               <div className='flex mb-12'>
-                                                                  <label
-                                    className='text-xs text-black opacity-70'
-                                    htmlFor=''>
-                                    Have your own site you want to invite your creators to
-                                    sign up for this campaign from? Copy this embed code.
-                                  </label>
-                                                                            <button
-                                              onClick={copyToClipboardCode}
-                                              className={`text-sm ml-6 w-80 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 ${ptMono.className}`}>
-                                              embed a form
-                                            </button>
-                                                                        </div>
+                                <label
+                                  className='text-xs text-black opacity-70'
+                                  htmlFor=''>
+                                  Have your own site you want to invite your creators to
+                                  sign up for this campaign from? Copy this embed code.
+                                </label>
+                                <button
+                                  onClick={copyToClipboardCode}
+                                  className={`text-sm ml-6 w-80 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 ${ptMono.className}`}>
+                                  embed a form
+                                </button>
+                              </div>
                               {isCopied && (
                                 <div className='shadow-lg fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-300 px-4 py-2 rounded-md'>
                                   Code copied!
