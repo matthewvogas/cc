@@ -31,6 +31,10 @@ export default function AddCreators({ userCreators, session }: Props) {
   const [enviadoStatus, setEnviadoStatus] = useState('bg-transparent')
   const [enviado, setEnviado] = useState('')
   const [inviteStatus, setInviteStatus] = useState('invite')
+  const [codeToCopy, setcodeToCopy] = React.useState('');
+  const router = useRouter()
+  const [isOpenSend, setIsOpenSend] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const handleChange = (event: any) => {
     setEnviado('');
@@ -44,11 +48,6 @@ export default function AddCreators({ userCreators, session }: Props) {
       .includes(inputSearchValue.toLowerCase())
     return creatorNameMatches
   })
-
-  const [codeToCopy, setcodeToCopy] = React.useState('');
-  const router = useRouter()
-  const [isOpenSend, setIsOpenSend] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Stats</title> </head> <body>' +
