@@ -50,18 +50,23 @@ export async function POST(req: NextRequest) {
     const tags = JSON.parse(formData.get('tags') as string)
     const image = formData.get('image') as Blob
 
-    const buffer = Buffer.from(await image.arrayBuffer())
-    const resized = await sharp(buffer).webp({ quality: 80 }).toBuffer()
-    const blob = new Blob([resized], { type: 'image/webp' })
+    const UploadedImageUrl = null;
 
-    const UploadedImageUrl = await S3Service.uploadObject(
-      blob,
-      name,
-      'clients',
-      'images',
-    )
-    if (!UploadedImageUrl) {
-      throw new Error('Failed to upload image to S3')
+    if (image) {
+      const buffer = Buffer.from(await image.arrayBuffer())
+      const resized = await sharp(buffer).webp({ quality: 80 }).toBuffer()
+      const blob = new Blob([resized], { type: 'image/webp' })
+
+      const UploadedImageUrl = await S3Service.uploadObject(
+        blob,
+        name,
+        'clients',
+        'images',
+      )
+
+      if (!UploadedImageUrl) {
+        throw new Error('Failed to upload image to S3')
+      }
     }
 
     const existingTags = await db.tag.findMany({

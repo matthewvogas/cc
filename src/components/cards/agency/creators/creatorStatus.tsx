@@ -4,6 +4,7 @@ import { User } from '@prisma/client'
 import { inter } from '@/app/fonts'
 import Link from 'next/link'
 import { ptMono } from '@/app/fonts'
+import Spinner from '@/components/loading/spinner'
 
 type Props = {
   creator: any
@@ -19,12 +20,15 @@ export function Connect({ session, creator }: Props) {
   const [linkToShareInvite, setLinkToShareInvite] = useState('')
   const [codeToShareInvite, setCodeToShareInvite] = useState('')
   const [isCopied, setIsCopied] = useState(false)
+  const [loading, setLoading] = React.useState(false);
 
   const handleChange = (event: any) => {
+    setEnviado('');
     setEmail(event.target.value)
   }
 
   const sendInvite = async () => {
+    setLoading(true);
     const creatorId = await creator.users.find(
       (user: any) => user.role === 'CREATOR',
     ).id
@@ -43,10 +47,18 @@ export function Connect({ session, creator }: Props) {
       if (res.status === 200) console.log(res.status)
     } catch (error: any) { }
     setIsOpen(false)
+    setLoading(false);
   }
 
   const sendGetRequest = async () => {
     const recipientEmail = email
+
+    if (!recipientEmail) {
+      setEnviado('Error, write the email correctly');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch(`/api/email?to=${recipientEmail}`, {
@@ -70,6 +82,7 @@ export function Connect({ session, creator }: Props) {
     } catch (error) {
       console.error('Error en la solicitud:', error)
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -102,7 +115,14 @@ export function Connect({ session, creator }: Props) {
     }
   }
 
-
+  const cleanData = () => {
+    setEnviado('');
+    setIsCopied(false);
+    setEnviadoStatus('');
+    setEmail('');
+    setIsOpen(false);
+    setLoading(false);
+  }
 
   return (
     <>
@@ -115,7 +135,7 @@ export function Connect({ session, creator }: Props) {
 
       <Dialog
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => cleanData()}
         className='relative z-[99]'>
         <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
         <div className='fixed inset-0 flex items-center justify-center p-4'>
@@ -153,7 +173,7 @@ export function Connect({ session, creator }: Props) {
               <>
                 <Dialog
                   open={isOpen}
-                  onClose={() => setIsOpen(false)}
+                  onClose={() => cleanData()}
                   className='relative z-[99]'>
                   {/* The backdrop, rendered as a fixed sibling to the panel container */}
                   <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
@@ -162,7 +182,8 @@ export function Connect({ session, creator }: Props) {
                   <div className='fixed inset-0 flex items-center justify-center p-4'>
                     <Dialog.Panel className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
                       <Dialog.Title className='text-lg font-medium px-12 mt-12 mb-8 text-center'>
-                        invite creators
+                        invite creators <br />
+                        {loading ? (<Spinner width='w-4' height='h-4' border='border-2' />) : ''}
                       </Dialog.Title>
                       <Tab.Group>
                         <Tab.List className={`flex flex-row items-center justify-center gap-6 mb-6 ${ptMono.className}`}>
@@ -232,7 +253,6 @@ export function Connect({ session, creator }: Props) {
                               </div>
                             </div>
                           </Tab.Panel>
-                          
                           <Tab.Panel>
                             <div className='px-12 mt-2'>
                               <label className='text-xs text-black opacity-50' htmlFor=''>
