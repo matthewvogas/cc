@@ -13,12 +13,17 @@ function InputEmails({ email, setEmails, required }: Props) {
 
   function handleKeyDown(e: any) {
     if (e.key !== 'Enter') return
-    const value = e.target.value
+    const value = e.target.value;
 
-    if (!value.trim()) return
-    setEmails([...email, value])
-    e.target.value = ''
-    e.preventDefault()
+    value.split(',').map((item: string) => {
+      const exist = email.filter((el) => el === item.trim());
+      if (!exist.length) {
+        email.push(item.trim());
+      }
+    });
+    setEmails([...email]);
+    e.target.value = '';
+    e.preventDefault();
   }
 
   return (

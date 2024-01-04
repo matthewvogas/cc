@@ -49,6 +49,8 @@ export default function PostsByPlatform({
   const limit = 10
   const router = useRouter()
 
+  const [order, setOrder] = useState('')
+
   const { data, arePostsLoading, postsError } = usePosts(
     String(campaign.id),
     limit,
@@ -277,6 +279,9 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
+                order={order}
+                setOrder={setOrder}
+                setPage={setPage}
               />
 
               <div className='pt-6'>
@@ -353,6 +358,9 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
+                order={order}
+                setOrder={setOrder}
+                setPage={setPage}
               />
 
               <div className='pt-6'>
@@ -453,6 +461,9 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
+                order={order}
+                setOrder={setOrder}
+                setPage={setPage}
               />
 
               <div className='pt-6'>

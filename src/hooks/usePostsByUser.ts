@@ -6,6 +6,8 @@ export default function usePosts(
   limit: number,
   offset: number,
   activeSocial: string,
+  order?: string,
+  performance?: boolean,
   tags?: string[],
   creators?: any[],
 ) {
@@ -19,7 +21,9 @@ export default function usePosts(
   params.set('offset', offset.toString())
   params.set('activeSocial', activeSocial)
   params.set('creators', creatorIdsString)
-  params.set('tags', tagsString)
+  params.set('tags', tagsString) 
+  params.set('order', order!)
+  params.set('performance', performance!.toString())
 
   const { data, error, mutate, isLoading } = useSWR(
     `/api/posts/agency?${params.toString()}`,

@@ -370,7 +370,7 @@ export default function Collect({
                       <br />
                       <span className='font-semibold'>
                         {' '}
-                        If the page has less than 100 followers. It will not
+                        If the page has less than 100 followers. It could not
                         appear on the list.
                       </span>
                     </p>
@@ -378,10 +378,10 @@ export default function Collect({
                     <div className='flex flex-col justify-start items-start gap-4'>
                       {loading ? (
                         <Spinner width='w-4' height='h-4' border='border-2' />
-                      ) : instagramPages.length > 0 ? (
+                      ) : instagramPages.length >= 0 ? (
                         instagramPages.map(
                           (page: instagramPages, index: number) =>
-                            parseInt(page.followers_count) > 0 && (
+                            parseInt(page.followers_count) >= 0 && (
                               <>
                                 <span className='text-base '>
                                   Facebook Page:{' '}
@@ -512,7 +512,7 @@ export default function Collect({
                       <br />
                       <span className='font-semibold'>
                         {' '}
-                        If the page has less than 100 followers. It will not
+                        If the page has less than 100 followers. It could not
                         appear on the list.
                       </span>
                     </p>
@@ -520,10 +520,10 @@ export default function Collect({
                     <div className='flex flex-col justify-start items-start gap-4'>
                       {loading ? (
                         <Spinner width='w-4' height='h-4' border='border-2' />
-                      ) : instagramPages.length > 0 ? (
+                      ) : instagramPages.length >= 0 ? (
                         instagramPages.map(
                           (page: instagramPages, index: number) =>
-                            parseInt(page.followers_count) > 0 && (
+                            parseInt(page.followers_count) >= 0 && (
                               <>
                                 <span className='text-base '>
                                   Facebook Page:{' '}
@@ -531,11 +531,11 @@ export default function Collect({
                                 </span>
                                 <button
                                   onClick={() => {
-                                    setInstagram(page.id)
+                                    setInstagram(page.accountId)
                                   }}
                                   key={index}
                                   className={`${
-                                    instagramPage == page.id
+                                    instagramPage == page.accountId
                                       ? 'bg-[#3a7a55] border-[#265a3c] text-white'
                                       : ''
                                   } text-xs px-3 py-2 border  border-beigeSelected rounded-full hover:bg-[#3a7a55] hover:text-white`}>

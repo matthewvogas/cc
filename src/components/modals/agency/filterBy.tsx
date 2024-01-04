@@ -11,13 +11,15 @@ export default function InputSearchValue(props: {
   tags: any
   setTags: any
   handleDialog: any
+  setPage: any
 }) {
   const [searchValue, setSearchValue] = useState('')
 
   const handleClick = (creator: any) => {
-    
+    props.setPage([0])
     props.setCreatorsSelecteds((prevSelectedIds: any) => {
       if (!prevSelectedIds.includes(creator)) {
+        
         return [...prevSelectedIds, creator]
       }
       return [...prevSelectedIds]

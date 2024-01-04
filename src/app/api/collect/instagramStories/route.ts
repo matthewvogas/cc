@@ -16,26 +16,60 @@ export async function POST(req: NextRequest) {
     session!.user.id,
   )
 
-  async function imageFromS3(url: RequestInfo | URL, permalink: any) {
-    const image = await fetch(url).then(r => r.blob());
-    const name = String(permalink) + new Date().getTime();
-    const buffer = Buffer.from(await image.arrayBuffer())
-    const resized = await sharp(buffer)
-      .webp({ quality: 80 })
-      .resize(300, 300)
-      .toBuffer()
-    const blob = new Blob([resized], { type: 'image/webp' })
+  async function imageFromS3(
+    url: RequestInfo | URL,
+    permalink: string,
+    isThumbnail: boolean = false,
+  ): Promise<any> {
+    try {
+      console.log(url, 'URL being processed')
 
-    return await S3Service.uploadObject(
-      blob,
-      name,
-      'campaigns',
-      'images',
-    )
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+
+      const contentType = response.headers.get('content-type')
+      if (!contentType) {
+        throw new Error('Failed to retrieve content type')
+      }
+
+      let buffer: Buffer
+
+      if (
+        contentType.startsWith('image/') ||
+        (isThumbnail && contentType.startsWith('video/'))
+      ) {
+        const media = await response.blob()
+        buffer = Buffer.from(await media.arrayBuffer())
+      } else {
+        throw new Error('Unsupported content type: ' + contentType)
+      }
+
+      const resized = await sharp(buffer)
+        .webp({ quality: 80 })
+        .resize(300, 300)
+        .toBuffer()
+      const blob = new Blob([resized], { type: 'image/webp' })
+
+      let objectKey = String(permalink) + new Date().getTime()
+      if (isThumbnail) {
+        objectKey += '_thumbnail'
+      }
+
+      return await S3Service.uploadObject(
+        blob,
+        objectKey,
+        'campaigns',
+        'images',
+      )
+    } catch (error) {
+      console.error('Error processing file: ', error)
+      throw error
+    }
   }
 
   try {
-    const { searchParams } = new URL(req.url)
     const { pageId } = await req.json()
 
     const stories = await fetch(
@@ -55,8 +89,20 @@ export async function POST(req: NextRequest) {
         `https://graph.facebook.com/v18.0/${story.id}/insights/?metric=profile_activity,impressions,reach,replies,shares,profile_visits,follows&access_token=${token}`,
       ).then(res => res.json())
 
-      const UploadedImageUrl = await imageFromS3(data.thumbnail_url, data.permalink);
-      const UploadedMediaUrl = await imageFromS3(data.media_url, data.permalink);
+      let mediaUrlToUse
+      let isThumbnail = false
+
+      if (data.media_type === 'VIDEO') {
+        mediaUrlToUse = data.thumbnail_url
+        isThumbnail = true
+      } else {
+        mediaUrlToUse = data.media_url
+      }
+      const UploadedMediaUrl = await imageFromS3(
+        mediaUrlToUse,
+        data.permalink,
+        isThumbnail,
+      )
 
       if (navigation?.error?.message || insights?.error?.message) {
         console.log(`Data:`)
@@ -81,7 +127,7 @@ export async function POST(req: NextRequest) {
               uuid: data.id,
               userId: session.user.id,
               // meter creator ID
-              imageUrl: UploadedImageUrl || UploadedMediaUrl,
+              imageUrl: UploadedMediaUrl,
               username: data.username,
               permalink: data.permalink,
             },
@@ -92,7 +138,7 @@ export async function POST(req: NextRequest) {
               uuid: data.id,
               userId: session.user.id,
               // meter creator ID
-              imageUrl: UploadedImageUrl || UploadedMediaUrl,
+              imageUrl: UploadedMediaUrl,
               username: data.username,
               permalink: data.permalink,
             },
@@ -140,7 +186,7 @@ export async function POST(req: NextRequest) {
             },
             data: {
               uuid: data.id,
-              imageUrl: UploadedImageUrl || UploadedMediaUrl,
+              imageUrl: UploadedMediaUrl,
               userId: session.user.id,
               username: data.username,
               // meter creator ID
@@ -165,7 +211,7 @@ export async function POST(req: NextRequest) {
             data: {
               uuid: data.id,
               userId: session.user.id,
-              imageUrl: UploadedImageUrl || UploadedMediaUrl,
+              imageUrl: UploadedMediaUrl,
               username: data.username,
               // meter creator ID
               permalink: data.permalink,

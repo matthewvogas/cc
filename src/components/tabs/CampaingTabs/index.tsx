@@ -12,6 +12,19 @@ import { Posts } from '@/types/posts/PostByCampaignRes'
 import Stats from '@/components/stats/agency/stats'
 import { Story } from '@prisma/client'
 import { ptMono } from '@/app/fonts'
+import { Tab } from '@headlessui/react'
+import FilterPostsTrigger from '@/components/filters/filterPostsTrigger'
+import { FiRotateCw } from 'react-icons/fi'
+import { useRouter } from 'next/navigation'
+import AddNewPosts from '@/components/modals/agency/addPosts'
+import usePosts from '@/hooks/usePostsByUser'
+import Pagination from '@/components/pagination/pagination/pagination'
+import BrokeSocialLinks from '@/components/errors/agency/brokeSocialLinks'
+import FilterPostsContainer from '@/components/filters/filterPostsContainer'
+import { EmptyPost } from '@/components/empty/emptyPost'
+import PostCardTest from '@/components/cards/test/posts/postCard'
+import AddNewStories from '@/components/modals/agency/addStories'
+import StoryCard from '../../cards/agency/stories/storyCard'
 
 type StatsItem = {
   section: string
@@ -27,6 +40,7 @@ export default function CampaingsTabs({
   client,
   connections,
   access,
+  shared
 }: {
   campaign: CampaignRes
   creators: any
@@ -36,6 +50,7 @@ export default function CampaingsTabs({
   client: any
   connections: any
   access: any
+  shared: boolean
 }) {
 
   const [openTab, setOpenTab] = useState(1)
@@ -44,8 +59,49 @@ export default function CampaingsTabs({
   const [followerCountFilterSecond, setFollowerCountFilterSecond] = useState(0)
   const [selectedCampaign, setSelectedCampaign] = useState('')
 
-  console.log(session.user.role)
-  
+  const [tags, setTags] = useState<string[]>([])
+  const [creatorsSelecteds, setCreatorsSelecteds] = useState<any[]>([])
+
+  const [activeSocial, setActiveSocial] = useState('All')
+  const [activePlatforms, setActivePlatforms] = useState<any[]>([])
+  const [order, setOrder] = useState('')
+
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+  const router = useRouter()
+
+  const [filterPosts, setFilterPosts] = useState('hidden')
+  const [activeButton, setActiveButton] = useState('galleryView')
+  const [performance, setPerformance] = useState(false)
+
+  const calculateTopPerforing = (post: any) => {
+    return (((post.likesCount + post.impressionsCount) / 2) / post.impressionsCount)
+  }
+
+  const { data, arePostsLoading, postsError } = usePosts(
+    String(campaign.id),
+    limit,
+    currentPage * limit,
+    activeSocial,
+    order,
+    performance,
+    tags,
+    creatorsSelecteds,
+  )
+
+  const [loading, setLoading] = useState(false)
+
+  const instagramPostsCount = campaign.posts?.filter(
+    (post: any) => post.platform === 'instagram',
+  ).length
+
+  const tiktokPostsCount = campaign.posts?.filter(
+    (post: any) => post.platform === 'tiktok',
+  ).length
+
+  const storiesCount = campaign.stories?.length
+
   const getLikes = useMemo(() => {
     return posts.reduce(
       (totalLikes, post) => totalLikes + (post.likesCount || 0),
@@ -167,7 +223,7 @@ export default function CampaingsTabs({
           { title: getShares, description: 'shares' },
           { title: getSaves, description: 'saves' },
           //
-          { title: ((getLikes + getShares + getSaves + getComments) / getViews || 0).toFixed(2)+ '%', description: 'engagement/views' },
+          { title: ((getLikes + getShares + getSaves + getComments) / getViews || 0).toFixed(2) + '%', description: 'engagement/views' },
           { title: ((getLikes + getShares + getSaves + getComments) / getImpressions || 0).toFixed(2) + '%', description: 'engagement/impression' },
         ],
       },
@@ -200,6 +256,41 @@ export default function CampaingsTabs({
     }
   }, [session.user.role, statsNormal, statsTest])
 
+  const refreshPosts = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch(`/api/collect/auto`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: session.user.id,
+          campaignId: campaign.id,
+        }),
+      })
+
+      if (res.ok == true) {
+        setLoading(false)
+        router.push(`/dashboard/campaigns/${campaign.id}`)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const loadMorePosts = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
+
+  const loadPreviousPosts = () => {
+    setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const totalPages = Math.ceil(data?.totalPosts / limit)
+
   return (
     <>
       <div className='flex flex-wrap'>
@@ -213,11 +304,10 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 1
-                    ? 'border border-[#FACEBC]'
-                    : 'border border-[#ffffff]'
-                }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 1
+                  ? 'border border-[#FACEBC]'
+                  : 'border border-[#ffffff]'
+                  }`}>
                 overview
               </button>
               <button
@@ -227,11 +317,10 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 2
-                    ? 'border border-[#FACEBC]'
-                    : 'border border-[#ffffff]'
-                }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 2
+                  ? 'border border-[#FACEBC]'
+                  : 'border border-[#ffffff]'
+                  }`}>
                 creators
               </button>
               <button
@@ -241,11 +330,10 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 3
-                    ? 'border border-[#FACEBC]'
-                    : 'border border-[#ffffff]'
-                }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 3
+                  ? 'border border-[#FACEBC]'
+                  : 'border border-[#ffffff]'
+                  }`}>
                 posts
               </button>
               <button
@@ -255,11 +343,10 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 4
-                    ? 'border border-[#FACEBC]'
-                    : 'border border-[#ffffff]'
-                }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 4
+                  ? 'border border-[#FACEBC]'
+                  : 'border border-[#ffffff]'
+                  }`}>
                 stats
               </button>
               <button
@@ -267,11 +354,10 @@ export default function CampaingsTabs({
                   e.preventDefault()
                   setOpenTab(5)
                 }}
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 5
-                    ? 'border border-[#FACEBC]'
-                    : 'border border-[#ffffff]'
-                }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 5
+                  ? 'border border-[#FACEBC]'
+                  : 'border border-[#ffffff]'
+                  }`}>
                 share
               </button>
               <button
@@ -279,11 +365,10 @@ export default function CampaingsTabs({
                   e.preventDefault()
                   setOpenTab(6)
                 }}
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 6
-                    ? 'border border-[#FACEBC]'
-                    : 'border border-[#ffffff]'
-                }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 6
+                  ? 'border border-[#FACEBC]'
+                  : 'border border-[#ffffff]'
+                  }`}>
                 settings
               </button>
             </div>
@@ -366,7 +451,7 @@ export default function CampaingsTabs({
 
                     {/* active follower count filter */}
                     {followerCountFilter != 0 ||
-                    followerCountFilterSecond != 0 ? (
+                      followerCountFilterSecond != 0 ? (
                       <div className='flex justify-start w-full gap-4 px-12'>
                         <div
                           className={`flex flex-col rounded-xl border-2 bg-beigeFirst border-beigeBorder px-8 py-2`}>
@@ -442,18 +527,381 @@ export default function CampaingsTabs({
                   />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
-                  <div className='pt-6'>
-                    <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                      {campaign.posts?.map((post, index: any) => (
-                        <PostCard key={index} post={post} />
-                      ))}
-                      {campaign?.posts?.length === 0 && (
-                        <div className='col-span-4 md:col-span-2'>
-                          <h1>{`Seems like you don't have posts! :(`}</h1>
+                  <Tab.Group>
+                    <Tab.List className={`flex justify-between gap-6 border-b-[#E4E3E2] border-b`}>
+                      <div className='flex gap-6'>
+                        <Tab
+                          className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'All'
+                            ? 'border-b-4 border-[#7E7E7D]'
+                            : 'opacity-50'
+                            }`}
+                          onClick={() => {
+                            setActiveSocial('All'), setPage([0])
+                          }}>
+                          All posts
+                        </Tab>
+                        <Tab
+                          className={`p-2 text-base font-medium outline-none ${activeSocial === 'instagram'
+                            ? 'border-b-4 border-[#7E7E7D]'
+                            : 'opacity-50'
+                            }`}
+                          onClick={() => {
+                            setActiveSocial('instagram'), setPage([0])
+                          }}>
+                          Instagram{`(${instagramPostsCount})`}
+                        </Tab>
+                        <Tab
+                          className={`p-2 text-base font-medium outline-none ${activeSocial === 'tiktok'
+                            ? 'border-b-4 border-[#7E7E7D]'
+                            : 'opacity-50'
+                            }`}
+                          onClick={() => {
+                            setActiveSocial('tiktok'), setPage([0])
+                          }}>
+                          TikTok {`(${tiktokPostsCount})`}
+                        </Tab>
+                        <Tab
+                          className={`p-2 text-base font-medium outline-none ${activeSocial === 'Stories'
+                            ? 'border-b-4 border-[#7E7E7D]'
+                            : 'opacity-50'
+                            }`}
+                          onClick={() => {
+                            setActiveSocial('Stories'), setPage([0])
+                          }}>
+                          Stories {`(${storiesCount})`}
+                        </Tab>
+                      </div>
+                    </Tab.List>
+                    <Tab.Panels>
+                      {/* All Posts */}
+                      <Tab.Panel>
+                        <div className='flex justify-between mx-12 mb-8'>
+                          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4'>
+                            <div className='flex gap-4 w-full items-center justify-between'>
+                              <div className='flex gap-5'>
+                                <FilterPostsTrigger
+                                  filterPosts={filterPosts}
+                                  setFilterPosts={setFilterPosts}
+                                />
+                                <button
+                                  type='button'
+                                  onClick={() => {
+                                    setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                                    setPerformance((!performance) ? true : false)
+                                  }}
+                                  className={`${activeButton == 'topPerforming'
+                                    ? ' bg-[#D9F0F1]'
+                                    : 'bg-[#EBF6F6]'
+                                    } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                                  top performing 🥥
+                                </button>
+                              </div>
+                              {shared != true && (
+                                <div className='flex gap-4 justify-end'>
+                                  <button
+                                    onClick={refreshPosts}
+                                    className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                                    {loading == true ? 'loading...' : 'refresh data'}
+                                    <FiRotateCw
+                                      style={{
+                                        color: '#00000080',
+                                        fontSize: '1.2em',
+                                        marginLeft: '12px',
+                                      }}
+                                    />
+                                  </button>
+                                  <AddNewPosts
+                                    campaignsFallback={campaign}
+                                    clientsFallback={undefined}
+                                    connections={connections}
+                                    text={''}
+                                    icon={undefined}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  </div>
+
+                        <Pagination
+                          pageLength={page.length}
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          loadPrevious={loadPreviousPosts}
+                          loadMore={loadMorePosts}
+                        />
+
+                        <BrokeSocialLinks brokeLinks={[]} />
+
+                        <FilterPostsContainer
+                          id={campaign.id}
+                          shared={shared}
+                          creators={creators}
+                          filterPosts={filterPosts}
+                          setFilterPosts={setFilterPosts}
+                          activeButton={activeButton}
+                          setActiveSocial={setActiveSocial}
+                          activeSocial={activeSocial}
+                          setActiveButton={setActiveButton}
+                          tags={tags}
+                          setTags={setTags}
+                          creatorsSelecteds={creatorsSelecteds}
+                          setCreatorsSelecteds={setCreatorsSelecteds}
+                          activePlatforms={activePlatforms}
+                          setActivePlatforms={setActivePlatforms}
+                          order={order}
+                          setOrder={setOrder}
+                          setPage={setPage}
+                        />
+
+                        <div className='pt-6'>
+                          <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+                            {performance && data?.posts?.length > 0 ?
+                              data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
+                                (post: any, index: any) => (
+                                  <PostCard key={index} post={post} />
+                                )
+                              ) : data?.posts?.map((post: any, index: any) => (
+                                <PostCard key={index} post={post} />
+                              ))}
+                            {data?.posts?.length === 0 && (
+                              <div className='col-span-4 md:col-span-2'>
+                                <EmptyPost />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </Tab.Panel>
+
+                      {/* Instagram */}
+                      <Tab.Panel>
+                        <div className='flex justify-between mx-12 mb-8 '>
+                          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+                            <div className='flex gap-5'>
+                              <FilterPostsTrigger
+                                filterPosts={filterPosts}
+                                setFilterPosts={setFilterPosts}
+                              />
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                                  setPerformance((!performance) ? true : false)
+                                }}
+                                className={`${activeButton == 'topPerforming'
+                                  ? ' bg-[#D9F0F1]'
+                                  : 'bg-[#EBF6F6]'
+                                  } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                                top performing 🥥
+                              </button>
+                            </div>
+                            {shared != true && (
+                              <div className='flex gap-4 justify-end'>
+                                <button
+                                  className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                                  refresh data
+                                  <FiRotateCw
+                                    style={{
+                                      color: '#00000080',
+                                      fontSize: '1.2em',
+                                      marginLeft: '12px',
+                                    }}
+                                  />
+                                </button>
+                                <AddNewPosts
+                                  campaignsFallback={campaign}
+                                  clientsFallback={undefined}
+                                  connections={connections}
+                                  text={''}
+                                  icon={undefined}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <Pagination
+                          pageLength={page.length}
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          loadPrevious={loadPreviousPosts}
+                          loadMore={loadMorePosts}
+                        />
+
+                        <BrokeSocialLinks brokeLinks={[]} />
+
+                        <FilterPostsContainer
+                          id={campaign.id}
+                          shared={shared}
+                          creators={creators}
+                          filterPosts={filterPosts}
+                          setFilterPosts={setFilterPosts}
+                          activeButton={activeButton}
+                          setActiveSocial={setActiveSocial}
+                          activeSocial={activeSocial}
+                          setActiveButton={setActiveButton}
+                          tags={tags}
+                          setTags={setTags}
+                          creatorsSelecteds={creatorsSelecteds}
+                          setCreatorsSelecteds={setCreatorsSelecteds}
+                          activePlatforms={activePlatforms}
+                          setActivePlatforms={setActivePlatforms}
+                          order={order}
+                          setOrder={setOrder}
+                          setPage={setPage}
+                        />
+
+                        <div className='pt-6'>
+                          <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+                            {/* funcion ternaria para preguntar por test user */}
+                            {session?.user?.role == 'TESTER'
+                              ? data?.posts?.map((post: any, index: any) => (
+                                <PostCardTest key={index} post={post} />
+                              ))
+                              : data?.posts?.map((post: any, index: any) => (
+                                <PostCard key={index} post={post} />
+                              ))}
+                            {data?.posts?.length === 0 && (
+                              <div className='col-span-4 md:col-span-2'>
+                                <EmptyPost />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </Tab.Panel>
+
+                      {/* Tiktok */}
+                      <Tab.Panel>
+                        <div className='flex justify-between mx-12 mb-8 '>
+                          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+                            <div className='flex gap-5'>
+                              <FilterPostsTrigger
+                                filterPosts={filterPosts}
+                                setFilterPosts={setFilterPosts}
+                              />
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                                }}
+                                className={`${activeButton == 'topPerforming'
+                                  ? ' bg-[#D9F0F1]'
+                                  : 'bg-[#EBF6F6]'
+                                  } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                                top performing 🥥
+                              </button>
+                            </div>
+
+                            {shared != true && (
+                              <div className='flex gap-4 justify-end'>
+                                <button
+                                  className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
+                                  refresh data
+                                  <FiRotateCw
+                                    style={{
+                                      color: '#00000080',
+                                      fontSize: '1.2em',
+                                      marginLeft: '12px',
+                                    }}
+                                  />
+                                </button>
+                                <AddNewPosts
+                                  campaignsFallback={campaign}
+                                  clientsFallback={undefined}
+                                  connections={connections}
+                                  text={''}
+                                  icon={undefined}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <Pagination
+                          pageLength={page.length}
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          loadPrevious={loadPreviousPosts}
+                          loadMore={loadMorePosts}
+                        />
+
+                        <div className='flex flex-col gap-4'>
+                          <BrokeSocialLinks brokeLinks={[]} />
+                          {/* <TikTokNotAccountConnected tiktokCards={tiktokPosts} /> */}
+                        </div>
+
+                        <FilterPostsContainer
+                          id={campaign.id}
+                          shared={shared}
+                          creators={creators}
+                          filterPosts={filterPosts}
+                          setFilterPosts={setFilterPosts}
+                          activeButton={activeButton}
+                          setActiveSocial={setActiveSocial}
+                          activeSocial={activeSocial}
+                          setActiveButton={setActiveButton}
+                          tags={tags}
+                          setTags={setTags}
+                          creatorsSelecteds={creatorsSelecteds}
+                          setCreatorsSelecteds={setCreatorsSelecteds}
+                          activePlatforms={activePlatforms}
+                          setActivePlatforms={setActivePlatforms}
+                          order={order}
+                          setOrder={setOrder}
+                          setPage={setPage}
+                        />
+
+                        <div className='pt-6'>
+                          <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+                            {session?.user?.role == 'TESTER'
+                              ? data?.posts?.map((post: any, index: any) => (
+                                <PostCardTest key={index} post={post} />
+                              ))
+                              : data?.posts?.map((post: any, index: any) => (
+                                <PostCard key={index} post={post} />
+                              ))}
+                            {data?.posts?.length === 0 && (
+                              <div className='col-span-4 md:col-span-2'>
+                                <EmptyPost />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </Tab.Panel>
+
+                      {/* Stories */}
+                      <Tab.Panel>
+                        <div className='flex justify-between mx-12 mb-8 '>
+                          <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
+                            <div className='flex gap-4'>{/* filters */}</div>
+
+                            {shared != true && (
+                              <div className='flex gap-4 justify-end'>
+                                <AddNewStories
+                                  campaignFallback={campaign}
+                                  clientFallback={undefined}
+                                  connections={connections}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className='pt-6'>
+                          <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
+                            {campaign.stories?.map((story, index) => (
+                              <StoryCard key={index} story={story} />
+                            ))}
+                            {campaign.stories?.length === 0 && (
+                              <div className='col-span-4 md:col-span-2'>
+                                <EmptyPost />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </Tab.Panel>
+                    </Tab.Panels>
+                  </Tab.Group>
                 </div>
                 <div className={openTab === 4 ? 'block' : 'hidden'}>
                   <div className='flex mx-12 mb-8 gap-8'>

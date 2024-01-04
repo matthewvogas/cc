@@ -15,7 +15,7 @@ import { EmptyPost } from '../../empty/emptyPost'
 import usePosts from '@/hooks/usePostsByUser'
 import { FiRotateCw } from 'react-icons/fi'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
@@ -45,6 +45,9 @@ export default function PostsByPlatform({
   const [activeButton, setActiveButton] = useState('galleryView')
   const [activeSocial, setActiveSocial] = useState('All')
 
+  const [performance, setPerformance] = useState(false)
+  const [order, setOrder] = useState('')
+
   const [loading, setLoading] = useState(false)
 
   const [page, setPage] = useState([0])
@@ -57,9 +60,15 @@ export default function PostsByPlatform({
     limit,
     currentPage * limit,
     activeSocial,
+    order,
+    performance,
     tags,
     creatorsSelecteds,
   )
+
+  const calculateTopPerforing = (post: any) => {
+    return (((post.likesCount + post.impressionsCount) / 2) / post.impressionsCount)
+  }
 
   const refreshPosts = async () => {
     setLoading(true)
@@ -78,7 +87,7 @@ export default function PostsByPlatform({
       if (res.ok == true) {
         setLoading(false)
         router.push(`/dashboard/campaigns/${campaign.id}`)
-      } 
+      }
     } catch (error) {
       console.log(error)
     }
@@ -95,53 +104,15 @@ export default function PostsByPlatform({
   }
 
   const totalPages = Math.ceil(data?.totalPosts / limit)
-  
-   
+
+
   if (arePostsLoading && activeSocial != "Stories") {
     return <p className='px-12'>loading posts...</p>
   }
 
-
   const tiktokPosts = data?.posts?.filter(
     (post: any) => post.platform === 'tiktok',
   )
-
-  const filteredPosts = data?.posts?.filter((post: any) => {
-
-    const isInstagramActive = activePlatforms.includes('Instagram')
-    const isFilterActive = activePlatforms.length > 0
-
-    const allowedPlatforms =
-      activeSocial === 'Instagram'
-        ? ['instagram']
-        : activeSocial === 'TikTok'
-        ? ['tiktok']
-        : ['tiktok', 'instagram']
-
-    if (
-      allowedPlatforms.includes(post.platform || '') &&
-      (!isFilterActive || (isFilterActive && isInstagramActive)) &&
-      (creatorsSelecteds.length === 0 ||
-        creatorsSelecteds.some(creator => creator.id == post.creator?.id)) &&
-      (tags.length === 0 ||
-        post.caption?.split(' ').some((tag: any) => tags.includes(tag)))
-    ) {
-      if (activeButton === 'most') {
-        if (post.reachCount && post.reachCount > 0) {
-          return true
-        }
-      } else if (activeButton === 'topPerforming') {
-        if (post.engagementCount && post.reachCount && post.reachCount > 0) {
-          const ratio = (post.engagementCount / post.reachCount) * 100
-          return ratio > 0
-        }
-      } else {
-        return true
-      }
-    }
-
-    return false
-  })
 
   const instagramPostsCount = campaign.posts?.filter(
     (post: any) => post.platform === 'instagram',
@@ -161,44 +132,40 @@ export default function PostsByPlatform({
             className={`flex justify-between gap-6 border-b-[#E4E3E2] border-b`}>
             <div className='flex gap-6'>
               <Tab
-                className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${
-                  activeSocial === 'All'
-                    ? 'border-b-4 border-[#7E7E7D]'
-                    : 'opacity-50'
-                }`}
+                className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'All'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+                  }`}
                 onClick={() => {
                   setActiveSocial('All'), setPage([0])
                 }}>
                 All posts
               </Tab>
               <Tab
-                className={`p-2 text-base font-medium outline-none ${
-                  activeSocial === 'instagram'
-                    ? 'border-b-4 border-[#7E7E7D]'
-                    : 'opacity-50'
-                }`}
+                className={`p-2 text-base font-medium outline-none ${activeSocial === 'instagram'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+                  }`}
                 onClick={() => {
                   setActiveSocial('instagram'), setPage([0])
                 }}>
                 Instagram{`(${instagramPostsCount})`}
               </Tab>
               <Tab
-                className={`p-2 text-base font-medium outline-none ${
-                  activeSocial === 'tiktok'
-                    ? 'border-b-4 border-[#7E7E7D]'
-                    : 'opacity-50'
-                }`}
+                className={`p-2 text-base font-medium outline-none ${activeSocial === 'tiktok'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+                  }`}
                 onClick={() => {
                   setActiveSocial('tiktok'), setPage([0])
                 }}>
                 TikTok {`(${tiktokPostsCount})`}
               </Tab>
               <Tab
-                className={`p-2 text-base font-medium outline-none ${
-                  activeSocial === 'Stories'
-                    ? 'border-b-4 border-[#7E7E7D]'
-                    : 'opacity-50'
-                }`}
+                className={`p-2 text-base font-medium outline-none ${activeSocial === 'Stories'
+                  ? 'border-b-4 border-[#7E7E7D]'
+                  : 'opacity-50'
+                  }`}
                 onClick={() => {
                   setActiveSocial('Stories'), setPage([0])
                 }}>
@@ -235,22 +202,21 @@ export default function PostsByPlatform({
                       <>
                         <div className='flex gap-4 w-full justify-between'>
                           <div className='flex gap-4'>
-                            <button className='flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
+                            <button
+                              className='flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
                               latest
                             </button>
 
                             <button
                               type='button'
                               onClick={() => {
-                                activeButton != 'topPerforming'
-                                  ? setActiveButton('topPerforming')
-                                  : setActiveButton('')
+                                setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                                setPerformance((!performance) ? true : false)
                               }}
-                              className={`${
-                                activeButton == 'topPerforming'
-                                  ? ' bg-[#D9F0F1]'
-                                  : 'bg-[#EBF6F6]'
-                              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                              className={`${activeButton == 'topPerforming'
+                                ? ' bg-[#D9F0F1]'
+                                : 'bg-[#EBF6F6]'
+                                } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                               top performing 🥥
                             </button>
 
@@ -265,24 +231,24 @@ export default function PostsByPlatform({
                       </>
                     ) : (
                       <>
-                        <FilterPostsTrigger
-                          filterPosts={filterPosts}
-                          setFilterPosts={setFilterPosts}
-                        />
-                        {/* <button
-                          type='button'
-                          onClick={() => {
-                            activeButton != 'topPerforming'
-                              ? setActiveButton('topPerforming')
-                              : setActiveButton('')
-                          }}
-                          className={`${
-                            activeButton == 'topPerforming'
+                        <div className='flex gap-5'>
+                          <FilterPostsTrigger
+                            filterPosts={filterPosts}
+                            setFilterPosts={setFilterPosts}
+                          />
+                          <button
+                            type='button'
+                            onClick={() => {
+                              setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                              setPerformance((!performance) ? true : false)
+                            }}
+                            className={`${activeButton == 'topPerforming'
                               ? ' bg-[#D9F0F1]'
                               : 'bg-[#EBF6F6]'
-                          } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-                          top performing 🥥
-                        </button> */}
+                              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                            top performing 🥥
+                          </button>
+                        </div>
                         {shared != true && (
                           <div className='flex gap-4 justify-end'>
                             <button
@@ -338,13 +304,21 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
+                order={order}
+                setOrder={setOrder}
+                setPage={setPage}
               />
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {filteredPosts?.map((post: any, index: any) => (
-                    <PostCard key={index} post={post} />
-                  ))}
+                  {performance && data?.posts?.length > 0 ?
+                    data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
+                      (post: any, index: any) => (
+                        <PostCard key={index} post={post} />
+                      )
+                    ) : data?.posts?.map((post: any, index: any) => (
+                      <PostCard key={index} post={post} />
+                    ))}
                   {data?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
@@ -359,10 +333,24 @@ export default function PostsByPlatform({
             <Tab.Panel>
               <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
-                  <FilterPostsTrigger
-                    filterPosts={filterPosts}
-                    setFilterPosts={setFilterPosts}
-                  />
+                  <div className='flex gap-5'>
+                    <FilterPostsTrigger
+                      filterPosts={filterPosts}
+                      setFilterPosts={setFilterPosts}
+                    />
+                    <button
+                      type='button'
+                      onClick={() => {
+                        setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                        setPerformance((!performance) ? true : false)
+                      }}
+                      className={`${activeButton == 'topPerforming'
+                        ? ' bg-[#D9F0F1]'
+                        : 'bg-[#EBF6F6]'
+                        } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                      top performing 🥥
+                    </button>
+                  </div>
                   {shared != true && (
                     <div className='flex gap-4 justify-end'>
                       <button
@@ -414,16 +402,24 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
+                order={order}
+                setOrder={setOrder}
+                setPage={setPage}
               />
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {/* funcion ternaria para preguntar por test user */}
                   {session?.user?.role == 'TESTER'
-                    ? filteredPosts?.map((post: any, index: any) => (
-                        <PostCardTest key={index} post={post} />
-                      ))
-                    : filteredPosts?.map((post: any, index: any) => (
+                    ? data?.posts?.map((post: any, index: any) => (
+                      <PostCardTest key={index} post={post} />
+                    ))
+                    : performance && data?.posts?.length > 0 ?
+                      data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
+                        (post: any, index: any) => (
+                          <PostCard key={index} post={post} />
+                        )
+                      ) : data?.posts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
                   {data?.posts?.length === 0 && (
@@ -439,25 +435,22 @@ export default function PostsByPlatform({
             <Tab.Panel>
               <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
-                  <div className='flex gap-4'>
+                  <div className='flex gap-5'>
                     <FilterPostsTrigger
                       filterPosts={filterPosts}
                       setFilterPosts={setFilterPosts}
                     />
-                    {/* <button
+                    <button
                       type='button'
                       onClick={() => {
-                        activeButton != 'topPerforming'
-                          ? setActiveButton('topPerforming')
-                          : setActiveButton('')
+                        setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
                       }}
-                      className={`${
-                        activeButton == 'topPerforming'
-                          ? ' bg-[#D9F0F1]'
-                          : 'bg-[#EBF6F6]'
-                      } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                      className={`${activeButton == 'topPerforming'
+                        ? ' bg-[#D9F0F1]'
+                        : 'bg-[#EBF6F6]'
+                        } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                       top performing 🥥
-                    </button> */}
+                    </button>
                   </div>
 
                   {shared != true && (
@@ -514,15 +507,23 @@ export default function PostsByPlatform({
                 setCreatorsSelecteds={setCreatorsSelecteds}
                 activePlatforms={activePlatforms}
                 setActivePlatforms={setActivePlatforms}
+                order={order}
+                setOrder={setOrder}
+                setPage={setPage}
               />
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {session?.user?.role == 'TESTER'
-                    ? filteredPosts?.map((post: any, index: any) => (
-                        <PostCardTest key={index} post={post} />
-                      ))
-                    : filteredPosts?.map((post: any, index: any) => (
+                    ? data?.posts?.map((post: any, index: any) => (
+                      <PostCardTest key={index} post={post} />
+                    ))
+                    : performance && data?.posts?.length > 0 ?
+                      data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
+                        (post: any, index: any) => (
+                          <PostCard key={index} post={post} />
+                        )
+                      ) : data?.posts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
                   {data?.posts?.length === 0 && (
