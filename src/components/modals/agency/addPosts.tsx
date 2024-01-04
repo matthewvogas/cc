@@ -46,13 +46,37 @@ export default function AddNewPosts({
         (conn: any) => conn.platform === 'INSTAGRAM',
       )?.token
 
-      if (creator.instagramPages && instagramToken) {
-        return creator.instagramPages.map((page: any) => ({
-          id: page.accountId,
-          username: page.username,
-          checked: false,
-          token: instagramToken,
-        }))
+      const tiktokToken = creator.socialConnections.find(
+        (conn: any) => conn.platform === 'TIKTOK',
+      )?.token
+
+      if (creator.instagramPages && instagramToken || creator.tiktokPages && tiktokToken) {
+              
+        let pages: any = [];
+
+        if (creator.instagramPages && instagramToken) {
+            const instagramPages = creator.instagramPages.map((page: any) => ({
+                id: page.accountId,
+                username: page.username + '- IG',
+                checked: false,
+                token: instagramToken,
+                platform: 'INSTAGRAM'
+            }));
+            pages = pages.concat(instagramPages);
+        }
+        
+        if (creator.tiktokPages && tiktokToken) {
+            const tiktokPages = creator.tiktokPages.map((page: any) => ({
+                id: page.accountId,
+                username: page.username+ '- TK',
+                checked: false,
+                token: tiktokToken,
+                platform: 'TIKTOK'
+            }));
+            pages = pages.concat(tiktokPages);
+        }
+        
+        return pages;
       }
 
       return []
