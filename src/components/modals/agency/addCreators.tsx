@@ -363,12 +363,12 @@ export default function AddCreators({ userCreators, session }: Props) {
                         <label htmlFor='my-modal-3' className={`cursor-pointer text-sm m-6 w-40 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 w-full p-4 block text-center ${ptMono.className}`}>
                           embed a form
                         </label>
-                        <input type='checkbox' id='my-modal-3' className='  modal-toggle' />
+                        <input type='checkbox' id='my-modal-3' className='modal-toggle' />
                         <div className='modal'>
-                          <div className='modal-box relative flex max-w-max flex-col justify-start overflow-hidden rounded-xl bg-white  p-0'>
+                          <div className='modal-box relative flex max-w-max flex-col justify-start overflow-hidden rounded-xl bg-white p-0'>
                             <label
                               htmlFor='my-modal-3'
-                              className='absolute right-4 top-2 cursor-pointer text-lg text-white'>
+                              className='absolute right-4 top-2 cursor-pointer text-lg text-black'>
                               ✕
                             </label>
 
