@@ -115,6 +115,15 @@ export function Connect({ session, creator }: Props) {
     }
   }
 
+  const cleanData = () => {
+    setEnviado('');
+    setIsCopied(false);
+    setEnviadoStatus('');
+    setEmail('');
+    setIsOpen(false);
+    setLoading(false);
+  }
+
   return (
     <>
       <button
@@ -126,7 +135,7 @@ export function Connect({ session, creator }: Props) {
 
       <Dialog
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => cleanData()}
         className='relative z-[99]'>
         <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
         <div className='fixed inset-0 flex items-center justify-center p-4'>
@@ -164,7 +173,7 @@ export function Connect({ session, creator }: Props) {
               <>
                 <Dialog
                   open={isOpen}
-                  onClose={() => setIsOpen(false)}
+                  onClose={() => cleanData()}
                   className='relative z-[99]'>
                   {/* The backdrop, rendered as a fixed sibling to the panel container */}
                   <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
