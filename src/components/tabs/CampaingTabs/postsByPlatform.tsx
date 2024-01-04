@@ -56,7 +56,7 @@ export default function PostsByPlatform({
   const limit = 10
   const router = useRouter()
 
-  const { data, arePostsLoading, postsError } = usePosts(
+  const { data, arePostsLoading, postsError, refreshPosts } = usePosts(
     String(campaign.id),
     limit,
     currentPage * limit,
@@ -68,10 +68,10 @@ export default function PostsByPlatform({
   )
 
   const calculateTopPerforing = (post: any) => {
-    return (((post.likesCount + post.impressionsCount) / 2) / post.impressionsCount)
+    return (post.likesCount + post.impressionsCount) / 2 / post.impressionsCount
   }
 
-  const refreshPosts = async () => {
+  const refreshPostsT = async () => {
     setLoading(true)
     try {
       const res = await fetch(`/api/collect/auto`, {
@@ -86,8 +86,10 @@ export default function PostsByPlatform({
       })
 
       if (res.ok == true) {
-        setLoading(false)
-        router.push(`/dashboard/campaigns/${campaign.id}`)
+        setTimeout(() => {
+          setLoading(false)
+          refreshPosts()
+        }, 4000)
       }
     } catch (error) {
       console.log(error)
@@ -106,8 +108,11 @@ export default function PostsByPlatform({
 
   const totalPages = Math.ceil(data?.totalPosts / limit)
 
+  useEffect(() => {
+    refreshPosts()
+  }, [refreshPosts])
 
-  if (arePostsLoading && activeSocial != "Stories") {
+  if (arePostsLoading && activeSocial != 'Stories') {
     return (
       <SkeletonTheme inline={false}>
         <p className='px-12'>
@@ -145,47 +150,50 @@ export default function PostsByPlatform({
             className={`flex justify-between gap-6 border-b-[#E4E3E2] border-b`}>
             <div className='flex gap-6'>
               <Tab
-                className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'All'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-                  }`}
+                className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${
+                  activeSocial === 'All'
+                    ? 'border-b-4 border-[#7E7E7D]'
+                    : 'opacity-50'
+                }`}
                 onClick={() => {
                   setActiveSocial('All'), setPage([0])
                 }}>
                 All posts
               </Tab>
               <Tab
-                className={`p-2 text-base font-medium outline-none ${activeSocial === 'instagram'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-                  }`}
+                className={`p-2 text-base font-medium outline-none ${
+                  activeSocial === 'instagram'
+                    ? 'border-b-4 border-[#7E7E7D]'
+                    : 'opacity-50'
+                }`}
                 onClick={() => {
                   setActiveSocial('instagram'), setPage([0])
                 }}>
                 Instagram{`(${instagramPostsCount})`}
               </Tab>
               <Tab
-                className={`p-2 text-base font-medium outline-none ${activeSocial === 'tiktok'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-                  }`}
+                className={`p-2 text-base font-medium outline-none ${
+                  activeSocial === 'tiktok'
+                    ? 'border-b-4 border-[#7E7E7D]'
+                    : 'opacity-50'
+                }`}
                 onClick={() => {
                   setActiveSocial('tiktok'), setPage([0])
                 }}>
                 TikTok {`(${tiktokPostsCount})`}
               </Tab>
               <Tab
-                className={`p-2 text-base font-medium outline-none ${activeSocial === 'Stories'
-                  ? 'border-b-4 border-[#7E7E7D]'
-                  : 'opacity-50'
-                  }`}
+                className={`p-2 text-base font-medium outline-none ${
+                  activeSocial === 'Stories'
+                    ? 'border-b-4 border-[#7E7E7D]'
+                    : 'opacity-50'
+                }`}
                 onClick={() => {
                   setActiveSocial('Stories'), setPage([0])
                 }}>
                 Stories {`(${storiesCount})`}
               </Tab>
             </div>
-            
           </Tab.List>
           <Tab.Panels>
             {/* All Posts */}
@@ -199,29 +207,38 @@ export default function PostsByPlatform({
                       <>
                         <div className='flex gap-4 w-full justify-between'>
                           <div className='flex gap-4'>
-                            <button
-                              className='flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
+                            <button className='flex border px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
                               latest
                             </button>
 
                             <button
                               type='button'
                               onClick={() => {
-                                setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
-                                setPerformance((!performance) ? true : false)
+                                setActiveButton(
+                                  activeButton == 'topPerforming'
+                                    ? ''
+                                    : 'topPerforming',
+                                )
+                                setPerformance(!performance ? true : false)
                               }}
-                              className={`${activeButton == 'topPerforming'
-                                ? ' bg-[#D9F0F1]'
-                                : 'bg-[#EBF6F6]'
-                                } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                              className={`${
+                                activeButton == 'topPerforming'
+                                  ? ' bg-[#D9F0F1]'
+                                  : 'bg-[#EBF6F6]'
+                              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                               top performing 🥥
                             </button>
 
-                            <Link target='_blank' href={`/campaign/${campaign.id}`} className='flex px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium bg-[#E9F7F0] hover:border-gray-400  whitespace-nowrap'>
+                            <Link
+                              target='_blank'
+                              href={`/campaign/${campaign.id}`}
+                              className='flex px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium bg-[#E9F7F0] hover:border-gray-400  whitespace-nowrap'>
                               view public link
                             </Link>
                           </div>
-                          <Link href={`/dashboard/portfolio`} className='flex  px-8 border py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
+                          <Link
+                            href={`/dashboard/portfolio`}
+                            className='flex  px-8 border py-3 text-base rounded-full items-center p-2 text-black font-medium hover:border-gray-400  whitespace-nowrap'>
                             view all
                           </Link>
                         </div>
@@ -236,20 +253,25 @@ export default function PostsByPlatform({
                           <button
                             type='button'
                             onClick={() => {
-                              setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
-                              setPerformance((!performance) ? true : false)
+                              setActiveButton(
+                                activeButton == 'topPerforming'
+                                  ? ''
+                                  : 'topPerforming',
+                              )
+                              setPerformance(!performance ? true : false)
                             }}
-                            className={`${activeButton == 'topPerforming'
-                              ? ' bg-[#D9F0F1]'
-                              : 'bg-[#EBF6F6]'
-                              } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                            className={`${
+                              activeButton == 'topPerforming'
+                                ? ' bg-[#D9F0F1]'
+                                : 'bg-[#EBF6F6]'
+                            } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                             top performing 🥥
                           </button>
                         </div>
                         {shared != true && (
                           <div className='flex gap-4 justify-end'>
                             <button
-                              onClick={refreshPosts}
+                              onClick={refreshPostsT}
                               className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
                               {loading == true ? 'loading...' : 'refresh data'}
                               <FiRotateCw
@@ -308,14 +330,18 @@ export default function PostsByPlatform({
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                  {performance && data?.posts?.length > 0 ?
-                    data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
-                      (post: any, index: any) => (
+                  {performance && data?.posts?.length > 0
+                    ? data?.posts
+                        ?.sort(
+                          (a: any, b: any) =>
+                            calculateTopPerforing(b) - calculateTopPerforing(a),
+                        )
+                        .map((post: any, index: any) => (
+                          <PostCard key={index} post={post} />
+                        ))
+                    : data?.posts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
-                      )
-                    ) : data?.posts?.map((post: any, index: any) => (
-                      <PostCard key={index} post={post} />
-                    ))}
+                      ))}
                   {data?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
                       <EmptyPost />
@@ -338,13 +364,18 @@ export default function PostsByPlatform({
                     <button
                       type='button'
                       onClick={() => {
-                        setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
-                        setPerformance((!performance) ? true : false)
+                        setActiveButton(
+                          activeButton == 'topPerforming'
+                            ? ''
+                            : 'topPerforming',
+                        )
+                        setPerformance(!performance ? true : false)
                       }}
-                      className={`${activeButton == 'topPerforming'
-                        ? ' bg-[#D9F0F1]'
-                        : 'bg-[#EBF6F6]'
-                        } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                      className={`${
+                        activeButton == 'topPerforming'
+                          ? ' bg-[#D9F0F1]'
+                          : 'bg-[#EBF6F6]'
+                      } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                       top performing 🥥
                     </button>
                   </div>
@@ -409,14 +440,18 @@ export default function PostsByPlatform({
                   {/* funcion ternaria para preguntar por test user */}
                   {session?.user?.role == 'TESTER'
                     ? data?.posts?.map((post: any, index: any) => (
-                      <PostCardTest key={index} post={post} />
-                    ))
-                    : performance && data?.posts?.length > 0 ?
-                      data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
-                        (post: any, index: any) => (
-                          <PostCard key={index} post={post} />
+                        <PostCardTest key={index} post={post} />
+                      ))
+                    : performance && data?.posts?.length > 0
+                    ? data?.posts
+                        ?.sort(
+                          (a: any, b: any) =>
+                            calculateTopPerforing(b) - calculateTopPerforing(a),
                         )
-                      ) : data?.posts?.map((post: any, index: any) => (
+                        .map((post: any, index: any) => (
+                          <PostCard key={index} post={post} />
+                        ))
+                    : data?.posts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
                   {data?.posts?.length === 0 && (
@@ -440,12 +475,17 @@ export default function PostsByPlatform({
                     <button
                       type='button'
                       onClick={() => {
-                        setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                        setActiveButton(
+                          activeButton == 'topPerforming'
+                            ? ''
+                            : 'topPerforming',
+                        )
                       }}
-                      className={`${activeButton == 'topPerforming'
-                        ? ' bg-[#D9F0F1]'
-                        : 'bg-[#EBF6F6]'
-                        } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                      className={`${
+                        activeButton == 'topPerforming'
+                          ? ' bg-[#D9F0F1]'
+                          : 'bg-[#EBF6F6]'
+                      } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                       top performing 🥥
                     </button>
                   </div>
@@ -513,14 +553,18 @@ export default function PostsByPlatform({
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {session?.user?.role == 'TESTER'
                     ? data?.posts?.map((post: any, index: any) => (
-                      <PostCardTest key={index} post={post} />
-                    ))
-                    : performance && data?.posts?.length > 0 ?
-                      data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
-                        (post: any, index: any) => (
-                          <PostCard key={index} post={post} />
+                        <PostCardTest key={index} post={post} />
+                      ))
+                    : performance && data?.posts?.length > 0
+                    ? data?.posts
+                        ?.sort(
+                          (a: any, b: any) =>
+                            calculateTopPerforing(b) - calculateTopPerforing(a),
                         )
-                      ) : data?.posts?.map((post: any, index: any) => (
+                        .map((post: any, index: any) => (
+                          <PostCard key={index} post={post} />
+                        ))
+                    : data?.posts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
                       ))}
                   {data?.posts?.length === 0 && (

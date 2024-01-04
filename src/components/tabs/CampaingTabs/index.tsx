@@ -82,7 +82,7 @@ export default function CampaingsTabs({
     return (post.likesCount + post.impressionsCount) / 2 / post.impressionsCount
   }
 
-  const { data, arePostsLoading, postsError } = usePosts(
+  const { data, arePostsLoading, postsError, refreshPosts} = usePosts(
     String(campaign.id),
     limit,
     currentPage * limit,
@@ -275,7 +275,7 @@ export default function CampaingsTabs({
     }
   }, [session.user.role, statsNormal, statsTest])
 
-  const refreshPosts = async () => {
+  const refreshPostsT = async () => {
     setLoading(true)
     try {
       const res = await fetch(`/api/collect/auto`, {
@@ -289,10 +289,10 @@ export default function CampaingsTabs({
         }),
       })
 
-      if (res.ok == true) {
-        setLoading(false)
-        router.push(`/dashboard/campaigns/${campaign.id}`)
+      if (res.ok) {
+        refreshPosts()
       }
+
     } catch (error) {
       console.log(error)
     }
@@ -637,7 +637,7 @@ export default function CampaingsTabs({
                               {shared != true && (
                                 <div className='flex gap-4 justify-end'>
                                   <button
-                                    onClick={refreshPosts}
+                                    onClick={refreshPostsT}
                                     className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
                                     {loading == true
                                       ? 'loading...'

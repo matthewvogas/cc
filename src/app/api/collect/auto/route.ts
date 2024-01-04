@@ -16,8 +16,9 @@ export async function POST(req: NextRequest) {
   const tokens = []
   const creatorsIds = []
   const InstagramPages = []
+  const TiktokPages = []
 
-  async function updatePosts(instagramPage: string, instgramToken: string) {
+  async function updateIgPosts(instagramPage: string, instgramToken: string) {
     try {
       const res = await fetch('https://codecoco.co/api/collect/instagram', {
         method: 'POST',
@@ -33,8 +34,30 @@ export async function POST(req: NextRequest) {
       })
 
       if (res.ok == true) {
-      } else {
         console.log(200)
+      } else {
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function updatetTPosts(instgramToken: string) {
+    try {
+      const res = await fetch('https://codecoco.co/api/collect/tiktokrefresh', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          instgramToken: instgramToken,
+          sessionId: sessionId,
+        }),
+      })
+
+      if (res.ok == true) {
+        console.log(200)
+      } else {
       }
     } catch (error) {
       console.log(error)
@@ -43,7 +66,6 @@ export async function POST(req: NextRequest) {
 
   for (const post of CampaignPosts) {
     for (const connection of connections) {
-      let connectionUserId2 = ''
 
       if (
         connection.user2.socialConnections &&
@@ -63,20 +85,53 @@ export async function POST(req: NextRequest) {
           InstagramPages.push(data)
         }
       }
+
+      if (
+        connection.user2.socialConnections &&
+        connection.user2.socialConnections.length > 0 &&
+        connection.user2.tiktokPages &&
+        connection.user2.tiktokPages.length >= 0
+      ) {
+        const socialConnection = connection.user2.socialConnections[0]
+        userIds.push(socialConnection.userId)
+
+        tokens.push(socialConnection.token)
+
+        creatorsIds.push(socialConnection.userId)
+
+        for (const page of connection.user2.tiktokPages) {
+          let data = { accountId: page.accountId, username: page.username }
+          TiktokPages.push(data)
+        }
+      }
+
     }
 
     const InstagramPagesUniques = Array.from(new Set(InstagramPages))
+    const TiktokPagesUniques = Array.from(new Set(TiktokPages))
 
     for (const page of InstagramPagesUniques) {
       if (post.creator?.username == page.username) {
         for (const token of tokens) {
-          updatePosts(page.accountId, String(token))
+          updateIgPosts(page.accountId, String(token))
+          console.log('match')
         }
       } else {
-        console.log('no macth')
+        console.log('no match')
       }
     }
-  }
+    
+    for (const page of TiktokPagesUniques) {
+      if (post.creator?.username == page.username) {
+        for (const token of tokens) {
+          updatetTPosts(String(token))
+          console.log('match')
+        }
+      } else {
+        console.log('no match')
+      }
+    }
 
-  return NextResponse.json({ 'pages:': 'done' })
+  }
+  return NextResponse.json('ok')
 }

@@ -109,7 +109,8 @@ export class ConnectionService {
           include: {
             campaigns: true,
             socialConnections: true,
-            instagramPages: true
+            instagramPages: true,
+            tiktokPages: true
           },
         },
       }

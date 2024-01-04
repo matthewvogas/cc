@@ -85,7 +85,6 @@ export async function POST(req: Request, res: Response) {
     isThumbnail: boolean = false,
   ): Promise<any> {
     try {
-      console.log(url, 'URL being processed')
 
       const response = await fetch(url)
       if (!response.ok) {
@@ -188,7 +187,7 @@ export async function POST(req: Request, res: Response) {
 
       for (const post of postData) {
         const containsHashtag = tags.some((tag: any) =>
-          post.caption.includes(tag),
+          post.caption.includes('#' + tag),
         )
 
         let mediaUrlToUse
@@ -327,7 +326,7 @@ export async function POST(req: Request, res: Response) {
         ).then(res => res.json())
 
         const containsHashtag = tags.some((tag: any) =>
-          data.caption.includes(tag),
+          data.caption.includes('#' + tag),
         )
         if (containsHashtag) {
           const navigation = await fetch(
@@ -571,7 +570,7 @@ export async function POST(req: Request, res: Response) {
           })
         } else {
           const containsHashtag = tags.some((tag: any) =>
-            post.video_descriptio.includes(tag),
+            post.video_descriptio.includes('#' +tag),
           )
           console.log(containsHashtag, 'YES')
           if (containsHashtag) {
