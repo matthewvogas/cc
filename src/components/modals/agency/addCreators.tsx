@@ -11,6 +11,7 @@ import Search from '@/components/inputs/search'
 import { useRouter } from 'next/navigation'
 import imageCover from 'public/assets/register/TopPost.jpg'
 import Image from 'next/image'
+import Spinner from '@/components/loading/spinner'
 
 type Props = {
   userCreators: any
@@ -47,6 +48,7 @@ export default function AddCreators({ userCreators, session }: Props) {
   const [codeToCopy, setcodeToCopy] = React.useState('');
   const router = useRouter()
   const [isOpenSend, setIsOpenSend] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const html =
     '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Stats</title> </head> <body>' +
@@ -55,6 +57,7 @@ export default function AddCreators({ userCreators, session }: Props) {
   const iframe = codeToShareInvite;
 
   const sendInvite = async () => {
+    setLoading(true);
     try {
       const res = await fetch('/api/invite', {
         method: 'POST',
@@ -69,7 +72,7 @@ export default function AddCreators({ userCreators, session }: Props) {
 
       if (res.status === 200) console.log(res.status)
     } catch (error: any) {}
-
+    setLoading(false);
     setIsOpen(false)
   }
 
@@ -80,6 +83,8 @@ export default function AddCreators({ userCreators, session }: Props) {
       setEnviado('Error, write the email correctly');
       return;
     }
+
+    setLoading(true);
 
     try {
       const response = await fetch(`/api/email?to=${recipientEmail}`, {
@@ -105,6 +110,7 @@ export default function AddCreators({ userCreators, session }: Props) {
     } catch (error) {
       console.error('Error en la solicitud:', error)
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -146,6 +152,7 @@ export default function AddCreators({ userCreators, session }: Props) {
     setEmail('');
     setIsOpen(false);
     setIsOpenSend(false);
+    setLoading(false);
     router.refresh();
   }
 
@@ -187,7 +194,8 @@ export default function AddCreators({ userCreators, session }: Props) {
           <Dialog.Panel
             className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
             <Dialog.Title className=' text-lg font-medium mb-8 text-center mt-12'>
-              add creators
+              add creators  <br />
+              {loading ? (<Spinner width='w-4' height='h-4' border='border-2' />) : ''}
             </Dialog.Title>
             <Tab.Group>
               <Tab.List
