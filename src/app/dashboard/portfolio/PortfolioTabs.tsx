@@ -5,6 +5,8 @@ import CampaignsAgency from './campaignsAgency'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import Image from 'next/image'
+import coverImage from 'public/assets/uniqueClient/clientCoverPage.jpg'
+
 
 type Props = {
   connections: any
@@ -59,7 +61,7 @@ export default function PortfolioTabs({
       <div className='relative'>
       <Image
           className='w-full max-h-44 object-cover'
-          src={portfolio.imageUrl}
+          src={portfolio.imageUrl || coverImage}
           alt=''
           width={1660}
           height={160}
