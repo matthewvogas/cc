@@ -31,4 +31,13 @@ export class InstagramPagesService {
     })
   }
 
+  static async findAll(
+  ) {
+    return db.instagramPages.findMany({
+      where: {
+        
+      }
+    })
+  }
+
 }

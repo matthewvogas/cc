@@ -15,6 +15,16 @@ export async function GET(req: NextRequest) {
 
     const limit = parseInt(url.searchParams.get('limit') || '10')
     const offset = parseInt(url.searchParams.get('offset') || '10')
+    let socials = url.searchParams.get('socials')?.split(',')
+    const followers1 = parseInt(url.searchParams.get('followers1') as string)
+    const followers2 = parseInt(url.searchParams.get('followers2') as string)
+    const campaign = url.searchParams.get('campaign')
+
+    let clause: any = {}
+    if (socials?.at(0) != '') clause.platform = { in: socials }
+    if (campaign) clause.campaigns = { some: { name: campaign } }
+    if ( followers1 || followers2 ) clause.followersCount = { gte: followers1, lte: followers2 }
+    console.log(clause);
 
     if (isNaN(limit) || isNaN(offset)) {
       return NextResponse.json(
@@ -25,15 +35,28 @@ export async function GET(req: NextRequest) {
 
     const hasMore = true
 
-    const creators = await CreatorsService.findMany(
-      session!.user.id,
-      limit,
-      offset,
-    )
+    const creators = await db.creator.findMany({
+      where: clause,
+      include: {
+        campaigns: true,
+        users: {
+          include: {
+            receivedInvitations: true,           
+            receivedConnections: true
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: +limit,
+      skip: +offset
+    })
 
-    const total = await CreatorsService.findMany(session!.user.id)
-    const totalCreators = await total.length
-
+    const totalCreators = await db.creator.count({
+      where: clause
+    })
+    
     return NextResponse.json({ creators, totalCreators, hasMore })
   } catch (err) {
     console.log(err)

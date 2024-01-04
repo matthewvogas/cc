@@ -44,18 +44,16 @@ export default function FilterCreators({
   const [isOpen, setIsOpen] = React.useState(false)
   const [emails, setEmails] = useState<string[]>([])
   const [linkToShareInvite, setLinkToShareInvite] = useState<string[]>([])
-
   const [customRangeFirst, setCustomRangeFirst] = useState('')
   const [customRangeSecond, setCustomRangeSecond] = useState('')
-
-  // Función para manejar el cambio en el input
+  
   const handleInputChangeRangeFirst = (event: any) => {
     setCustomRangeFirst(event.target.value)
-    setFollowerCountFilter(event.target.value)
+    setFollowerCountFilter(parseInt(event.target.value))
   }
   const handleInputChangeRangeSecond = (event: any) => {
     setCustomRangeSecond(event.target.value)
-    setFollowerCountFilterSecond(event.target.value)
+    setFollowerCountFilterSecond(parseInt(event.target.value))
   }
 
   const handleSelectCampaignChange = (event: any) => {
@@ -109,24 +107,10 @@ export default function FilterCreators({
                   </button>
                   <button
                     onClick={() => {
-                      handlSocialActiveClick('pinterest')
-                    }}
-                    className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
-                    Pinterest
-                  </button>
-                  <button
-                    onClick={() => {
                       handlSocialActiveClick('tiktok')
                     }}
                     className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
                     TikTok
-                  </button>
-                  <button
-                    onClick={() => {
-                      handlSocialActiveClick('facebook')
-                    }}
-                    className='rounded-full bg-beigeFirst px-6 py-2.5 hover:bg-beigeSelected'>
-                    Facebook
                   </button>
                 </div>
                 <label htmlFor=''>Follower count (in thousands)</label>

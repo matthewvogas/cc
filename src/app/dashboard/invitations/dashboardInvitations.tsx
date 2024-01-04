@@ -23,6 +23,8 @@ type Props = {
   creators: any
   campaigns: any
   connections: any
+  igpages: any
+  ttpages: any
 }
 
 export default function PortfolioTabs({
@@ -37,6 +39,8 @@ export default function PortfolioTabs({
   creators,
   campaigns,
   connections,
+  igpages,
+  ttpages
 }: Props) {
   const [other, setOther] = useState('')
   const [inviteId, setInviteId] = useState('')
@@ -127,6 +131,8 @@ export default function PortfolioTabs({
               creatorsFallback={creators}
               userCreatorsFallback={userCreators}
               session={session}
+              igpages={igpages}
+              ttpages={ttpages}
             />
           )}
         </div>

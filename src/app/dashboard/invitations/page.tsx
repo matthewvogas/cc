@@ -8,6 +8,8 @@ import { UserService } from '@/services/UsersService'
 import { ClientsService } from '@/services/ClientsServices'
 import { CampaignRes } from '@/types/campaign/campaignRes'
 import { CampaignsService } from '@/services/CampaignsService'
+import { InstagramPagesService } from '@/services/InstagramPagesService'
+import { TiktokPagesService } from '@/services/TiktokPagesService'
 
 export default async function Invites() {
   const session = await getServerSession(authOptions)
@@ -39,6 +41,10 @@ export default async function Invites() {
 
   console.log(userCreators)
 
+  const igpages = (await InstagramPagesService.findAll())
+
+  const ttpages = (await TiktokPagesService.findAll())
+
   return (
     <div>
       {session?.user?.role === 'AGENCY' ? (
@@ -54,6 +60,8 @@ export default async function Invites() {
           creators={creators}
           campaigns={campaigns}
           connections={connections}
+          igpages={igpages}
+          ttpages={ttpages}
         />
       ) : null}
       {session?.user?.role === 'CREATOR' ? (
@@ -69,6 +77,8 @@ export default async function Invites() {
           creators={creators}
           campaigns={campaigns}
           connections={connections}
+          igpages={igpages}
+          ttpages={ttpages}
         />
       ) : null}
     </div>

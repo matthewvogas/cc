@@ -14,6 +14,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import coverImageClient from 'public/assets/uniqueClient/clientCoverPage.jpg'
 import PortfoliosTabs from '@/components/tabs/PortfolioTabs'
+import { InstagramPagesService } from '@/services/InstagramPagesService'
+import { TiktokPagesService } from '@/services/TiktokPagesService'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,6 +36,8 @@ export default async function CampaignPage({
       session!.user.id,
     )
     const access = await AccessCampaignService.findAcessToCampaign(id)
+    const igpages = (await InstagramPagesService.findAll())
+    const ttpages = (await TiktokPagesService.findAll())
 
     return (
       <div className='overflow-clip'>
@@ -87,6 +91,8 @@ export default async function CampaignPage({
               client={client}
               connections={connections}
               access={access}
+              igpages={igpages}
+              ttpages={ttpages}
             />
           </>
         ) : (
@@ -100,6 +106,8 @@ export default async function CampaignPage({
               client={client}
               connections={connections}
               access={access}
+              igpages={igpages}
+              ttpages={ttpages}
               shared={false}
             />
           </>
