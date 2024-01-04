@@ -157,7 +157,7 @@ export default function AddCreators({ userCreators, session }: Props) {
 
   const styles = {
     centered: {
-      position: 'absolute',
+      position: 'absolute' as 'absolute',
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',

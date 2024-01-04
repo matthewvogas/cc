@@ -307,6 +307,10 @@ export default function CampaingsTabs({
 
   const totalPages = Math.ceil(data?.totalPosts / limit)
 
+  // fix filter roney
+  const [customRangeFirst, setCustomRangeFirst] = useState(0)
+  const [customRangeSecond, setCustomRangeSecond] = useState(0)
+
   return (
     <>
       <div className='flex flex-wrap'>
@@ -431,14 +435,11 @@ export default function CampaingsTabs({
                       followerCountFilter={followerCountFilter}
                       setFollowerCountFilter={setFollowerCountFilter}
                       followerCountFilterSecond={followerCountFilterSecond}
-                      setFollowerCountFilterSecond={
-                        setFollowerCountFilterSecond
-                      }
+                      setFollowerCountFilterSecond={setFollowerCountFilterSecond}
                       selectedCampaign={selectedCampaign}
                       setSelectedCampaign={setSelectedCampaign}
                       userCreators={null}
-                      session={session}
-                    />
+                      session={session} customRangeFirst={customRangeFirst} setCustomRangeFirst={setCustomRangeFirst} customRangeSecond={customRangeSecond} setCustomRangeSecond={setCustomRangeSecond}                    />
                   </div>
                   <div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-white'>
                     {/* active social filter */}

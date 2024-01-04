@@ -26,6 +26,10 @@ type Props = {
   setSelectedCampaign: any
   userCreators: any
   session: any
+  customRangeFirst: any
+  setCustomRangeFirst: any
+  customRangeSecond: any
+  setCustomRangeSecond: any
 }
 
 export default function FilterCreators({
@@ -40,13 +44,16 @@ export default function FilterCreators({
   setSelectedCampaign,
   userCreators,
   session,
+  customRangeFirst,
+  setCustomRangeFirst,
+  customRangeSecond,
+  setCustomRangeSecond,
 }: Props) {
+
   const [isOpen, setIsOpen] = React.useState(false)
   const [emails, setEmails] = useState<string[]>([])
   const [linkToShareInvite, setLinkToShareInvite] = useState<string[]>([])
-  const [customRangeFirst, setCustomRangeFirst] = useState('')
-  const [customRangeSecond, setCustomRangeSecond] = useState('')
-  
+
   const handleInputChangeRangeFirst = (event: any) => {
     setCustomRangeFirst(event.target.value)
     setFollowerCountFilter(parseInt(event.target.value))
