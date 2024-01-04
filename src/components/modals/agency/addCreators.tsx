@@ -33,7 +33,7 @@ export default function AddCreators({ userCreators, session }: Props) {
   const [inviteStatus, setInviteStatus] = useState('invite')
   const [codeToCopy, setcodeToCopy] = React.useState('');
   const router = useRouter()
-  const [isOpenSend, setIsOpenSend] = React.useState(true);
+  const [isOpenSend, setIsOpenSend] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   const handleChange = (event: any) => {
