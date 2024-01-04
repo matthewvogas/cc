@@ -24,17 +24,24 @@ export default function CreatorsDashBoard({
   creatorsFallback,
   userCreatorsFallback,
   session,
+  igpages,
+  ttpages
 }: {
   connectionsFallback: any
   campaignsFallback: CampaignRes
   creatorsFallback: any
   userCreatorsFallback: any
   session: any
+  igpages: any
+  ttpages: any
 }) {
 
   const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
   const [followerCountFilter, setFollowerCountFilter] = useState(0)
   const [followerCountFilterSecond, setFollowerCountFilterSecond] = useState(0)
+
+  const [customRangeFirst, setCustomRangeFirst] = useState(0)
+  const [customRangeSecond, setCustomRangeSecond] = useState(0)
 
   const [selectedCampaign, setSelectedCampaign] = useState('')
 
@@ -53,6 +60,8 @@ export default function CreatorsDashBoard({
   const handleRemoveCount = (count: any) => {
     setFollowerCountFilter(0)
     setFollowerCountFilterSecond(0)
+    setCustomRangeFirst(0)
+    setCustomRangeSecond(0)
   }
 
   const handleRemoveCampaign = (count: any) => {
@@ -62,8 +71,8 @@ export default function CreatorsDashBoard({
   return (
     <>
       <div className='flex h-full w-full flex-col gap-4 bg-white'>
-        {/* <FilterCreators
-          campaigns={campaigns}
+        <FilterCreators
+          campaigns={campaignsFallback}
           socialActiveFilter={socialActiveFilter}
           setSocialActiveFilter={setSocialActiveFilter}
           followerCountFilter={followerCountFilter}
@@ -74,7 +83,11 @@ export default function CreatorsDashBoard({
           setSelectedCampaign={setSelectedCampaign}
           userCreators={userCreatorsFallback}
           session={session}
-        /> */}
+          customRangeFirst={customRangeFirst}
+          setCustomRangeFirst={setCustomRangeFirst}
+          customRangeSecond={customRangeSecond}
+          setCustomRangeSecond={setCustomRangeSecond}
+        />
         <div className='flex justify-end mt-6 px-12'>
           <AddCreators userCreators={creatorsFallback} session={session} />
         </div>
@@ -107,7 +120,7 @@ export default function CreatorsDashBoard({
         </div>
 
         {/* active follower count filter */}
-        {followerCountFilter != 0 || followerCountFilterSecond != 0 ? (
+        {followerCountFilter && followerCountFilterSecond ? (
           <div className='flex justify-start w-full gap-4 px-12'>
             <div
               className={`flex flex-col rounded-xl border-2 bg-beigeFirst border-beigeBorder px-8 py-2`}>
@@ -172,6 +185,8 @@ export default function CreatorsDashBoard({
           creatorsFilter={filters}
           campaigns={campaignsFallback}
           session={session}
+          igpages={igpages}
+          ttpages={ttpages}
         />
       </div>
     </>

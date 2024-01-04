@@ -27,6 +27,8 @@ export default function PortfoliosTabs({
   client,
   connections,
   access,
+  igpages,
+  ttpages
 }: {
   campaign: CampaignRes
   creators: any
@@ -36,6 +38,8 @@ export default function PortfoliosTabs({
   client: any
   connections: any
   access: any
+  igpages: any
+  ttpages: any
 }) {
 
   const [openTab, setOpenTab] = useState(1)
@@ -429,6 +433,8 @@ export default function PortfoliosTabs({
                     creatorsFilter={filters}
                     connections={null}
                     session={session}
+                    igpages={igpages}
+                    ttpages={ttpages}
                   />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>

@@ -19,6 +19,8 @@ import Link from 'next/link'
 import useCreators from '@/hooks/useCreators'
 import Pagination from '@/components/pagination/pagination/pagination'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import igIcon from 'public/assets/creatorRegister/InstagramLogoBlack.svg'
+import ttIcon from 'public/assets/creatorRegister/tiktok-black-share-icon.svg'
 import { useRouter } from 'next/navigation'
 
 const dropdownButton =
@@ -34,6 +36,8 @@ type Props = {
   searchByTag?: any
   creatorsFilter: any
   session: any
+  igpages: any
+  ttpages: any
 }
 
 export default function CreatorRow({
@@ -45,6 +49,8 @@ export default function CreatorRow({
   searchByTag,
   creatorsFilter,
   session,
+  igpages,
+  ttpages,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [editClientModal, setEditClientModal] = useState(false)
@@ -97,7 +103,14 @@ export default function CreatorRow({
   })
 
   const { data, areCreatorsLoading, creatorsError, refreshCreators } =
-    useCreators(Number(limit), Number(currentPage * limit))
+    useCreators(
+      Number(limit),
+      Number(currentPage * limit),
+      creatorsFilter.socialActiveFilter,
+      creatorsFilter.followerCountFilter,
+      creatorsFilter.followerCountFilterSecond,
+      creatorsFilter.selectedCampaign,
+    )
 
   const loadMoreCreators = () => {
     if (data?.hasMore) {
@@ -148,6 +161,43 @@ export default function CreatorRow({
     })
   }
 
+  const findMatchingUsernames = () => {
+    let matchers: any[] = []
+
+    data.creators?.forEach((creator: any) => {
+      let match = {
+        creatorId: creator.id,
+        creatorUsername: creator.username,
+        creatorName: creator.name,
+        imageUrl: creator.imageUrl,
+        followerCount: creator.followerCount,
+        pageIgUsername: undefined,
+        pageTtUsername: undefined,
+        users: creator.users,
+        platform: creator.platform,
+        uuid: creator.uuid,
+      }
+
+      const matchingIg = igpages.find(
+        (page: any) => page.username == creator.username,
+      )
+      if (matchingIg) match.pageIgUsername = matchingIg.username
+
+      const matchingTt = ttpages.find(
+        (page: any) => page.username == creator.username,
+      )
+      if (matchingTt) match.pageTtUsername = matchingTt.username
+
+      const creatorName = match.users.find(
+        (page: any) => page.role == 'CREATOR',
+      )?.name
+      if (creatorName) match.creatorName = creatorName
+
+      matchers.push(match)
+    })
+    return matchers
+  }
+
   const handleRemoveConnection = async (creatorId: string) => {
     // analizar lógica para borrar creadores
   }
@@ -183,8 +233,8 @@ export default function CreatorRow({
             </tr>
           </thead>
           <tbody>
-            {data.creators?.map((creator: any, index: number) => (
-              <tr key={index} className={`text-sm ${ptMono.className} `}>
+            {findMatchingUsernames().map((match: any, index: any) => (
+              <tr key={index} className={`text-sm ${ptMono.className}`}>
                 {comeFrom === 'campigns' && (
                   <>
                     <td className='bg-white'>
@@ -196,34 +246,66 @@ export default function CreatorRow({
                               className={``}
                               width={100}
                               height={100}
-                              src={creator.imageUrl || avatar}
+                              src={match.imageUrl || avatar}
                               alt='background'
                             />
                           </div>
                         </div>
                         <div>
-                          <div className='font-bold'>{creator.name}</div>
-                          <div className='text-sm opacity-50'>
-                            {creator.username}
+                          <div className='text-base'>
+                            {match.creatorName && match.pageIgUsername ? (
+                              <p>
+                                🥥{' '}
+                                <span className='text-bold'>
+                                  {match.creatorName}
+                                </span>
+                              </p>
+                            ) : (
+                              <p>
+                                <span className='text-bold'>
+                                  {match.creatorUsername}
+                                </span>
+                              </p>
+                            )}
+                          </div>
+                          <div className='text-sm flex gap-2'>
+                            {match.pageIgUsername ? (
+                              <>
+                                <Image src={igIcon} alt={''} height={15} />
+                                <span className='opacity-50'>
+                                  {match.pageIgUsername}
+                                </span>
+                              </>
+                            ) : null}
+                          </div>
+                          <div className='text-sm flex gap-2'>
+                            {match.pageTtUsername ? (
+                              <>
+                                <Image src={ttIcon} alt={''} height={15} />
+                                <span className='opacity-50'>
+                                  {match.pageTtUsername}
+                                </span>
+                              </>
+                            ) : null}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className='bg-white'>
-                      {hasConnection(creator) ? (
+                      {hasConnection(match) ? (
                         <p className=' w-fit rounded-full px-5 py-3 bg-[rgba(211,240,226,0.50)]'>
                           connected
                         </p>
-                      ) : hasPendingInvitations(creator.users) ? (
+                      ) : hasPendingInvitations(match.users) ? (
                         <p className='w-fit rounded-full px-5 py-3 bg-[rgba(211,240,226,0.50)]'>
                           pending
                         </p>
                       ) : (
-                        <Connect session={session} creator={creator} />
+                        <Connect session={session} creator={match} />
                       )}
                     </td>
                     <td className='bg-white'>
-                      <p>{creator.followersCount || '---'}</p>
+                      <p>{match.followersCount || '---'}</p>
                     </td>
                     <td className='flex'>
                       <PostHashtagStatus state={'NOT'} />
@@ -248,15 +330,6 @@ export default function CreatorRow({
                           className={`dropdown-content menu rounded-box w-max z-20 border-2 border-red-100 bg-white p-2 ${
                             isOpen ? 'hidden' : ''
                           }`}>
-
-                          {/* tracking bug */}
-
-                          {/* <button
-                            onClick={handleHelloClick}
-                            className={`${dropdownButton}`}>
-                            add post tracking 🥥
-                          </button> */}
-
                           <div
                             ref={helloRef}
                             className={
@@ -279,15 +352,12 @@ export default function CreatorRow({
                             </div>
                           </div>
 
-                          <ViewCreator
-                            creator={creator}
-                            campaigns={campaigns}
-                          />
+                          <ViewCreator creator={match} campaigns={campaigns} />
 
                           <button
-                           onClick={() => {
-                            handleRemoveConnection(creator.id)
-                          }}
+                            onClick={() => {
+                              handleRemoveConnection(match.id)
+                            }}
                             className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100`}>
                             Remove creator
                           </button>
@@ -298,7 +368,6 @@ export default function CreatorRow({
                 )}
               </tr>
             ))}
-
             {filteredClients.map((client: any, index: any) => (
               <tr key={index} className={`text-sm ${ptMono.className} `}>
                 {comeFrom === 'clients' && (

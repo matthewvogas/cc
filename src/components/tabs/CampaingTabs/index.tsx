@@ -40,7 +40,9 @@ export default function CampaingsTabs({
   client,
   connections,
   access,
-  shared
+  igpages,
+  ttpages,
+  shared,
 }: {
   campaign: CampaignRes
   creators: any
@@ -50,9 +52,10 @@ export default function CampaingsTabs({
   client: any
   connections: any
   access: any
+  igpages: any
+  ttpages: any
   shared: boolean
 }) {
-
   const [openTab, setOpenTab] = useState(1)
   const [socialActiveFilter, setSocialActiveFilter] = useState<string[]>([])
   const [followerCountFilter, setFollowerCountFilter] = useState(0)
@@ -76,7 +79,7 @@ export default function CampaingsTabs({
   const [performance, setPerformance] = useState(false)
 
   const calculateTopPerforing = (post: any) => {
-    return (((post.likesCount + post.impressionsCount) / 2) / post.impressionsCount)
+    return (post.likesCount + post.impressionsCount) / 2 / post.impressionsCount
   }
 
   const { data, arePostsLoading, postsError } = usePosts(
@@ -223,8 +226,21 @@ export default function CampaingsTabs({
           { title: getShares, description: 'shares' },
           { title: getSaves, description: 'saves' },
           //
-          { title: ((getLikes + getShares + getSaves + getComments) / getViews || 0).toFixed(2) + '%', description: 'engagement/views' },
-          { title: ((getLikes + getShares + getSaves + getComments) / getImpressions || 0).toFixed(2) + '%', description: 'engagement/impression' },
+          {
+            title:
+              (
+                (getLikes + getShares + getSaves + getComments) / getViews || 0
+              ).toFixed(2) + '%',
+            description: 'engagement/views',
+          },
+          {
+            title:
+              (
+                (getLikes + getShares + getSaves + getComments) /
+                  getImpressions || 0
+              ).toFixed(2) + '%',
+            description: 'engagement/impression',
+          },
         ],
       },
       {
@@ -245,7 +261,7 @@ export default function CampaingsTabs({
     getComments,
     getSaves,
     getShares,
-    getImpressions
+    getImpressions,
   ])
 
   useEffect(() => {
@@ -304,10 +320,11 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 1
-                  ? 'border border-[#FACEBC]'
-                  : 'border border-[#ffffff]'
-                  }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 1
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 overview
               </button>
               <button
@@ -317,10 +334,11 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 2
-                  ? 'border border-[#FACEBC]'
-                  : 'border border-[#ffffff]'
-                  }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 2
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 creators
               </button>
               <button
@@ -330,10 +348,11 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 3
-                  ? 'border border-[#FACEBC]'
-                  : 'border border-[#ffffff]'
-                  }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 3
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 posts
               </button>
               <button
@@ -343,10 +362,11 @@ export default function CampaingsTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 4
-                  ? 'border border-[#FACEBC]'
-                  : 'border border-[#ffffff]'
-                  }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 4
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 stats
               </button>
               <button
@@ -354,10 +374,11 @@ export default function CampaingsTabs({
                   e.preventDefault()
                   setOpenTab(5)
                 }}
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 5
-                  ? 'border border-[#FACEBC]'
-                  : 'border border-[#ffffff]'
-                  }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 5
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 share
               </button>
               <button
@@ -365,10 +386,11 @@ export default function CampaingsTabs({
                   e.preventDefault()
                   setOpenTab(6)
                 }}
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 6
-                  ? 'border border-[#FACEBC]'
-                  : 'border border-[#ffffff]'
-                  }`}>
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
+                  openTab == 6
+                    ? 'border border-[#FACEBC]'
+                    : 'border border-[#ffffff]'
+                }`}>
                 settings
               </button>
             </div>
@@ -451,7 +473,7 @@ export default function CampaingsTabs({
 
                     {/* active follower count filter */}
                     {followerCountFilter != 0 ||
-                      followerCountFilterSecond != 0 ? (
+                    followerCountFilterSecond != 0 ? (
                       <div className='flex justify-start w-full gap-4 px-12'>
                         <div
                           className={`flex flex-col rounded-xl border-2 bg-beigeFirst border-beigeBorder px-8 py-2`}>
@@ -524,47 +546,54 @@ export default function CampaingsTabs({
                     creatorsFilter={filters}
                     connections={null}
                     session={session}
+                    igpages={igpages}
+                    ttpages={ttpages}
                   />
                 </div>
                 <div className={openTab === 3 ? 'block' : 'hidden'}>
                   <Tab.Group>
-                    <Tab.List className={`flex justify-between gap-6 border-b-[#E4E3E2] border-b`}>
+                    <Tab.List
+                      className={`flex justify-between gap-6 border-b-[#E4E3E2] border-b`}>
                       <div className='flex gap-6'>
                         <Tab
-                          className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${activeSocial === 'All'
-                            ? 'border-b-4 border-[#7E7E7D]'
-                            : 'opacity-50'
-                            }`}
+                          className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${
+                            activeSocial === 'All'
+                              ? 'border-b-4 border-[#7E7E7D]'
+                              : 'opacity-50'
+                          }`}
                           onClick={() => {
                             setActiveSocial('All'), setPage([0])
                           }}>
                           All posts
                         </Tab>
                         <Tab
-                          className={`p-2 text-base font-medium outline-none ${activeSocial === 'instagram'
-                            ? 'border-b-4 border-[#7E7E7D]'
-                            : 'opacity-50'
-                            }`}
+                          className={`p-2 text-base font-medium outline-none ${
+                            activeSocial === 'instagram'
+                              ? 'border-b-4 border-[#7E7E7D]'
+                              : 'opacity-50'
+                          }`}
                           onClick={() => {
                             setActiveSocial('instagram'), setPage([0])
                           }}>
                           Instagram{`(${instagramPostsCount})`}
                         </Tab>
                         <Tab
-                          className={`p-2 text-base font-medium outline-none ${activeSocial === 'tiktok'
-                            ? 'border-b-4 border-[#7E7E7D]'
-                            : 'opacity-50'
-                            }`}
+                          className={`p-2 text-base font-medium outline-none ${
+                            activeSocial === 'tiktok'
+                              ? 'border-b-4 border-[#7E7E7D]'
+                              : 'opacity-50'
+                          }`}
                           onClick={() => {
                             setActiveSocial('tiktok'), setPage([0])
                           }}>
                           TikTok {`(${tiktokPostsCount})`}
                         </Tab>
                         <Tab
-                          className={`p-2 text-base font-medium outline-none ${activeSocial === 'Stories'
-                            ? 'border-b-4 border-[#7E7E7D]'
-                            : 'opacity-50'
-                            }`}
+                          className={`p-2 text-base font-medium outline-none ${
+                            activeSocial === 'Stories'
+                              ? 'border-b-4 border-[#7E7E7D]'
+                              : 'opacity-50'
+                          }`}
                           onClick={() => {
                             setActiveSocial('Stories'), setPage([0])
                           }}>
@@ -586,13 +615,18 @@ export default function CampaingsTabs({
                                 <button
                                   type='button'
                                   onClick={() => {
-                                    setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
-                                    setPerformance((!performance) ? true : false)
+                                    setActiveButton(
+                                      activeButton == 'topPerforming'
+                                        ? ''
+                                        : 'topPerforming',
+                                    )
+                                    setPerformance(!performance ? true : false)
                                   }}
-                                  className={`${activeButton == 'topPerforming'
-                                    ? ' bg-[#D9F0F1]'
-                                    : 'bg-[#EBF6F6]'
-                                    } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                                  className={`${
+                                    activeButton == 'topPerforming'
+                                      ? ' bg-[#D9F0F1]'
+                                      : 'bg-[#EBF6F6]'
+                                  } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                                   top performing 🥥
                                 </button>
                               </div>
@@ -601,7 +635,9 @@ export default function CampaingsTabs({
                                   <button
                                     onClick={refreshPosts}
                                     className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                                    {loading == true ? 'loading...' : 'refresh data'}
+                                    {loading == true
+                                      ? 'loading...'
+                                      : 'refresh data'}
                                     <FiRotateCw
                                       style={{
                                         color: '#00000080',
@@ -656,14 +692,19 @@ export default function CampaingsTabs({
 
                         <div className='pt-6'>
                           <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
-                            {performance && data?.posts?.length > 0 ?
-                              data?.posts?.sort((a: any, b: any) => calculateTopPerforing(b) - calculateTopPerforing(a)).map(
-                                (post: any, index: any) => (
+                            {performance && data?.posts?.length > 0
+                              ? data?.posts
+                                  ?.sort(
+                                    (a: any, b: any) =>
+                                      calculateTopPerforing(b) -
+                                      calculateTopPerforing(a),
+                                  )
+                                  .map((post: any, index: any) => (
+                                    <PostCard key={index} post={post} />
+                                  ))
+                              : data?.posts?.map((post: any, index: any) => (
                                   <PostCard key={index} post={post} />
-                                )
-                              ) : data?.posts?.map((post: any, index: any) => (
-                                <PostCard key={index} post={post} />
-                              ))}
+                                ))}
                             {data?.posts?.length === 0 && (
                               <div className='col-span-4 md:col-span-2'>
                                 <EmptyPost />
@@ -685,13 +726,18 @@ export default function CampaingsTabs({
                               <button
                                 type='button'
                                 onClick={() => {
-                                  setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
-                                  setPerformance((!performance) ? true : false)
+                                  setActiveButton(
+                                    activeButton == 'topPerforming'
+                                      ? ''
+                                      : 'topPerforming',
+                                  )
+                                  setPerformance(!performance ? true : false)
                                 }}
-                                className={`${activeButton == 'topPerforming'
-                                  ? ' bg-[#D9F0F1]'
-                                  : 'bg-[#EBF6F6]'
-                                  } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                                className={`${
+                                  activeButton == 'topPerforming'
+                                    ? ' bg-[#D9F0F1]'
+                                    : 'bg-[#EBF6F6]'
+                                } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                                 top performing 🥥
                               </button>
                             </div>
@@ -756,11 +802,11 @@ export default function CampaingsTabs({
                             {/* funcion ternaria para preguntar por test user */}
                             {session?.user?.role == 'TESTER'
                               ? data?.posts?.map((post: any, index: any) => (
-                                <PostCardTest key={index} post={post} />
-                              ))
+                                  <PostCardTest key={index} post={post} />
+                                ))
                               : data?.posts?.map((post: any, index: any) => (
-                                <PostCard key={index} post={post} />
-                              ))}
+                                  <PostCard key={index} post={post} />
+                                ))}
                             {data?.posts?.length === 0 && (
                               <div className='col-span-4 md:col-span-2'>
                                 <EmptyPost />
@@ -782,12 +828,17 @@ export default function CampaingsTabs({
                               <button
                                 type='button'
                                 onClick={() => {
-                                  setActiveButton((activeButton == 'topPerforming') ? '' : 'topPerforming')
+                                  setActiveButton(
+                                    activeButton == 'topPerforming'
+                                      ? ''
+                                      : 'topPerforming',
+                                  )
                                 }}
-                                className={`${activeButton == 'topPerforming'
-                                  ? ' bg-[#D9F0F1]'
-                                  : 'bg-[#EBF6F6]'
-                                  } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
+                                className={`${
+                                  activeButton == 'topPerforming'
+                                    ? ' bg-[#D9F0F1]'
+                                    : 'bg-[#EBF6F6]'
+                                } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
                                 top performing 🥥
                               </button>
                             </div>
@@ -855,11 +906,11 @@ export default function CampaingsTabs({
                           <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                             {session?.user?.role == 'TESTER'
                               ? data?.posts?.map((post: any, index: any) => (
-                                <PostCardTest key={index} post={post} />
-                              ))
+                                  <PostCardTest key={index} post={post} />
+                                ))
                               : data?.posts?.map((post: any, index: any) => (
-                                <PostCard key={index} post={post} />
-                              ))}
+                                  <PostCard key={index} post={post} />
+                                ))}
                             {data?.posts?.length === 0 && (
                               <div className='col-span-4 md:col-span-2'>
                                 <EmptyPost />
@@ -918,7 +969,11 @@ export default function CampaingsTabs({
                   <div className='relative'></div>
                 </div>
                 <div className={openTab === 5 ? 'block' : 'hidden'}>
-                  <TabsToShare campaignId={campaign.id} access={access} campaign={campaign} />
+                  <TabsToShare
+                    campaignId={campaign.id}
+                    access={access}
+                    campaign={campaign}
+                  />
                 </div>
                 <div className={openTab === 6 ? 'block' : 'hidden'}>
                   <SettingsTab campaign={campaign} client={client} />

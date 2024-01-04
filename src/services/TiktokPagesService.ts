@@ -30,4 +30,13 @@ export class TiktokPagesService {
     })
   }
 
+  static async findAll(
+    ) {
+      return db.tiktokPages.findMany({
+        where: {
+          
+        }
+      })
+    }
+
 }
