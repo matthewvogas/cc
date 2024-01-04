@@ -147,6 +147,8 @@ export default function AddNewPosts({
         }),
       })
 
+      console.log(res)
+
       if (res.ok) {
         setLoading(false)
         setErrorText('')
@@ -214,6 +216,7 @@ export default function AddNewPosts({
       } else {
         setFetchError('An error occurred')
       }
+      console.log(res)
     } catch (error) {
       console.log(error)
       setFetchError('An error occurred')

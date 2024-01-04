@@ -90,6 +90,14 @@ export default function Connections({
   const instagramUsernames = instagramPages.map((page: any) => page.username).join(" - ");
   const tiktokUsername = tiktokPages.find((page: any) => page.userId === InstagramConnection.userId)?.username || 'No TikTok User Found';
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(tiktokConnection.token)
+      .then(() => {
+      })
+      .catch(err => {
+      });
+  };
+
   return (
     <div className='bg-[#FBFAF9] mx-12 mt-6'>
       <div className='flex justify-between items-center text-sm font-medium px-8 py-8'>
@@ -140,8 +148,8 @@ export default function Connections({
               </a>
             ) : (
               <div className='flex gap-4'>
-                 <label className='bg-[#F5F3F0] flex gap-2 text-xs px-8 py-3 rounded-full font-medium'>
-                  {tiktokUsername}
+                 <label onClick={copyToClipboard} className='bg-[#F5F3F0] flex gap-2 text-xs px-8 py-3 rounded-full font-medium'>
+                  {tiktokUsername} 
                 </label>
                 <label className='bg-[#E7F5EE] flex gap-2 text-xs px-8 py-3 rounded-full font-medium'>
                   connected <Image src={plus} alt={''} />
