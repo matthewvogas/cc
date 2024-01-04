@@ -22,6 +22,9 @@ type Props = {
   setCreatorsSelecteds: any
   activePlatforms: any
   setActivePlatforms: any
+  order: any
+  setOrder: any
+  setPage: any
 }
 
 export default function FilterPostsContainer({
@@ -40,6 +43,9 @@ export default function FilterPostsContainer({
   setCreatorsSelecteds,
   activePlatforms,
   setActivePlatforms,
+  order,
+  setOrder,
+  setPage,
 }: Props) {
   const [openDialog, handleDialog] = React.useState(false)
 
@@ -102,6 +108,7 @@ export default function FilterPostsContainer({
               setTags={setTags}
               tags={tags}
               handleDialog={handleDialog}
+              setPage={setPage}
             />
           </Dialog.Panel>
         )
@@ -119,6 +126,7 @@ export default function FilterPostsContainer({
               setTags={setTags}
               tags={tags}
               handleDialog={handleDialog}
+              setPage={setPage}
             />
           </Dialog.Panel>
         )
@@ -139,7 +147,8 @@ export default function FilterPostsContainer({
                 <button
                   type='button'
                   onClick={() => {
-                    setActiveButton('most')
+                    setActiveButton((activeButton == 'most') ? '' : 'most')
+                    setOrder((order == 'impressionsCount') ? '' : 'impressionsCount')
                   }}
                   className={`${activeButton == 'most' ? ' bg-[#e4ddd5]' : ' bg-[#DADAD8]'
                     } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium whitespace-nowrap`}>
@@ -149,7 +158,8 @@ export default function FilterPostsContainer({
                 <button
                   type='button'
                   onClick={() => {
-                    setActiveButton('latest')
+                    setActiveButton((activeButton == 'latest') ? '' : 'latest')
+                    setOrder((order == 'createdAt') ? '' : 'createdAt')
                   }}
                   className={`${activeButton == 'latest' ? ' bg-[#e4ddd5]' : ' bg-[#DADAD8]'
                     } px-8 py-3 text-base rounded-full items-center p-2 text-black font-medium whitespace-nowrap`}>
