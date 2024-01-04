@@ -36,18 +36,22 @@ export async function POST(
 
     const formData = await req.formData()
     const image = formData.get('image') as Blob
-    const name = formData.get('name') as string
 
-    const buffer = Buffer.from(await image.arrayBuffer())
-    const resized = await sharp(buffer).webp({ quality: 95 }).toBuffer()
-    const blob = new Blob([resized], { type: 'image/webp' })
+    const UploadedImageUrl = null;
 
-    const UploadedImageUrl = await S3Service.uploadObject(
-      blob,
-      name,
-      'clients',
-      'coverImages',
-    )
+    if (image) {
+      const name = formData.get('name') as string
+      const buffer = Buffer.from(await image.arrayBuffer())
+      const resized = await sharp(buffer).webp({ quality: 95 }).toBuffer()
+      const blob = new Blob([resized], { type: 'image/webp' })
+  
+      const UploadedImageUrl = await S3Service.uploadObject(
+        blob,
+        name,
+        'clients',
+        'coverImages',
+      )
+    }
 
     const campaign = await db.campaign.update({
       where: {

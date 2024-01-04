@@ -5,6 +5,7 @@ import { inter } from '@/app/fonts'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import imageCompression from 'browser-image-compression'
+import Spinner from '@/components/loading/spinner'
 
 export default function SettingsTab({
   campaign,
@@ -20,8 +21,10 @@ export default function SettingsTab({
   const [showChangeText, setShowChangeText] = useState(false)
   const [image, setImage] = useState('')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [loading, setLoading] = useState(false);
 
   const handleEdit = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`/api/campaigns/${campaign.id}`, {
         method: 'PUT',
@@ -38,28 +41,36 @@ export default function SettingsTab({
     } catch (error: any) {
       setFetchError(error?.message)
     }
+    setLoading(false);
   }
+
   const handleCreate = async () => {
     const formData = new FormData()
-    formData.append('name', selectedFile!.name)
-    formData.append('image', selectedFile!)
 
-    if (client.id) {
-      try {
-        const res = await fetch(`/api/campaigns/${campaign.id}/cover`, { 
-          method: 'POST',
-          body: formData,
-        })
-        if (res.status === 200) {
-          router.refresh()
+    if (selectedFile) {
+      setLoading(true);
+      formData.append('name', selectedFile.name)
+      formData.append('image', selectedFile!)
+
+      if (client.id) {
+        try {
+          const res = await fetch(`/api/campaigns/${campaign.id}/cover`, {
+            method: 'POST',
+            body: formData,
+          })
+          if (res.status === 200) {
+            router.refresh()
+          }
+        } catch (error) {
+          console.error(error)
         }
-      } catch (error) {
-        console.error(error)
       }
+      setLoading(false);
     }
   }
 
   const handleRemove = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`/api/campaigns/${campaign.id}`, {
         method: 'DELETE',
@@ -70,6 +81,7 @@ export default function SettingsTab({
     } catch (error: any) {
       setFetchError(error?.message)
     }
+    setLoading(false);
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,9 +102,9 @@ export default function SettingsTab({
       }
     }
   }
+
   useEffect(() => {
     try {
-
       if (campaign.id) {
         const fetchCoverImage = async () => {
           const res = await fetch(`/api/campaigns/${campaign.id}/cover`, {
@@ -101,18 +113,18 @@ export default function SettingsTab({
               'Content-Type': 'application/json',
             },
           })
-    
+
           const data = await res.json()
           // console.log(data)
           setImage(data)
         }
         fetchCoverImage()
-      } 
-      
+      }
+
     } catch (error) {
       console.log(error)
     }
-   
+
   }, [campaign?.id])
 
   return (
@@ -162,8 +174,10 @@ export default function SettingsTab({
           </div>
         </div>
       </div>
-      <div className='divider '></div>
-
+      <div className='divider'></div>
+      <div className='text-center'>
+        {loading ? (<Spinner width='w-4' height='h-4' border='border-2' />) : ''}
+      </div>
       <form onSubmit={handleEdit} className='p-4 px-12 '>
         <div className='flex flex-col gap-6 mt-4'>
           <div className='flex w-full gap-5 '>
@@ -188,7 +202,7 @@ export default function SettingsTab({
                 onChange={e => setDescription(e.target.value)}
                 name=''
                 id=''
-                placeholder='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                placeholder='A brief description about your campaign.'
                 className={`mt-2 w-full h-full rounded-lg border border-gray-300  p-3.5 px-6 text-base text-gray-900 focus:outline-0`}
               />
             </div>

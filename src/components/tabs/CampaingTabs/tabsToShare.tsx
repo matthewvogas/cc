@@ -235,11 +235,11 @@ export default function TabsToShare({
                       </div>
 
                       {/* Users who currently have access */}
-                      <div className='w-2/6 pl-4'>
+                      <div className='w-2/6 pl-4' style={scroll}>
                         <h4 className='mb-4 font-semibold text-base'>
                           Users who currently have access
                         </h4>
-                        <div className='flex flex-wrap gap-2' style={scroll}>
+                        <div className='flex flex-wrap gap-2'>
                           {access.sort(function(a: { id: number }, b: { id: number }) { return b.id - a.id}).map((email: any, index: number) => (
                             <h2
                               key={index}
