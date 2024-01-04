@@ -52,14 +52,14 @@ export default function PostsByPlatform({
 
   const [order, setOrder] = useState('')
 
-  const { data, arePostsLoading, postsError } = usePosts(
+  const { data, arePostsLoading, postsError, refreshPosts } = usePosts(
     String(campaign.id),
     limit,
     currentPage * limit,
     activeSocial,
   )
 
-  const refreshPosts = async () => {
+  const refreshPostsT = async () => {
     setLoading(true)
     try {
       const res = await fetch(`/api/collect/auto`, {
@@ -73,10 +73,9 @@ export default function PostsByPlatform({
         }),
       })
 
-      if (res.ok == true) {
+      if (res.ok) {
+        refreshPosts()
         setLoading(false)
-        router.push(`/dashboard/campaigns/${campaign.id}`)
-        console.log(200)
       }
     } catch (error) {
       console.log('error')
@@ -243,7 +242,7 @@ export default function PostsByPlatform({
                   {shared != true && (
                     <div className='flex gap-4 justify-end'>
                       <button
-                        onClick={refreshPosts}
+                        onClick={refreshPostsT}
                         className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
                         {loading == true ? 'loading...' : 'refresh data'}
                         <FiRotateCw
