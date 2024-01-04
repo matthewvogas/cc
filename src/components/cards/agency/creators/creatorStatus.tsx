@@ -4,6 +4,7 @@ import { User } from '@prisma/client'
 import { inter } from '@/app/fonts'
 import Link from 'next/link'
 import { ptMono } from '@/app/fonts'
+import Spinner from '@/components/loading/spinner'
 
 type Props = {
   creator: any
@@ -19,12 +20,15 @@ export function Connect({ session, creator }: Props) {
   const [linkToShareInvite, setLinkToShareInvite] = useState('')
   const [codeToShareInvite, setCodeToShareInvite] = useState('')
   const [isCopied, setIsCopied] = useState(false)
+  const [loading, setLoading] = React.useState(false);
 
   const handleChange = (event: any) => {
+    setEnviado('');
     setEmail(event.target.value)
   }
 
   const sendInvite = async () => {
+    setLoading(true);
     const creatorId = await creator.users.find(
       (user: any) => user.role === 'CREATOR',
     ).id
@@ -43,10 +47,18 @@ export function Connect({ session, creator }: Props) {
       if (res.status === 200) console.log(res.status)
     } catch (error: any) { }
     setIsOpen(false)
+    setLoading(false);
   }
 
   const sendGetRequest = async () => {
     const recipientEmail = email
+
+    if (!recipientEmail) {
+      setEnviado('Error, write the email correctly');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch(`/api/email?to=${recipientEmail}`, {
@@ -70,6 +82,7 @@ export function Connect({ session, creator }: Props) {
     } catch (error) {
       console.error('Error en la solicitud:', error)
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -101,8 +114,6 @@ export function Connect({ session, creator }: Props) {
       console.error('Error al copiar al portapapeles: ', err)
     }
   }
-
-
 
   return (
     <>
@@ -162,7 +173,8 @@ export function Connect({ session, creator }: Props) {
                   <div className='fixed inset-0 flex items-center justify-center p-4'>
                     <Dialog.Panel className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
                       <Dialog.Title className='text-lg font-medium px-12 mt-12 mb-8 text-center'>
-                        invite creators
+                        invite creators <br />
+                        {loading ? (<Spinner width='w-4' height='h-4' border='border-2' />) : ''}
                       </Dialog.Title>
                       <Tab.Group>
                         <Tab.List className={`flex flex-row items-center justify-center gap-6 mb-6 ${ptMono.className}`}>
@@ -232,7 +244,6 @@ export function Connect({ session, creator }: Props) {
                               </div>
                             </div>
                           </Tab.Panel>
-                          
                           <Tab.Panel>
                             <div className='px-12 mt-2'>
                               <label className='text-xs text-black opacity-50' htmlFor=''>
@@ -262,18 +273,18 @@ export function Connect({ session, creator }: Props) {
                               </div>
                               <hr className='my-8 h-px border-0 bg-gray-200'></hr>
                               <div className='flex mb-12'>
-                                <label
-                                  className='text-xs text-black opacity-70'
-                                  htmlFor=''>
-                                  Have your own site you want to invite your creators to
-                                  sign up for this campaign from? Copy this embed code.
-                                </label>
-                                <button
-                                  onClick={copyToClipboardCode}
-                                  className={`text-sm ml-6 w-80 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 ${ptMono.className}`}>
-                                  embed a form
-                                </button>
-                              </div>
+                                                                  <label
+                                    className='text-xs text-black opacity-70'
+                                    htmlFor=''>
+                                    Have your own site you want to invite your creators to
+                                    sign up for this campaign from? Copy this embed code.
+                                  </label>
+                                                                            <button
+                                              onClick={copyToClipboardCode}
+                                              className={`text-sm ml-6 w-80 rounded-full border border-[#FACEBC] active:bg-opacity-10 px-8 focus:border-[#c98e77] hover:border-[#eeaf97] active:bg-rose-300 ${ptMono.className}`}>
+                                              embed a form
+                                            </button>
+                                                                        </div>
                               {isCopied && (
                                 <div className='shadow-lg fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border border-gray-300 px-4 py-2 rounded-md'>
                                   Code copied!
