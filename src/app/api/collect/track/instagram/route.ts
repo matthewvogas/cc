@@ -492,38 +492,15 @@ export async function POST(req: Request, res: Response) {
         }
       }
     } else {
-      const response = await getUserInfo(page.id)
+      const response = await getUserInfo(page.token)
       const tiktokPage = response.data.user
 
       const responseVideos = await getUserVideos(page.token)
       const videos = responseVideos.data.videos
 
-      const creator = await db.creator.upsert({
+      const creator = await db.creator.findFirst({
         where: {
-          username_platform: {
-            username: tiktokPage.username,
-            platform: 'tiktok',
-          },
-        },
-        create: {
-          followersCount: tiktokPage.follower_count,
-          username: tiktokPage.username,
-          platform: 'tiktok',
-          uuid: tiktokPage.open_id,
-          users: {
-            connect: {
-              id: sessionId,
-            },
-          },
-        },
-        update: {
-          followersCount: page.follower_count,
-          uuid: page.open_id,
-          users: {
-            connect: {
-              id: sessionId,
-            },
-          },
+          uuid: page.id,
         },
       })
 
@@ -549,7 +526,7 @@ export async function POST(req: Request, res: Response) {
               imageUrl: post.cover_image_url,
 
               // data
-              creatorId: creator.id,
+              creatorId: creator?.id,
               caption: post.video_description,
               userId: String(sessionId),
 
@@ -573,7 +550,7 @@ export async function POST(req: Request, res: Response) {
               imageUrl: post.cover_image_url,
 
               // data
-              creatorId: creator.id,
+              creatorId: creator?.id,
               caption: String(post.video_description),
               userId: sessionId,
 
@@ -591,31 +568,36 @@ export async function POST(req: Request, res: Response) {
             },
           })
         } else {
-          const postToSave = await db.post.create({
-            data: {
-              platform: 'tiktok',
-              permalink: post.share_url,
-              shortcode: post.share_url,
-              imageUrl: post.cover_image_url,
+          const containsHashtag = tags.some((tag: any) =>
+            post.video_descriptio.includes(tag),
+          )
+          if (containsHashtag) {
+            const postToSave = await db.post.create({
+              data: {
+                platform: 'tiktok',
+                permalink: post.share_url,
+                shortcode: post.share_url,
+                imageUrl: post.cover_image_url,
 
-              // data
-              creatorId: creator.id,
-              caption: post.video_description,
-              userId: String(sessionId),
+                // data
+                creatorId: creator?.id,
+                caption: post.video_description,
+                userId: String(sessionId),
 
-              // insighst
-              engagementCount:
-                ((post.like_count + post.comment_count + post.share_count) /
-                  post.view_count) *
-                100,
-              reachCount: 0,
-              sharesCount: post.share_count,
-              commentsCount: post.comment_count,
-              playsCount: post.view_count,
-              savesCount: 0,
-              likesCount: post.like_count,
-            },
-          })
+                // insighst
+                engagementCount:
+                  ((post.like_count + post.comment_count + post.share_count) /
+                    post.view_count) *
+                  100,
+                reachCount: 0,
+                sharesCount: post.share_count,
+                commentsCount: post.comment_count,
+                playsCount: post.view_count,
+                savesCount: 0,
+                likesCount: post.like_count,
+              },
+            })
+          }
         }
 
         const showPost = () => {
