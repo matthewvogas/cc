@@ -492,17 +492,22 @@ export async function POST(req: Request, res: Response) {
         }
       }
     } else {
+      console.log('TIKTOK ENTRANDO')
       const response = await getUserInfo(page.token)
       const tiktokPage = response.data.user
+
+      console.log(response)
 
       const responseVideos = await getUserVideos(page.token)
       const videos = responseVideos.data.videos
 
       const creator = await db.creator.findFirst({
         where: {
-          uuid: page.id,
+          uuid: tiktokPage.id,
         },
       })
+
+      console.log(creator)
 
       for (const post of videos) {
         const postExists = await db.post.findFirst({
