@@ -495,19 +495,15 @@ export async function POST(req: Request, res: Response) {
       console.log('TIKTOK ENTRANDO')
       const response = await getUserInfo(page.token)
       const tiktokPage = response.data.user
-
-      console.log(response)
-
       const responseVideos = await getUserVideos(page.token)
       const videos = responseVideos.data.videos
+      console.log(videos)
 
       const creator = await db.creator.findFirst({
         where: {
-          uuid: tiktokPage.id,
+          username: tiktokPage.username,
         },
       })
-
-      console.log(creator)
 
       for (const post of videos) {
         const postExists = await db.post.findFirst({
@@ -529,6 +525,7 @@ export async function POST(req: Request, res: Response) {
               permalink: post.share_url,
               shortcode: post.share_url,
               imageUrl: post.cover_image_url,
+              campaignId: +campaignId,
 
               // data
               creatorId: creator?.id,
@@ -553,7 +550,7 @@ export async function POST(req: Request, res: Response) {
               permalink: String(post.share_url),
               shortcode: String(post.share_url),
               imageUrl: post.cover_image_url,
-
+              campaignId: +campaignId,
               // data
               creatorId: creator?.id,
               caption: String(post.video_description),
@@ -576,6 +573,7 @@ export async function POST(req: Request, res: Response) {
           const containsHashtag = tags.some((tag: any) =>
             post.video_descriptio.includes(tag),
           )
+          console.log(containsHashtag, 'YES')
           if (containsHashtag) {
             const postToSave = await db.post.create({
               data: {
@@ -583,7 +581,7 @@ export async function POST(req: Request, res: Response) {
                 permalink: post.share_url,
                 shortcode: post.share_url,
                 imageUrl: post.cover_image_url,
-
+                campaignId: +campaignId,
                 // data
                 creatorId: creator?.id,
                 caption: post.video_description,
