@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 
 type Props = {
   readonly id: number
@@ -97,7 +98,19 @@ export default function PostsByPlatform({
   const totalPages = Math.ceil(data?.totalPosts / limit)
 
   if (arePostsLoading) {
-    return <p className='px-12'>loading posts...</p>
+    return (
+      <SkeletonTheme inline={false}>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+      </SkeletonTheme>
+    )
   }
 
   const tiktokPosts = data.posts?.filter(

@@ -7,6 +7,7 @@ import { SocialConnectionService } from '@/services/SocialConnectionService'
 import { UserService } from '@/services/UsersService'
 import { TiktokPagesService } from '@/services/TiktokPagesService'
 import { StoriesService } from '@/services/StoriesService'
+import { PortfolioService } from '@/services/Portfolio'
 
 export default async function Page() {
   const session = await getServerSession(authOptions)
@@ -53,6 +54,11 @@ export default async function Page() {
   const tiktokConnection = await SocialConnectionService.findTikTok(
     String(session?.user.id),
   )
+  const portfolio = await PortfolioService.getData(
+    String(session?.user.id),
+  )
+
+  console.log(portfolio)
 
   return (
     <Settings
@@ -66,6 +72,7 @@ export default async function Page() {
       instagramConnection={instagramConnection}
       tiktokConnection={tiktokConnection}
       tiktokToken={tiktokToken}
+      portfolio={portfolio}
     />
   )
 }

@@ -10,7 +10,7 @@ type Props = {
 
 function Pagination({pageLength, loadPrevious, currentPage, totalPages, loadMore} : Props) {
   return (
-    <div className='px-12 flex justify-between w-full mb-10'>
+    <div className='px-12 flex justify-between w-full mb-10 mt-4'>
       <div>
         {pageLength > 1 && (
           <button onClick={loadPrevious} className='btn mr-2'>

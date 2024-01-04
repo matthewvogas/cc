@@ -115,23 +115,6 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    const image = await fetch(post.cover_image_url).then(r => r.blob());
-    const name = String(post.share_url) + new Date().getTime();
-
-    const buffer = Buffer.from(await image.arrayBuffer())
-    const resized = await sharp(buffer)
-      .webp({ quality: 80 })
-      .resize(300, 300)
-      .toBuffer()
-    const blob = new Blob([resized], { type: 'image/webp' })
-
-    const UploadedImageUrl = await S3Service.uploadObject(
-      blob,
-      name,
-      'campaigns',
-      'images',
-    )
-
     if (postExists) {
       const postToSave = await db.post.upsert({
         where: {
@@ -143,7 +126,7 @@ export async function POST(req: NextRequest) {
           platform: 'tiktok',
           permalink: post.share_url,
           shortcode: post.share_url,
-          imageUrl: UploadedImageUrl,
+          imageUrl: post.cover_image_url,
   
           // data
           creatorId: creator.id,
@@ -164,7 +147,7 @@ export async function POST(req: NextRequest) {
           platform: 'tiktok',
           permalink: String(post.share_url),
           shortcode: String(post.share_url),
-          imageUrl:  UploadedImageUrl,
+          imageUrl:  post.cover_image_url,
   
           // data
           creatorId: creator.id,

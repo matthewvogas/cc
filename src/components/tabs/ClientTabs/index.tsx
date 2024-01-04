@@ -75,7 +75,7 @@ export default function ClientTabs({
               'Content-Type': 'application/json',
             },
           })
-  
+
           const data = await res.json()
           // console.log(data)
           setImage(data)
@@ -254,7 +254,6 @@ export default function ClientTabs({
                     <div className='flex w-full gap-5 '>
                       <div className='flex flex-col gap-8 w-2/3'>
                         <div>
-                          <div></div>
                           <label className={`text-sm`}>Client name</label>
                           <input
                             value={name}

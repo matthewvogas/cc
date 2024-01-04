@@ -80,7 +80,7 @@ export default function AddClients({
         }}>
         <label
           tabIndex={0}
-          className={`bg-[#E9F7F0] flex bg-text-lg align-center items-center border-rose-100 mx-2 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer`}>
+          className={`bg-[#E9F7F0] flex bg-text-lg align-center items-center border-rose-100 px-9 py-3 text-back font-medium h-14 rounded-full cursor-pointer ${ptMono.className}`}>
           {text}
           {icon}
         </label>

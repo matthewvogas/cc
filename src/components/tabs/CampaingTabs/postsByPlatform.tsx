@@ -20,6 +20,7 @@ import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 
 type Props = {
   readonly id: number
@@ -107,7 +108,19 @@ export default function PostsByPlatform({
 
 
   if (arePostsLoading && activeSocial != "Stories") {
-    return <p className='px-12'>loading posts...</p>
+    return (
+      <SkeletonTheme inline={false}>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+        <p className='px-12'>
+          <Skeleton borderRadius={'18px'} height={'100px'} count={1} />
+        </p>
+      </SkeletonTheme>
+    )
   }
 
   const tiktokPosts = data?.posts?.filter(
@@ -172,23 +185,7 @@ export default function PostsByPlatform({
                 Stories {`(${storiesCount})`}
               </Tab>
             </div>
-            <div className='avatar flex place-self-end items-center mx-12 mb-2'>
-              {campaign?.client ? (
-                <>
-                  <div className=' mask mask-circle mr-3 h-10 w-10'>
-                    <Image
-                      priority
-                      className={``}
-                      width={100}
-                      height={100}
-                      src={campaign?.client.imageUrl || avatar}
-                      alt='background'
-                    />
-                  </div>
-                  <p>{campaign?.client.name}</p>
-                </>
-              ) : null}
-            </div>
+            
           </Tab.List>
           <Tab.Panels>
             {/* All Posts */}

@@ -229,15 +229,15 @@ function Tabs({ tabs }: TabsProps) {
   return (
     <div className='w-full '>
       <Tab.Group>
-        <Tab.List className='flex -mt-8 p-1 border-b-2 border-[#E1DEDB] space-x-16 pl-12 pt-8 bg-sidebarBackground'>
+        <Tab.List className='space-x-16 pl-12  border-b-2'>
           {tabs.map((tab, index) => (
             <Tab
               key={index}
               className={({ selected }) =>
-                `relative p-2${
+                `relative ${
                   selected
-                    ? 'text-brown -mb-[6px] border-b-2 font-semibold border-gray-700 outline-none'
-                    : 'text-brown'
+                    ? 'font-medium text-brown pb-5 border-b-4 border-[#808080] outline-none text-[#000]'
+                    : 'text-[#808080]'
                 } inline-block`
               }
               onClick={() => handleTabClick(index)}>

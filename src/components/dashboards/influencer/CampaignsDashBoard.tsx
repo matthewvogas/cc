@@ -137,7 +137,7 @@ export default function CampaignsDashBoardInfluencer({
           loadMore={loadMoreCconnections}
         />
 
-      <div className='flex flex-col bg-white pt-12'>
+      <div className='flex flex-col bg-white pt-6'>
         <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
           {filteredCards?.length > 0 ? (
             filteredCards.map((card: any, index: number) => {

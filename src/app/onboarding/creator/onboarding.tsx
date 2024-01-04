@@ -262,7 +262,6 @@ export default function Onboarding() {
 
   return (
     <div className='relative flex h-screen w-screen items-center justify-center'>
-      {/* Imagen de fondo */}
       <Image
         priority
         className='absolute -z-20 h-full w-full object-cover object-center'

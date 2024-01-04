@@ -7,6 +7,7 @@ import PortfolioTabs from './PortfolioTabs'
 import { InstagramPagesService } from '@/services/InstagramPagesService'
 import { ConnectionService } from '@/services/ConnectionService'
 import { SocialConnectionService } from '@/services/SocialConnectionService'
+import { PortfolioService } from '@/services/Portfolio'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,5 +24,13 @@ export default async function CampaignPage() {
     session!.user.id,
   )
 
-  return <div>{session!.user.role == 'CREATOR' ? <PortfolioTabs clients={clients} campaigns={campaigns} instagramPages={instagramPages} tokenIg={token} /> : null}</div>
+  const connections = await ConnectionService.findManyByUserIdFromCreator(
+    String(session?.user.id)
+  )
+
+  const portfolio = await PortfolioService.getData(
+    String(session?.user.id),
+  )
+
+  return <div>{session!.user.role == 'CREATOR' ? <PortfolioTabs portfolio={portfolio} connections={connections} clients={clients} campaigns={campaigns} instagramPages={instagramPages} tokenIg={token} /> : null}</div>
 }

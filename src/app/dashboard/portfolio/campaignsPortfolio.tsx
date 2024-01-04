@@ -17,9 +17,10 @@ import DropdownCheckbox from '@/components/inputs/dropdownCheckbox'
 import Spinner from '@/components/loading/spinner'
 import useSWR from 'swr'
 import Pagination from '@/components/pagination/pagination/pagination'
-import PostCard from '@/components/cards/influencer/posts/postCard'
+import SelectPostCard from '@/components/cards/influencer/posts/SelectPostCard'
 
 type Props = {
+  connections: any
   clients: any
   campaigns: any
   instagramPages: any
@@ -33,6 +34,7 @@ interface CheckboxOption {
 }
 
 export default function CampaignsPortfolio({
+  connections,
   clients,
   campaigns,
   instagramPages,
@@ -65,13 +67,17 @@ export default function CampaignsPortfolio({
   const [isOpen, setIsOpen] = useState(false)
   const [fetchError, setFetchError] = useState<string | null>(null)
 
-  const [activeSection, setActiveSection] = useState<number | null>(null)
+  const [activeSection, setActiveSection] = useState<number>(0)
+
   const [activeCampaign, setActiveCampaign] = useState<CampaignRes | null>(null)
 
   const handleButtonClick = (campaign: CampaignRes, section: number) => {
-    setActiveSection(activeSection === section ? null : section)
-    setActiveCampaign(campaign)
+    if (activeSection !== section) {
+      setActiveSection(section)
+      setActiveCampaign(campaign)
+    }
   }
+
   const [checkboxOptions, setCheckboxOptions] = useState<CheckboxOption[]>([])
 
   useEffect(() => {
@@ -207,9 +213,7 @@ export default function CampaignsPortfolio({
     setLoading(true)
 
     const creators = checkboxOptions.filter(option => option.checked)
-    const campaignId = await Id
-    
-    console.log('Campaign ID', campaignId, creators, tags)
+    const campaignId = Id
 
     try {
       const res = await fetch('/api/collect/track/instagram', {
@@ -240,15 +244,40 @@ export default function CampaignsPortfolio({
     }
   }
 
+  useEffect(() => {
+    if (campaigns && campaigns.length > 0) {
+      setActiveCampaign(campaigns[0])
+    }
+  }, [campaigns])
+
+  const [selectedPostIds, setSelectedPostIds] = useState<string[]>([])
+
+  const toggleSelectPost = (postId: string) => {
+    setSelectedPostIds((prevSelected: any) =>
+      prevSelected.includes(postId)
+        ? prevSelected.filter((id: any) => id !== postId)
+        : [...prevSelected, postId],
+    )
+  }
+
   const SectionOne: React.FC<SectionProps> = ({ campaign }) => {
     return (
       <div className={`flex flex-col w-full`}>
         <div className='mt-12 mx-8'>
           <div className='flex justify-between w-full'>
             <p className='text-xl'>Select from posts</p>
-            {/* <p className='px-3 py-2 bg-[#E9F7F0] rounded-full text-center'>
-              N posts selected
-            </p> */}
+            <div className='flex gap-4'>
+              <p className='px-3 py-2 bg-[#E9F7F0] rounded-full text-center'>
+                {selectedPostIds.length} posts selected
+              </p>
+              <button
+                // on clik para guardar posts
+                disabled={loading}
+                className='flex self-end bg-[#E2DED4] rounded-lg px-7 py-2'
+                type='submit'>
+                {loading ? <span>Loading...</span> : 'done'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -260,9 +289,13 @@ export default function CampaignsPortfolio({
               <Spinner width='w-4' height='h-4' border='border-2' />
             ) : (
               Array.isArray(data?.posts) &&
-              data?.posts?.map((post: any, index: any) => (
-                // console.log(post.campaignId)
-                <PostCard key={index} post={post} />
+              data.posts.map((post: any) => (
+                <SelectPostCard
+                  key={post.id}
+                  post={post}
+                  isSelected={selectedPostIds.includes(post.id)}
+                  onToggleSelect={() => toggleSelectPost(post.id)}
+                />
               ))
             )}
           </div>
@@ -285,9 +318,6 @@ export default function CampaignsPortfolio({
         <div className='mt-12 mx-8'>
           <div className='flex justify-between w-full'>
             <p className='text-xl'>Add posts from links</p>
-            {/* <p className='px-3 py-2 bg-[#E9F7F0] rounded-full text-center'>
-              N posts selected
-            </p> */}
           </div>
         </div>
 
@@ -395,9 +425,6 @@ export default function CampaignsPortfolio({
         <div className='mt-12 mx-8'>
           <div className='flex justify-between w-full'>
             <p className='text-xl'>Auto Tracking</p>
-            {/* <p className='px-3 py-2 bg-[#E9F7F0] rounded-full text-center'>
-              N posts selected
-            </p> */}
           </div>
         </div>
 
@@ -447,7 +474,7 @@ export default function CampaignsPortfolio({
   }
 
   const sections = [
-    // { component: SectionOne, title: 'Select from your posts' },
+    { component: SectionOne, title: 'Select from your posts' },
     { component: SectionTwo, title: 'Add links' },
     { component: SectionThree, title: 'Auto track ✨' },
   ]
@@ -472,7 +499,7 @@ export default function CampaignsPortfolio({
 
             <div className='flex gap-4 justify-end'>
               <AddPortfolio
-                clientsFallback={clients}
+                clientsFallback={connections}
                 text={'create a portfolio'}
                 icon={undefined}
               />
@@ -482,7 +509,7 @@ export default function CampaignsPortfolio({
 
         {/* // cambiar aqui */}
 
-        <div className='flex flex-col bg-white pt-12'>
+        <div className='flex flex-col bg-white pt-6'>
           <div className='flex overflow-scroll overflow-y-hidden gap-4 md:px-12'>
             {campaigns.length > 0 ? (
               campaigns.map((card: any, index: any) => (
@@ -538,7 +565,7 @@ export default function CampaignsPortfolio({
                           </div>
                           <div className='flex flex-col mt-10 gap-5 w-full px-12'>
                             {[
-                              // 'Select from your posts',
+                              'Select from your posts',
                               'Add links',
                               'Auto track ✨',
                             ].map((title, index) => (
@@ -555,8 +582,7 @@ export default function CampaignsPortfolio({
                             ))}
                           </div>
                         </div>
-                        {activeSection !== null &&
-                          activeCampaign &&
+                        {activeCampaign &&
                           React.createElement(
                             sections[activeSection].component,
                             {
