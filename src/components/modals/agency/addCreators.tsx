@@ -229,12 +229,6 @@ export default function AddCreators({ userCreators, session }: Props) {
                       className={`text-sm font-medium pb-2 pt-6 ${inter.className}`}>
                       Search for a creator
                     </p>
-                    {/* <input
-                      type='text'
-                      id='default-input'
-                      placeholder='search Codecoco database'
-                      className={`w-full rounded-xl border border-gray-300 bg-white p-2.5 px-4 text-sm text-gray-900 focus:outline-0 ${ptMono.className}`}
-                    /> */}
                     <div className='dropdown'>
                       <Search
                         inputSearchValue={inputSearchValue}
