@@ -21,18 +21,46 @@ export async function GET(req: NextRequest) {
     const campaign = url.searchParams.get('campaign')
 
     let clause: any = {}
+
     if (socials?.at(0) != '') clause.platform = { in: socials }
-    if (campaign) clause.campaigns = { some: { name: campaign } }
-    if ( followers1 || followers2 ) clause.followersCount = { gte: followers1, lte: followers2 }
-    console.log(clause);
+
+    if (followers1 || followers2) {
+      clause.followersCount = {};
+      if (followers1) clause.followersCount.gte = followers1;
+      if (followers2) clause.followersCount.lte = followers2;
+    }
+
+    if (campaign) {
+      const campaignArray = campaign.split(',');
+
+      if (campaignArray.length > 1) {
+        clause.campaigns = {
+          some: {
+            name: {
+              in: campaignArray
+            }
+          }
+        }
+      } else if (campaignArray.length === 1) {
+        clause.campaigns = {
+          some: {
+            name: {
+              contains: campaignArray[0],
+              mode: 'insensitive'
+            }
+          }
+        };
+      }
+    }
+
+
 
     if (isNaN(limit) || isNaN(offset)) {
       return NextResponse.json(
         { error: 'Invalid query parameters' },
         { status: 400 },
-      )
+      );
     }
-
     const hasMore = true
 
     const creators = await db.creator.findMany({
@@ -41,7 +69,7 @@ export async function GET(req: NextRequest) {
         campaigns: true,
         users: {
           include: {
-            receivedInvitations: true,           
+            receivedInvitations: true,
             receivedConnections: true
           },
         },
@@ -56,7 +84,7 @@ export async function GET(req: NextRequest) {
     const totalCreators = await db.creator.count({
       where: clause
     })
-    
+
     return NextResponse.json({ creators, totalCreators, hasMore })
   } catch (err) {
     console.log(err)
