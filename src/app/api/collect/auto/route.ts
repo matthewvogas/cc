@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  async function updatetTPosts(instgramToken: string) {
+  async function updatetTPosts(tiktokToken: string) {
     try {
       const res = await fetch('https://codecoco.co/api/collect/tiktokrefresh', {
         method: 'POST',
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          instgramToken: instgramToken,
+          tiktokToken: tiktokToken,
           sessionId: sessionId,
         }),
       })
@@ -125,6 +125,7 @@ export async function POST(req: NextRequest) {
       if (post.creator?.username == page.username) {
         for (const token of tokens) {
           updatetTPosts(String(token))
+          console.log(token)
           console.log('match')
         }
       } else {

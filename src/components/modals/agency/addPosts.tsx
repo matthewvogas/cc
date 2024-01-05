@@ -246,7 +246,7 @@ export default function AddNewPosts({
         <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
         <div className='fixed inset-0 flex items-center justify-center p-4'>
           <Dialog.Panel
-            className={`flex w-full max-w-xl flex-col rounded-xl bg-white  `}>
+            className={`flex w-full max-w-2xl flex-col rounded-xl bg-white  `}>
             <Image src={modalCover} className='rounded-t-xl' alt={''} />
             <Dialog.Title className=' text-lg font-medium mb-8 text-center'>
               Add posts 🥥
@@ -254,10 +254,10 @@ export default function AddNewPosts({
 
             <Tab.Group>
               <Tab.List
-                className={`flex flex-row items-center justify-center gap-6 px-12  ${ptMono.className}`}>
+                className={`flex items-center justify-center gap-6 px-12  ${ptMono.className}`}>
                 <Tab
                   className={({ selected }) =>
-                    ` rounded-3xl  border-[#FEF8F6] px-12 py-2 w-full ${
+                    ` rounded-3xl   border-[#FEF8F6] px-12 py-2 w-full ${
                       selected ? 'text-black bg-primary' : 'text-[#CCCCCC]'
                     }`
                   }>
@@ -266,7 +266,7 @@ export default function AddNewPosts({
 
                 <Tab
                   className={({ selected }) =>
-                    ` rounded-3xl  bg-[#c0e2d2] px-12 py-2 w-full ${
+                    ` rounded-3xl   bg-[#c0e2d2] px-12 py-2 w-full ${
                       selected
                         ? '  text-black'
                         : 'text-[#4d4d4d8e] bg-[#d8ebe223]'
