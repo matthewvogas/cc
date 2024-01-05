@@ -171,8 +171,6 @@ export async function POST(req: NextRequest) {
         const postToSave = await db.post.upsert({
           where: {
             id: postExists!.id,
-            shortcode: String(post.shortcode),
-            platform: 'instagram',
           },
           create: {
             platform: 'instagram',

@@ -1,8 +1,5 @@
-import { InstagramPagesService } from '@/services/InstagramPagesService'
 import { NextRequest, NextResponse } from 'next/server'
 import db from '@/lib/db'
-import { SocialConnectionService } from '@/services/SocialConnectionService'
-import S3Service from '@/lib/S3Service'
 import sharp from 'sharp'
 
 export async function POST(req: NextRequest) {
@@ -23,12 +20,13 @@ export async function POST(req: NextRequest) {
       throw new Error(`Failed to fetch user info: ${response.statusText} with token - ${accessToken}`)
     }
 
+    
+
     const data = await response.json()
     return data
   }
 
   const response = await getUserInfo(tiktokToken)
-  console.log(response)
   const page = response.data.user
 
   const creator = await db.creator.findFirst({
@@ -36,6 +34,7 @@ export async function POST(req: NextRequest) {
       username: page.username,
     },
   })
+
 
   interface PostData {
     id: string
@@ -80,22 +79,22 @@ export async function POST(req: NextRequest) {
   }
 
   const responseVideos = await getUserVideos(tiktokToken)
+
   const videos = responseVideos.data.videos
 
   for (const post of videos) {
     const postExists = await db.post.findFirst({
       where: {
-        shortcode: String(post.share_url),
+        shortcode: String(post.id),
         userId: userId,
       },
     })
 
     if (postExists) {
+
       const postToSave = await db.post.upsert({
         where: {
           id: postExists.id,
-          shortcode: String(post.share_url),
-          platform: 'tiktok',
         },
         create: {
           platform: 'tiktok',
@@ -145,32 +144,29 @@ export async function POST(req: NextRequest) {
           likesCount: post.like_count,
         },
       })
-    } else {
-      const postToSave = await db.post.create({
-        data: {
+
+      const creatorFollowers = await db.creator.upsert({
+        where: {
+          id: creator?.id,
+        },
+        create: {
           platform: 'tiktok',
-          permalink: post.share_url,
-          shortcode: post.share_url,
-          imageUrl: post.cover_image_url,
 
-          // data
-          creatorId: creator?.id,
-          caption: post.video_description,
-          userId: userId,
-
-          // insighst
-          engagementCount:
-            ((post.like_count + post.comment_count + post.share_count) /
-              post.view_count) *
-            100,
-          reachCount: 0,
-          sharesCount: post.share_count,
-          commentsCount: post.comment_count,
-          playsCount: post.view_count,
-          savesCount: 0,
-          likesCount: post.like_count,
+          followersCount: page.follower_count,
+          username: page.username
+        },
+        update: {
+          // urls
+          platform: 'tiktok',
+          followersCount: page.follower_count,
+          username: page.username
         },
       })
+
+      console.log(creatorFollowers)
+
+    } else {
+
     }
 
     const showPost = () => {
