@@ -87,8 +87,8 @@ export default function Connections({
     }
   }
 
-  const instagramUsernames = instagramPages.map((page: any) => page.username).join(" - ");
-  const tiktokUsername = tiktokPages.find((page: any) => page.userId === InstagramConnection.userId)?.username || 'No TikTok User Found';
+  const instagramUsernames = instagramPages?.map((page: any) => page.username).join(" - ");
+  const tiktokUsername = tiktokPages?.find((page: any) => page.userId === tiktokConnection?.userId)?.username || 'No TikTok User Found';
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(tiktokConnection.token)
@@ -114,7 +114,7 @@ export default function Connections({
               <a
                 href={`/api/oauth/connect/facebook`}
                 className='bg-[#E7F5EE] flex gap-2 text-xs px-8 py-3 rounded-full font-medium'>
-                connect <Image src={plus} alt={''} />
+                connect 
               </a>
             ) : (
               <div className='flex gap-4'>
