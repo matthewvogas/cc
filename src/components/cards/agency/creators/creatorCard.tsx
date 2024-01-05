@@ -200,7 +200,24 @@ export default function CreatorRow({
   }
 
   const handleRemoveConnection = async (creatorId: string) => {
-    // analizar lógica para borrar creadores
+    console.log('removeing,,,', creatorId)
+    try {
+      const response = await fetch(`/api/creators/${creatorId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete post')
+      } else {
+        router.refresh()
+        refreshCreators()
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error)
+    }
   }
 
   return (
@@ -312,7 +329,7 @@ export default function CreatorRow({
                       <PostHashtagStatus state={'NOT'} />
                     </td>
                     <td>
-                      <div className='dropdown-end dropdown cursor-pointer'>
+                      <div className='dropdown-end dropdown mr-7 cursor-pointer'>
                         <svg
                           tabIndex={0}
                           fill='none'
@@ -329,35 +346,15 @@ export default function CreatorRow({
                         <ul
                           tabIndex={0}
                           className={`dropdown-content menu rounded-box w-max z-20 border-2 border-red-100 bg-white p-2 ${
-                            isOpen ? 'hidden' : ''
+                            isOpen ? 'block' : ''
                           }`}>
-                          <div
-                            ref={helloRef}
-                            className={
-                              'collapse hello text-sm w-auto border text-back py-[-5] m-2 font-medium bg-whiteBrown hover:bg-transparent hover:border-orange-100 rounded-2xl'
-                            }>
-                            <input type='checkbox' className='' />
-                            <div className='collapse-title p-2 text-sm font-medium justify-center flex items-center'>
-                              add to campaign 🥥
-                            </div>
-                            <div className='collapse-content'>
-                              <div
-                                className={`${
-                                  isOpen ? 'hidden' : ''
-                                } relative z-30`}>
-                                <Search
-                                  inputSearchValue={inputSearchValue}
-                                  setInputSearchValue={setInputSearchValue}
-                                />
-                              </div>
-                            </div>
-                          </div>
+                          
 
                           <ViewCreator creator={match} campaigns={campaigns} />
 
                           <button
                             onClick={() => {
-                              handleRemoveConnection(match.id)
+                              handleRemoveConnection(match.creatorId)
                             }}
                             className={`text-sm border-2 inline-block py-3.5 px-8 m-2 text-back font-medium bg-whiteBrown rounded-2xl hover:bg-transparent hover:border-orange-100`}>
                             Remove creator

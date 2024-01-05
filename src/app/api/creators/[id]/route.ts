@@ -25,8 +25,6 @@ export async function GET(
 
 export async function DELETE(req: Request, {params}: {params: {id: string} }) {
 
-
-
   try{
     const session = await getServerSession(authOptions)
     
@@ -34,6 +32,7 @@ export async function DELETE(req: Request, {params}: {params: {id: string} }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    console.log(params.id)
 
     const creatorId = parseInt(params.id)
 
