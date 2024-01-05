@@ -115,7 +115,6 @@ export default function SettingsTab({
           })
 
           const data = await res.json()
-          // console.log(data)
           setImage(data)
         }
         fetchCoverImage()
@@ -193,18 +192,6 @@ export default function SettingsTab({
                   className={`mt-2 w-full rounded-lg border border-gray-300  p-3.5 px-6 text-base text-gray-900 focus:outline-0`}
                 />
               </div>
-            </div>
-
-            <div className=' flex flex-col w-full '>
-              <p className={`text-sm`}>Campaign description</p>
-              <textarea
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-                name=''
-                id=''
-                placeholder='A brief description about your campaign.'
-                className={`mt-2 w-full h-full rounded-lg border border-gray-300  p-3.5 px-6 text-base text-gray-900 focus:outline-0`}
-              />
             </div>
           </div>
 

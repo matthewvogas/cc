@@ -40,7 +40,7 @@ export default function InputSearchValue(props: {
       case 'creator':
         return (
           <div className={`w-full justify-start ${ptMono.className}`}>
-            <textarea
+            <input
               onChange={event => {
                 setSearchValue(event.target.value)
               }}
@@ -49,7 +49,7 @@ export default function InputSearchValue(props: {
               placeholder="Search"
               name=''
               value={searchValue}>
-            </textarea>
+            </input>
 
             <p className={`text-xm mb-4 pb-2 pt-6 ${inter.className}`}>
               Select creators below to view only their posts
@@ -78,7 +78,7 @@ export default function InputSearchValue(props: {
 
             <div className='text-right'>
               <button
-                className='rounded-full bg-green-100 px-6 py-2'
+                className='rounded-full bg-[#DEECE6] px-6 py-2'
                 onClick={() => {
                   const selectedCreators = searchedCreators.filter(
                     (creator: any) => creator.selected,

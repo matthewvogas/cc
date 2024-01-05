@@ -18,6 +18,7 @@ import Spinner from '@/components/loading/spinner'
 import useSWR from 'swr'
 import Pagination from '@/components/pagination/pagination/pagination'
 import SelectPostCard from '@/components/cards/influencer/posts/SelectPostCard'
+import FilterPostsTrigger from '@/components/filters/filterPostsTrigger'
 
 type Props = {
   connections: any
@@ -70,6 +71,8 @@ export default function CampaignsPortfolio({
   const [activeSection, setActiveSection] = useState<number>(0)
 
   const [activeCampaign, setActiveCampaign] = useState<CampaignRes | null>(null)
+
+  const [filterPosts, setFilterPosts] = useState('hidden')
 
   const handleButtonClick = (campaign: CampaignRes, section: number) => {
     if (activeSection !== section) {

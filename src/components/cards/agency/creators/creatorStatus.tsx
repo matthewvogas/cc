@@ -144,7 +144,7 @@ export function Connect({ session, creator }: Props) {
             {creator.uuid ? (
               <>
                 <Dialog.Title className='text-lg font-medium px-12 mt-12'>
-                  bungalowslasiguanas already have a codecoco account, only
+                  { creator.creatorName} already have a codecoco account, only
                   connect with
                 </Dialog.Title>
 

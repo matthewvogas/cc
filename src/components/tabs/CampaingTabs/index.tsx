@@ -106,69 +106,68 @@ export default function CampaingsTabs({
   const storiesCount = campaign.stories?.length
 
   const getLikes = useMemo(() => {
-    return posts.reduce(
-      (totalLikes, post) => totalLikes + (post.likesCount || 0),
-      0,
+    const likes = posts.reduce(
+      (totalLikes, post) => totalLikes + (post.likesCount || 0), 0
     )
+    return (likes > 0) ? likes : 0
   }, [posts])
 
   const getViews = useMemo(() => {
-    return posts.reduce(
-      (totalImpressions, post) =>
-        totalImpressions + (post.impressionsCount || 0),
-      0,
+    const views = posts.reduce(
+      (totalImpressions, post) => totalImpressions + (post.impressionsCount || 0), 0
     )
+    return (views > 0) ? views : 0
   }, [posts])
 
   const getPlays = useMemo(() => {
-    return posts.reduce(
+    const plays = posts.reduce(
       (totalPlays, post) => totalPlays + (post.playsCount || 0), 0
     )
+    return (plays > 0) ? plays : 0
   }, [posts])
 
   const getReach = useMemo(() => {
-    return posts.reduce(
-      (totalImpressions, post) => totalImpressions + (post.reachCount || 0),
-      0,
+    const reach = posts.reduce(
+      (totalImpressions, post) => totalImpressions + (post.reachCount || 0), 0
     )
+    return (reach > 0) ? reach : 0
   }, [posts])
 
   const getComments = useMemo(() => {
-    return posts.reduce(
-      (totalComments, post) => totalComments + (post.commentsCount || 0),
-      0,
+    const comments = posts.reduce(
+      (totalComments, post) => totalComments + (post.commentsCount || 0), 0
     )
+    return (comments > 0) ? comments : 0
   }, [posts])
 
   const getShares = useMemo(() => {
-    return posts.reduce(
-      (totalShares, post) => totalShares + (post.sharesCount || 0),
-      0,
+    const shares = posts.reduce(
+      (totalShares, post) => totalShares + (post.sharesCount || 0), 0
     )
+    return (shares > 0) ? shares : 0
   }, [posts])
 
   const getSaves = useMemo(() => {
-    return posts.reduce(
-      (totalSaves, post) => totalSaves + (post.savesCount || 0),
-      0,
+    const saves = posts.reduce(
+      (totalSaves, post) => totalSaves + (post.savesCount || 0), 0
     )
+    return (saves > 0) ? saves : 0
   }, [posts])
 
   const getImpressions = useMemo(() => {
-    return posts.reduce(
-      (totalSaves, post) => totalSaves + (post.impressionsCount || 0),
-      0,
+    const impressions = posts.reduce(
+      (totalSaves, post) => totalSaves + (post.impressionsCount || 0), 0
     )
+    return (impressions > 0) ? impressions : 0
   }, [posts])
 
   const getEngagementViews = useMemo(() => {
     const followers = creators.reduce(
       (totalFollowers: number, creator: any) => (totalFollowers + creator.followersCount), 0
     )
-
-    const engagement = ((getViews + getPlays) / followers) * 100
-    return engagement.toFixed(2)
-  }, [creators, getViews, getPlays])
+    const engagement = ((getLikes + getComments) / followers) * 100
+    return (engagement > 0) ? engagement.toFixed(2) : 0
+  }, [creators, getLikes, getComments])
 
   const handleRemoveSocial = (red: any) => {
     const updatedSocialFilter = socialActiveFilter.filter(c => c !== red)
@@ -243,7 +242,7 @@ export default function CampaingsTabs({
           { title: getSaves, description: 'saves' },
           //
           { title: getEngagementViews + '%', description: 'engagement/views' },
-          { title: ((getLikes + getShares + getSaves + getComments) / (getViews + getPlays) * 100 || 0).toFixed(2) + '%', description: 'engagement/impression' },
+          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
         ],
       },
       {

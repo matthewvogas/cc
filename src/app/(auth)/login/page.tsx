@@ -16,7 +16,7 @@ function classNames(...classes: any[]) {
 
 export default function LoginPage() {
   return (
-    <section className='relative flex-col flex h-screen w-screen items-center justify-center'>
+    <section className='bg-black bg-opacity-40 relative flex-col flex h-screen w-screen items-center justify-center'>
       <Image
         priority
         className='absolute -z-20 h-full w-full object-cover object-center '
