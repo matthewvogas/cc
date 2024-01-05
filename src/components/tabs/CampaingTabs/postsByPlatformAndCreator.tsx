@@ -3,7 +3,6 @@
 import imageCover from 'public/assets/register/campaignCover.jpg'
 import FilterPostsTrigger from '../../filters/filterPostsTrigger'
 import BrokeSocialLinks from '../../errors/agency/brokeSocialLinks'
-import PostCard from '../../cards/agency/posts/postCard'
 import { EmptyPost } from '../../empty/emptyPost'
 import { FiRotateCw } from 'react-icons/fi'
 import React, { useState } from 'react'
@@ -11,6 +10,7 @@ import { Tab } from '@headlessui/react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import PostCard from '@/components/cards/test/posts/postCard'
 
 type Props = {
   creator: any
@@ -39,6 +39,25 @@ export default function PostsByPlatformAndCreator({
     },
     [],
   )
+
+
+
+
+  function findCreatorUsername(campaigns: any, creatorId: string) {
+    for (const campaign of campaigns) {
+        const creator = campaign.creators.find((creator: any) => creator.id === creatorId);
+        
+        if (creator) {
+            return creator; // Retorna el nombre de usuario si el creador es encontrado
+        }
+    }
+
+    return null; // Retorna null si no se encuentra el creador
+}
+
+const creatorUsername = findCreatorUsername(campaigns, creator);
+console.log(creatorUsername)
+
 
   const filteredPosts = creatorFilteredPosts.filter((post: any) => {
     const isInstagramActive = activePlatforms.includes('Instagram')
@@ -141,65 +160,21 @@ export default function PostsByPlatformAndCreator({
               <div className='flex justify-between mx-12 mb-8'>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
-                    <FilterPostsTrigger
-                      filterPosts={filterPosts}
-                      setFilterPosts={setFilterPosts}
-                    />
 
-                    {/* <button
-                      type='button'
-                      onClick={() => {
-                        activeButton != 'topPerforming'
-                          ? setActiveButton('topPerforming')
-                          : setActiveButton('')
-                      }}
-                      className={`${
-                        activeButton == 'topPerforming'
-                          ? ' bg-[#D9F0F1]'
-                          : 'bg-[#EBF6F6]'
-                      } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-                      top performing 🥥
-                    </button> */}
                   </div>
 
-                  <div className='flex gap-4 justify-end'>
-                    <button
-                      className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                      refresh data
-                      <FiRotateCw
-                        style={{
-                          color: '#00000080',
-                          fontSize: '1.2em',
-                          marginLeft: '12px',
-                        }}
-                      />
-                    </button>
-                  </div>
+
                 </div>
               </div>
 
               <BrokeSocialLinks brokeLinks={[]} />
 
-              {/* <FilterPostsContainer
-                id={id}
-                shared={shared}
-                creators={creators}
-                filterPosts={filterPosts}
-                setFilterPosts={setFilterPosts}
-                activeButton={activeButton}
-                setActiveButton={setActiveButton}
-                tags={tags}
-                setTags={setTags}
-                creatorsSelecteds={creatorsSelecteds}
-                setCreatorsSelecteds={setCreatorsSelecteds}
-                activePlatforms={activePlatforms}
-                setActivePlatforms={setActivePlatforms}
-              /> */}
+           
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, key: number) => (
-                    <PostCard key={key} post={post} />
+                    <PostCard key={key} post={post} creator={creatorUsername} />
                   ))}
                   {campaignsByCreator?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
@@ -215,63 +190,18 @@ export default function PostsByPlatformAndCreator({
             <Tab.Panel>
               <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
-                  <FilterPostsTrigger
-                    filterPosts={filterPosts}
-                    setFilterPosts={setFilterPosts}
-                  />
-                  {/* <div className='flex gap-4'>
-                    <FilterPostsTrigger filterPosts={filterPosts} setFilterPosts={setFilterPosts} />
-                    <button
-                      type='button'
-                      onClick={() => {
-                        activeButton != 'topPerforming' ? setActiveButton('topPerforming') : setActiveButton('')
-                      }}
-                      className={`${activeButton == 'topPerforming'
-                        ? ' bg-[#D9F0F1]'
-                        : 'bg-[#EBF6F6]'
-                        } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-                      top performing 🥥
-                    </button>
-                  </div> */}
-
-                  <div className='flex gap-4 justify-end'>
-                    <button
-                      className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                      refresh data
-                      <FiRotateCw
-                        style={{
-                          color: '#00000080',
-                          fontSize: '1.2em',
-                          marginLeft: '12px',
-                        }}
-                      />
-                    </button>
-                  </div>
+               
                 </div>
               </div>
 
               <BrokeSocialLinks brokeLinks={[]} />
 
-              {/* <FilterPostsContainer
-                id={id}
-                shared={shared}
-                creators={creators}
-                filterPosts={filterPosts}
-                setFilterPosts={setFilterPosts}
-                activeButton={activeButton}
-                setActiveButton={setActiveButton}
-                tags={tags}
-                setTags={setTags}
-                creatorsSelecteds={creatorsSelecteds}
-                setCreatorsSelecteds={setCreatorsSelecteds}
-                activePlatforms={activePlatforms}
-                setActivePlatforms={setActivePlatforms}
-              /> */}
+           
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
-                    <PostCard key={index} post={post} />
+                    <PostCard key={index} post={post} creator={creatorUsername} />
                   ))}
                   {campaignsByCreator?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
@@ -287,69 +217,17 @@ export default function PostsByPlatformAndCreator({
               <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
-                    <FilterPostsTrigger
-                      filterPosts={filterPosts}
-                      setFilterPosts={setFilterPosts}
-                    />
-                    {/* <button
-                      type='button'
-                      onClick={() => {
-                        activeButton != 'topPerforming'
-                          ? setActiveButton('topPerforming')
-                          : setActiveButton('')
-                      }}
-                      className={`${
-                        activeButton == 'topPerforming'
-                          ? ' bg-[#D9F0F1]'
-                          : 'bg-[#EBF6F6]'
-                      } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-                      top performing 🥥
-                    </button> */}
+                   
                   </div>
-
-                  {/* {shared != true && (
-                    <div className='flex gap-4 justify-end'>
-                      <button
-                        className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                        refresh data
-                        <FiRotateCw
-                          style={{
-                            color: '#00000080',
-                            fontSize: '1.2em',
-                            marginLeft: '12px',
-                          }}
-                        />
-                      </button>
-                    </div>
-                  )} */}
                 </div>
               </div>
 
-              {/* <div className='flex flex-col gap-4'>
-                <BrokeSocialLinks brokeLinks={[]} />
-                <TikTokNotAccountConnected tiktokCards={tiktokPosts} />
-              </div> */}
-
-              {/* <FilterPostsContainer
-                id={id}
-                shared={shared}
-                creators={creators}
-                filterPosts={filterPosts}
-                setFilterPosts={setFilterPosts}
-                activeButton={activeButton}
-                setActiveButton={setActiveButton}
-                tags={tags}
-                setTags={setTags}
-                creatorsSelecteds={creatorsSelecteds}
-                setCreatorsSelecteds={setCreatorsSelecteds}
-                activePlatforms={activePlatforms}
-                setActivePlatforms={setActivePlatforms}
-              /> */}
+             
 
               <div className='pt-6'>
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {filteredPosts!.map((post: any, index: any) => (
-                    <PostCard key={index} post={post} />
+                    <PostCard key={index} post={post} creator={creatorUsername} />
                   ))}
                   {campaignsByCreator?.posts?.length === 0 && (
                     <div className='col-span-4 md:col-span-2'>
@@ -365,59 +243,14 @@ export default function PostsByPlatformAndCreator({
               <div className='flex justify-between mx-12 mb-8 '>
                 <div className='w-full flex justify-between items-center overflow-x-auto gap-4 overflow-y-hidden mt-4 '>
                   <div className='flex gap-4'>
-                    {/* <button
-                      type='button'
-                      onClick={() => {
-                        activeButton != 'topPerforming'
-                          ? setActiveButton('topPerforming')
-                          : setActiveButton('')
-                      }}
-                      className={`${
-                        activeButton == 'topPerforming'
-                          ? ' bg-[#D9F0F1]'
-                          : 'bg-[#EBF6F6]'
-                      } text-xm whitespace-nowrap text-base md:text-base mr-4 items-center rounded-full p-2 px-8 py-3 text-gray-900 `}>
-                      top performing 🥥
-                    </button> */}
+                   
                   </div>
 
-                  {/* {shared != true && (
-                    <div className='flex gap-4 justify-end'>
-                      <button
-                        className={` flex items-center rounded-full bg-active min-w-max max-h-6 min-h-[52px] px-8 py-3 text-lg text-black ${ptMono.className}`}>
-                        refresh data
-                        <FiRotateCw
-                          style={{
-                            color: '#00000080',
-                            fontSize: '1.2em',
-                            marginLeft: '12px',
-                          }}
-                        />
-                      </button>
-                      <AddNewStories
-                        campaignFallback={campaign}
-                        clientFallback={undefined}
-                      />
-                    </div>
-                  )} */}
+                
                 </div>
               </div>
 
-              {/* <FilterPostsContainer
-                id={id}
-                shared={shared}
-                creators={creators}
-                filterPosts={filterPosts}
-                setFilterPosts={setFilterPosts}
-                activeButton={activeButton}
-                setActiveButton={setActiveButton}
-                tags={tags}
-                setTags={setTags}
-                creatorsSelecteds={creatorsSelecteds}
-                setCreatorsSelecteds={setCreatorsSelecteds}
-                activePlatforms={activePlatforms}
-                setActivePlatforms={setActivePlatforms}
-              /> */}
+              
             </Tab.Panel>
 
             {/* Campaigns */}
@@ -468,35 +301,12 @@ export default function PostsByPlatformAndCreator({
                 </div>
               </div>
 
-              {/* <FilterPostsContainer
-                id={id}
-                shared={shared}
-                creators={creators}
-                filterPosts={filterPosts}
-                setFilterPosts={setFilterPosts}
-                activeButton={activeButton}
-                setActiveButton={setActiveButton}
-                tags={tags}
-                setTags={setTags}
-                creatorsSelecteds={creatorsSelecteds}
-                setCreatorsSelecteds={setCreatorsSelecteds}
-                activePlatforms={activePlatforms}
-                setActivePlatforms={setActivePlatforms}
-              /> */}
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
 
-      {/* <Dialog
-        open={openDialog}
-        onClose={handleClose}
-        className='relative z-[99]'>
-        <div className='fixed inset-0 bg-black bg-opacity-25' />
-        <div className='fixed inset-0 flex items-center justify-center p-4'>
-          {manageType(activeButton)}
-        </div>
-      </Dialog> */}
+
     </>
   )
 }
