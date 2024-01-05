@@ -58,19 +58,23 @@ export async function POST(req: NextRequest) {
     const title = formData.get('title') as string
     const hashtag = formData.get('hashtag') as string
     const image = formData.get('image') as Blob
+    const UploadedImageUrl = null;
 
-    const buffer = Buffer.from(await image.arrayBuffer())
-    const resized = await sharp(buffer).webp({ quality: 80 }).toBuffer()
-    const blob = new Blob([resized], { type: 'image/webp' })
+    if (image) {
+      const buffer = Buffer.from(await image.arrayBuffer())
+      const resized = await sharp(buffer).webp({ quality: 80 }).toBuffer()
+      const blob = new Blob([resized], { type: 'image/webp' })
 
-    const UploadedImageUrl = await S3Service.uploadObject(
-      blob,
-      name,
-      'campaigns',
-      'images',
-    )
-    if (!UploadedImageUrl) {
-      throw new Error('Failed to upload image to S3')
+      const UploadedImageUrl = await S3Service.uploadObject(
+        blob,
+        name,
+        'campaigns',
+        'images',
+      )
+
+      if (!UploadedImageUrl) {
+        throw new Error('Failed to upload image to S3')
+      }
     }
 
     const campaign = await db.campaign.create({
