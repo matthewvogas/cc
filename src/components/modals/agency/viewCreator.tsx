@@ -52,25 +52,22 @@ export default function ViewCreator({ creator, campaigns }: Props) {
                   </div>
                   <div>
                     <div className='font-medium text-xl'>
-                      @{creator.username}
+                      @{creator.creatorUsername}
                     </div>
                     <div className='text-xs opacity-50 font-normal'>
                       {/* {creator.followersCount} followers */}
-                      {creator.name}
+                      {creator.creatorUsername}
                     </div>
                   </div>
                 </div>
 
-                <button
-                  className={`text-base font-normal ${ptMono.className} bg-[#FCDDD1] px-6 py-2 rounded-full`}>
-                  invite
-                </button>
               </div>
 
               <PostsByPlatformAndCreator
-                creator={creator.id}
+                creator={creator.creatorId}
                 campaigns={campaigns}
               />
+           
             </Tab.Group>
           </Dialog.Panel>
         </div>

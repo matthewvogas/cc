@@ -3,18 +3,19 @@
 import InstagramLogo from 'public/assets/creatorRegister/instagram-black-share-icon.svg'
 import TikToksLogo from 'public/assets/creatorRegister/tiktok-black-share-icon.svg'
 import imageCover from 'public/assets/register/creatorImg.jpg'
+import UseThisPost from '../../agency/posts/useThisPost'
 import { Post } from '@/types/campaign/campaignRes'
 import { Dialog } from '@headlessui/react'
 import React, { useState } from 'react'
 import { ptMono } from '@/app/fonts'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { usePostStore } from '../../agency/posts/store/postsStore'
 
-export default function PostCardTest({ post }: { post: Post }) {
+export default function PostCardTest({ post, creator }: { post: Post, creator: any }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
   const link = `${baseUrl}`
-
   const iframe = '<iframe src="' + link + '" height="200" width="300"></iframe>'
 
   const html =
@@ -24,7 +25,28 @@ export default function PostCardTest({ post }: { post: Post }) {
     '" height="200" width="300"></iframe>' +
     '</body> </html>'
 
-  const { isOpen, setIsOpen } = usePostStore()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const router = useRouter()
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/posts/agency/${post.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete post')
+      } else {
+        router.refresh()
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error)
+    }
+  }
 
   return (
     <div
@@ -62,7 +84,7 @@ export default function PostCardTest({ post }: { post: Post }) {
             )}
             <span className='truncate text-sm lg:text-lg'>
               {' '}
-              @{post.creator?.username || 'username'}{' '}
+              @{creator?.username || ''}
             </span>
           </div>
         </h4>
@@ -82,32 +104,59 @@ export default function PostCardTest({ post }: { post: Post }) {
               d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
             />
           </svg>
-          {post.creator?.followersCount || ''} followers
+          {post.creator?.followersCount || '-'} followers
         </span>
         <div className='flex-grow border-t border-gray-200 pb-2'></div>
       </div>
       <div className='flex flex-col px-6 pb-2'>
         {/* Posts data */}
-
         <div>
-          <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-            Comments: 200
-          </span>
-          <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-            Likes: 10k
-          </span>
-          {post.creator?.username === 'withrosalind' ? (
-            <div>
-              <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-                Views: 423k
-              </span>
-              <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-                Saves: 4k
-              </span>
-              <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-semibold text-gray-700'>
-                Shares: 2k
-              </span>
-            </div>
+          {post.commentsCount !== undefined && post.commentsCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Comments: {post.commentsCount}
+            </span>
+          ) : null}
+
+          {post.likesCount !== undefined && post.likesCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Likes: {post.likesCount}
+            </span>
+          ) : null}
+
+          {post.reachCount !== undefined && post.reachCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Reach: {post.reachCount}
+            </span>
+          ) : null}
+
+          {post.engagementCount !== undefined && post.engagementCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Engagement: {post.engagementCount}
+            </span>
+          ) : null}
+
+          {post.impressionsCount !== undefined && post.impressionsCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Impressions: {post.impressionsCount}
+            </span>
+          ) : null}
+
+          {post.savesCount !== undefined && post.savesCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Saved: {post.savesCount}
+            </span>
+          ) : null}
+
+          {post.sharesCount !== undefined && post.sharesCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Shares: {post.sharesCount}
+            </span>
+          ) : null}
+
+          {post.playsCount !== undefined && post.playsCount > 0 ? (
+            <span className='mb-2 mr-2 inline-block py-1 pr-2 text-[10px] lg:text-sm font-medium text-gray-700'>
+              Plays: {post.playsCount}
+            </span>
           ) : null}
         </div>
         <div className='dropdown-end dropdown cursor-pointer '>
@@ -134,6 +183,13 @@ export default function PostCardTest({ post }: { post: Post }) {
               className='text-back m-2 inline-block rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
               use this post
             </button>
+            <button
+              onClick={() => {
+                handleDelete()
+              }}
+              className='text-back m-2 inline-block rounded-full border-2 bg-whiteBrown px-8 py-2 text-sm font-medium hover:border-orange-100'>
+              remove post
+            </button>
             <Link
               href={post.permalink || ''}
               target='_blank'
@@ -151,7 +207,7 @@ export default function PostCardTest({ post }: { post: Post }) {
         <div className='fixed inset-0 flex items-center justify-center p-4 '>
           <Dialog.Panel
             className={`flex w-full max-w-2xl flex-col rounded-xl bg-white sm:px-0`}>
-            {/* <UseThisPost post={post} /> */}
+            <UseThisPost post={post} />
           </Dialog.Panel>
         </div>
       </Dialog>

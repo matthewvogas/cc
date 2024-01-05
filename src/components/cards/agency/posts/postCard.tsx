@@ -27,6 +27,7 @@ export default function PostCard({ post }: { post: Post }) {
 
   const { isOpen, setIsOpen } = usePostStore()
 
+  console.log(post)
   return (
     <div
       className={`h-fit w-auto max-w-sm overflow-visible rounded-2xl bg-cardBackground ${ptMono.className}`}>

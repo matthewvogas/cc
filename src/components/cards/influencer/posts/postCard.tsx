@@ -16,7 +16,6 @@ import { usePostStore } from '../../agency/posts/store/postsStore'
 export default function PostCard({ post }: { post: Post }) {
   const baseUrl = 'https://codecoco.co/post/' + post.id
   const link = `${baseUrl}`
-
   const iframe = '<iframe src="' + link + '" height="200" width="300"></iframe>'
 
   const html =
