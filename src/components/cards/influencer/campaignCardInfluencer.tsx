@@ -28,6 +28,18 @@ export default function CampaignCardIfluencer({
   user,
 }: Props) {
   const [profileImage, setProfileImage] = useState('')
+  const [page, setPage] = useState([0])
+  const currentPage = page[page.length - 1]
+  const limit = 10
+
+  const { data, areAgenciesLoading, agenciesError, refreshAgencies } =
+    useConnections(limit, currentPage * limit)
+
+  const loadMoreCconnections = () => {
+    if (data?.hasMore) {
+      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
+    }
+  }
 
   useEffect(() => {
     const fetchProfileImage = async () => {
@@ -44,6 +56,7 @@ export default function CampaignCardIfluencer({
         const data = await response.json()
         console.log(data.image)
         setProfileImage(data.image)
+        refreshAgencies();
       } catch (error) {
         console.error('Error al cargar la imagen del perfil:', error)
       }
@@ -51,19 +64,6 @@ export default function CampaignCardIfluencer({
 
     fetchProfileImage()
   }, [])
-
-  const [page, setPage] = useState([0])
-  const currentPage = page[page.length - 1]
-  const limit = 10
-
-  const { data, areAgenciesLoading, agenciesError, refreshAgencies } =
-    useConnections(limit, currentPage * limit)
-
-  const loadMoreCconnections = () => {
-    if (data?.hasMore) {
-      setPage(prevPage => [...prevPage, prevPage[prevPage.length - 1] + 1])
-    }
-  }
 
   const loadPreviousConnections = () => {
     setPage(prevPage => prevPage.slice(0, -1))
