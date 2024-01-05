@@ -26,12 +26,12 @@ export default function CardCarouselPost({ post, key }: Props) {
   return (
     <div id={`item${key}`} className='carousel-item gap-8'>
       <div className='w-full flex'>
-        <div
+        {/* <div
           className={` w-80 max-w-sm overflow-visible rounded-2xl ${
             !post.mediaUrl.includes('mp4') ? 'bg-transparent' : 'bg-beigeFirst'
           } flex justify-center items-center ${ptMono.className}`}>
           <Image src={videoCover} className='w-full' alt={''} />
-        </div>
+        </div> */}
       </div>
 
       <div className='w-full flex'>

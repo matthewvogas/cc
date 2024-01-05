@@ -24,12 +24,14 @@ export default function SelectPostCard({
   isSelected,
   onToggleSelect,
 }: SelectPostCardProps) {
-  const selectedStyle = isSelected ? 'border-2 border-[#d4c4ae] ' : ''
 
+  const selectedStyle = isSelected ? 'border-2 border-[#d4c4ae] ' : 'border-2 border-transparent'
+
+  
   return (
     <>
       <div
-        className={`h-fit w-auto max-w-sm overflow-visible rounded-2xl border-2 border-transparent bg-cardBackground ${selectedStyle}  ${ptMono.className}`}
+        className={`h-fit w-auto max-w-sm overflow-visible rounded-2xl  bg-cardBackground ${selectedStyle}  ${ptMono.className}`}
         onClick={onToggleSelect}>
         {post.imageUrl && (
           <Image

@@ -30,6 +30,7 @@ export default function UseThisPost({ post }: Props) {
   const handleDownloadClick = async () => {
     setLoading(true)
     const url = post?.mediaUrl || post?.imageUrl
+    console.log(url)
     if (url) {
       try {
         const response = await fetch(url)
