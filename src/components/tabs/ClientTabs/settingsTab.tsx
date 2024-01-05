@@ -223,14 +223,6 @@ export default function SettingsTab({
                   />
                 </div>
               </div>
-              <div className='flex flex-col h-full'>
-                <p className={`text-sm`}>Custom CSS</p>
-                <textarea
-                  placeholder='>>>'
-                  name=''
-                  id=''
-                  className='resize-none mt-2 bg-[#F7F5F1] rounded-xl w-full h-full p-6 outline-none'></textarea>
-              </div>
             </div>
             <div className='w-full'>
               <Image className={`w-full`} src={coverImage} alt={''} />
