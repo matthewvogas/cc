@@ -102,6 +102,7 @@ export default function CreatorRow({
     }
   })
 
+  const campaignsNames = (campaigns.length) ? campaigns.map((campaign: any) => campaign.name) : [campaigns?.name]
   const { data, areCreatorsLoading, creatorsError, refreshCreators } =
     useCreators(
       Number(limit),
@@ -109,7 +110,7 @@ export default function CreatorRow({
       creatorsFilter.socialActiveFilter,
       creatorsFilter.followerCountFilter,
       creatorsFilter.followerCountFilterSecond,
-      creatorsFilter.selectedCampaign,
+      creatorsFilter.selectedCampaign || campaignsNames
     )
 
   const loadMoreCreators = () => {
