@@ -90,6 +90,13 @@ export default function PortfoliosTabs({
     return (saves > 0) ? saves : 0
   }, [posts])
 
+  const getImpressions = useMemo(() => {
+    const impressions = posts.reduce(
+      (totalSaves, post) => totalSaves + (post.impressionsCount || 0), 0
+    )
+    return (impressions > 0) ? impressions : 0
+  }, [posts])
+
   const getEngagementViews = useMemo(() => {
     const followers = creators.reduce(
       (totalFollowers: number, creator: any) => (totalFollowers + creator.followersCount), 0
@@ -98,12 +105,12 @@ export default function PortfoliosTabs({
     return (engagement > 0) ? engagement.toFixed(2) : 0
   }, [creators, getLikes, getComments])
 
-  const getImpressions = useMemo(() => {
-    const impressions = posts.reduce(
-      (totalSaves, post) => totalSaves + (post.impressionsCount || 0), 0
-    )
-    return (impressions > 0) ? impressions : 0
-  }, [posts])
+  const getEngagementImpressions = useMemo(() => {
+    return (getImpressions > 0) 
+      ? (((getLikes + getComments) / getImpressions) * 100).toFixed(2) : 0
+  }, [creators, getLikes, getComments, getImpressions])
+
+  
 
   const handleRemoveSocial = (red: any) => {
     const updatedSocialFilter = socialActiveFilter.filter(c => c !== red)
@@ -174,7 +181,7 @@ export default function PortfoliosTabs({
           { title: getViews, description: 'views' },
           { title: getComments, description: 'comments' },
           { title: getEngagementViews + '%', description: 'engagement/views' },
-          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
+          { title: getEngagementImpressions + '%', description: 'engagement/impression' },
         ],
       },
       {
@@ -187,7 +194,7 @@ export default function PortfoliosTabs({
           { title: getViews, description: 'views' },
           { title: getComments, description: 'comments' },
           { title: getEngagementViews + '%', description: 'engagement/views' },
-          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
+          { title: getEngagementImpressions + '%', description: 'engagement/impression' },
         ],
       },
     ]
@@ -219,7 +226,7 @@ export default function PortfoliosTabs({
   return (
     <>
       <div className='flex flex-wrap'>
-        <div className='w-full'>
+        <div className='w-full h-screen'>
           <div className='mb-8 px-12 flex justify-between flex-wrap gap-5'>
             <div className='whitespace-nowrap overflow-y-hidden overflow-x-auto pb-2'>
               <button
@@ -298,7 +305,7 @@ export default function PortfoliosTabs({
               </button>
             </div>
           </div>
-          <div className='relative mb-6 flex w-full min-w-0 flex-col break-words bg-white '>
+          <div className='relative mb-6 flex w-full min-w-0 flex-col break-words bg-white h-full'>
             <div className='flex-auto '>
               <div className='tab-content tab-space'>
                 <section className={openTab === 1 ? 'block' : 'hidden'}>
