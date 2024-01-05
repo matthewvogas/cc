@@ -28,34 +28,12 @@ export async function POST(req: NextRequest) {
   }
 
   const response = await getUserInfo(tiktokToken)
+  console.log(response)
   const page = response.data.user
 
-  const creator = await db.creator.upsert({
+  const creator = await db.creator.findFirst({
     where: {
-      username_platform: {
-        username: page.username,
-        platform: 'tiktok',
-      },
-    },
-    create: {
-      followersCount: page.follower_count,
       username: page.username,
-      platform: 'tiktok',
-      uuid: page.open_id,
-      users: {
-        connect: {
-          id: userId,
-        },
-      },
-    },
-    update: {
-      followersCount: page.follower_count,
-      uuid: page.open_id,
-      users: {
-        connect: {
-          id: userId,
-        },
-      },
     },
   })
 
@@ -108,7 +86,7 @@ export async function POST(req: NextRequest) {
     const postExists = await db.post.findFirst({
       where: {
         shortcode: String(post.share_url),
-        platform: 'tiktok',
+        userId: userId,
       },
     })
 
@@ -126,7 +104,7 @@ export async function POST(req: NextRequest) {
           imageUrl: post.cover_image_url,
 
           // data
-          creatorId: creator.id,
+          creatorId: creator?.id,
           caption: post.video_description,
           userId: userId,
 
@@ -150,7 +128,7 @@ export async function POST(req: NextRequest) {
           imageUrl: post.cover_image_url,
 
           // data
-          creatorId: creator.id,
+          creatorId: creator?.id,
           caption: String(post.video_description),
           userId: userId,
 
@@ -176,7 +154,7 @@ export async function POST(req: NextRequest) {
           imageUrl: post.cover_image_url,
 
           // data
-          creatorId: creator.id,
+          creatorId: creator?.id,
           caption: post.video_description,
           userId: userId,
 

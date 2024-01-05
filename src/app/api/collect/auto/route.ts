@@ -13,14 +13,15 @@ export async function POST(req: NextRequest) {
   const CampaignPosts = await PostsService.findMany(campaignId)
 
   const userIds = []
-  const tokens = []
+  const IgTokens = []
+  const TtTokens = []
   const creatorsIds = []
   const InstagramPages = []
   const TiktokPages = []
 
   async function updateIgPosts(instagramPage: string, instgramToken: string) {
     try {
-      const res = await fetch('https://codecoco.co/api/collect/instagram', {
+      const res = await fetch('http://localhost:3000/api/collect/instagram', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +35,6 @@ export async function POST(req: NextRequest) {
       })
 
       if (res.ok == true) {
-        console.log(200)
       } else {
       }
     } catch (error) {
@@ -44,19 +44,19 @@ export async function POST(req: NextRequest) {
 
   async function updatetTPosts(tiktokToken: string) {
     try {
-      const res = await fetch('https://codecoco.co/api/collect/tiktokrefresh', {
+      const res = await fetch('http://localhost:3000/api/collect/tiktokrefresh', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          userId: sessionId,
           tiktokToken: tiktokToken,
-          sessionId: sessionId,
         }),
       })
 
       if (res.ok == true) {
-        console.log(200)
+
       } else {
       }
     } catch (error) {
@@ -73,10 +73,11 @@ export async function POST(req: NextRequest) {
         connection.user2.instagramPages &&
         connection.user2.instagramPages.length >= 0
       ) {
-        const socialConnection = connection.user2.socialConnections[0]
+        const socialConnection = connection.user2.socialConnections.filter((connection: any) => connection.platform == 'INSTAGRAM')[0];
+
         userIds.push(socialConnection.userId)
 
-        tokens.push(socialConnection.token)
+        IgTokens.push(socialConnection.token)
 
         creatorsIds.push(socialConnection.userId)
 
@@ -92,10 +93,11 @@ export async function POST(req: NextRequest) {
         connection.user2.tiktokPages &&
         connection.user2.tiktokPages.length >= 0
       ) {
-        const socialConnection = connection.user2.socialConnections[0]
+        const socialConnection = connection.user2.socialConnections.filter((connection: any) => connection.platform == 'TIKTOK')[0];
+
         userIds.push(socialConnection.userId)
 
-        tokens.push(socialConnection.token)
+        TtTokens.push(socialConnection.token)
 
         creatorsIds.push(socialConnection.userId)
 
@@ -112,9 +114,8 @@ export async function POST(req: NextRequest) {
 
     for (const page of InstagramPagesUniques) {
       if (post.creator?.username == page.username) {
-        for (const token of tokens) {
+        for (const token of IgTokens) {
           updateIgPosts(page.accountId, String(token))
-          console.log('match')
         }
       } else {
         console.log('no match')
@@ -123,9 +124,8 @@ export async function POST(req: NextRequest) {
     
     for (const page of TiktokPagesUniques) {
       if (post.creator?.username == page.username) {
-        for (const token of tokens) {
+        for (const token of TtTokens) {
           updatetTPosts(String(token))
-          console.log(token)
           console.log('match')
         }
       } else {
