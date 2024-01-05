@@ -48,55 +48,61 @@ export default function PortfoliosTabs({
   const [followerCountFilterSecond, setFollowerCountFilterSecond] = useState(0)
   const [selectedCampaign, setSelectedCampaign] = useState('')
 
-  console.log(session.user.role)
-  
   const getLikes = useMemo(() => {
-    return posts.reduce(
-      (totalLikes, post) => totalLikes + (post.likesCount || 0),
-      0,
+    const likes = posts.reduce(
+      (totalLikes, post) => totalLikes + (post.likesCount || 0), 0
     )
+    return (likes > 0) ? likes : 0
   }, [posts])
 
   const getViews = useMemo(() => {
-    return posts.reduce(
-      (totalImpressions, post) =>
-        totalImpressions + (post.impressionsCount || 0),
-      0,
+    const views = posts.reduce(
+      (totalImpressions, post) => totalImpressions + (post.impressionsCount || 0), 0
     )
+    return (views > 0) ? views : 0
   }, [posts])
 
   const getReach = useMemo(() => {
-    return posts.reduce(
-      (totalImpressions, post) => totalImpressions + (post.reachCount || 0),
-      0,
+    const reach = posts.reduce(
+      (totalImpressions, post) => totalImpressions + (post.reachCount || 0), 0
     )
+    return (reach > 0) ? reach : 0
   }, [posts])
 
   const getComments = useMemo(() => {
-    return posts.reduce(
-      (totalComments, post) => totalComments + (post.commentsCount || 0),
-      0,
+    const comments = posts.reduce(
+      (totalComments, post) => totalComments + (post.commentsCount || 0), 0
     )
+    return (comments > 0) ? comments : 0
   }, [posts])
 
   const getShares = useMemo(() => {
-    return posts.reduce(
-      (totalShares, post) => totalShares + (post.sharesCount || 0),
-      0,
+    const shares = posts.reduce(
+      (totalShares, post) => totalShares + (post.sharesCount || 0), 0
     )
+    return (shares > 0) ? shares : 0
   }, [posts])
 
   const getSaves = useMemo(() => {
-    return posts.reduce(
-      (totalSaves, post) => totalSaves + (post.savesCount || 0),
-      0,
+    const saves = posts.reduce(
+      (totalSaves, post) => totalSaves + (post.savesCount || 0), 0
     )
+    return (saves > 0) ? saves : 0
   }, [posts])
-  const getImpressions = useMemo(() => {
-    return posts.reduce(
-      (totalSaves, post) => totalSaves + (post.impressionsCount || 0),
-      0,
+
+  const getEngagementViews = useMemo(() => {
+    const followers = creators.reduce(
+      (totalFollowers: number, creator: any) => (totalFollowers + creator.followersCount), 0
     )
+    const engagement = ((getLikes + getComments) / followers) * 100
+    return (engagement > 0) ? engagement.toFixed(2) : 0
+  }, [creators, getLikes, getComments])
+
+  const getImpressions = useMemo(() => {
+    const impressions = posts.reduce(
+      (totalSaves, post) => totalSaves + (post.impressionsCount || 0), 0
+    )
+    return (impressions > 0) ? impressions : 0
   }, [posts])
 
   const handleRemoveSocial = (red: any) => {
@@ -161,26 +167,27 @@ export default function PortfoliosTabs({
       {
         section: 'private',
         data: [
-          { title: campaign?.posts?.length, description: 'brand posts' },
+          { title: campaign?.posts?.length, description: 'posts' },
           { title: creators.length, description: 'creators' },
-          //
           { title: getLikes, description: 'likes' },
-          { title: getViews, description: 'views' },
           { title: getReach, description: 'reach' },
+          { title: getViews, description: 'views' },
           { title: getComments, description: 'comments' },
-          { title: getShares, description: 'shares' },
-          { title: getSaves, description: 'saves' },
-          //
-          { title: ((getLikes + getShares + getSaves + getComments) / getViews || 0).toFixed(2)+ '%', description: 'engagement/views' },
-          { title: ((getLikes + getShares + getSaves + getComments) / getImpressions || 0).toFixed(2) + '%', description: 'engagement/impression' },
+          { title: getEngagementViews + '%', description: 'engagement/views' },
+          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
         ],
       },
       {
         section: 'public',
         data: [
-          { title: 'hello', description: 'creators' },
-          { title: 'hello', description: 'campaigns' },
-          { title: 'hello', description: 'campaigns' },
+          { title: campaign?.posts?.length, description: 'posts' },
+          { title: creators.length, description: 'creators' },
+          { title: getLikes, description: 'likes' },
+          { title: getReach, description: 'reach' },
+          { title: getViews, description: 'views' },
+          { title: getComments, description: 'comments' },
+          { title: getEngagementViews + '%', description: 'engagement/views' },
+          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
         ],
       },
     ]
@@ -193,7 +200,6 @@ export default function PortfoliosTabs({
     getComments,
     getSaves,
     getShares,
-    getImpressions
   ])
 
   useEffect(() => {
@@ -204,9 +210,11 @@ export default function PortfoliosTabs({
     }
   }, [session.user.role, statsNormal, statsTest])
 
-    // fix filter roney
-    const [customRangeFirst, setCustomRangeFirst] = useState(0)
-    const [customRangeSecond, setCustomRangeSecond] = useState(0)
+  // fix filter roney
+  const [customRangeFirst, setCustomRangeFirst] = useState(0)
+  const [customRangeSecond, setCustomRangeSecond] = useState(0)
+
+  const descriptionStatStyle = 'text-sm'
 
   return (
     <>
@@ -221,11 +229,10 @@ export default function PortfoliosTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 1
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 1
                     ? 'border border-[#FACEBC]'
                     : 'border border-[#ffffff]'
-                }`}>
+                  }`}>
                 overview
               </button>
               <button
@@ -235,11 +242,10 @@ export default function PortfoliosTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 2
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 2
                     ? 'border border-[#FACEBC]'
                     : 'border border-[#ffffff]'
-                }`}>
+                  }`}>
                 creators
               </button>
               <button
@@ -249,11 +255,10 @@ export default function PortfoliosTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 3
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 3
                     ? 'border border-[#FACEBC]'
                     : 'border border-[#ffffff]'
-                }`}>
+                  }`}>
                 posts
               </button>
               <button
@@ -263,11 +268,10 @@ export default function PortfoliosTabs({
                 }}
                 data-toggle='tab'
                 role='tablist'
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 4
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 4
                     ? 'border border-[#FACEBC]'
                     : 'border border-[#ffffff]'
-                }`}>
+                  }`}>
                 stats
               </button>
               <button
@@ -275,11 +279,10 @@ export default function PortfoliosTabs({
                   e.preventDefault()
                   setOpenTab(5)
                 }}
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 5
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 5
                     ? 'border border-[#FACEBC]'
                     : 'border border-[#ffffff]'
-                }`}>
+                  }`}>
                 share
               </button>
               <button
@@ -287,11 +290,10 @@ export default function PortfoliosTabs({
                   e.preventDefault()
                   setOpenTab(6)
                 }}
-                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${
-                  openTab == 6
+                className={`text-xm -mb-px  mr-2 inline-block flex-auto items-center rounded-full p-2 px-8 py-2 text-left text-gray-900 last:mr-0 ${openTab == 6
                     ? 'border border-[#FACEBC]'
                     : 'border border-[#ffffff]'
-                }`}>
+                  }`}>
                 settings
               </button>
             </div>
@@ -301,7 +303,7 @@ export default function PortfoliosTabs({
               <div className='tab-content tab-space'>
                 <section className={openTab === 1 ? 'block' : 'hidden'}>
                   <div className=''>
-                    
+
 
                     <PostsByPlatform
                       id={campaign.id!}
@@ -326,7 +328,7 @@ export default function PortfoliosTabs({
                       selectedCampaign={selectedCampaign}
                       setSelectedCampaign={setSelectedCampaign}
                       userCreators={null}
-                      session={session} customRangeFirst={customRangeFirst} setCustomRangeFirst={setCustomRangeFirst} customRangeSecond={customRangeSecond} setCustomRangeSecond={setCustomRangeSecond}                    />
+                      session={session} customRangeFirst={customRangeFirst} setCustomRangeFirst={setCustomRangeFirst} customRangeSecond={customRangeSecond} setCustomRangeSecond={setCustomRangeSecond} />
                   </div>
                   <div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-white'>
                     {/* active social filter */}
@@ -361,7 +363,7 @@ export default function PortfoliosTabs({
 
                     {/* active follower count filter */}
                     {followerCountFilter != 0 ||
-                    followerCountFilterSecond != 0 ? (
+                      followerCountFilterSecond != 0 ? (
                       <div className='flex justify-start w-full gap-4 px-12'>
                         <div
                           className={`flex flex-col rounded-xl border-2 bg-beigeFirst border-beigeBorder px-8 py-2`}>
@@ -459,7 +461,7 @@ export default function PortfoliosTabs({
                   <Stats
                     campaignsFallback={[]}
                     clientsFallback={undefined}
-                    stats={stats}
+                    stats={statsNormal}
                     frome={'campaign'}
                     userPositionId={0}
                   />

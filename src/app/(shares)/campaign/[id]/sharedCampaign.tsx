@@ -27,46 +27,60 @@ export function SharedCampaign({
   connections: any
 }) {
   const getLikes = useMemo(() => {
-    return posts.reduce(
-      (totalLikes, post) => totalLikes + (post.likesCount || 0),
-      0,
+    const likes = posts.reduce(
+      (totalLikes, post) => totalLikes + (post.likesCount || 0), 0
     )
+    return (likes > 0) ? likes : 0
   }, [posts])
 
   const getViews = useMemo(() => {
-    return posts.reduce(
-      (totalImpressions, post) =>
-        totalImpressions + (post.impressionsCount || 0),
-      0,
+    const views = posts.reduce(
+      (totalImpressions, post) => totalImpressions + (post.impressionsCount || 0), 0
     )
+    return (views > 0) ? views : 0
   }, [posts])
 
   const getReach = useMemo(() => {
-    return posts.reduce(
-      (totalImpressions, post) => totalImpressions + (post.reachCount || 0),
-      0,
+    const reach = posts.reduce(
+      (totalImpressions, post) => totalImpressions + (post.reachCount || 0), 0
     )
+    return (reach > 0) ? reach : 0
   }, [posts])
 
   const getComments = useMemo(() => {
-    return posts.reduce(
-      (totalComments, post) => totalComments + (post.commentsCount || 0),
-      0,
+    const comments = posts.reduce(
+      (totalComments, post) => totalComments + (post.commentsCount || 0), 0
     )
+    return (comments > 0) ? comments : 0
   }, [posts])
 
   const getShares = useMemo(() => {
-    return posts.reduce(
-      (totalShares, post) => totalShares + (post.sharesCount || 0),
-      0,
+    const shares = posts.reduce(
+      (totalShares, post) => totalShares + (post.sharesCount || 0), 0
     )
+    return (shares > 0) ? shares : 0
   }, [posts])
 
   const getSaves = useMemo(() => {
-    return posts.reduce(
-      (totalSaves, post) => totalSaves + (post.savesCount || 0),
-      0,
+    const saves = posts.reduce(
+      (totalSaves, post) => totalSaves + (post.savesCount || 0), 0
     )
+    return (saves > 0) ? saves : 0
+  }, [posts])
+
+  const getEngagementViews = useMemo(() => {
+    const followers = creators.reduce(
+      (totalFollowers: number, creator: any) => (totalFollowers + creator.followersCount), 0
+    )
+    const engagement = ((getLikes + getComments) / followers) * 100
+    return (engagement > 0) ? engagement.toFixed(2) : 0
+  }, [creators, getLikes, getComments])
+
+  const getImpressions = useMemo(() => {
+    const impressions = posts.reduce(
+      (totalSaves, post) => totalSaves + (post.impressionsCount || 0), 0
+    )
+    return (impressions > 0) ? impressions : 0
   }, [posts])
 
   const statsNormal = useMemo(() => {
@@ -79,14 +93,9 @@ export function SharedCampaign({
           { title: getLikes, description: 'likes' },
           { title: getReach, description: 'reach' },
           { title: getViews, description: 'views' },
-          {
-            title:
-              (
-                (getLikes + getShares + getSaves + getComments) / getViews || 0
-              ).toFixed(2) + '%',
-            description: 'engament reate',
-          },
           { title: getComments, description: 'comments' },
+          { title: getEngagementViews + '%', description: 'engagement/views' },
+          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
         ],
       },
       {
@@ -97,12 +106,9 @@ export function SharedCampaign({
           { title: getLikes, description: 'likes' },
           { title: getReach, description: 'reach' },
           { title: getViews, description: 'views' },
-          {
-            title:
-              (getLikes + getShares + getSaves + getComments) / getViews || 0,
-            description: 'engament reate',
-          },
           { title: getComments, description: 'comments' },
+          { title: getEngagementViews + '%', description: 'engagement/views' },
+          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
         ],
       },
     ]
@@ -185,8 +191,8 @@ export function SharedCampaign({
       activeSocial === 'Instagram'
         ? ['instagram']
         : activeSocial === 'TikTok'
-        ? ['tiktok']
-        : ['tiktok', 'instagram']
+          ? ['tiktok']
+          : ['tiktok', 'instagram']
 
     if (
       allowedPlatforms.includes(post.platform || '') &&
@@ -212,6 +218,8 @@ export function SharedCampaign({
 
     return false
   })
+
+  const descriptionStatStyle = 'text-sm'
 
   return (
     <>
@@ -280,20 +288,18 @@ export function SharedCampaign({
                 <Tab.List
                   className={`flex gap-6 border-b-[#E4E3E2] border-b pt-4`}>
                   <Tab
-                    className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${
-                      typeStat === 'Real Time'
-                        ? 'border-b-4 border-[#7E7E7D]'
-                        : 'opacity-50'
-                    }`}
+                    className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${typeStat === 'Real Time'
+                      ? 'border-b-4 border-[#7E7E7D]'
+                      : 'opacity-50'
+                      }`}
                     onClick={() => setTypeStat('Real Time')}>
                     Real Time
                   </Tab>
                   <Tab
-                    className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${
-                      typeStat === 'Predicted'
-                        ? 'border-b-4 border-[#7E7E7D]'
-                        : 'opacity-50'
-                    }`}
+                    className={` ml-2 md:ml-12 p-2 text-base font-medium outline-none ${typeStat === 'Predicted'
+                      ? 'border-b-4 border-[#7E7E7D]'
+                      : 'opacity-50'
+                      }`}
                     onClick={() => setTypeStat('Predicted')}>
                     Predicted
                   </Tab>
@@ -312,6 +318,16 @@ export function SharedCampaign({
                               dynamicStyle.marginRight = '0px'
                             }
 
+                            if (index === 8 || index === 9) {
+                              dynamicStyle.borderLeft = '1px solid #E6E6E3'
+                              dynamicStyle.paddingLeft = '56px'
+                            }
+
+                            // Determine if this is one of the last two stats
+                            const isLastTwo = index >= statArray.length - 2
+                            const textClasses = `${descriptionStatStyle} ${isLastTwo ? 'text-[#81cca8]' : ''
+                              } ${ptMono.className}`
+
                             return (
                               <div key={index}>
                                 {index != 0 && index != 1 && (
@@ -319,13 +335,10 @@ export function SharedCampaign({
                                     key={index}
                                     style={dynamicStyle}
                                     className='my-4'>
-                                    <h4 className={`${titleStatStyle}`}>
+                                    <h4 className={`${titleStatStyle} ${isLastTwo ? 'text-[#81cca8]' : ''}`}>
                                       {stat.title}
                                     </h4>
-                                    <p
-                                      className={`text-[14px] ${ptMono.className}`}>
-                                      {stat.description}
-                                    </p>
+                                    <p className={`text-[14px] ${ptMono.className} ${textClasses}`}>{stat.description}</p>
                                   </div>
                                 )}
                               </div>

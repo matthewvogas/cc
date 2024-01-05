@@ -10,7 +10,7 @@ export async function GET(
   try {
     const CampaignId = parseInt(params.id)
 
-    const client = await db.client.findUnique({
+    const client = await db.campaign.findUnique({
       where: {
         id: CampaignId,
       },
@@ -19,7 +19,7 @@ export async function GET(
     if (!client) {
       return NextResponse.json({ error: 'Client not found' })
     }
-    return NextResponse.json(client.coverImage)
+    return NextResponse.json(client.coverImg)
   } catch (error: any) {
     return NextResponse.json(error.message, {
       status: 404,
