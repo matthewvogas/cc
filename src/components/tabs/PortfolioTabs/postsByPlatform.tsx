@@ -380,7 +380,8 @@ export default function PostsByPlatform({
                   {/* funcion ternaria para preguntar por test user */}
                   {session?.user?.role == 'TESTER'
                     ? filteredPosts?.map((post: any, index: any) => (
-                        <PostCardTest key={index} post={post} />
+                      // <PostCardTest key={index} post={post} />
+                      null
                       ))
                     : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />
@@ -482,7 +483,8 @@ export default function PostsByPlatform({
                 <div className='mx-6 md:ml-12 justify-start grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2  2xl:grid-cols-5 gap-y-2 pb-32'>
                   {session?.user?.role == 'TESTER'
                     ? filteredPosts?.map((post: any, index: any) => (
-                        <PostCardTest key={index} post={post} />
+                       // <PostCardTest key={index} post={post} />
+                       null
                       ))
                     : filteredPosts?.map((post: any, index: any) => (
                         <PostCard key={index} post={post} />

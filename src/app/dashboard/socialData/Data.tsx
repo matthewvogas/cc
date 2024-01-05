@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import SocialCard from './socialCard'
 import { ptMono } from '@/app/fonts'
 import { Posts } from '@/types/posts/PostByCampaignRes'
-import PostCard from '@/components/cards/test/posts/postCard'
+import PostCard from '@/components/cards/influencer/posts/postCard'
 
 type Props = {
   posts: any
