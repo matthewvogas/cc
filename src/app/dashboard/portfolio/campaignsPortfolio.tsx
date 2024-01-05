@@ -171,7 +171,7 @@ export default function CampaignsPortfolio({
           form.reset()
           setLinks('')
           setIsOpen(false)
-          router.refresh()
+          router.push('/dashboard/campaigns/' + campaignId)
         } else {
           setFetchError('An error occurred')
         }
@@ -210,6 +210,26 @@ export default function CampaignsPortfolio({
 
   const loadPreviousPosts = () => {
     setPage(prevPage => prevPage.slice(0, -1))
+  }
+
+  const [selectedPostIds, setSelectedPostIds] = useState<string[]>([])
+
+  const savePosts = (Id: string) => async () => {
+    setLoading(true);
+    console.log(selectedPostIds)
+    const res = await fetch('/api/posts/portfolio', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        selectedPostIds,
+        Id
+      }),
+    })
+
+    if (res.ok) {
+      setLoading(false)
+      router.push('/dashboard/campaigns/' + Id)
+    }
   }
 
   const track = (Id: string) => async () => {
@@ -253,7 +273,6 @@ export default function CampaignsPortfolio({
     }
   }, [campaigns])
 
-  const [selectedPostIds, setSelectedPostIds] = useState<string[]>([])
 
   const toggleSelectPost = (postId: string) => {
     setSelectedPostIds((prevSelected: any) =>
@@ -274,8 +293,7 @@ export default function CampaignsPortfolio({
                 {selectedPostIds.length} posts selected
               </p>
               <button
-                // on clik para guardar posts
-                disabled={loading}
+                onClick={savePosts(String(campaign.id))}
                 className='flex self-end bg-[#E2DED4] rounded-lg px-7 py-2'
                 type='submit'>
                 {loading ? <span>Loading...</span> : 'done'}

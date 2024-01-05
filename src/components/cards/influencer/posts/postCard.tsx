@@ -26,7 +26,7 @@ export default function PostCard({ post }: { post: Post }) {
     '" height="200" width="300"></iframe>' +
     '</body> </html>'
 
-  const { isOpen, setIsOpen } = usePostStore()
+  const [isOpen, setIsOpen] = useState(false)
 
   const router = useRouter()
 
