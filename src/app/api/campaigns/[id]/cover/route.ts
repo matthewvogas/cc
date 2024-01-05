@@ -47,8 +47,8 @@ export async function POST(
       UploadedImageUrl = await S3Service.uploadObject(
         blob,
         name,
-        'clients',
-        'coverImages',
+        'campaigns',
+        'images',
       )
     }
 

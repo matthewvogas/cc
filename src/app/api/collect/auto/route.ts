@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
   async function updateIgPosts(instagramPage: string, instgramToken: string) {
     try {
-      const res = await fetch('http://localhost:3000/api/collect/instagram', {
+      const res = await fetch('https://codecoco.co/api/collect/instagram', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 
   async function updatetTPosts(tiktokToken: string) {
     try {
-      const res = await fetch('http://localhost:3000/api/collect/tiktokrefresh', {
+      const res = await fetch('https://codecoco.co/api/collect/tiktokrefresh', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

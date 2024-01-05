@@ -37,7 +37,7 @@ export default function TabsToShare(props: {
       setIsPrivate(true)
     }
 
-    const res = await fetch('http://localhost:3000/api/shares/campaignAccess', {
+    const res = await fetch('https://codecoco.co/api/shares/campaignAccess', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
