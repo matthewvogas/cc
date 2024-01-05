@@ -169,6 +169,11 @@ export default function CampaingsTabs({
     return (engagement > 0) ? engagement.toFixed(2) : 0
   }, [creators, getLikes, getComments])
 
+  const getEngagementImpressions = useMemo(() => {
+    return (getImpressions > 0) 
+      ? (((getLikes + getComments) / getImpressions) * 100).toFixed(2) : 0
+  }, [creators, getLikes, getComments, getImpressions])
+
   const handleRemoveSocial = (red: any) => {
     const updatedSocialFilter = socialActiveFilter.filter(c => c !== red)
     setSocialActiveFilter(updatedSocialFilter)
@@ -242,7 +247,7 @@ export default function CampaingsTabs({
           { title: getSaves, description: 'saves' },
           //
           { title: getEngagementViews + '%', description: 'engagement/views' },
-          { title: (((getLikes + getComments) / getImpressions) * 100).toFixed(2) + '%', description: 'engagement/impression' },
+          { title: getEngagementImpressions + '%', description: 'engagement/impression' },
         ],
       },
       {
