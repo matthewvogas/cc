@@ -48,7 +48,7 @@ export const AccessCampaign = ({
   return (
     <Html>
       <Head />
-      <Preview>Yelp recent login</Preview>
+      <Preview>Campaign Access Invitation</Preview>
       <Body style={main}>
         <Container>
           <Section style={logo}>
@@ -89,8 +89,13 @@ export const AccessCampaign = ({
 
                 <Row style={{ ...boxInfos, paddingTop: '0' }}>
                   <Column style={containerButton} colSpan={2}>
-                    <a href='https://codecoco.co/login' style={button}>
-                      connect now
+                    <a href='https://codecoco.co/signup/agency' style={button}>
+                      connect now like agency
+                    </a>
+                  </Column>
+                  <Column style={containerButton} colSpan={2}>
+                    <a href='https://codecoco.co/signup/creator' style={button}>
+                      connect now like creator
                     </a>
                   </Column>
                 </Row>
@@ -128,26 +133,6 @@ export const AccessCampaign = ({
             </Row>
 
             <Row style={{ ...boxInfos, paddingBottom: '40px' }}>
-              <Column style={containerButton} colSpan={2}>
-                <a
-                  href=''
-                  style={{
-                    ...ctaButton,
-                    backgroundColor: '#DFF2E8',
-                    marginBottom: '20px',
-                  }}>
-                  connect now like agency 🥥
-                </a>
-                <a
-                  href=''
-                  style={{
-                    ...ctaButton,
-                    backgroundColor: '#DFF2E8',
-                    marginBottom: '20px',
-                  }}>
-                  connect now like creator 🥥
-                </a>
-              </Column>
               <Column style={containerButton} colSpan={2}>
                 <a href='' style={{ ...ctaButton, backgroundColor: '#F6E9E3' }}>
                   more about Codecoco 🥥{' '}
@@ -200,6 +185,7 @@ const button = {
   border: '1px solid #fff',
   cursor: 'pointer',
   textDecoration: 'none',
+  marginBottom: '20px'
 }
 
 const ctaButton = {

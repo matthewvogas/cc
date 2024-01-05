@@ -41,20 +41,27 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData()
     const name = formData.get('name') as string
     const image = formData.get('image') as Blob
+    let UploadedImageUrl = null;
 
-    const buffer = Buffer.from(await image.arrayBuffer())
-    const resized = await sharp(buffer)
-      .webp({ quality: 80 })
-      .resize(300, 300)
-      .toBuffer()
-    const blob = new Blob([resized], { type: 'image/webp' })
+    if (image) {
+      const buffer = Buffer.from(await image.arrayBuffer())
+      const resized = await sharp(buffer)
+        .webp({ quality: 80 })
+        .resize(300, 300)
+        .toBuffer()
+      const blob = new Blob([resized], { type: 'image/webp' })
+  
+      UploadedImageUrl = await S3Service.uploadObject(
+        blob,
+        name,
+        'creators',
+        'profileImages',
+      )
 
-    const UploadedImageUrl = await S3Service.uploadObject(
-      blob,
-      name,
-      'creators',
-      'profileImages',
-    )
+      if (!UploadedImageUrl) {
+        throw new Error('Failed to upload image to S3')
+      }
+    }
 
     const user = await db.user.update({
       where: {

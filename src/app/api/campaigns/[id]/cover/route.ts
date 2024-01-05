@@ -36,8 +36,7 @@ export async function POST(
 
     const formData = await req.formData()
     const image = formData.get('image') as Blob
-
-    const UploadedImageUrl = null;
+    let UploadedImageUrl = null;
 
     if (image) {
       const name = formData.get('name') as string
@@ -45,7 +44,7 @@ export async function POST(
       const resized = await sharp(buffer).webp({ quality: 95 }).toBuffer()
       const blob = new Blob([resized], { type: 'image/webp' })
   
-      const UploadedImageUrl = await S3Service.uploadObject(
+      UploadedImageUrl = await S3Service.uploadObject(
         blob,
         name,
         'clients',

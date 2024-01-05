@@ -83,8 +83,13 @@ export const InvitationCreator = ({
 
                 <Row style={{ ...boxInfos, paddingTop: '0' }}>
                   <Column style={containerButton} colSpan={2}>
-                    <a href='https://codecoco.co/login' style={button}>
-                      connect now
+                    <a href='https://codecoco.co/signup/agency' style={button}>
+                      connect now like agency
+                    </a>
+                  </Column>
+                  <Column style={containerButton} colSpan={2}>
+                    <a href='https://codecoco.co/signup/creator' style={button}>
+                      connect now like creator
                     </a>
                   </Column>
                 </Row>
@@ -173,17 +178,6 @@ export const InvitationCreator = ({
 
             <Row style={{ ...boxInfos, paddingBottom: '40px' }}>
               <Column style={containerButton} colSpan={2}>
-                <a
-                  href=''
-                  style={{
-                    ...ctaButton,
-                    backgroundColor: '#DFF2E8',
-                    marginBottom: '20px',
-                  }}>
-                  connect now 🥥
-                </a>
-              </Column>
-              <Column style={containerButton} colSpan={2}>
                 <a href='' style={{ ...ctaButton, backgroundColor: '#F6E9E3' }}>
                   more about Codecoco 🥥{' '}
                 </a>
@@ -235,6 +229,7 @@ const button = {
   border: '1px solid #fff',
   cursor: 'pointer',
   textDecoration: 'none',
+  marginBottom: '20px'
 }
 
 const ctaButton = {
