@@ -70,7 +70,9 @@ export default function AddPortfolio({ clientsFallback, text, icon }: Props) {
         body: formData,
       })
 
-      if (res.status === 200) console.log(res.status)
+      if (res.status === 200) {
+        refreshAgencies();
+      }
       setIsOpen(false)
       setFileName(null)
     } catch (error: any) {
