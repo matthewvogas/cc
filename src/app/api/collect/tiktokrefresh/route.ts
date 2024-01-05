@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch user info: ${response.statusText}`)
+      throw new Error(`Failed to fetch user info: ${response.statusText} with token - ${accessToken}`)
     }
 
     const data = await response.json()
