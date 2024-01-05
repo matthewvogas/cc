@@ -64,7 +64,16 @@ export async function GET(req: NextRequest) {
     const hasMore = true
 
     const creators = await db.creator.findMany({
-      where: clause,
+      where: {
+        ...clause,
+        users: {
+            some: {
+                id: {
+                    equals: session.user.id
+                }
+            }
+        },
+    },
       include: {
         campaigns: true,
         users: {

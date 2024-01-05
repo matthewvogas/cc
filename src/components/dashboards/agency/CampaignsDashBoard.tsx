@@ -68,7 +68,7 @@ export default function CampaignsDashBoard({
           hashtag,
         }),
       })
-
+      refreshCampaigns()
       if (res.status === 200) refreshCampaigns()
       console.log(res.status)
       setIsOpen(false)
