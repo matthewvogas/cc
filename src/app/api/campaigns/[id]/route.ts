@@ -41,10 +41,10 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const { name, description } = await req.json()
+  const { name } = await req.json()
 
   try {
-    if (!name || !description) {
+    if (!name) {
       return NextResponse.json(
         { error: 'Incomplete fields' },
         {

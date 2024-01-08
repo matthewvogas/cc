@@ -33,7 +33,6 @@ export default function SettingsTab({
         },
         body: JSON.stringify({
           name: campaignName,
-          description: description,
         }),
       })
 
