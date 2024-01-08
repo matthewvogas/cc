@@ -89,10 +89,9 @@ export default function CampaignCardIfluencer({
 
   const filteredCards = data?.connections[0]?.user1.campaigns.flatMap(
     (card: any) => {
-      // Filtra los posts que coinciden con los usernames en instagramPages
       const filteredPosts = card.posts.filter((post: any) =>
         instagramPages.some(
-          (page: any) => post.creator.username === page.username,
+          (page: any) => post.creator?.username === page.username,
         ),
       )
 

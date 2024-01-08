@@ -74,7 +74,7 @@ export default function CampaignsDashBoardInfluencer({
     (card: any) => {
       const filteredPosts = card.posts.filter((post: any) =>
         instagramPages.some(
-          (page: any) => post.creator.username === page.username,
+          (page: any) => post.creator?.username === page.username,
         ),
       )
 

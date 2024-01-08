@@ -65,7 +65,7 @@ export default function CampaignsAgency({
     (card: any) => {
       const filteredPosts = card.posts.filter((post: any) =>
         instagramPages.some(
-          (page: any) => post.creator.username === page.username,
+          (page: any) => post.creator?.username === page.username,
         ),
       )
 
