@@ -51,7 +51,6 @@ export default function SettingsTab({
       formData.append('name', selectedFile.name)
       formData.append('image', selectedFile!)
 
-      if (client.id) {
         try {
           const res = await fetch(`https://codecoco.co/api/campaigns/${campaign.id}/cover`, {
             method: 'POST',
@@ -63,7 +62,6 @@ export default function SettingsTab({
         } catch (error) {
           console.error(error)
         }
-      }
       setLoading(false);
     }
   }
