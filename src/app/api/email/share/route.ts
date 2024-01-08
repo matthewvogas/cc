@@ -4,6 +4,7 @@ import CampaignAcess from '../../../../../emails/campaignAccess'
 import EmailService from '@/lib/EmailService'
 import { PrismaClient } from '@prisma/client'
 import { getServerSession } from 'next-auth'
+const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses')
 import { authOptions } from '../../auth/[...nextauth]/route'
 
 const crypto = require('crypto')
@@ -14,6 +15,14 @@ function generateUniqueToken() {
   const token = buffer.toString('hex')
   return token
 }
+
+const ses = new SESClient({
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID_SES,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_SES,
+  },
+})
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -39,20 +48,38 @@ export async function GET(req: NextRequest) {
 
   console.log(shareAccess)
 
-  try {
-    const campaignAccessShare = await EmailService.sendEmail({
-      subject: 'Codecoco Campaign Invitation',
-      to,
-      html: render(
-        CampaignAcess({
-          baseURL: process.env.NEXTAPP_URL!,
-          agencyName: agency || '',
-          campaign: campaign || '',
-          token: token || '',
-        }),
-      ),
-    })
+  const params = {
+    Destination: {
+      ToAddresses: [to],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Data: render(
+            CampaignAcess({
+              baseURL: process.env.NEXTAPP_URL!,
+              agencyName: agency || '',
+              campaign: campaign || '',
+              token: token || '',
+            }),
+          ),
+        },
+      },
+      Subject: {
+        Data: 'Codecoco Campaign Invitation',
+      },
+    },
+    Source: 'hello@codecoco.co',
+  }
 
+  try {
+
+    const sendEmailCommand = new SendEmailCommand(params)
+
+    ses.send(sendEmailCommand).then(
+      (data: any) => console.log('Email sent:', data),
+      (error: any) => console.error(error),
+    )
     return NextResponse.json({ message: 'Email sent' })
   } catch (err: any) {
     console.log('Email Error', err)

@@ -1,16 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { render } from '@react-email/render'
 import WelcomeEmail from '../../../../emails/creatorInvitation'
-import EmailService from '@/lib/EmailService'
+const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses')
 import { PrismaClient } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]/route'
 import db from '@/lib/db'
 
+const ses = new SESClient({
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID_SES,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_SES,
+  },
+})
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const to = searchParams.get('to')
   const session = await getServerSession(authOptions)
+
+  const params = {
+    Destination: {
+      ToAddresses: [
+      to
+      ],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Data: render(
+            WelcomeEmail({
+              baseURL: process.env.NEXTAPP_URL!,
+            })
+          ),
+        },
+      },
+      Subject: {
+        Data: 'Welcome to Codecoco',
+      },
+    },
+    Source: 'hello@codecoco.co',
+  };
+  
+  const sendEmailCommand = new SendEmailCommand(params)
+
+  ses.send(sendEmailCommand).then(
+    (data: any) => console.log('Email sent:', data),
+    (error: any) => console.error(error),
+  )
 
   if (!to)
     return NextResponse.json({ error: 'Missing recipent' }, { status: 400 })
@@ -27,18 +65,8 @@ export async function GET(req: NextRequest) {
       },
       body: JSON.stringify({
         to: to,
-        session: session.user.id
+        session: session.user.id,
       }),
-    })
-
-    const welcomeEmail = await EmailService.sendEmail({
-      subject: 'Welcome to Codecoco',
-      to,
-      html: render(
-        WelcomeEmail({
-          baseURL: process.env.NEXTAPP_URL!,
-        }),
-      ),
     })
 
     return NextResponse.json({ message: 'Email sent' })

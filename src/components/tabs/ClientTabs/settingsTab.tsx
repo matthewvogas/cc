@@ -26,7 +26,7 @@ export default function SettingsTab({
   const handleEdit = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/campaigns/${campaign.id}`, {
+      const res = await fetch(`https://codecoco.co/api/campaigns/${campaign.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function SettingsTab({
 
       if (client.id) {
         try {
-          const res = await fetch(`/api/campaigns/${campaign.id}/cover`, {
+          const res = await fetch(`https://codecoco.co/api/campaigns/${campaign.id}/cover`, {
             method: 'POST',
             body: formData,
           })

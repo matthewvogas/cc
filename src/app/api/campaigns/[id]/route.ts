@@ -58,7 +58,6 @@ export async function PUT(
       },
       data: {
         name: name,
-        description: description,
       },
     })
 

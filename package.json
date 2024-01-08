@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.425.0",
+    "@aws-sdk/client-ses": "^3.485.0",
     "@headlessui/react": "^1.7.17",
     "@hookform/resolvers": "^3.3.1",
     "@next-auth/prisma-adapter": "^1.0.7",
